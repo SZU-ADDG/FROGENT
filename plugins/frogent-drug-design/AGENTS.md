@@ -1,0 +1,15 @@
+# FROGENT Plugin Instructions
+
+- 插件核心功能是信息检索与工具使用；优先保障检索质量、来源可追溯、工具选择、参数验证、结果规范化和失败恢复。
+- 保持 `frogent_plugin/` 扁平；新增子包前先证明独立生命周期确有必要。
+- `.mcp.json` 是 MCP URL 的唯一来源，Python 与 Skills 中禁止重复端点。
+- `catalog.py` 维护稳定能力 ID；修改 ID 视为破坏性变更。
+- Skills 只描述任务步骤、能力选择和验收结果，避免复制长篇领域背景。
+- 核心模块只使用 Python 标准库；科研依赖留在隔离 MCP runtime。
+- 项目文档和沟通统一使用 `runtime`，不翻译该术语。
+- Harness 是 Agent、Skills、Apps 与 MCP providers 的唯一 job 控制边界。
+- 原始文献记录、筛选决定和 qualified evidence 分层保存；未经 EvidenceLedger 准入的内容禁止进入工作 memory。
+- 每次文献检索与综合都要记录精确 `as_of` 日期、查询来源、排除理由和 counterevidence。
+- 所有用户、会话和作业状态通过 `ExecutionContext` 显式传递。
+- 文件通过 `ArtifactRef` 传递，禁止新增共享绝对工作目录。
+- 新代码需要标准库单元测试，验证时不得启动数据库、模型或远程服务。

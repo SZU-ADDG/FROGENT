@@ -1,0 +1,42 @@
+{
+  "name": "frogent-drug-design",
+  "version": "0.1.0",
+  "description": "Connect FROGENT biomedical research and drug-design skills to scientific MCP services.",
+  "author": {
+    "name": "FROGENT maintainers"
+  },
+  "keywords": [
+    "drug-design",
+    "biomedical-literature",
+    "evidence-synthesis",
+    "agent-harness",
+    "mcp",
+    "molecular-modeling",
+    "skills"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "apps": "./.app.json",
+  "interface": {
+    "displayName": "FROGENT Biomedical R&D",
+    "shortDescription": "Traceable literature research and drug-design workflows.",
+    "longDescription": "Research biomedical literature, curate evidence, discover targets, design and evaluate molecules, optimize peptides, and plan retrosynthesis with a policy-controlled FROGENT harness.",
+    "developerName": "FROGENT maintainers",
+    "category": "Science",
+    "capabilities": [
+      "MCP",
+      "Skills",
+      "Drug Design",
+      "Biomedical Literature",
+      "Evidence Synthesis",
+      "Agent Harness"
+    ],
+    "defaultPrompt": [
+      "Discover a target and propose candidate ligands.",
+      "Research a biomedical question with a traceable evidence review.",
+      "Evaluate docking and ADMET evidence for my molecules.",
+      "Optimize a peptide against a protein target."
+    ],
+    "brandColor": "#147D64"
+  }
+}

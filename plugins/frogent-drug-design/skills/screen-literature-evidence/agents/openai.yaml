@@ -1,0 +1,4 @@
+interface:
+  display_name: "Screen Literature Evidence"
+  short_description: "Screen studies without losing provenance"
+  default_prompt: "Use $screen-literature-evidence to screen these records while preserving provenance and exclusion reasons."

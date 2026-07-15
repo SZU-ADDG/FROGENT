@@ -1,0 +1,39 @@
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Python caches and tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local runtime output
+*.log
+logs/
+tmp/
+uploads/
+artifacts/
+
+# Third-party source snapshots stay local
+sources/
+
+# Databases, model weights, and generated heavy assets
+*.db
+*.sqlite
+*.sqlite3
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+*.onnx
+*.bin
+checkpoints/
+weights/
+
+# Local editor and operating-system files
+.DS_Store
+.idea/
+.vscode/

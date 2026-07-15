@@ -1,0 +1,4 @@
+interface:
+  display_name: "Synthesize Biomedical Evidence"
+  short_description: "Synthesize claims with traceable evidence"
+  default_prompt: "Use $synthesize-biomedical-evidence to synthesize these screened studies into traceable claims."

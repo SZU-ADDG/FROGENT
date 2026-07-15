@@ -1,0 +1,4 @@
+interface:
+  display_name: "Plan Literature Search"
+  short_description: "Plan precise biomedical search strategies"
+  default_prompt: "Use $plan-literature-search to build a reproducible search plan for this biomedical question."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Optimize Small Molecule"
+  short_description: "Improve a lead molecule with measured evidence"
+  default_prompt: "Use $optimize-small-molecule to improve a lead molecule iteratively."
