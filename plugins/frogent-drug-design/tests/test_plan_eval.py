@@ -352,13 +352,43 @@ class PlanEvalTests(unittest.TestCase):
             finally:
                 path.write_bytes(original)
 
-    def test_authoritative_pack_is_locked_without_outputs_or_result(self) -> None:
+    def test_authoritative_post_run_pack_has_exact_replay_integrity(self) -> None:
         bundle = load_plan_bundle(PLUGIN_ROOT, Path("evals/plan-forward-v1.manifest.json"))
         self.assertEqual("locked", bundle.manifest["pack_status"])
         self.assertEqual((10, 12), tuple(sum(record["case_id"] == case for record in bundle.corpus)
                                         for case in ("PLAN-01", "PLAN-02")))
-        self.assertFalse((PLUGIN_ROOT / "evals/plan-forward-v1.result.json").exists())
-        self.assertFalse((PLUGIN_ROOT / "evals/plan-forward-v1.outputs").exists())
+        output_dir = PLUGIN_ROOT / "evals/plan-forward-v1.outputs"
+        paths = sorted(output_dir.glob("*.json"))
+        expected_identities = {
+            f"{case}|{profile}|{replicate}"
+            for case in ("PLAN-01", "PLAN-02")
+            for profile in ("no_skill", "single_skill")
+            for replicate in ("17", "29", "43")
+        }
+        values = [json.loads(path.read_bytes()) for path in paths]
+        identities = {
+            "|".join((value["case_id"], value["profile"], value["replicate_label"]))
+            for value in values
+        }
+        self.assertEqual(12, len(paths))
+        self.assertEqual(expected_identities, identities)
+        metadata = [
+            {
+                "identity": str(path.relative_to(PLUGIN_ROOT)),
+                "digest": hashlib.sha256(path.read_bytes()).hexdigest(),
+            }
+            for path in paths
+        ]
+        result_path = PLUGIN_ROOT / "evals/plan-forward-v1.result.json"
+        self.assertTrue(result_path.is_file())
+        result = json.loads(result_path.read_bytes())
+        verify_plan_result(bundle, values, result, input_metadata=metadata)
+        self.assertEqual("completed", result["worker_completion"]["state"])
+        self.assertEqual(12, result["worker_completion"]["completed"])
+        self.assertEqual("completed", result["execution_completion"])
+        self.assertEqual("rejected", result["effect_outcome"])
+        self.assertFalse(result["promotion_eligible"])
+        self.assertIn("exposed_development_panel", result["claim_limits"])
 
     def test_bound_common_prompt_exposes_exact_worker_schema_tokens(self) -> None:
         bundle = load_plan_bundle(PLUGIN_ROOT, Path("evals/plan-forward-v1.manifest.json"))

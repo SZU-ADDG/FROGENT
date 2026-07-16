@@ -35,6 +35,41 @@ SyntaxError: Unexpected identifier 'check'
 
 ---
 
+## [ERR-20260716-006] post_run_pack_lifecycle_assertion
+
+**Logged**: 2026-07-16T15:53:18+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: eval
+
+### Summary
+首轮正式 PLAN forward outputs/result 生成后，全量测试仍断言 authoritative pack 必须不存在 outputs/result，导致 83/84 通过。
+
+### Error
+```
+AssertionError: True is not false
+test_authoritative_pack_is_locked_without_outputs_or_result
+```
+
+### Context
+- locked preregistration 的 pre-worker 状态已经完成，12 个 fresh worker 输出均通过 schema/identity 校验并被 evaluator 接受。
+- result exact replay 与 CLI verify-result 已通过；失败来自测试对生命周期阶段的旧假设。
+- 不应删除正式负向结果来迎合旧测试。
+
+### Suggested Fix
+将 authoritative pack 测试升级为 post-run committed-result integrity：验证 12 个正式输出、完整 worker coverage、asset-bound exact replay、effect/promotion 分离和 exposed-panel claim limits。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/tests/test_plan_eval.py, plugins/frogent-drug-design/evals/plan-forward-v1.result.json
+
+### Resolution
+- **Resolved**: 2026-07-16T15:58:09+08:00
+- **Commit/PR**: Record first PLAN forward effect run
+- **Notes**: 测试已升级为 post-run authoritative replay integrity，验证 12 个输出 identity、原始字节 SHA、完整 replay、worker completion、effect outcome、promotion 和 claim limits；全量 84/84 通过。
+
+---
+
 ## [ERR-20260716-004] pre_worker_schema_validation_cli_invocation
 
 **Logged**: 2026-07-16T15:13:05+08:00
