@@ -70,6 +70,72 @@ test_authoritative_pack_is_locked_without_outputs_or_result
 
 ---
 
+## [ERR-20260716-015] github_direct_route_timeout_proxy_recovery
+
+**Logged**: 2026-07-16T18:24:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: infra
+
+### Summary
+v2 diagnostic push 时 GitHub 直连 443 超时；本地 HTTP 代理路径已恢复可用。
+
+### Error
+```
+curl: (28) Failed to connect to github.com port 443: Timeout was reached
+```
+
+### Context
+- 两次禁用代理的普通 push 没有更新 remote ref，本地 commit 与工作树保持完整。
+- 使用现有用户代理探测成功后，普通非强制 `git push origin main` 成功。
+
+### Suggested Fix
+推送前用仅返回状态码的网络探测判断 direct/proxy 路径；以 `git status -sb` 和 remote ref 明确确认 push 是否生效，禁止根据无输出猜测成功。
+
+### Metadata
+- Reproducible: unknown
+- Related Files: .git/config
+
+### Resolution
+- **Resolved**: 2026-07-16T18:25:00+08:00
+- **Commit/PR**: Record PLAN forward v2 diagnostic
+- **Notes**: 保留普通 fast-forward push；通过已恢复的用户代理将 `e1304fc..fad8bc1` 推送到 `origin/main`。
+
+---
+
+## [ERR-20260716-014] github_probe_response_cookie_output
+
+**Logged**: 2026-07-16T18:24:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: security
+
+### Summary
+GitHub 代理连通性探测使用 `curl -I`，工具输出包含匿名响应的 `Set-Cookie` 头。
+
+### Error
+```
+GitHub response Set-Cookie values appeared in tool output; values are intentionally omitted here.
+```
+
+### Context
+- Cookie 来自未登录的 GitHub HTTP 响应，没有写入项目文件。
+- 输出目的仅为验证代理连通性，完整响应头并非必要证据。
+
+### Suggested Fix
+外部连通性探测统一使用 `curl -o /dev/null -sS -w '%{http_code}\n'`，禁止输出响应头；需要头信息时显式过滤 `set-cookie`、`authorization` 与其他敏感字段。
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+
+### Resolution
+- **Resolved**: 2026-07-16T18:25:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 后续不再打印外部响应头；错误记录只保留脱敏事实。
+
+---
+
 ## [ERR-20260716-013] plan_v2_cli_plugin_relative_path
 
 **Logged**: 2026-07-16T18:19:00+08:00
