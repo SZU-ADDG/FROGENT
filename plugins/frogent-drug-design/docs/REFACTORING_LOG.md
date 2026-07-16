@@ -80,11 +80,11 @@ Evaluator identity 绑定 22-file package eager-import closure；revision logica
 
 Authority 仍为 `exposed_development_diagnostic`，并保留 `exposed_development_panel`、`seed_control_unverified`、`candidate_reference_filesystem_isolation_not_established`、`independent_score_owner_not_established` 与 `model_runtime_provider_memory_identity_closure_incomplete` claim limits。Result 本身无法独立证明 actual prompt delivery bytes；当前证据来自 Main 调度记录与 aborted audit。因此 clean Skill effect attribution 仍未建立，也不能声明真实 retrieval quality 提升。独立只读 subagent 已复核 official result、12 identity/raw SHA/receipts、22-file evaluator binding、aborted exclusion 与 gate 结论。
 
-## 2026-07-16 PLAN forward v3 pre-worker immutable lock
+## 2026-07-16 PLAN forward v3 official exposed diagnostic
 
-`plan-forward-v3` 已完成 immutable preregistration lock，用 current Skill 与 candidate Skill 建立可因果识别的 paired comparison。Candidate snapshot 相对 current snapshot 只新增一条 `budgeted minimum evidence path` bullet：固定 query cap 下，先为各 route 的 decision-critical evidence branch 保留 anchor-recovery query，并为各 high-impact claim family 保留独立 counterevidence challenge query，再分配 expansion queries。Active `plan-literature-search` Skill 尚未修改，仍与 current snapshot 逐字一致。
+Commit `2fe40b7e2f237c06a732e426bce55436a288dafe` 冻结了 `plan-forward-v3` pre-worker lock，用 current Skill 与 candidate Skill 建立可因果识别的 paired comparison。Evaluator role mapping 为 `skill_a=current baseline`、`skill_b=candidate`。Candidate snapshot 相对 current snapshot 只新增一条 `budgeted minimum evidence path` bullet：固定 query cap 下，先为各 route 的 decision-critical evidence branch 保留 anchor-recovery query，并为各 high-impact claim family 保留独立 counterevidence challenge query，再分配 expansion queries。Active `plan-literature-search` Skill 在 run 后仍与 current snapshot 逐字一致，未采用 candidate 改动。
 
-Locked matrix 为 `PLAN-01`、`PLAN-02` × opaque `skill_a`、`skill_b` × replicate labels `17`、`29`、`43`，共 12 个 sealed worker envelopes；每个 envelope 已统一为恰好一个终止换行，并由 EOF 防回归约束固定。当前 `fresh_workers=0`，official v3 outputs 与 result 均不存在，`effect_outcome=not_evaluated`、`promotion_eligible=false`。这只支持 evaluator/pre-worker integrity 结论；在 fresh paired result 出现前，不得写入 Skill 改进或 retrieval quality 效果结论。
+Locked matrix 为 `PLAN-01`、`PLAN-02` × opaque `skill_a`、`skill_b` × replicate labels `17`、`29`、`43`，共 12 个 sealed worker envelopes；每个 envelope 已统一为恰好一个终止换行，并由 EOF 防回归约束固定。12 个 fresh workers 均 completed/accepted，`execution_completion=completed`、`effect_outcome=rejected`、`promotion_eligible=false`。Official result finding 只有 `quality_metric_regression`；12 份原始 output bytes 与 expected result 通过 exact replay，`replay_digest=749b634cfddc8c92e8ee936bce3556c61a790a0aadf5f6062c882b1bc72bbb70`。
 
 v3 逐字复用 v2 的 tasks、candidate-visible constraints、common prompt、oracles、frozen corpus、replay、scoring、8 项 metrics 与 hard gates；新增范围只有 opaque arm、receipt 与 paired-comparison adapter。测试覆盖完整 12-output `validate -> replay -> scorecard -> comparison -> effect` 路径的 improved、flat、regression 与 not-comparable outcomes；mutation 全部在隔离目录运行，official v3 bytes 在测试期间保持只读。
 
@@ -93,19 +93,33 @@ v3 逐字复用 v2 的 tasks、candidate-visible constraints、common prompt、o
 - evaluator revision：`3403ea8c8420be8ab7ae7435d4b83aa0029650908eaaf89df39485ff4d409fd0`
 - manifest：`7bb91b2921ee2bf9d33e836317b0028540185bebcb448bf37dfcdaa58c465de1`
 - bundle：`7f74ebadb5d3be1c35a16da17662044e139a576b68d6b6175aac80cc752616ea`
+- official result：`a96b259118734742b1c99bcf2d9c252f04b9c85888345402730693f922b1d0d8`
 - current Skill：`35163a32dd0e625ed07c987e008f4f8ee4754d7b3cb63ffa7e20c07863d3e014`
 - candidate Skill：`73ee96ca30616427e87dded60cf7dd498e0f2ac69792abc839348fe7984c98c5`
 - shared reference：`e0e74ce98aba91541ba6324589139b6c416e77ecc49c69e75741418fafcb6630`
 
-Evaluator revision 绑定 27 个文件；静态 local-import closure 完整，v2 runner/CLI 属于保守 overbinding。Main 独立验收结果为 v3 13/13、全量 114/114、v1/v2 exact replay、official validator 与 sanitizer 982/0/0 全部通过；无 symlink、cache 或 temp 残留，v3 outputs/result 保持 absent。
+Evaluator revision 绑定 27 个文件；静态 local-import closure 完整，v2 runner/CLI 属于保守 overbinding。Pre-worker lock 阶段 Main 独立验收结果为 v3 13/13、全量 114/114、v1/v2 exact replay、official validator 与 sanitizer 982/0/0 全部通过；当时无 symlink、cache 或 temp，v3 outputs/result 尚未生成。
 
-Authority scope 为 `exposed_development_diagnostic`。Claim limits 保持 `exposed_development_panel`、`seed_control_unverified`、`candidate_reference_filesystem_isolation_not_established`、`independent_score_owner_not_established`、`model_runtime_provider_memory_identity_closure_incomplete` 与 `actual_prompt_delivery_not_independently_attested`。`query deduplication`、stop-rule 改写及其他候选假设继续 deferred。
+六个 paired comparisons 均为 comparable：
+
+- `PLAN-01/17`：anchor recall `-2/3`、concept coverage `-1/16`。
+- `PLAN-01/29`：anchor recall `-1/3`、concept coverage `+1/16`、stop-rule coverage `+0.2`、wave coverage `-1/6`。
+- `PLAN-01/43`：stop-rule coverage `-0.2`；其余 deltas 为 0。
+- `PLAN-02/17`：concept coverage `+1/24`、counterevidence recall `-0.5`、wave coverage `-1/6`。
+- `PLAN-02/29`：stop-rule coverage `+0.2`；其余 deltas 为 0。
+- `PLAN-02/43`：anchor recall `+1/3`、concept coverage `-1/24`、counterevidence recall `-0.5`。
+
+5/6 pairs 记录 quality regression，没有可 promotion pair。所有 measured retrieval precision 均为 1、source-route coverage 均为 1、temporal violation 均为 0；stop-rule coverage 仍弱，12 runs 只取得 0 或 0.2。
+
+Authority scope 为 `exposed_development_diagnostic`。Claim limits 保持 `exposed_development_panel`、`seed_control_unverified`、`candidate_reference_filesystem_isolation_not_established`、`independent_score_owner_not_established`、`model_runtime_provider_memory_identity_closure_incomplete` 与 `actual_prompt_delivery_not_independently_attested`。本地 `inbox` 只承担临时传输，禁止视为 official asset；official result receipts 只引用 `evals/plan-forward-v3.outputs/`。
+
+该结果只支持 exposed diagnostic 下的 negative single-hypothesis result，不能用于声明真实 retrieval quality 或完整 workflow 效果发生变化。下一轮必须先做逐 case failure analysis，从失败模式提出一个新的单变量假设并建立独立 preregistration；`query deduplication`、stop-rule 改写及其他候选仍需分别实验。
 
 ## 当前事实边界
 
-当前交付包含 typed contracts、harness/evidence control plane、structured provider port、v4 compatibility adapter、retrieval composition 和 research eval kernel。`research-eval-v1.result.json` 的 authority scope 只是 `evaluator_fixture`，内容来自 fixture-bound baseline/candidate exact replay；mutation checks 属于测试验收层。`plan-forward-v1` 与 `plan-forward-v2` 都已产生 PLAN official exposed diagnostic result；v1 具有冻结 matcher/worker-contract 测量限制，v2 具有上述 attribution、authority 与 coverage 限制。`plan-forward-v3` 当前只有 immutable pre-worker lock，尚无 fresh worker 或 effect result。
+当前交付包含 typed contracts、harness/evidence control plane、structured provider port、v4 compatibility adapter、retrieval composition 和 research eval kernel。`research-eval-v1.result.json` 的 authority scope 只是 `evaluator_fixture`，内容来自 fixture-bound baseline/candidate exact replay；mutation checks 属于测试验收层。`plan-forward-v1`、`plan-forward-v2` 与 `plan-forward-v3` 都已产生 PLAN official exposed diagnostic result；v1 具有冻结 matcher/worker-contract 测量限制，v2 具有上述 attribution、authority 与 coverage 限制，v3 是上述单一 Skill bullet 假设的 negative result。
 
-因此，`research-eval-v1` 与 pre-worker `plan-forward-v3` 均为 `effect_outcome=not_evaluated`、`promotion_eligible=false`；`plan-forward-v1` 与 `plan-forward-v2` 均固定为 `effect_outcome=rejected`、`promotion_eligible=false`，且 clean Skill effect attribution 未建立。当前结果不得用于声明真实 recall、precision、source coverage、traceability、Deep Research 或 memory quality 提升，也不得用于声明已证明真实 retrieval quality 下降。
+因此，`research-eval-v1` 固定为 `effect_outcome=not_evaluated`、`promotion_eligible=false`；`plan-forward-v1`、`plan-forward-v2` 与 `plan-forward-v3` 均固定为 `effect_outcome=rejected`、`promotion_eligible=false`。当前结果不得用于声明真实 recall、precision、source coverage、traceability、Deep Research 或 memory quality 提升，也不得用于声明已证明真实 retrieval quality 下降或完整 workflow 效果变化。
 
 以下 production 能力仍处于待接入或待评测状态：
 
@@ -123,8 +137,8 @@ MCP manifests 和 capability catalog 当前表达配置与稳定能力 ID，不�
 
 ## 后续重构顺序
 
-1. 先由 Main commit/push v3 pre-worker lock；随后只使用 12 个 sealed envelopes 启动 fresh current/candidate paired workers，并机械执行 ingest、evaluate 与 exact verify。`budgeted minimum evidence path` 及其 anchor/counterevidence reservation 仍是单一待验假设；effect result 出现前不得写成 Skill 改进。
-2. `query deduplication`、stop-rule 改写及其他假设继续 deferred；若后续启用，必须各自建立独立 preregistration，并保持一轮一个变量。
+1. 对 v3 的 6 个 paired comparisons 做逐 case failure analysis，解释 anchor、counterevidence、concept、wave 与 stop-rule regression，并从失败模式提出一个新的单变量假设；完成独立 preregistration 后才可启动下一轮 fresh paired eval。
+2. `query deduplication`、stop-rule 改写及其他假设继续 deferred；若后续启用，必须各自单独实验并保持一轮一个变量。V3 negative result 不得改写为 Skill 改进。
 3. 随后按 locked panel 执行 SCREEN、SYNTH、RESEARCH 的 paired forward eval。上述 6 cases、`sequential`/`full`、Deep Research effect 与 memory effect 均尚未执行；任何负向结果、超时和失败案例都进入正式结果资产。详见 [RESEARCH_EVAL_LOOP.md](RESEARCH_EVAL_LOOP.md)。
 4. 单 Skill 贡献通过逐 case gate 后，再运行固定顺序的 `sequential` profile 与真实整体 workflow 的 `full` profile。
 5. 完成 paired effect evaluation 后再接入真实 literature provider、MCP providers、Flask/Qwen compatibility path，以及所需的 artifact/state store。真实 provider regression 使用冻结 snapshot，live provider 使用独立 canary。

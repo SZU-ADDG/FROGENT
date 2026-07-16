@@ -2,6 +2,79 @@
 
 此文件用于记录命令、远端连接及外部工具错误。
 
+## [ERR-20260716-022] concurrent_hygiene_probe_transient_failure
+
+**Logged**: 2026-07-16T23:45:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+Main 最终 hygiene 组合探针与 Document 最终验证并发执行，首次以 exit 1 静默结束；Document 完成后拆分复核全部为空。
+
+### Error
+```
+hygiene composite probe exited 1 without diagnostic output
+```
+
+### Context
+- 同批 114 项测试、v3 exact replay、validator 与 sanitizer 均通过。
+- 探针将 symlink、cache、temp/inbox 和禁用句型条件合并，并使用 quiet grep，导致首次失败没有显示命中项。
+- Document 随后完成自身清理并进入 idle。
+
+### Suggested Fix
+共享工作区的最终 hygiene 必须等待所有写入任务 idle；每类条件分别输出诊断后再执行 fail-closed 汇总。
+
+### Metadata
+- Reproducible: no
+- Related Files: plugins/frogent-drug-design
+
+### Resolution
+- **Resolved**: 2026-07-16T23:46:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Document idle 后重新拆分检查，symlink、cache、temp/inbox 与禁用句型全部 0；最终提交前再次运行 staged hygiene。
+
+### Recurrence
+- **Observed**: 2026-07-16T23:48:00+08:00
+- **Cause**: staged 最终门禁仍将 hygiene 与全量 mutation tests 并行；hygiene 在测试运行窗口命中其受控临时目录 `evals/tmp9yv4yvvx`。
+- **Rule**: 最终 temp/cache hygiene 必须在所有测试进程完成后串行执行，禁止与会创建项目内临时 sandbox 的测试并行。
+- **Resolved**: mutation tests 正常退出并清理临时目录后，Main 串行重跑 hygiene。
+
+---
+
+## [ERR-20260716-021] plan_v3_document_cli_path_base
+
+**Logged**: 2026-07-16T23:40:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: docs
+
+### Summary
+v3 post-run 文档核对首次从项目根使用了插件根相对的 CLI 路径基准，帮助或验证命令未能按预期定位脚本。
+
+### Error
+```
+CLI path resolved against the project root instead of the plugin root
+```
+
+### Context
+- 失败调用只用于读取帮助或核对，不写 official outputs、result、runtime 或文档。
+- Document 任务写权限仅限两份 docs，因此由 Main 补充错误记录。
+
+### Suggested Fix
+plan-forward CLI、manifest、outputs 与 result 的相对路径统一以 plugins/frogent-drug-design 为 workdir；项目根调用必须使用完整 plugin-relative 路径。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/scripts/run_plan_forward_v3_eval.py
+
+### Resolution
+- **Resolved**: 2026-07-16T23:41:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Document 随后切换到插件根完成 exact replay、12 receipt、6 pair 与 active Skill identity 核对。
+
+---
+
 ## [ERR-20260716-020] plan_v3_bundle_identity_field_assumption
 
 **Logged**: 2026-07-16T23:14:00+08:00

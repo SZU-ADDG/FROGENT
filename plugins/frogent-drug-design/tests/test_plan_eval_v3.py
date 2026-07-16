@@ -87,7 +87,7 @@ class PlanEvalV3Tests(unittest.TestCase):
         reference = (ROOT / "skills/plan-literature-search/references/query-strategy.md").read_bytes()
         self.assertEqual(reference, (ROOT / "evals/plan-forward-v3.query-strategy.md").read_bytes())
 
-    def test_locked_pack_has_12_unique_typed_envelopes_and_no_result(self) -> None:
+    def test_authoritative_post_run_pack_has_asset_bound_exact_replay_integrity(self) -> None:
         self.assertEqual("locked", self.bundle.manifest["pack_status"])
         receipts = [worker_receipt(self.bundle, case, arm, rep) for case in ("PLAN-01", "PLAN-02")
                     for arm in ARMS for rep in REPLICATES]
@@ -97,8 +97,40 @@ class PlanEvalV3Tests(unittest.TestCase):
         self.assertEqual(12, len({hashlib.sha256(item).hexdigest() for item in envelopes}))
         self.assertEqual({"skill_a": "baseline_current", "skill_b": "candidate"},
                          self.bundle.manifest["role_mapping"])
-        self.assertFalse((ROOT / "evals/plan-forward-v3.outputs").exists())
-        self.assertFalse((ROOT / "evals/plan-forward-v3.result.json").exists())
+        output_dir = ROOT / "evals/plan-forward-v3.outputs"
+        paths = sorted(output_dir.glob("*.json"))
+        expected = {f"{case}|{arm}|{rep}" for case in ("PLAN-01", "PLAN-02")
+                    for arm in ARMS for rep in REPLICATES}
+        values = [json.loads(path.read_bytes()) for path in paths]
+        identities = {"|".join((value["case_id"], value["profile"], value["replicate_label"]))
+                      for value in values}
+        self.assertEqual(12, len(paths))
+        self.assertEqual(expected, identities)
+        relative = [str(path.relative_to(ROOT)) for path in paths]
+        self.assertEqual(sorted(relative), relative)
+        self.assertTrue(all(path.startswith("evals/plan-forward-v3.outputs/") for path in relative))
+        self.assertTrue(all("inbox" not in path.lower() for path in relative))
+        metadata = [{"identity": name, "digest": hashlib.sha256(path.read_bytes()).hexdigest()}
+                    for name, path in zip(relative, paths)]
+        result_path = ROOT / "evals/plan-forward-v3.result.json"
+        self.assertEqual("a96b259118734742b1c99bcf2d9c252f04b9c85888345402730693f922b1d0d8",
+                         hashlib.sha256(result_path.read_bytes()).hexdigest())
+        result = json.loads(result_path.read_bytes())
+        verify_plan_result(self.bundle, values, result, input_metadata=metadata)
+        self.assertEqual(metadata, [{"identity": item["identity"], "digest": item["digest"]}
+                                    for item in result["input_receipts"]])
+        self.assertTrue(all(item["status"] == "accepted" for item in result["input_receipts"]))
+        self.assertTrue(all("inbox" not in item["identity"].lower() for item in result["input_receipts"]))
+        self.assertEqual({"state": "completed", "expected": 12, "accepted": 12, "completed": 12,
+                          "failed": 0, "missing": 0, "invalid": 0}, result["worker_completion"])
+        self.assertEqual("completed", result["execution_completion"])
+        self.assertEqual("rejected", result["effect_outcome"])
+        self.assertFalse(result["promotion_eligible"])
+        self.assertEqual(["quality_metric_regression"], result["findings"])
+        self.assertEqual("749b634cfddc8c92e8ee936bce3556c61a790a0aadf5f6062c882b1bc72bbb70",
+                         result["replay_digest"])
+        self.assertEqual(self.bundle.manifest["claim_limits"], result["claim_limits"])
+        self.assertEqual({"skill_a": "baseline_current", "skill_b": "candidate"}, result["role_mapping"])
 
     def test_envelope_assets_match_reconstruction_and_reject_tamper(self) -> None:
         for key, spec in self.bundle.manifest["envelopes"].items():
