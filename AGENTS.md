@@ -9,6 +9,23 @@
 - 始终保持目录结构整洁；临时文件集中放置并在交付前清理。
 - 以最终结果为优先，完整验证关键结论，禁止省略必要步骤。
 
+## 目的优先与复杂度预算
+
+- 最终目的始终是提升 FROGENT 作为 Agent 的实际能力，重点包括 retrieval、Deep Research、memory management 与 tool use。
+- 文档、Git、测试、评测、实验和工程化设施都是实现目的的手段；每项工作必须说明对 Agent 行为、质量判断或下一步优化决策的直接贡献。
+- 采用足以回答当前问题的最小复杂度。辅助工作的规模一旦超过 Agent 能力实现与误差分析本身，应立即暂停、简化并重新对齐目标。
+- 小型完整实验优先于持续扩展评测基础设施；评测结果必须能导向明确的 Agent 改动，无法影响决策的审计细节不进入主线。
+- 每轮交付至少包含一项可感知的 Agent 行为改善，或一项能明确排除错误方向的有效实验结论。
+
+## Agent 性能主线
+
+- 先搭建可工作的完整 Agent workflow，再对完成的能力块做整体测试；早期架构可以基于领域经验与合理约束推进，无需对每个微小改动单独消融。
+- 检索同时利用数据库路由、OA 全文、作者与课题组网络、引用关系和模型已有知识；模型记忆产生待验证候选，外部来源负责核实，禁止把模型记忆直接当作证据。
+- 大批文献优先交给隔离的 reader subagents 并行处理，Main 只接收结构化 evidence 与失败信息，控制上下文污染。
+- Skills 要把数据库、RDKit、结构分析、对接、PLIP 及其他科研工具内化为可执行 workflow；重要判断尽量用工具或数据验证，并记录适用范围与失败条件。
+- 工作 memory 通过 evidence 准入、文档记录、压缩摘要、用户偏好和可撤回更新持续演化，避免上下文压缩造成关键决策丢失。
+- 完成一个 coherent capability block 后，优先在已有公开数据集或真实任务集上并行测试整体性能；先确认 Agent 能解决见过或可验证的问题，再扩展到未知分子与完整药物设计任务。
+
 ## 术语与核心架构
 
 - 项目文档和沟通统一使用 `runtime`，不翻译该术语。
@@ -20,20 +37,15 @@
 
 ## 效果评测循环
 
-- 每个 research Skill 和整体 workflow 都必须绑定可运行 eval；仅有 contracts、fixtures 或静态检查不能宣称效果提升。
-- 每轮优化固定执行 `baseline -> 单一假设改动 -> 相同 locked eval 复测 -> 逐案例误差分析 -> regression gate`。
-- Eval 资产至少包含 versioned manifest、development/frozen-core/challenge cases、temporal cutoff、runner、结果文件、失败案例和 replay identity。
-- 仓库内可见的 case 与 oracle 一律视为 exposed data；hidden held-out 必须由独立 score owner 在 candidate freeze 后保管，并对 candidate worker 隐藏 reference。
-- Per-Skill 评测使用 no-skill、single-skill、sequential 和 full profiles；无法独立识别贡献的 Skill 必须显式标记 identifiability 限制。
-- 严格区分 contract/control-plane verification 与 retrieval/Deep Research/memory 的效果评测。
-- 每轮分别记录 execution completion、effect outcome 和 promotion eligibility；负向实验、超时及失败案例同样保存，缺少独立 oracle 的指标标记为 `not_measured`。
-- 默认 regression 仅使用 frozen provider/corpus snapshot；live provider 进入独立 canary，禁止污染可重放 baseline。
-- Retrieval eval 使用 grouped alias semantics；source-route coverage 由实际 query routes 计算并与声明双向核对。Locked pack 逐字节绑定 Skill、reference、worker input、evaluator implementation、包初始化与递归 eager-import 闭包，logical key 精确绑定唯一 relative path。
-- Candidate-visible worker contract 必须公开合法输出所需的精确字段、类型和 enum tokens；evaluator-owned oracle、record IDs、match rules 与 scoring reference 保持隐藏。
-- Missing、invalid、failed 与负向运行都要生成 deterministic rejected result，保存受控 input digest、stable taxonomy 和 worker completion；结构与身份合法的预算、route 等 candidate policy 违规保留 raw plan 并进入 replay hard gate，禁止在 schema 层丢弃；完整 effect result 必须由相同输入资产 exact replay 验证。
-- 文献 query hit occurrence 与 canonical record 分层保存；一致重复保留全部 query-to-record links，冲突重复 fail closed。
-- Memory 效果指标必须区分 evidence admission 与 working-memory retention；useful recall 以可追溯 working memory 为准，revocation 同时惩罚漏撤与误撤，跨 case evidence ID 必须具备可判定的隔离命名空间。
-- 禁止通过修改 held-out 数据、gold、阈值或评测口径制造提升。
+- Eval 的唯一用途是判断 Agent 是否更会检索、研究、管理 memory 或使用工具，并据此决定下一步改动；静态检查只证明代码边界，不能证明能力提升。
+- 先完成一个 coherent capability block，再运行相同真实任务或公开数据集做前后比较和逐案例误差分析。Workflow 稳定且确实需要归因时才做 Skill 消融。
+- 首要验收信号包括任务成功率、有效证据召回、引用与来源正确性、反证保留、memory 污染与撤回、工具失败恢复、延迟和成本；没有可靠 oracle 的指标明确记为 `not_measured`。
+- Live provider 用于验证当前真实可用性，小型 frozen snapshot 用于防回归。不得修改 gold、阈值或评测口径来制造提升。
+- 每轮保留足以复盘的最小资产：任务集、运行入口、原始输出、逐案例结果和失败分析。只有正式冻结的 benchmark 或外部复现需要时才记录 digest；禁止为日常小改动扩展 SHA 链、sealed envelope 或多版本审计设施。
+- 仓库内可见 case 视为 exposed data；真正需要无泄漏结论时再由独立 score owner 管理 hidden held-out。
+- 负向结果、超时、工具错误和失败案例都要保留，因为它们直接决定 Agent 的修复方向。
+- 文献 query hit 与 canonical record 分层保存；一致重复保留 query-to-record links，冲突记录隔离并报告。
+- Memory 验收区分 evidence admission、working-memory retention 与 revocation，避免 raw result、错误引用或 stale evidence 污染回答。
 
 ## 当前项目与远端环境
 

@@ -115,7 +115,7 @@ Authority scope 为 `exposed_development_diagnostic`。Claim limits 保持 `expo
 
 该结果只支持 exposed diagnostic 下的 negative single-hypothesis result，不能用于声明真实 retrieval quality 或完整 workflow 效果发生变化。下一轮必须先做逐 case failure analysis，从失败模式提出一个新的单变量假设并建立独立 preregistration；`query deduplication`、stop-rule 改写及其他候选仍需分别实验。
 
-## 2026-07-16 PLAN forward v4 immutable pre-worker lock
+## 2026-07-16 PLAN forward v4 official exposed diagnostic
 
 `plan-forward-v4` 是独立 immutable preregistration，唯一假设为 `anchor-safe locator fallback query construction`。Candidate snapshot 只在 active/current `plan-literature-search` Skill 的 `Recall and precision controls` 新增一条 locator-first bullet；current snapshot 与 active Skill byte-equal，active Skill 尚未修改。
 
@@ -128,7 +128,7 @@ Authority scope 为 `exposed_development_diagnostic`。Claim limits 保持 `expo
 
 V4 精确复用 v2 candidate tasks、candidate-visible constraints、oracles、frozen corpus、common prompt、matcher/replay/scoring、8 项 metrics、3 项 primary metrics 与 hard gates；gold、threshold、provider snapshot 和 exposed panel 均未改变。固定 matrix 为 `PLAN-01`、`PLAN-02` × opaque `skill_a`、`skill_b` × replicate labels `17`、`29`、`43`，共 12 个 sealed envelopes。每个 envelope 恰好一个终止换行；receipt digest payload 显式绑定 `eval_id=plan-forward-v4`，防止跨版本 worker identity collision。
 
-当前状态为 `pack_status=locked`、`fresh_workers=0`、`effect_outcome=not_evaluated`、`promotion_eligible=false`；official v4 outputs 与 result 均不存在。Pre-worker lock 只支持 evaluator/identity integrity，不能写入效果改善结论。
+Immutable pre-worker lock 已由 commit `a7f5a0a3daaaad24fd3f78940900c3675c267f83` 固定。随后 12 个 sealed envelopes 各完成一份 fresh official output；worker completion 为 `expected=12`、`accepted=12`、`completed=12`、`failed=0`、`invalid=0`、`missing=0`，`execution_completion=completed`。Official result 固定为 `effect_outcome=rejected`、`promotion_eligible=false`，findings 为 `[quality_metric_regression]`。12 份原始 output bytes 与 expected result 的 exact replay 通过，`replay_digest=0716c363602ba59bdcdeb42c4b94ad5cb7f5f82fd18d6410dc3781fad8bf6465`。
 
 冻结 identity 为：
 
@@ -139,37 +139,58 @@ V4 精确复用 v2 candidate tasks、candidate-visible constraints、oracles、f
 - candidate Skill：`e5b27dd9eb116362297600f34512797816f59078e516a20d9d3421168e1c6eb8`
 - shared reference：`e0e74ce98aba91541ba6324589139b6c416e77ecc49c69e75741418fafcb6630`
 - arm instruction：`0746fa95cb4cba2158fd4f71e1412c5bf98905607ae997dc33b9071f10173224`
+- official result：`d4aedab918f6151af8f8350bd9eb3365470dfb2d3823dd29b63bae50565b33e9`
 
-Evaluator revision 绑定 27 个文件；递归静态 local-import closure 为 25 个文件，另绑定 v2 runner/CLI 作为保守 overbinding。Implementation 13/13、Main fresh 全量 127/127、v1/v2/v3 exact replay、v4 locked CLI、official validator 与 sanitizer 982/0/0 均通过；独立只读审计结论为 PASS，P0=0、P1=0。
+Evaluator revision 绑定 27 个文件；递归静态 local-import closure 为 25 个文件，另绑定 v2 runner/CLI 作为保守 overbinding。Pre-worker 验收中 Implementation 13/13、Main fresh 全量 127/127、v1/v2/v3 exact replay、v4 locked CLI、official validator 与 sanitizer 982/0/0 均通过；独立只读审计结论为 PASS，P0=0、P1=0。Post-run 机械核对确认 12 个 raw SHA/receipts 全部一致，v1/v2/v3/v4 exact replay 均通过。
+
+`skill_a` 映射 current baseline，`skill_b` 映射 candidate。六组 pair 全部 comparable；除下表四项外，retrieval precision、source-route coverage 与 wave coverage 的 delta 均为 0，temporal violation delta 也为 0。
+
+| Pair | Anchor delta | Counterevidence delta | Concept delta | Stop delta | Pair 结论 |
+|---|---:|---:|---:|---:|---|
+| `PLAN-01/17` | 0 | +1 | 0 | +0.2 | improved without regression |
+| `PLAN-01/29` | 0 | +0.5 | 0 | 0 | improved without regression |
+| `PLAN-01/43` | 0 | 0 | -0.0625 | 0 | regression |
+| `PLAN-02/17` | -1/3 | 0 | +1/24 | 0 | regression |
+| `PLAN-02/29` | 0 | 0 | 0 | 0 | flat |
+| `PLAN-02/43` | -1/3 | +0.5 | -1/24 | +0.2 | regression |
+
+汇总为 2 组 improved-without-regression、1 组 flat、3 组 regression；any-regression gate 下没有可 promotion 结果。所有 measured retrieval precision 均为 1，source-route coverage 与 wave coverage 均为 1，temporal violation 均为 0；每个 run 都用满 query cap：`PLAN-01=12`、`PLAN-02=16`。
+
+逐 case failure analysis 显示，candidate 在 `PLAN-02/17` 与 `PLAN-02/43` 使用的 exact-title locator branch 没有恢复 2021 FDA anchor。冻结 matcher 的 locator bypass 只识别 evaluator-owned identifiers；exact title 仍进入 grouped lexical matching。上述 query 缺少 `tofacitinib` 或 `2021` requirement group，因而未命中。该语义已在 preregistration 中冻结，run 后不得修改，现记录为 measurement-interface 与 claim boundary。Candidate 也没有稳定遵循“locator OR minimal alias fallback”模板，说明单条 prose bullet 对 query construction 的 control 不足。
+
+`PLAN-01/17` 与 `PLAN-01/29` 的 counterevidence 增量是 exposed frozen corpus 内的 official diagnostic 记录；它不支持真实 retrieval quality 改善声明。Active Skill 继续与 current snapshot byte-equal，candidate 未 promotion。
+
+当前并列结论为：
+
+- `CONTRACT/EXECUTION/REPLAY INTEGRITY=PASS`
+- `v4 OFFICIAL DIAGNOSTIC EFFECT=REJECTED`
+- `CLEAN SKILL EFFECT ATTRIBUTION=NOT_ESTABLISHED`
+- `PROMOTION=false`
 
 Authority scope 为 `exposed_development_diagnostic`。Claim limits 保持 `exposed_development_panel`、`seed_control_unverified`、`candidate_reference_filesystem_isolation_not_established`、`independent_score_owner_not_established`、`model_runtime_provider_memory_identity_closure_incomplete` 与 `actual_prompt_delivery_not_independently_attested`。
 
-## 当前事实边界
+## 2026-07-17 Literature intelligence capability block
 
-当前交付包含 typed contracts、harness/evidence control plane、structured provider port、v4 compatibility adapter、retrieval composition 和 research eval kernel。`research-eval-v1.result.json` 的 authority scope 只是 `evaluator_fixture`，内容来自 fixture-bound baseline/candidate exact replay；mutation checks 属于测试验收层。`plan-forward-v1`、`plan-forward-v2` 与 `plan-forward-v3` 都已产生 PLAN official exposed diagnostic result；v1 具有冻结 matcher/worker-contract 测量限制，v2 具有上述 attribution、authority 与 coverage 限制，v3 是上述单一 Skill bullet 假设的 negative result。`plan-forward-v4` 当前只有 independent immutable pre-worker lock，尚无 fresh worker 或 official effect result。
+当前已形成可组合运行的文献 intelligence 核心，完整流程见 [LITERATURE_INTELLIGENCE.md](LITERATURE_INTELLIGENCE.md)：
 
-因此，`research-eval-v1` 与 pre-worker `plan-forward-v4` 均为 `effect_outcome=not_evaluated`、`promotion_eligible=false`；`plan-forward-v1`、`plan-forward-v2` 与 `plan-forward-v3` 均固定为 `effect_outcome=rejected`、`promotion_eligible=false`。当前结果不得用于声明真实 recall、precision、source coverage、traceability、Deep Research 或 memory quality 提升，也不得用于声明已证明真实 retrieval quality 下降或完整 workflow 效果变化。
+- Europe PMC 与 PubMed live adapters 执行真实 metadata/abstract retrieval；Europe PMC 可按 PMCID 取得 OA `fullTextXML`，并提供 citations/references expansion。
+- `ResearchController` 接收显式 source-query pairs 和 model-knowledge candidates，经 harness policy 执行检索、canonicalization、候选核验、bounded reader isolation、Screener、`EvidenceLedger` memory admission、synthesis、checkpoint/resume 与 revocation。
+- OA 或 provider 失败、abstract-only、reader 异常与无 admitted evidence 都成为显式 coverage gap；单个来源或 reader 失败不会阻断后续 counterevidence 路径。
+- `AuthorLead` 可从 provider metadata 返回作者、ORCID 和 affiliation，服务于后续检索扩展；OpenAlex 与 Unpaywall adapters 保持 optional，当前不在 controller 默认路径中。
+- `run_v4_research` 已提供 typed event compatibility boundary。实际 `app_v4` route、Qwen-backed Reader/Synthesizer、checkpoint persistence、自动 author/citation expansion 和 production Agent loop 尚未接线。
 
-以下 production 能力仍处于待接入或待评测状态：
+旧 `research-eval-v1` 与 PLAN v1–v4 结果保留为历史控制面与 exposed diagnostic 记录。它们不承担当前 capability block 的总体性能证明。
 
-- Flask route 与 SSE transport；
-- Qwen runtime 与实际 Agent loop；
-- 真实 MCP 连接、能力执行和 provider 调用；
-- 真实 literature provider 与外部检索服务；
-- 数据库、artifact/state/checkpoint 持久化和模型；
-- production connectors/adapters 的端到端装配；
-- 其余 research Skills、整体 workflow 以及 PLAN Skill 的 clean attributable forward effect。
+### 小型真实 performance loop
 
-MCP manifests 和 capability catalog 当前表达配置与稳定能力 ID，不代表远端服务已经连通。任何待接入能力在完成实现、测试和验收前都保持待办表述。
+三个隐藏 PMID/标签的冷门 PubMedQA cold cases 中，FROGENT literature Skills 与 reader workers 找到正确目标 PMID `3/3`；初始 source-study verdict 为 `1/3`。逐案例误差来自 source-study/current-evidence 混淆，以及把轻微数值差异映射为肯定结论。
 
-依赖尚未接入药物设计模型的任务与完整制药 workflow 继续保持 deferred。
+`synthesize-biomedical-evidence` Skill 增加 source-study/current-evidence 分离和 verdict calibration 后，在相同已检索证据上复测，source-study verdict 达到 `3/3`。该 `n=3` 结果只证明修正方向有效，无法支持总体 retrieval、synthesis、Deep Research 或完整 workflow 性能声明。
 
-## 后续重构顺序
+### 下一性能块
 
-1. 先由 Main commit/push v4 immutable pre-worker lock；随后只使用 12 个 sealed envelopes 启动 fresh current/candidate paired workers，并机械执行 ingest、evaluate 与 exact verify。Result 出现前保持 `NOT_EVALUATED`，active Skill 继续 byte-equal current snapshot。
-2. `query deduplication`、stop-rule 改写及其他假设继续 deferred；若后续启用，必须各自单独实验并保持一轮一个变量。V3 negative result 与 v4 pre-worker lock 均不得改写为 Skill 改进。
-3. 随后按 locked panel 执行 SCREEN、SYNTH、RESEARCH 的 paired forward eval。上述 6 cases、`sequential`/`full`、Deep Research effect 与 memory effect 均尚未执行；任何负向结果、超时和失败案例都进入正式结果资产。详见 [RESEARCH_EVAL_LOOP.md](RESEARCH_EVAL_LOOP.md)。
-4. 单 Skill 贡献通过逐 case gate 后，再运行固定顺序的 `sequential` profile 与真实整体 workflow 的 `full` profile。
-5. 完成 paired effect evaluation 后再接入真实 literature provider、MCP providers、Flask/Qwen compatibility path，以及所需的 artifact/state store。真实 provider regression 使用冻结 snapshot，live provider 使用独立 canary。
-6. 药物设计模型依赖任务继续 deferred，直到相关 model/runtime closure 可绑定、可重放并具备独立效果 eval。
-7. 每个新增模块都要说明它直接改善的 retrieval quality 或 tool-use reliability 指标，并提供对应 trace、测试或验收证据；缺少直接贡献与验证证据的模块不进入核心路径。
+1. 用 50–100 个隐藏标签的 PubMedQA cold cases 测量 target PMID、source-study verdict、引用正确性、失败类型、延迟与成本，确认 synthesis 修正能否稳定泛化。
+2. 用 BioASQ 检查 multi-document retrieval、证据整合、来源覆盖与 counterevidence；用 LongMemEval 风格任务检查 evidence admission、working-memory retention、resume、revocation 与 stale-evidence 污染。
+3. 将 Qwen-backed Reader/Synthesizer、Screener、checkpoint store 与 `app_v4` 接入当前 workflow，随后用同一任务集做端到端复测。
+4. 按实际失败案例决定是否启用 OpenAlex author graph、Unpaywall fallback、citation expansion 或新的 Skills；每个扩展都要直接改善用户任务结果或解释已观察错误。
+5. 药物设计模型依赖任务与完整制药 workflow 继续 deferred，直到 literature intelligence 与 tool-use capability blocks 具备稳定真实任务表现。

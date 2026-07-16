@@ -1,5 +1,92 @@
 # Learnings
 
+## [LRN-20260717-002] best_practice
+
+**Logged**: 2026-07-17T01:49:48+08:00
+**Priority**: high
+**Status**: new
+**Area**: agent
+
+### Summary
+真实 PubMedQA 小样本显示检索已能稳定找到目标论文，当前主要误差来自 synthesis 对问题语义和结论强度的校准。
+
+### Details
+三个隐藏 PMID/标签的冷门问题均由一次性 reader subagents 使用 FROGENT literature Skill 和真实数据库找到正确目标 PMID，retrieval identification 为 3/3；最终 yes/no/maybe 与数据集标签一致 1/3。一个错误把 0.55 chart-line 的轻微测量差异映射为 Yes，而原研究结论更接近没有实质差异；另一个错误将后来关于替代诊断的反证混入原论文问题，导致原论文的 Yes 被降为 Maybe。说明当前瓶颈已经从“找不到证据”转向“区分目标研究结论、临床意义、统计差异和当前领域更新”。
+
+### Suggested Action
+Synthesis 应显式区分 `source-study answer` 与 `current-evidence answer`，先回答用户问题对应的研究口径，再单列后续反证或更新。Verdict calibration 必须判断差异是否达到作者主结论、统计和决策意义，避免只因存在数值差异就输出 Yes。后续用更大的 PubMedQA/BioASQ 样本验证这一改动，保持 retrieval 流程不变。
+
+### Metadata
+- Source: real_task_eval
+- Related Files: plugins/frogent-drug-design/skills/synthesize-biomedical-evidence/SKILL.md, plugins/frogent-drug-design/frogent_plugin/research_types.py
+- Tags: retrieval, synthesis, verdict-calibration, pubmedqa, evidence-update
+- Pattern-Key: research.separate_source_answer_from_current_update
+- Recurrence-Count: 1
+- First-Seen: 2026-07-17
+- Last-Seen: 2026-07-17
+
+### Resolution
+- `synthesize-biomedical-evidence` 已增加 source-study/current-evidence 分离和轻微差异的 verdict calibration。
+- 使用相同已检索证据复测两个失败案例后，三个 source-study verdict 从 1/3 提升为 3/3；当前领域结论继续单列，不覆盖原研究答案。
+
+---
+
+## [LRN-20260717-001] correction
+
+**Logged**: 2026-07-17T00:53:56+08:00
+**Priority**: critical
+**Status**: promoted
+**Area**: backend
+
+### Summary
+FROGENT 应先形成完整可工作的 Agent workflow，并围绕检索、工具、并行阅读、memory 与真实任务性能持续优化。
+
+### Details
+用户进一步明确了 Agent-first 的具体含义：检索要覆盖数据库、OA 论文、作者与课题组网络和引用关系；模型训练知识可以主动产生文献与事实候选，但必须由工具和来源核实。Reader subagents 可并行处理大量文献并保护 Main 上下文。Skills 需要把数据库、RDKit、结构分析、对接、PLIP 等工具组织成可执行 workflow。Memory 要通过文档、用户偏好、证据准入和可撤回更新抵抗压缩与遗忘。合理领域约束可以先用于搭建框架，完整能力块完成后再用公开数据集或真实任务集并行测试整体性能，避免过早开展微小消融。
+
+### Suggested Action
+Main 定义一个用户可感知的 coherent capability block，Implementation 完整实现，Main 用真实任务和性能指标验收，Document 最后记录稳定 workflow。每轮优先增加 Agent 能力、真实工具连接或可验证决策质量；评测基础设施保持最小充分。
+
+### Metadata
+- Source: user_feedback
+- Related Files: AGENTS.md, plugins/frogent-drug-design/frogent_plugin, plugins/frogent-drug-design/skills
+- Tags: agent-first, retrieval, tool-use, subagents, memory, performance
+- Pattern-Key: workflow.build_agent_then_evaluate_blocks
+- Recurrence-Count: 1
+- First-Seen: 2026-07-17
+- Last-Seen: 2026-07-17
+- Promoted: AGENTS.md
+
+---
+
+## [LRN-20260716-005] correction
+
+**Logged**: 2026-07-16T22:56:56+08:00
+**Priority**: critical
+**Status**: promoted
+**Area**: infra
+
+### Summary
+文档、Git、评测、实验与工程化工作必须围绕提升 Agent 本身展开，并使用与目标相称的复杂度。
+
+### Details
+用户明确允许使用文档、Git、评测和实验，同时要求始终把最终目的放在首位：提升 FROGENT 的 retrieval、Deep Research、memory management 与 tool use。此前把评测完整性细节持续扩展为多版本 SHA、sealed assets、重复 replay 和审计链，辅助工作占用了主线。随后把纠偏理解为全面停用这些工具，同样偏离了用户意图。正确做法是保留能促进 Agent 改进的工程手段，控制规模，并要求每项辅助工作能改变 Agent 行为或优化决策。
+
+### Suggested Action
+每轮先写清用户可感知的 Agent 能力目标和验收信号，再选择最小充分的文档、Git、测试或评测手段。若辅助设施的工作量超过能力实现与逐案例误差分析，应暂停扩建并简化；无法影响下一步 Agent 改动的审计细节退出主线。
+
+### Metadata
+- Source: user_feedback
+- Related Files: AGENTS.md, plugins/frogent-drug-design/AGENTS.md
+- Tags: purpose-alignment, complexity-budget, agent-quality, evaluation, workflow
+- Pattern-Key: workflow.purpose_first_complexity_budget
+- Recurrence-Count: 1
+- First-Seen: 2026-07-16
+- Last-Seen: 2026-07-16
+- Promoted: AGENTS.md
+
+---
+
 ## [LRN-20260716-003] best_practice
 
 **Logged**: 2026-07-16T15:15:14+08:00

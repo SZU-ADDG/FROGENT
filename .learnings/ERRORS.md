@@ -2,6 +2,105 @@
 
 此文件用于记录命令、远端连接及外部工具错误。
 
+## [ERR-20260717-005] research_workflow_control_nesting
+
+**Logged**: 2026-07-17T01:25:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: backend
+
+### Summary
+Research workflow 初版的并行 reader future 处理达到 4 层控制流，触发现有 nesting 上限；端到端行为测试仍全部通过。
+
+### Error
+```
+architecture gate: control-flow nesting 4 > 3
+```
+
+### Context
+- 嵌套来自 reader future 的结果类型验证和异常隔离。
+- 失败是本地静态架构检查，未影响真实 provider、远端或历史 eval 资产。
+
+### Suggested Fix
+把单个 future 的结果校验与异常转换抽成 early-return helper，让并发 orchestration 保持线性可读。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/research_workflow.py
+
+### Resolution
+- **Resolved**: 2026-07-17T01:25:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: GOAL 已提取扁平 helper，保留 reader 失败隔离行为并重新运行完整验证。
+
+---
+
+## [ERR-20260717-004] malformed_pubmed_xml_test_fixture
+
+**Logged**: 2026-07-17T01:20:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+真实 PubMed provider 的 injectable transport 测试首次使用了标签未闭合的 XML fixture，解析测试在进入业务断言前失败。
+
+### Error
+```
+malformed PubMed XML fixture: unclosed tag
+```
+
+### Context
+- 失败只发生在新建的本地测试 fixture。
+- official provider、现有 eval 资产、远端与外部服务均未被修改。
+
+### Suggested Fix
+将 PubMed XML fixture 缩成最小有效文档，并在 provider 行为断言前先验证 XML 可解析。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/tests/test_research_workflow.py
+
+### Resolution
+- **Resolved**: 2026-07-17T01:20:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: GOAL 已定位并正在修复 fixture，然后继续真实 provider 与 Skills 纵向能力块。
+
+---
+
+## [ERR-20260717-003] web_open_europe_pmc_query_url
+
+**Logged**: 2026-07-17T01:13:24+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: infra
+
+### Summary
+浏览工具拒绝直接打开带查询参数的 Europe PMC REST URL，轻量 live smoke 改用只读 `curl` 后成功。
+
+### Error
+```
+URL ... is not safe to open (non-retryable error)
+```
+
+### Context
+- 目标是只读查询 Europe PMC 的 LRRK2/Parkinson 前 3 条结构化结果。
+- 失败发生在浏览工具 URL 安全检查，项目文件和外部数据均未修改。
+
+### Suggested Fix
+官方 API 文档继续使用浏览工具核对；实际 REST smoke 使用受限参数、超时和无文件写入的 `curl`，只输出必要字段。
+
+### Metadata
+- Reproducible: unknown
+- Related Files: plugins/frogent-drug-design/frogent_plugin/literature.py
+
+### Resolution
+- **Resolved**: 2026-07-17T01:13:24+08:00
+- **Commit/PR**: N/A
+- **Notes**: `curl --max-time 20` 成功返回 Europe PMC hitCount 与 PMID/DOI/PMCID/OA metadata。
+
+---
+
 ## [ERR-20260717-002] precommit_replay_glob_wrong_workdir
 
 **Logged**: 2026-07-17T00:05:00+08:00
@@ -35,6 +134,106 @@ Exact replay 固定从插件根执行，或为 manifest、outputs 与 result 全
 - **Resolved**: 2026-07-17T00:05:30+08:00
 - **Commit/PR**: N/A
 - **Notes**: 已切换到插件根并启用 fail-fast，重新执行三版 exact replay 与后续门禁。
+
+---
+
+## [ERR-20260716-025] permanent_thread_routed_as_subagent
+
+**Logged**: 2026-07-16T22:35:18+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: orchestration
+
+### Summary
+向永久维护的 Implementation 任务派发返工时，误用了当前团队树的 `followup_task`，任务 ID 不属于临时 subagent 树，调用被拒绝。
+
+### Error
+```
+agent with id 019f662a-90c1-7623-8054-bd50f3af3f2b not found
+```
+
+### Context
+- 目标是既有的长期 Codex 任务 `FROGENT Implementation`。
+- `collaboration.followup_task` 只接受当前 root 团队树中的 agent ID 或 canonical task name。
+- 失败调用未创建、归档或修改任何任务，也未修改项目文件。
+
+### Suggested Fix
+长期 Codex 任务统一使用 `send_message_to_thread`；一次性工作继续使用 `spawn_agent` 和 `followup_task`。
+
+### Metadata
+- Reproducible: yes
+- Related Files: AGENTS.md
+
+### Resolution
+- **Resolved**: 2026-07-16T22:35:18+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已改用 `send_message_to_thread` 成功向原 Implementation 任务发送完整返工包，三个长期任务均保持未归档。
+
+---
+
+## [ERR-20260716-026] learning_id_collision_before_registry_scan
+
+**Logged**: 2026-07-16T22:36:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: docs
+
+### Summary
+记录 orchestration 错误时仅查看文件尾部，未先扫描全文件已有 ID，初次追加复用了已存在的 `ERR-20260716-004`。
+
+### Error
+```
+duplicate error ID: ERR-20260716-004
+```
+
+### Context
+- `.learnings/ERRORS.md` 的条目未严格按编号或时间排序。
+- 追加内容本身完整，ID 发生冲突，未影响项目代码、eval 资产或长期任务状态。
+
+### Suggested Fix
+新增错误记录前先执行全文件 ID 扫描，选择当日最大序号的下一位，并在写入后复核唯一性。
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+
+### Resolution
+- **Resolved**: 2026-07-16T22:36:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已将 orchestration 条目改为 `ERR-20260716-025`，新增本条为 `ERR-20260716-026`，随后执行唯一性检查。
+
+---
+
+## [ERR-20260716-027] frozen_corpus_root_shape_assumption
+
+**Logged**: 2026-07-16T22:38:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: eval
+
+### Summary
+逐案例分析 frozen corpus 时把根节点误判为含 `records` 字段的对象，实际资产根节点是 record 数组。
+
+### Error
+```
+jq: error: Cannot index array with string "records"
+```
+
+### Context
+- 失败命令只读取 locked corpus，没有修改任何 eval 资产。
+- official v4 result 已在此前完成 exact replay，错误只影响临时分析查询。
+
+### Suggested Fix
+查询陌生 JSON 资产前先用 `jq 'type'` 和最小样本确认根结构，再编写筛选表达式。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/evals/plan-forward-v1.frozen-corpus.json
+
+### Resolution
+- **Resolved**: 2026-07-16T22:38:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已确认根节点为数组，后续改用 `.[] | select(...)` 继续只读分析。
 
 ---
 

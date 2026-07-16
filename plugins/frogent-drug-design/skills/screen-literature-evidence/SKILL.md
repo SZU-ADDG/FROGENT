@@ -18,8 +18,10 @@ Read [screening-protocol.md](references/screening-protocol.md) before deduplicat
 5. Screen metadata, abstract, and full text as separate stages. Record one decision and one or more controlled reasons at every stage.
 6. Send ambiguous records to `uncertain`; resolve them through full text, a second check, or explicit adjudication.
 7. Assess study design, population, comparators, endpoint validity, sample size, bias, confounding, missingness, multiplicity, reporting status, and applicability.
-8. Extract claim-level evidence with a stable record ID, source locator, study context, direction, magnitude when available, and limitations.
-9. Admit only qualified claim excerpts to working memory. Keep raw text, excluded records, and uncertain records in the evidence ledger.
+8. Validate bounded reader reports against the record family and artifact. Reject malformed reports without blocking valid sibling tasks.
+9. Extract claim-level evidence with a stable record ID, source locator, population or model, intervention, comparator, outcome, direction, magnitude, limitations, integrity status, and unresolved questions.
+10. Admit only qualified claim excerpts to working memory. Keep full text, raw records, excluded material, and uncertain reports in their own ledger layers.
+11. On correction, retraction, or a later exclusion decision, revoke related working-memory evidence and preserve the decision history.
 
 ## Loss controls
 
@@ -27,6 +29,7 @@ Read [screening-protocol.md](references/screening-protocol.md) before deduplicat
 - Reserve hard exclusion for predefined criteria, confirmed duplication, unavailable decision-relevant content, or invalid records.
 - Never impute missing results, dates, identifiers, populations, or methods.
 - Preserve negative, null, and contradictory findings.
+- Reject unverified model-memory identifiers and author or lab attributions.
 - Re-run screening from the ledger when criteria change.
 
 ## Output

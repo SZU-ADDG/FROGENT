@@ -2,13 +2,10 @@
 
 - 插件核心功能是信息检索与工具使用；优先保障检索质量、来源可追溯、工具选择、参数验证、结果规范化和失败恢复。
 - 当前效果优化聚焦 retrieval、Deep Research 和 memory management；药物设计模型与依赖模型的完整 workflow 暂缓接入。
-- 每个 research Skill 与整体 workflow 都要有 versioned、可重放的效果 eval；使用 baseline/ablation profiles、locked cases 和 committed result 追踪真实贡献。
-- Eval 分别记录 execution completion、effect outcome 和 promotion eligibility；负向结果、超时、失败案例与 `not_measured` 指标必须保留。
-- 仓库内 case/oracle 一律属于 exposed data；hidden held-out 只能由独立 score owner 在 candidate freeze 后运行。
-- 默认 regression 仅使用 frozen provider/corpus snapshot；live provider 进入独立 canary。
-- Retrieval eval 使用 grouped aliases，并用实际 query routes 核对来源覆盖；locked identity 同时绑定 Skill、reference、worker input、evaluator implementation、包初始化与递归 eager-import 闭包，logical key 必须精确绑定唯一 relative path。
-- Candidate-visible worker contract 明确公开合法输出需要的字段、类型和 enum tokens；oracle、record IDs、match rules 与 scoring reference 继续由 evaluator 保管。
-- 所有 missing、invalid、failed 与负向运行都保存 deterministic rejected result；结构与身份合法的预算、route 等 candidate policy 违规保留 raw plan 并进入 replay hard gate，禁止在 schema 层丢弃；完整结果必须使用同一组受控输入资产 exact replay。
+- 完成一个 coherent research capability block 后，用真实任务或公开数据集评测 retrieval、Deep Research 和 memory 表现；workflow 稳定后再做确有决策价值的消融。
+- Eval 记录任务成功、证据与引用正确性、来源覆盖、反证、memory 污染与撤回、工具失败、延迟和成本；负向结果与 `not_measured` 指标同样保留。
+- Live provider 验证真实可用性，小型 frozen snapshot 防回归；仓库内 case/oracle 视为 exposed data，hidden held-out 仅在需要无泄漏结论时引入。
+- 评测资产保持最小充分。正式 benchmark 可保存必要 identity，日常能力开发禁止扩展 SHA 链、sealed envelope 或多版本审计设施。
 - 文献 query hit occurrence 与 canonical record 分层保存，一致重复保留全部 provenance，冲突重复 fail closed。
 - Memory eval 分开测量 admission、working-memory retention 与 revocation；useful recall 只统计 evaluator 可追溯的 working memory，误撤有用 evidence 与漏撤 stale evidence 都必须扣分。
 - 保持 `frogent_plugin/` 扁平；新增子包前先证明独立生命周期确有必要。

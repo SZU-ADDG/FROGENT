@@ -7,19 +7,23 @@ description: Conduct an end-to-end, traceable biomedical literature review with 
 
 Run literature work as an evidence pipeline with auditable stage boundaries.
 
+Read [provider-routing.md](references/provider-routing.md) before selecting live databases, OA fallbacks, or author-network expansion.
+
 ## Establish the review contract
 
 Record the decision question, intended use, population or biological system, intervention or exposure, comparator, outcomes, acceptable evidence types, language limits, date range, and exact `as_of` date. Mark unknown fields and ask only for information that changes the search or inclusion criteria.
 
 ## Execute the pipeline
 
-1. Use `$plan-literature-search` to create the source map, query set, retrieval waves, inclusion criteria, and stop rules.
-2. Save each query, source, execution time, result count, and raw response before normalization.
-3. Retrieve broad metadata first, then fetch abstracts and full text only for records that need them.
-4. Use `$screen-literature-evidence` to deduplicate, screen, assess quality, and control memory admission.
-5. Expand through backward citations, forward citations, author or trial links, and key terminology discovered during screening. Record each expansion as a new query wave.
-6. Use `$synthesize-biomedical-evidence` to build claim-level conclusions, counterevidence, uncertainty, and evidence gaps.
-7. Re-run the search near delivery when the task requires current evidence and the original search time is stale for the decision.
+1. Use `$plan-literature-search` to create explicit source-query pairs, retrieval waves, inclusion criteria, and stop rules.
+2. Convert model memory into `KnowledgeCandidate` seeds. Mark every title, identifier, author, lab, and claim unverified until a database lookup confirms it.
+3. Route core retrieval through Europe PMC and PubMed. Save each query, source, execution time, result count, and raw response before normalization.
+4. Resolve OA full text when available; retain an abstract-only path and coverage gap when OA retrieval fails.
+5. Group records into paper or study families, then delegate bounded reader tasks. Accept only structured claim-level reports and isolate failed or malformed readers.
+6. Use `$screen-literature-evidence` to deduplicate, assess integrity and quality, and control memory admission.
+7. Expand through citations, linked trials, verified authors or institutions, and new terminology. Treat author reputation only as retrieval priority.
+8. Use `$synthesize-biomedical-evidence` to build conclusions from admitted evidence with counterevidence, uncertainty, and tool coverage gaps.
+9. Checkpoint completed queries and resume without repeating them. Reconcile memory after corrections, retractions, or changed screening decisions.
 
 ## Keep four evidence layers
 

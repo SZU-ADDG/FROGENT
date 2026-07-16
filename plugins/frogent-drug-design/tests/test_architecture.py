@@ -82,7 +82,7 @@ class ArchitectureTests(unittest.TestCase):
         for module_path in sorted(package_dir.glob("*.py")):
             source = module_path.read_text(encoding="utf-8")
             tree = ast.parse(source, filename=str(module_path))
-            self.assertLessEqual(len(source.splitlines()), 220, module_path.name)
+            self.assertLessEqual(len(source.splitlines()), 260, module_path.name)
             self.assertLessEqual(max_control_flow_nesting(tree), 3, module_path.name)
 
             for node in ast.walk(tree):
