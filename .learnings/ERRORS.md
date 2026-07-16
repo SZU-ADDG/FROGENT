@@ -2,6 +2,105 @@
 
 此文件用于记录命令、远端连接及外部工具错误。
 
+## [ERR-20260716-020] plan_v3_bundle_identity_field_assumption
+
+**Logged**: 2026-07-16T23:14:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: eval
+
+### Summary
+最终 identity 核对脚本把派生的 bundle identity 当作 manifest 顶层字段读取，触发 KeyError。
+
+### Error
+```
+KeyError: 'bundle_identity'
+```
+
+### Context
+- v3 manifest 逐字节 SHA 与 locked preregistration 已在异常前验证成功。
+- bundle identity 由 plan_eval_v3_assets.bundle_identity 对已加载 bundle 规范派生，不存储在 manifest 顶层。
+
+### Suggested Fix
+机械核对必须调用 production bundle loader 与 bundle_identity 函数，避免复制或猜测派生字段的存储形态。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/plan_eval_v3_assets.py
+
+### Resolution
+- **Resolved**: 2026-07-16T23:15:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已切换为 load_plan_v3_bundle 加 bundle_identity 的 production 路径核对，并保留独立文件 SHA 与 EOF 门禁。
+
+---
+
+## [ERR-20260716-019] plan_v3_cli_wrong_workdir
+
+**Logged**: 2026-07-16T23:12:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: eval
+
+### Summary
+修正 manifest 参数后仍从项目根调用插件内 CLI 的短相对路径，Python 因文件不存在退出。
+
+### Error
+```
+python3: can't open file '/Users/dongxu/projects/FROGENT/scripts/run_plan_forward_v3_eval.py': [Errno 2] No such file or directory
+```
+
+### Context
+- 失败命令没有加载或修改 v3 eval 资产。
+- 同一 shell 块后续只执行了 staging hygiene 与状态查询。
+
+### Suggested Fix
+插件 CLI 与 eval 相对路径必须以插件根为 workdir；从项目根调用时使用完整 plugin-relative 路径，禁止混用两套相对路径基准。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/scripts/run_plan_forward_v3_eval.py
+
+### Resolution
+- **Resolved**: 2026-07-16T23:13:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 后续命令固定在 plugins/frogent-drug-design workdir 执行，并启用 shell fail-fast 后再运行 identity 与 hygiene 核对。
+
+---
+
+## [ERR-20260716-018] plan_v3_validate_missing_manifest
+
+**Logged**: 2026-07-16T23:10:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: eval
+
+### Summary
+v3 pre-worker 最终核对时，validate-preregistration 子命令漏传必需的 manifest 参数，CLI 以 usage 错误退出。
+
+### Error
+```
+run_plan_forward_v3_eval.py validate-preregistration: error: the following arguments are required: manifest
+```
+
+### Context
+- 命令只进行 preregistration 读取验证，没有创建或修改 eval 资产。
+- 同一批次的 114 项测试、plugin validator 与 sanitizer 均已通过。
+
+### Suggested Fix
+调用 v3 CLI 时始终显式传入插件根相对 manifest 路径，并在提交前使用完整命令复验 locked 状态。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/scripts/run_plan_forward_v3_eval.py, plugins/frogent-drug-design/evals/plan-forward-v3.manifest.json
+
+### Resolution
+- **Resolved**: 2026-07-16T23:11:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已改用完整 manifest 参数重跑，并继续机械核对 revision、manifest、bundle、envelope EOF 与 outputs/result absence。
+
+---
+
 ## [ERR-20260716-005] learning_patch_template_literal
 
 **Logged**: 2026-07-16T15:14:00+08:00
@@ -67,6 +166,73 @@ test_authoritative_pack_is_locked_without_outputs_or_result
 - **Resolved**: 2026-07-16T15:58:09+08:00
 - **Commit/PR**: Record first PLAN forward effect run
 - **Notes**: 测试已升级为 post-run authoritative replay integrity，验证 12 个输出 identity、原始字节 SHA、完整 replay、worker completion、effect outcome、promotion 和 claim limits；全量 84/84 通过。
+
+---
+
+## [ERR-20260716-016] thread_prompt_javascript_backtick_parse
+
+**Logged**: 2026-07-16T18:39:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: orchestration
+
+### Summary
+向 Implementation 长期任务发送 v3 工作包时，prompt 使用 JavaScript template literal，正文内的 Markdown 反引号提前结束字符串并导致语法错误。
+
+### Error
+```
+SyntaxError: Unexpected identifier 'skill_a'
+```
+
+### Context
+- `send_message_to_thread` 没有执行，Implementation 未收到半截任务。
+- 项目文件、Git 状态与长期任务均未被该失败调用修改。
+
+### Suggested Fix
+长 prompt 使用双引号字符串数组后 `join("\\n")`，或先做 JSON-safe serialization；禁止把包含 Markdown 反引号的正文直接放入 JavaScript template literal。
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+
+### Resolution
+- **Resolved**: 2026-07-16T18:40:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 改为不含 template literal 的安全 prompt 组装后重新发送完整工作包。
+
+---
+
+## [ERR-20260716-017] untracked_envelope_eof_hidden_from_diff_check
+
+**Logged**: 2026-07-16T19:42:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: eval
+
+### Summary
+v3 pre-worker 普通 worktree 检查没有覆盖未跟踪 sealed envelopes；首次 stage 后 cached diff 才暴露 12 个文件均有额外 EOF 空白行。
+
+### Error
+```
+plan-forward-v3.envelopes/*.txt: new blank line at EOF.
+```
+
+### Context
+- 12 个 envelope 仍为 untracked 时，git diff --check 不会检查其内容。
+- git diff --cached --check 在提交前正确阻断；尚未 commit、push 或启动 fresh workers。
+- Envelope byte 修复会连锁改变 envelope SHA、evaluator revision、manifest 与 bundle identity，必须完整重锁。
+
+### Suggested Fix
+所有新增资产在最终验收前必须先 stage，再运行 cached diff check；需要保持 index 不变时，使用临时 index 或对 untracked 文件做等价 EOF/whitespace 扫描。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/evals/plan-forward-v3.envelopes, plugins/frogent-drug-design/frogent_plugin/plan_eval_v3_assets.py
+
+### Resolution
+- **Resolved**: 2026-07-16T19:50:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 提交被 staged hygiene gate 阻断；12 个 envelope 已统一为单个终止换行，EOF 回归测试与完整 v3 identity chain 已重建。Main 必须重新 stage 后再次通过 cached diff check。
 
 ---
 
@@ -154,6 +320,7 @@ FileNotFoundError: .../plugins/frogent-drug-design/plugins/frogent-drug-design/e
 ### Context
 - 命令为只读 exact replay 验证，没有修改 manifest、outputs 或 result。
 - 同类 plugin cwd/项目根相对路径错误已在 ERR-20260716-009 与长期任务卫生检查中出现。
+- 2026-07-16 19:08 左右，v3 pre-worker Implementation 验收再次以项目根前缀调用 v1 CLI；同样只读失败，切换到 plugin root 与 `evals/...` 后通过。
 
 ### Suggested Fix
 v1/v2 eval CLI 统一在 plugin root 执行，并传入 `evals/...` 相对路径；将标准验证命令固定到验收清单，禁止从项目根拼接插件前缀。
@@ -165,7 +332,7 @@ v1/v2 eval CLI 统一在 plugin root 执行，并传入 `evals/...` 相对路径
 ### Resolution
 - **Resolved**: 2026-07-16T18:20:00+08:00
 - **Commit/PR**: N/A
-- **Notes**: 切换到 plugin root 并使用 `evals/...` 相对路径后，12-output asset-bound exact replay exit 0。
+- **Notes**: 切换到 plugin root 并使用 `evals/...` 相对路径后，12-output asset-bound exact replay exit 0；v3 复发也以相同方式恢复，后续验收命令必须固定 plugin cwd。
 
 ---
 

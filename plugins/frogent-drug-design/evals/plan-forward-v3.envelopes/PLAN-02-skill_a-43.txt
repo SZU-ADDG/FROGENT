@@ -1,0 +1,101 @@
+You are producing one fresh PLAN forward output for an exposed development diagnostic.
+Use only the supplied candidate-visible case task, candidate constraint, arm instruction, and any arm-authorized Skill material.
+Return one JSON object with exactly these fields: case_id, profile, replicate_label, worker_input_digest, execution_status, question_frame, as_of, source_map, concept_blocks, queries, inclusion_criteria, exclusion_criteria, stop_rules, coverage_gaps.
+Echo case_id, profile, replicate_label, worker_input_digest, and as_of exactly as supplied.
+The supplied candidate constraint has exactly case_id, available_source_routes, and max_query_events. Echo its case identity through case_id, use only available_source_routes in source_map and query source fields, and keep the number of queries less than or equal to max_query_events.
+execution_status must be exactly completed or failed.
+source_map must be a unique list of route IDs selected from the supplied available_source_routes.
+concept_blocks must be a non-empty list of objects with exactly block_id and terms, where terms is a list of non-empty strings.
+queries must be a non-empty list of objects with exactly query_id, source, wave, query, and purpose. wave must be exactly sentinel, discovery, confirmation, expansion, challenge, or update.
+inclusion_criteria, exclusion_criteria, and stop_rules must each be a non-empty unique list of non-empty strings. coverage_gaps must be a list of non-empty strings and may be empty.
+Return JSON only. Do not add Markdown, commentary, or evaluator fields.
+
+
+CANDIDATE TASK
+Produce an as-of safety assessment of marketed tofacitinib in rheumatoid arthritis. Connect the pivotal postauthorization safety study with its registry record, primary publication and FDA actions; assess cardiovascular, malignancy, thrombosis and mortality findings, qualifying or conflicting evidence, and any correction or retraction status that affects evidence handling. State source routing, query waves and stopping criteria.
+
+WORKER RECEIPT
+{"as_of":"2024-12-31","case_id":"PLAN-02","constraint":{"available_source_routes":["pubmed","clinicaltrials_gov","fda_regulatory"],"case_id":"PLAN-02","max_query_events":16},"profile":"skill_a","replicate_label":"43","worker_input_digest":"1dbef1d97e09e50eea2ce5a0560d42ee8bb0bfab93421c206c90cb0ca97b2491"}
+
+ARM INSTRUCTION
+Complete the planning task using the supplied common contract, typed receipt, candidate task, Skill snapshot, and shared reference. Use only these envelope contents and return JSON only.
+
+
+SKILL SNAPSHOT
+---
+name: plan-literature-search
+description: Build reproducible biomedical literature search strategies with source routing, concept blocks, query waves, temporal cutoffs, recall checks, and explicit stop rules. Use before evidence retrieval for systematic, scoping, rapid, target, mechanism, drug, safety, clinical, or translational questions.
+---
+
+# Plan Literature Search
+
+Design a search that can be inspected, replayed, and updated.
+
+Read [query-strategy.md](references/query-strategy.md) when choosing sources, expanding concepts, or defining retrieval waves.
+
+## Workflow
+
+1. Convert the decision question into a suitable frame: PICO, PECO, target-mechanism, biomarker, safety, or translational.
+2. Define the exact `as_of` date, publication range, evidence types, organisms, languages, and decision-relevant outcomes.
+3. Build concept blocks for diseases, targets, pathways, drugs, aliases, identifiers, interventions, outcomes, and study designs.
+4. Combine controlled vocabulary with title, abstract, identifier, and free-text synonyms. Preserve every exact query string.
+5. Route each evidence type to appropriate primary, trial, regulatory, preprint, citation-graph, and patent sources that are available.
+6. Run a sentinel query and verify that known anchor records are recovered. Expand missing aliases before broad retrieval.
+7. Plan broad discovery, focused confirmation, citation expansion, and temporal-update waves separately.
+8. Define inclusion, exclusion, deduplication, escalation, and stopping rules before screening begins.
+
+## Recall and precision controls
+
+- Avoid aggressive `NOT` clauses unless a pilot confirms that they preserve anchor records.
+- Keep mechanism and efficacy questions in separate query branches when one branch suppresses the other.
+- Include null, negative, replication, correction, and retraction searches for high-impact claims.
+- Record unavailable sources as coverage gaps.
+- Treat result count changes as database-version observations, not proof that the query changed.
+
+## Output
+
+Return a versioned search plan containing the question frame, source map, concept dictionary, exact queries, `as_of` date, retrieval order, expected evidence types, anchor-record checks, inclusion and exclusion criteria, and stop rules.
+
+
+SHARED REFERENCE
+# Biomedical Query Strategy
+
+## Source routing
+
+| Evidence need | Preferred source class | Main control |
+|---|---|---|
+| Peer-reviewed biomedical studies | MEDLINE/PubMed and available subject indexes | Controlled vocabulary plus free text |
+| Registered or ongoing trials | Trial registries | Match registry IDs to publications |
+| Regulatory status and safety actions | Regulator databases and labels | Preserve jurisdiction and effective date |
+| Recent unreviewed findings | Preprint servers | Carry preprint status into every claim |
+| Citation expansion and metadata | Citation graphs and DOI metadata services | Verify claims against primary records |
+| Chemistry and prior art | Patent and chemistry sources | Separate legal status from scientific evidence |
+
+Use more than one source class when a decision spans discovery, validation, clinical translation, and safety. Record sources that are unavailable.
+
+## Concept construction
+
+- Expand gene and protein symbols, previous names, family names, accession IDs, and species variants.
+- Expand drugs with generic names, brand names, development codes, salt forms, metabolites, and common misspellings.
+- Expand diseases with controlled terms, historical names, phenotypes, subtypes, and relevant anatomy.
+- Keep intervention, outcome, mechanism, and study-design blocks independently switchable.
+- Preserve the original user wording as one query branch.
+
+## Retrieval waves
+
+1. **Sentinel**: recover known anchor studies and validate terminology.
+2. **Discovery**: maximize recall across planned source classes.
+3. **Confirmation**: focus on direct evidence for the decision claim.
+4. **Expansion**: follow backward citations, forward citations, linked trials, authors, targets, and compounds.
+5. **Challenge**: search for negative results, failed replications, safety signals, corrections, and retractions.
+6. **Update**: repeat date-limited queries through the delivery `as_of` date.
+
+Store every wave as an independent search event. Merge records through identifiers while preserving all query-to-record links.
+
+## Temporal controls
+
+Record the database, exact query, execution timestamp, requested publication cutoff, result count, and provider version when available. Apply publication cutoffs after retrieval when provider syntax or indexing dates are ambiguous. Distinguish online-first, issue, registry-update, and correction dates.
+
+## Stop rules
+
+Use concrete conditions: planned sources completed; anchor records recovered; two consecutive expansion waves add no decision-relevant evidence; predefined record or time budget reached; or further retrieval cannot change the decision. Report budget exhaustion and unavailable sources as limitations.

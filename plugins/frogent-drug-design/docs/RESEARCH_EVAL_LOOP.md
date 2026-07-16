@@ -94,6 +94,7 @@ Research kernel fixture 与 PLAN forward diagnostic 具有不同 authority：
 - `research-eval-v1.result.json` 的 authority scope 为 `evaluator_fixture`。
 - `plan-forward-v1` 的 authority scope 为 `exposed_development_diagnostic`；它提供正式 exposed diagnostic effect result，仍不具备 hidden 或独立 score-owner authority。
 - `plan-forward-v2` 的 authority scope 同为 `exposed_development_diagnostic`；它已产生 official exposed diagnostic result，仍不具备 hidden 或独立 score-owner authority。
+- `plan-forward-v3` 的 authority scope 同为 `exposed_development_diagnostic`；当前只完成 immutable pre-worker lock，尚无 fresh worker 或 official effect result。
 
 共同限制如下：
 
@@ -103,6 +104,7 @@ Research kernel fixture 与 PLAN forward diagnostic 具有不同 authority：
 | Preregistration authority | 尚无 independent score-owner preregistration root |
 | Filesystem isolation | candidate/reference filesystem isolation 尚未建立 |
 | Identity closure | dependency、model、runtime、provider 与 memory closure 尚未完整绑定 |
+| Prompt delivery | actual prompt delivery 尚未获得独立 attestation |
 | Leakage control | sensitive-key scan 只是 leakage negative control，无法替代 candidate/reference 隔离 |
 
 `research-eval-v1` 固定为：
@@ -111,7 +113,7 @@ Research kernel fixture 与 PLAN forward diagnostic 具有不同 authority：
 - `effect_outcome=not_evaluated`
 - `promotion_eligible=false`
 
-它只支持 `CONTRACT/EVALUATOR INTEGRITY PASS`，不得用于声明 retrieval、Deep Research 或 memory 效果提升。`plan-forward-v1` 的冻结状态与额外测量边界见 5.4，`plan-forward-v2` 的 official diagnostic 见 5.5。
+它只支持 `CONTRACT/EVALUATOR INTEGRITY PASS`，不得用于声明 retrieval、Deep Research 或 memory 效果提升。`plan-forward-v1` 的冻结状态与额外测量边界见 5.4，`plan-forward-v2` 的 official diagnostic 见 5.5，`plan-forward-v3` 的 pre-worker lock 见 5.6。
 
 ## 5. 首轮 paired forward-test panel
 
@@ -236,11 +238,41 @@ Evaluator revision 绑定 22-file package eager-import closure，revision logica
 
 Claim limits 保持 `exposed_development_panel`、`seed_control_unverified`、`candidate_reference_filesystem_isolation_not_established`、`independent_score_owner_not_established` 与 `model_runtime_provider_memory_identity_closure_incomplete`。Result 无法独立证明 actual prompt delivery bytes；当前只有 Main 调度记录与 aborted audit 支持该执行声明。因此 clean Skill effect attribution 仍未建立，官方 `rejected` 结果也不能支持真实 retrieval quality 提升。独立只读 subagent 已复核 12 identity/raw SHA/receipts、22-file evaluator binding、aborted exclusion 与 gate 结论。
 
-`budgeted minimal evidence path`、anchor/counterevidence reservation、query deduplication 仅为待验假设。任何一个假设都必须进入新版本独立 preregistration，并以单一变量运行 fresh paired eval；当前禁止写成 Skill 改进或效果结论。
+`budgeted minimum evidence path`、anchor/counterevidence reservation、query deduplication 仍须通过独立 preregistration 和 fresh paired eval 验证；其中第一项已进入 v3 pre-worker lock，详见 5.6。当前禁止写成 Skill 改进或效果结论。
 
-### 5.6 执行顺序与数据分层
+### 5.6 PLAN v3 pre-worker immutable lock
 
-1. `PLAN-01`、`PLAN-02` 的 v1/v2 official diagnostics 已完成，v2 结果为 rejected；下一轮只允许选择一个待验假设，建立独立 preregistration 后运行 fresh paired workers。
+v3 将 current Skill 与 candidate Skill 放入 causally identifiable paired comparison。Candidate snapshot 相对 current snapshot 只新增一条 `budgeted minimum evidence path` bullet：固定 cap 下先保留 route-specific anchor recovery 与 claim-family counterevidence，再分配 expansion。Active Skill 尚未修改，并与 current snapshot 逐字一致；`query deduplication`、stop-rule 改写和其他假设继续 deferred。
+
+| Pre-worker 状态 | 冻结值 |
+|---|---|
+| Matrix | `PLAN-01/02 × skill_a/skill_b × 17/29/43` |
+| Worker inputs | 12 个 sealed envelopes；worker-facing arm labels 保持 opaque；每个 envelope 恰好一个终止换行，并有 EOF 防回归约束 |
+| Fresh workers | `0` |
+| Official outputs/result | absent |
+| Effect | `not_evaluated` |
+| Promotion | `false` |
+
+v3 逐字复用 v2 tasks、constraints、common prompt、oracles、corpus、replay、scoring、8 metrics 与 gates；新增 opaque arm/receipt/pair adapter。测试覆盖 12-output `validate -> replay -> scorecard -> comparison -> effect` 的 improved、flat、regression 与 not-comparable outcomes；mutation 在隔离目录运行，official v3 bytes 在测试期间只读。
+
+| Identity | SHA-256 |
+|---|---|
+| Evaluator revision | `3403ea8c8420be8ab7ae7435d4b83aa0029650908eaaf89df39485ff4d409fd0` |
+| Manifest | `7bb91b2921ee2bf9d33e836317b0028540185bebcb448bf37dfcdaa58c465de1` |
+| Bundle | `7f74ebadb5d3be1c35a16da17662044e139a576b68d6b6175aac80cc752616ea` |
+| Current Skill | `35163a32dd0e625ed07c987e008f4f8ee4754d7b3cb63ffa7e20c07863d3e014` |
+| Candidate Skill | `73ee96ca30616427e87dded60cf7dd498e0f2ac69792abc839348fe7984c98c5` |
+| Shared reference | `e0e74ce98aba91541ba6324589139b6c416e77ecc49c69e75741418fafcb6630` |
+
+Evaluator revision 绑定 27 个文件；静态 local-import closure 完整，v2 runner/CLI 为保守 overbinding。Main 独立验收为 v3 13/13、全量 114/114、v1/v2 exact replay、validator 和 sanitizer 982/0/0 全部通过；无 symlink、cache 或 temp，v3 outputs/result absent。
+
+Claim limits 为 `exposed_development_panel`、`seed_control_unverified`、`candidate_reference_filesystem_isolation_not_established`、`independent_score_owner_not_established`、`model_runtime_provider_memory_identity_closure_incomplete` 与 `actual_prompt_delivery_not_independently_attested`。Pre-worker lock 只支持 evaluator/identity integrity；它不提供 Skill effect，无法支持 retrieval quality 提升声明。
+
+下一步先由 Main commit/push immutable v3 lock，再只用这 12 个 sealed envelopes 启动 fresh paired workers，随后机械执行 ingest、evaluate 与 exact verify。Official effect result 出现前保持 `promotion=false`，并禁止写入 Skill 改进结论。
+
+### 5.7 执行顺序与数据分层
+
+1. `PLAN-01`、`PLAN-02` 的 v1/v2 official diagnostics 已完成且结果均为 rejected；v3 已锁定单一 `budgeted minimum evidence path` 假设，当前等待 commit/push 与 12 个 fresh paired workers。
 2. 随后执行 `SCREEN-01`、`SCREEN-02`，验证 canonicalization、screening ledger 与 memory gate。
 3. 再执行 `SYNTH-01`、`SYNTH-02`，验证 claim scope、counterevidence、conflict 与 temporal sensitivity。
 4. 最后执行 `RESEARCH-01`、`RESEARCH-02`，覆盖 multi-wave workflow、provider failure、budget 与 stop quality。
