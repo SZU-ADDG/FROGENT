@@ -1,0 +1,80 @@
+{
+  "assets": {
+    "candidate_tasks": {
+      "path": "evals/plan-forward-v1.candidate-tasks.json",
+      "sha256": "899cff2368d3d65446ad0f5fa9457d2fdd3151f44c9cd81b62b3790301b05797"
+    },
+    "evaluator_oracles": {
+      "path": "evals/plan-forward-v1.evaluator-oracles.json",
+      "sha256": "254f8a17e144012777d7110a9eeb2c642f4a4ed431fd93b84037d0554450f147"
+    },
+    "frozen_corpus": {
+      "path": "evals/plan-forward-v1.frozen-corpus.json",
+      "sha256": "7dad7a4995fb6f368e2532d8aca1fc7c43088bf52dbe838e3b87535ea8a62bf4"
+    }
+  },
+  "authority_scope": "exposed_development_diagnostic",
+  "claim_limits": [
+    "exposed_development_panel",
+    "seed_control_unverified",
+    "candidate_reference_filesystem_isolation_not_established",
+    "independent_score_owner_not_established",
+    "model_runtime_provider_memory_identity_closure_incomplete"
+  ],
+  "eval_id": "plan-forward-v1",
+  "evaluator_identity": {
+    "path": "evals/plan-forward-v1.evaluator-revision.json",
+    "sha256": "44dd1cd0156f3a038b138a6dcf7666642ba9006d0f3c20c0aadeb192eecc7d1e"
+  },
+  "identity_assets": {
+    "baseline_instruction": {
+      "path": "evals/plan-forward-v1.baseline-instruction.txt",
+      "sha256": "38dcf8459c162003ff4b76d8898d2b79f2d5619541f60db611852b1f8ba57be9"
+    },
+    "common_prompt": {
+      "path": "evals/plan-forward-v1.worker-common.txt",
+      "sha256": "a0ec95bbecb044939050f62dea3704a503e112a4c0643d32f6cbbc95b29b8efa"
+    },
+    "reference": {
+      "path": "skills/plan-literature-search/references/query-strategy.md",
+      "sha256": "e0e74ce98aba91541ba6324589139b6c416e77ecc49c69e75741418fafcb6630"
+    },
+    "skill": {
+      "path": "skills/plan-literature-search/SKILL.md",
+      "sha256": "35163a32dd0e625ed07c987e008f4f8ee4754d7b3cb63ffa7e20c07863d3e014"
+    }
+  },
+  "network": "denied",
+  "output_schema_id": "plan-forward-output-v1",
+  "pack_status": "locked",
+  "primary_metrics": [
+    "anchor_recall",
+    "counterevidence_recall",
+    "retrieval_precision"
+  ],
+  "profiles": {
+    "no_skill": {
+      "declared_reference": "none",
+      "skill": "none"
+    },
+    "single_skill": {
+      "declared_reference": "skills/plan-literature-search/references/query-strategy.md",
+      "skill": "plan-literature-search"
+    }
+  },
+  "provider_mode": "frozen_snapshot",
+  "registered_metrics": [
+    "concept_block_coverage",
+    "source_route_coverage",
+    "wave_coverage",
+    "anchor_recall",
+    "counterevidence_recall",
+    "retrieval_precision",
+    "temporal_violation_rate",
+    "stop_rule_coverage"
+  ],
+  "replicate_labels": ["17", "29", "43"],
+  "schema_version": "1.0",
+  "seed_control": "unverified",
+  "sole_variable": "plan-literature-search_skill_and_declared_reference"
+}

@@ -14,6 +14,7 @@ def main() -> int:
     sys.path.insert(0, str(plugin_root))
     from frogent_plugin.eval_manifest import load_bundle
     from frogent_plugin.eval_runner import evaluate_bundle, verify_result
+    from frogent_plugin.plan_eval_assets import load_plan_bundle
 
     suite = unittest.defaultTestLoader.discover(str(plugin_root / "tests"))
     result = unittest.TextTestRunner(verbosity=2).run(suite)
@@ -26,6 +27,11 @@ def main() -> int:
     verify_result(expected)
     if replay != expected:
         raise ValueError("committed eval result does not match exact replay")
+    pending = load_plan_bundle(
+        plugin_root, Path("evals/plan-forward-v1.manifest.json")
+    )
+    if pending.manifest["pack_status"] != "locked":
+        raise ValueError("PLAN forward preregistration must remain locked")
     return 0
 
 

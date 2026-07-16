@@ -878,3 +878,35 @@ apply_patch verification failed: Failed to find expected lines
 - **Notes**: 已按唯一错误 ID 和实际相邻条目更新状态，并准备再次核对整份记录。
 
 ---
+## [ERR-20260716-003] plan_corpus_jq_shell_expansion
+
+**Logged**: 2026-07-16T16:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: eval
+
+### Summary
+PLAN frozen corpus 的只读 `jq` 汇总表达式先后因 `$c` 被 shell 提前展开、双引号转义层级错误而编译失败。
+
+### Error
+```
+jq: error: syntax error, unexpected '|', expecting BINDING or '[' or '{'
+```
+
+### Context
+- 失败命令只读取 locked corpus，没有写入任何资产。
+- SHA、逐记录清单和 event date 核对命令均正常完成。
+
+### Suggested Fix
+避免在 shell 命令字符串中使用未转义的 `jq` 变量；优先改写为无变量表达式，或把 `$` 可靠转义后再执行。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/evals/plan-forward-v1.frozen-corpus.json
+
+### Resolution
+- **Resolved**: 2026-07-16T16:01:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 最终把完整 filter 放入 shell 单引号，且移除 `jq` 变量，成功复核 PLAN-01=10、PLAN-02=12、record ID 22/22 唯一。
+
+---

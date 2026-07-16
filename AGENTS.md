@@ -28,6 +28,8 @@
 - 严格区分 contract/control-plane verification 与 retrieval/Deep Research/memory 的效果评测。
 - 每轮分别记录 execution completion、effect outcome 和 promotion eligibility；负向实验、超时及失败案例同样保存，缺少独立 oracle 的指标标记为 `not_measured`。
 - 默认 regression 仅使用 frozen provider/corpus snapshot；live provider 进入独立 canary，禁止污染可重放 baseline。
+- Retrieval eval 使用 grouped alias semantics；source-route coverage 由实际 query routes 计算并与声明双向核对。Locked pack 逐字节绑定 Skill、reference、worker input 与 evaluator implementation。
+- Missing、invalid、failed 与负向运行都要生成 deterministic rejected result，保存受控 input digest、stable taxonomy 和 worker completion；完整 effect result 必须由相同输入资产 exact replay 验证。
 - 文献 query hit occurrence 与 canonical record 分层保存；一致重复保留全部 query-to-record links，冲突重复 fail closed。
 - Memory 效果指标必须区分 evidence admission 与 working-memory retention；useful recall 以可追溯 working memory 为准，revocation 同时惩罚漏撤与误撤，跨 case evidence ID 必须具备可判定的隔离命名空间。
 - 禁止通过修改 held-out 数据、gold、阈值或评测口径制造提升。

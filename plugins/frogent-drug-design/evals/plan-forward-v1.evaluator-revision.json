@@ -1,0 +1,29 @@
+{
+  "files": {
+    "frogent_plugin/plan_eval_assets.py": {
+      "path": "frogent_plugin/plan_eval_assets.py",
+      "sha256": "16d2ac2712e29a5ace22083f5bb4451ed6e99459f14214b92a31a19a17a9cb9e"
+    },
+    "frogent_plugin/plan_eval_corpus.py": {
+      "path": "frogent_plugin/plan_eval_corpus.py",
+      "sha256": "6d3ca308de281ba273944bab69dad70d6e12addea83f7812d322f6c73c6f8364"
+    },
+    "frogent_plugin/plan_eval_replay.py": {
+      "path": "frogent_plugin/plan_eval_replay.py",
+      "sha256": "dff04b4611400b36df9abe81ec7a892e0b7b169e36c7e4876efd59dda335b996"
+    },
+    "frogent_plugin/plan_eval_runner.py": {
+      "path": "frogent_plugin/plan_eval_runner.py",
+      "sha256": "ab453e212f7d1cdb35a1f19e1877207854eaf1d4fe7f3101f0cb975111e95c7d"
+    },
+    "frogent_plugin/plan_eval_schema.py": {
+      "path": "frogent_plugin/plan_eval_schema.py",
+      "sha256": "5976e98ab97ebf7e6efeb398c8a54aabffb1e9472984223f477ef4411742b804"
+    },
+    "scripts/run_plan_forward_eval.py": {
+      "path": "scripts/run_plan_forward_eval.py",
+      "sha256": "d4c3bb630ad64a41a2275b8b61b370b6533d57dacdc945127143bb6fdd241a0a"
+    }
+  },
+  "schema_version": "1.0"
+}

@@ -1,0 +1,1 @@
+Complete the planning task from the candidate-visible task and common output contract. Do not use a project Skill or any Skill reference.

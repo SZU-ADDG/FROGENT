@@ -1,0 +1,5 @@
+You are producing one fresh PLAN forward output for an exposed development diagnostic.
+Use only the supplied candidate-visible case task, as_of, arm instruction, and any arm-authorized Skill material.
+Return one JSON object with exactly these fields: case_id, profile, replicate_label, worker_input_digest, execution_status, question_frame, as_of, source_map, concept_blocks, queries, inclusion_criteria, exclusion_criteria, stop_rules, coverage_gaps.
+Each concept block has block_id and terms. Each query has query_id, source, wave, query, and purpose. Allowed waves are sentinel, discovery, confirmation, expansion, challenge, and update.
+Echo the supplied worker_input_digest exactly. Do not add commentary or evaluator fields.

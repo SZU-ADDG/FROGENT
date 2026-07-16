@@ -1,5 +1,61 @@
 # Learnings
 
+## [LRN-20260716-002] best_practice
+
+**Logged**: 2026-07-16T16:10:00+08:00
+**Priority**: high
+**Status**: promoted
+**Area**: tests
+
+### Summary
+Locked effect eval 必须绑定 evaluator implementation、用实际行为验证声明，并为失败运行保存正式负向结果。
+
+### Details
+仅绑定 case、oracle、corpus 与 worker prompt，仍允许 matcher、schema 或 scoring code 在 candidate freeze 后漂移。仅按声明的 source map 计分会让没有对应 query 的 route 获得满分。CLI 在 missing、invalid 或 failed output 时直接抛错，则负向实验无法进入长期审计资产。Temporal gate 也要覆盖进入 raw audit 的所有带日期元数据，避免 cutoff 后信息通过辅助字段泄漏。
+
+### Suggested Action
+Manifest 或 bundle identity 逐字节绑定 evaluator modules；source-route coverage 由 query routes 计算并与 source map 双向核对；published、online 与 event dates 都进入角色明确的 as-of policy。Runner 对 complete、missing、invalid 和 failed inputs 都生成 deterministic rejected/incomplete result，保存受控 input digest、stable taxonomy 与 worker completion summary，同时拒绝敏感 evaluator payload。
+
+### Metadata
+- Source: code_review
+- Related Files: plugins/frogent-drug-design/frogent_plugin/plan_eval_assets.py, plugins/frogent-drug-design/frogent_plugin/plan_eval_replay.py, plugins/frogent-drug-design/frogent_plugin/plan_eval_runner.py
+- Tags: evaluation, preregistration, evaluator-identity, negative-results, temporal-cutoff
+- Pattern-Key: eval.bind_evaluator_and_preserve_negative_results
+- Recurrence-Count: 1
+- First-Seen: 2026-07-16
+- Last-Seen: 2026-07-16
+- Promoted: AGENTS.md, plugins/frogent-drug-design/AGENTS.md
+
+---
+
+## [LRN-20260716-001] best_practice
+
+**Logged**: 2026-07-16T14:17:24+08:00
+**Priority**: high
+**Status**: promoted
+**Area**: tests
+
+### Summary
+检索规划效果评测必须使用 grouped alias semantics，并绑定实际 Skill、reference 与 worker input identity。
+
+### Details
+自然语言 query、concept block 和 stop rule 无法用 exact string equality 可靠评分；单层 `match_all`/`match_any` 也无法表达“每个概念组任选一个 alias、所有概念组均满足”。这会系统性漏记合理同义表达，或强迫 candidate 猜 evaluator 的固定措辞。只在 manifest 中写 Skill 路径也无法证明 paired arm 的唯一变量，因为 Skill/reference 内容可能在运行前后变化，candidate 还可自报 profile。
+
+### Suggested Action
+Frozen replay 使用统一 normalization 和 `all groups / any alias per group` 语义；concept、stop-rule 和 record matcher 都保存 stable requirement IDs 与 matched IDs。Manifest 逐字节绑定 Skill、reference、共同 prompt/schema 和 baseline instruction；每个 forward output 校验 Main 生成的 worker-input receipt。Corpus loader 同时拒绝重复 canonical IDs、跨 case oracle 引用与不精确补造日期。
+
+### Metadata
+- Source: code_review
+- Related Files: plugins/frogent-drug-design/frogent_plugin/plan_eval_schema.py, plugins/frogent-drug-design/frogent_plugin/plan_eval_replay.py, plugins/frogent-drug-design/frogent_plugin/plan_eval_runner.py
+- Tags: evaluation, retrieval-planning, aliases, preregistration, worker-identity
+- Pattern-Key: eval.grouped_alias_identity
+- Recurrence-Count: 1
+- First-Seen: 2026-07-16
+- Last-Seen: 2026-07-16
+- Promoted: AGENTS.md, plugins/frogent-drug-design/AGENTS.md
+
+---
+
 ## [LRN-20260715-011] best_practice
 
 **Logged**: 2026-07-15T23:48:30+08:00
