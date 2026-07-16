@@ -70,6 +70,146 @@ test_authoritative_pack_is_locked_without_outputs_or_result
 
 ---
 
+## [ERR-20260716-010] github_push_tls_disconnect
+
+**Logged**: 2026-07-16T16:56:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: infra
+
+### Summary
+Pre-worker lock commit 首次 push 到 GitHub 时，HTTPS TLS 连接在握手阶段异常断开。
+
+### Error
+```
+fatal: unable to access 'https://github.com/SZU-ADDG/FROGENT-refactor.git/': LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to github.com:443
+```
+
+### Context
+- 本地 commit `189cdf3` 已成功创建，push 前 worktree 干净。
+- 失败发生在网络连接阶段，远端未报告对象接收或 ref 更新。
+- 未改写远端历史，也未启动 v2 fresh workers。
+
+### Suggested Fix
+确认本地 commit 与 `origin/main` 差异后，以相同非强制 `git push origin main` 安全重试；成功后核对本地与远端 ref 一致。
+
+### Metadata
+- Reproducible: unknown
+- Related Files: .git/config
+
+### Resolution
+- **Resolved**: 2026-07-16T17:00:00+08:00
+- **Commit/PR**: Lock PLAN forward v2 preregistration
+- **Notes**: GitHub HTTPS 直连与 `ls-remote` 正常；失败来自用户全局 Git 配置中的本地代理 `127.0.0.1:7897`。未修改项目外配置，改用单次 `git -c http.proxy= -c https.proxy=` 覆盖执行 push，并在推送后核对远端 ref。
+
+---
+
+## [ERR-20260716-009] document_identity_hash_relative_path
+
+**Logged**: 2026-07-16T16:52:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: docs
+
+### Summary
+Document 在插件 workdir 核对 EOF identity chain 时，首次 `sha256sum` 仍带项目根前缀，四个文件路径未命中。
+
+### Error
+```
+sha256sum: prefixed plugin paths not found from plugin workdir
+```
+
+### Context
+- 失败命令只读取文件，没有修改资产、文档或 Git 状态。
+- Bundle identity 校验在同轮成功。
+- Document 写权限不包含 `.learnings`，由 Main 接管记录。
+
+### Suggested Fix
+执行哈希前先固定 workdir；从项目根使用 `plugins/frogent-drug-design/...`，从插件根使用 `evals/...` 与 `frogent_plugin/...`，禁止混用两套相对路径。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/evals/plan-forward-v2.manifest.json, plugins/frogent-drug-design/evals/plan-forward-v2.evaluator-revision.json
+
+### Resolution
+- **Resolved**: 2026-07-16T16:52:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 改用插件根相对路径后，constraints、replay、revision、manifest 与 bundle identity 全部核对通过；Document 只替换两份授权文档中的三项 identity。
+
+---
+
+## [ERR-20260716-008] plan_v2_bound_asset_eof_hygiene
+
+**Logged**: 2026-07-16T16:42:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+PLAN v2 pre-worker lock 的 staged diff 检查发现两个新文件末尾多一个空白行；移除空白会改变已绑定 asset/evaluator 字节，需要按依赖顺序重算 identity。
+
+### Error
+```
+plan-forward-v2.candidate-constraints.json: new blank line at EOF
+plan_eval_v2_replay.py: new blank line at EOF
+```
+
+### Context
+- `git diff --cached --check` 在 commit 前阻断提交，未产生 Git 历史或远端变化。
+- 两个 EOF 空行已通过 `apply_patch` 移除。
+- Candidate constraint 语义未变；constraints SHA、replay SHA、revision SHA、manifest SHA 与 bundle identity 会随字节变化，需要重新锁定并复验。
+
+### Suggested Fix
+保持无 EOF 空白行；更新 v2 evaluator revision 和 manifest 的逐字节 SHA，重新验证 bundle/receipts、v1 exact replay、全量 tests、validator、sanitizer 与 staged diff hygiene。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/evals/plan-forward-v2.candidate-constraints.json, plugins/frogent-drug-design/frogent_plugin/plan_eval_v2_replay.py, plugins/frogent-drug-design/evals/plan-forward-v2.evaluator-revision.json, plugins/frogent-drug-design/evals/plan-forward-v2.manifest.json
+
+### Resolution
+- **Resolved**: 2026-07-16T16:49:00+08:00
+- **Commit/PR**: Lock PLAN forward v2 preregistration
+- **Notes**: 两个 EOF 空白行已移除并保留单个终止换行；constraints/replay/revision/manifest/bundle identity 已按依赖链重新锁定。101/101、v1 exact replay、v2 locked/no outputs/no result、validator、sanitizer 与最终 worktree/HEAD diff hygiene 均通过；12 worker receipts保持原值。
+
+---
+
+## [ERR-20260716-007] plan_eval_candidate_query_semantics
+
+**Logged**: 2026-07-16T16:02:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: eval
+
+### Summary
+PLAN forward v1 的 frozen matcher 未解释合法 PubMed terminal truncation，且 query cap 与 case-specific available routes 未进入 candidate-visible worker input；部分 recall 回退与全部 budget finding 因此无法干净归因给 Skill。
+
+### Error
+```
+normalize_lexical("Parkinson*") -> "parkinson*"
+group_matches(["Parkinson*"], ["Parkinson"]) -> False
+```
+
+### Context
+- PLAN-01 single-skill 查询使用 `mutation*`、`Parkinson*`、`substrate*`、`phosphorylat*`，frozen corpus aliases 使用无星号词形，导致 discovery anchor、Rab substrate anchor 和 counterevidence 假阴性。
+- 12/12 worker 均出现 `query_budget_exceeded`，worker contract 没有提供 case-specific 12/16 query cap。
+- common prompt 暴露三个全局 route IDs；PLAN-01 frozen provider 实际只支持 PubMed，worker 无法提前知道 case-specific route availability。
+- `stop_rule_coverage` 在 12 个 run 中全部为 0，oracle aliases 包含 candidate 不可见的精确 anchor/counterevidence 数量与 cap 表述，缺乏判别力。
+- v1 result 已冻结并保留，禁止通过覆盖旧 result 掩盖测量问题。
+
+### Suggested Fix
+保留 v1 evaluator 与 exact result；新建版本化 v2 pack，加入 truncation-aware query matching、candidate-visible max_query_events 与 available_source_routes、可由任务和公开约束表达的 stop-rule requirements，并在 fresh workers 前锁定全部身份与 mutation tests。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/plan_eval_schema.py, plugins/frogent-drug-design/frogent_plugin/plan_eval_replay.py, plugins/frogent-drug-design/evals/plan-forward-v1.worker-common.txt
+
+### Resolution
+- **Resolved**: 2026-07-16T16:38:30+08:00
+- **Commit/PR**: Lock PLAN forward v2 preregistration
+- **Notes**: 保留 v1 evaluator/result immutable；v2 已加入 query-only terminal wildcard 与保守 Boolean NOT polarity、candidate-visible case routes/query cap、可判别 stop requirements、可审计 policy-violation negative runs，以及 22-file evaluator import closure。Main fresh 验证 101/101、v1 exact replay、v2 locked/no outputs/no result、validator 与 sanitizer 通过。
+
+---
+
 ## [ERR-20260716-004] pre_worker_schema_validation_cli_invocation
 
 **Logged**: 2026-07-16T15:13:05+08:00

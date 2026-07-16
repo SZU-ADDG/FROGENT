@@ -39,17 +39,17 @@ Effect eval 必须向 candidate 公开合法输出所需的精确 schema tokens�
 Locked effect eval 必须绑定 evaluator implementation、用实际行为验证声明，并为失败运行保存正式负向结果。
 
 ### Details
-仅绑定 case、oracle、corpus 与 worker prompt，仍允许 matcher、schema 或 scoring code 在 candidate freeze 后漂移。仅按声明的 source map 计分会让没有对应 query 的 route 获得满分。CLI 在 missing、invalid 或 failed output 时直接抛错，则负向实验无法进入长期审计资产。Temporal gate 也要覆盖进入 raw audit 的所有带日期元数据，避免 cutoff 后信息通过辅助字段泄漏。
+仅绑定 case、oracle、corpus 与 worker prompt，仍允许 matcher、schema 或 scoring code 在 candidate freeze 后漂移。Python 子模块加载还会先执行包 `__init__` 及 eager imports；漏绑这条 import-time 闭包会留下 lock 后漂移路径。Revision logical key 与实际 path 未精确绑定时，多个 key 也可能重定向到同一文件。仅按声明的 source map 计分会让没有对应 query 的 route 获得满分。CLI 在 missing、invalid 或 failed output 时直接抛错，则负向实验无法进入长期审计资产；结构与身份合法的预算/route policy 违规若在 schema 层丢弃，同样会损失 raw plan 和逐 run failure evidence。Temporal gate 也要覆盖进入 raw audit 的所有带日期元数据，避免 cutoff 后信息通过辅助字段泄漏。
 
 ### Suggested Action
-Manifest 或 bundle identity 逐字节绑定 evaluator modules；source-route coverage 由 query routes 计算并与 source map 双向核对；published、online 与 event dates 都进入角色明确的 as-of policy。Runner 对 complete、missing、invalid 和 failed inputs 都生成 deterministic rejected/incomplete result，保存受控 input digest、stable taxonomy 与 worker completion summary，同时拒绝敏感 evaluator payload。
+Manifest 或 bundle identity 逐字节绑定 evaluator modules、包初始化与递归 eager-import 闭包，并固定 logical asset/revision key 到唯一 relative path。Source-route coverage 由 query routes 计算并与 source map 双向核对；published、online 与 event dates 都进入角色明确的 as-of policy。Schema 只拒绝畸形、身份错误或泄漏输入；结构合法的 candidate policy 违规进入 replay findings 与 hard gate。Runner 对 complete、missing、invalid、failed 和 policy-violating inputs 都生成 deterministic result，保存受控 input digest、stable taxonomy、raw plan 与 worker completion summary，同时拒绝敏感 evaluator payload。
 
 ### Metadata
 - Source: code_review
-- Related Files: plugins/frogent-drug-design/frogent_plugin/plan_eval_assets.py, plugins/frogent-drug-design/frogent_plugin/plan_eval_replay.py, plugins/frogent-drug-design/frogent_plugin/plan_eval_runner.py
+- Related Files: plugins/frogent-drug-design/frogent_plugin/plan_eval_assets.py, plugins/frogent-drug-design/frogent_plugin/plan_eval_replay.py, plugins/frogent-drug-design/frogent_plugin/plan_eval_runner.py, plugins/frogent-drug-design/frogent_plugin/plan_eval_v2_assets.py, plugins/frogent-drug-design/frogent_plugin/plan_eval_v2_schema.py
 - Tags: evaluation, preregistration, evaluator-identity, negative-results, temporal-cutoff
 - Pattern-Key: eval.bind_evaluator_and_preserve_negative_results
-- Recurrence-Count: 1
+- Recurrence-Count: 2
 - First-Seen: 2026-07-16
 - Last-Seen: 2026-07-16
 - Promoted: AGENTS.md, plugins/frogent-drug-design/AGENTS.md

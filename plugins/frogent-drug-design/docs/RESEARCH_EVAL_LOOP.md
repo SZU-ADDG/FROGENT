@@ -89,7 +89,13 @@ Evaluator 持有 `evidence -> record -> artifact` oracle，并要求以下链条
 
 ## 4. Authority 与 claim limits
 
-当前 committed result 的 authority scope 为 `evaluator_fixture`，限制如下：
+Research kernel fixture 与 PLAN forward diagnostic 具有不同 authority：
+
+- `research-eval-v1.result.json` 的 authority scope 为 `evaluator_fixture`。
+- `plan-forward-v1` 的 authority scope 为 `exposed_development_diagnostic`；它提供正式 exposed diagnostic effect result，仍不具备 hidden 或独立 score-owner authority。
+- `plan-forward-v2` 的 authority scope 同为 `exposed_development_diagnostic`；当前只完成 locked preregistration，没有 worker output 或 effect result。
+
+共同限制如下：
 
 | 限制 | 当前含义 |
 |---|---|
@@ -99,19 +105,19 @@ Evaluator 持有 `evidence -> record -> artifact` oracle，并要求以下链条
 | Identity closure | dependency、model、runtime、provider 与 memory closure 尚未完整绑定 |
 | Leakage control | sensitive-key scan 只是 leakage negative control，无法替代 candidate/reference 隔离 |
 
-当前 result 固定为：
+`research-eval-v1` 固定为：
 
 - `execution_completion=completed`
 - `effect_outcome=not_evaluated`
 - `promotion_eligible=false`
 
-该结果只支持 `CONTRACT/EVALUATOR INTEGRITY PASS`，不得用于声明 retrieval、Deep Research 或 memory 效果提升。
+它只支持 `CONTRACT/EVALUATOR INTEGRITY PASS`，不得用于声明 retrieval、Deep Research 或 memory 效果提升。`plan-forward-v1` 的冻结状态与额外测量边界见 5.4，`plan-forward-v2` 的 pre-worker 状态见 5.5。
 
 ## 5. 首轮 paired forward-test panel
 
 ### 5.1 Run matrix
 
-首轮执行 `8 cases × 2 arms × 3 fixed seeds = 48 runs`。每个 case 的 baseline/candidate 使用相同 seed 配对分析。每次输出必须来自实际 Skill/model/runtime forward execution 和受控 frozen provider/corpus eval boundary；预填 evaluator fixtures 只用于 kernel integrity，不能计入 forward effect。
+首轮面板计划为 `8 cases × 2 arms × 3 replicate labels = 48 runs`。每个 case 的 baseline/candidate 使用相同 replicate label 配对分析；只有完成 sampling/seed identity closure 后才能把 label 解释为受控 fixed seed。每次输出必须来自实际 Skill/model/runtime forward execution 和受控 frozen provider/corpus eval boundary；预填 evaluator fixtures 只用于 kernel integrity，不能计入 forward effect。
 
 | Case | Target Skill | Locked scenario | 主要观测 |
 |---|---|---|---|
@@ -144,7 +150,7 @@ Panel 开始前必须在 locked manifest 中写明并冻结以下字段；占位
 | Task | case prompt、input artifacts、expected output schema |
 | Schema | request、trace、artifact、screening、memory、claim 与 scorecard schema version |
 | Model | provider、model revision/checkpoint、tokenizer 与 decoding implementation |
-| Sampling | temperature、其他 decoding 参数、三个 seeds；首轮 seeds 固定为 `17`、`29`、`43` |
+| Sampling | temperature、其他 decoding 参数、三个 replicate labels `17`、`29`、`43`；另行绑定并验证实际 seed control |
 | Budget | input/output token limits、tool-call limit、round/step limit 与 wall-clock policy |
 | Corpus/provider | frozen corpus snapshot、provider adapter/version、source availability map 与 content digests |
 | Temporal | 每个 case 的精确 `as_of` 与 temporal policy |
@@ -152,9 +158,73 @@ Panel 开始前必须在 locked manifest 中写明并冻结以下字段；占位
 | Evaluator | kernel revision、metric/gate policy、deterministic scorer 与 semantic score owner identity |
 | Failure schedule | source outage、provider failure call index/error、retry allowance、budget exhaustion point；无注入 case 也显式记录 `none` |
 
-### 5.4 执行顺序与数据分层
+### 5.4 PLAN v1 正式 exposed diagnostic
 
-1. 先执行 `PLAN-01`、`PLAN-02`，固定 query plan 与 source-routing failure taxonomy。
+Commit `97f1969` 冻结 `plan-forward-v1`，完成了 run matrix 的 PLAN slice：`PLAN-01`、`PLAN-02` × `no_skill`、`single_skill` × replicate labels `17`、`29`、`43`，共 12 份 fresh worker outputs。SCREEN、SYNTH、RESEARCH 的 36 个首轮 runs，以及 `sequential`/`full` profiles，尚未执行。
+
+#### 状态与 replay
+
+| 层级 | 冻结结论 |
+|---|---|
+| Contract/execution/replay integrity | `PASS` |
+| v1 official diagnostic effect | `REJECTED` |
+| Clean Skill effect attribution | `NOT_ESTABLISHED` |
+| Promotion | `false` |
+
+`worker_completion=12/12 completed`，`execution_completion=completed`，`effect_outcome=rejected`，`promotion_eligible=false`。Exact asset-bound replay 已通过，`replay_digest=2e8d1b21a5f69e32ea096e6fe249dfba95c89e3d0f2056c4a09ca71a2c0ed6ea`。
+
+| Case | Paired diagnostic |
+|---|---|
+| `PLAN-01` | 3/3 pairs 均有 `quality_metric_regression`、`query_budget_exceeded`、`unsupported_source` |
+| `PLAN-02` replicate `17` | quality regression + budget；anchor recall `+1/3`，concept coverage `-1/24` |
+| `PLAN-02` replicate `29` | budget；anchor recall `+1/3` |
+| `PLAN-02` replicate `43` | budget；registered quality deltas 为 0 |
+
+12/12 runs 全部超过 evaluator query cap。`PLAN-01` 的两个 arms 在全部 replicates 中都提交了 case corpus 不支持的 trial/FDA routes。
+
+#### 测量与归因边界
+
+1. v1 matcher 对 normalized phrase 做 literal matching，未实现合法 PubMed terminal truncation。`mutation*`、`Parkinson*`、`substrate*`、`phosphorylat*` 会对 unstarred aliases 产生假阴性，污染 `PLAN-01` recall 回退。
+2. Evaluator 使用的 case caps `12`/`16` 与 case-specific `available_source_routes` 未进入 candidate-visible worker input。Worker 只看到全局 route ID 集合，因而 query budget 与 route failures 无法完全归因给 Skill。
+3. `stop_rule_coverage` 在 12/12 runs 中均为 0；v1 隐藏 alias/count 规则无法提供有效区分。
+
+这些限制不改写冻结 result：v1 official diagnostic effect 继续为 `rejected`。它们限制结果可支持的 claim：`PLAN-01` recall 回退不能解释为已证实的真实 retrieval quality 下降，`PLAN-02` 局部 anchor 增益也不能解释为可 promotion 的提升。该 result 另有 `exposed_development_panel`、`seed_control_unverified`、`candidate_reference_filesystem_isolation_not_established`、`independent_score_owner_not_established` 与 `model_runtime_provider_memory_identity_closure_incomplete` claim limits。
+
+### 5.5 PLAN v2 pre-worker lock
+
+`plan-forward-v1` 保持 immutable。独立的 `plan-forward-v2` preregistration 已 locked，当前状态为：
+
+| 项目 | 冻结状态 |
+|---|---|
+| Fresh workers | `0` |
+| Effect outcome | `not_evaluated` |
+| Promotion | `false` |
+| Outputs/result | 均不存在 |
+| Skill | `plan-literature-search` 未修改 |
+
+v2 对 measurement interface 做三项修复：
+
+1. Terminal wildcard 只在 query-to-record matching 中生效；保守 Boolean `NOT` polarity 不把 negated term 计为 positive match。
+2. 每个 worker receipt 绑定 candidate-visible constraint：`PLAN-01` 仅允许 `pubmed`、cap 为 12；`PLAN-02` 允许 `pubmed`、`clinicaltrials_gov`、`fda_regulatory`、cap 为 16。
+3. Stop requirements 使用候选可从 task、constraint 与 Skill 表达的 route completion、anchor/linkage、challenge、saturation 和 budget-incomplete 语义，移除 v1 隐藏 count/cap wording。
+
+Candidate policy violation 与结构/身份错误分开处理。结构与身份合法、同时违反 route 或 query cap 的 completed output 进入 raw run/result，记录 `unsupported_source` 或 `query_budget_exceeded` 并触发 hard gate；畸形 schema、泄漏字段或 worker identity mismatch fail closed，不进入 measured run。
+
+Evaluator revision 绑定 22-file package eager-import closure，revision logical key/path 与 logical asset fixed paths 发生重定向时均 fail closed。Pre-worker identities 为：
+
+| Identity | SHA-256 |
+|---|---|
+| Revision | `3539c454b42f28f55ee87c6be40911aee16dbfc2127d1b0462d4e5b386b3223b` |
+| Manifest | `6d0dc61255298dfff58b1f5cbb9a6440c401aaf37c9c4cb7e43263c1a3d7f813` |
+| Bundle | `2c44bff0cc277050c05b8891caaa3b937d39c0280999577551b18284fabe7c23` |
+
+该 lock 的 authority 仍为 exposed development，`seed_control=unverified`。它只支持 evaluator/pre-worker integrity，不能支持 Skill effect、retrieval improvement 或 promotion claim。101/101 tests、v1 exact replay、v2 locked CLI、official validator 与 sanitizer 982/0/0 已通过。
+
+下一步先 commit/push immutable pre-worker lock，再运行 12 个 fresh `no_skill`/`single_skill` paired workers并生成 exact replay result。`budgeted minimal evidence path` 仍是未决假设，fresh paired evidence 产生前不实施，也不提前写效果结论。
+
+### 5.6 执行顺序与数据分层
+
+1. `PLAN-01`、`PLAN-02` 的 v1 diagnostic 已完成；v2 pre-worker lock 已完成，下一步固定提交该 lock 并运行 12 个 fresh paired workers。
 2. 随后执行 `SCREEN-01`、`SCREEN-02`，验证 canonicalization、screening ledger 与 memory gate。
 3. 再执行 `SYNTH-01`、`SYNTH-02`，验证 claim scope、counterevidence、conflict 与 temporal sensitivity。
 4. 最后执行 `RESEARCH-01`、`RESEARCH-02`，覆盖 multi-wave workflow、provider failure、budget 与 stop quality。
