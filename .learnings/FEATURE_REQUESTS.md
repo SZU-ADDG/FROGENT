@@ -2,6 +2,37 @@
 
 此文件用于记录当前能力无法直接满足的功能需求。
 
+## [FEAT-20260715-004] research_effect_eval_loop
+
+**Logged**: 2026-07-15T23:41:00+08:00
+**Priority**: critical
+**Status**: in_progress
+**Area**: tests
+
+### Requested Capability
+为 retrieval、Deep Research 和 memory management 建立可运行的 Skill-level 与 workflow-level 效果评测循环，并用评测结果持续优化 Agent。
+
+### User Context
+当前测试主要证明 contracts、harness 状态和 memory gate 的工程行为，尚未形成每个研究 Skill 的贡献评测、整体 research workflow 效果基线和基于失败案例的迭代闭环。药物设计模型尚未接入，因此当前无需推进依赖模型的全流程。
+
+### Complexity Estimate
+complex
+
+### Suggested Implementation
+建立轻量 versioned eval pack：exposed development/frozen-core/challenge cases、由独立 score owner 保管的 hidden held-out、temporal cutoff、anchor/counterevidence oracle、memory contamination scenarios、manifest digests、baseline/single-skill/sequential/full profiles、deterministic runner、结果资产和 regression gate。指标覆盖 anchor recall、citation precision、unsupported-claim rate、counterevidence retention、source coverage、memory admission precision、working-memory retention、revocation、cross-run leakage、provenance retention、tool reliability 与成本。
+
+### Progress
+- 已实现 fixture-only research eval kernel：versioned manifest、exposed cases、baseline/candidate/result、15 项独立指标、lineage/temporal/memory/citation gates 与 asset-bound exact replay。
+- 已通过 59 项标准库测试，其中 24 项 evaluator integrity/mutation tests；当前正式状态为 `EFFECT NOT_EVALUATED`、`PROMOTION INELIGIBLE`。
+- 已冻结首轮 8-case × 2-arm × 3-seed forward-test 设计；下一步从 PLAN-01/02 的 `no_skill` 与 `single_skill` paired run 开始。
+- 独立 preregistration root、candidate/reference filesystem isolation、完整 dependency/runtime/provider/memory identity 与真正 hidden score owner 仍待建立。
+
+### Metadata
+- Frequency: first_time
+- Related Features: biomedical_literature_harness, unified_frogent_plugin
+
+---
+
 ## [FEAT-20260715-003] failed_thread_cleanup
 
 **Logged**: 2026-07-15T23:02:00+08:00

@@ -1,6 +1,13 @@
 # FROGENT Plugin Instructions
 
 - 插件核心功能是信息检索与工具使用；优先保障检索质量、来源可追溯、工具选择、参数验证、结果规范化和失败恢复。
+- 当前效果优化聚焦 retrieval、Deep Research 和 memory management；药物设计模型与依赖模型的完整 workflow 暂缓接入。
+- 每个 research Skill 与整体 workflow 都要有 versioned、可重放的效果 eval；使用 baseline/ablation profiles、locked cases 和 committed result 追踪真实贡献。
+- Eval 分别记录 execution completion、effect outcome 和 promotion eligibility；负向结果、超时、失败案例与 `not_measured` 指标必须保留。
+- 仓库内 case/oracle 一律属于 exposed data；hidden held-out 只能由独立 score owner 在 candidate freeze 后运行。
+- 默认 regression 仅使用 frozen provider/corpus snapshot；live provider 进入独立 canary。
+- 文献 query hit occurrence 与 canonical record 分层保存，一致重复保留全部 provenance，冲突重复 fail closed。
+- Memory eval 分开测量 admission、working-memory retention 与 revocation；useful recall 只统计 evaluator 可追溯的 working memory，误撤有用 evidence 与漏撤 stale evidence 都必须扣分。
 - 保持 `frogent_plugin/` 扁平；新增子包前先证明独立生命周期确有必要。
 - `.mcp.json` 是 MCP URL 的唯一来源，Python 与 Skills 中禁止重复端点。
 - `catalog.py` 维护稳定能力 ID；修改 ID 视为破坏性变更。

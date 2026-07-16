@@ -1,0 +1,68 @@
+[
+  {
+    "case_id": "dev-target-mechanism",
+    "execution_status": "completed",
+    "retrieved_hits": [
+      {"record_id": "r-dev-anchor", "source": "snapshot", "query": "target mechanism", "artifact": "artifact://eval/dev-anchor", "published_on": "2025-01-01"},
+      {"record_id": "r-dev-counter", "source": "snapshot", "query": "target counterevidence", "artifact": "artifact://eval/dev-counter", "published_on": "2024-06-01"}
+    ],
+    "records": [
+      {"record_id": "r-dev-anchor", "source": "snapshot", "query": "target mechanism", "artifact": "artifact://eval/dev-anchor", "published_on": "2025-01-01"},
+      {"record_id": "r-dev-counter", "source": "snapshot", "query": "target counterevidence", "artifact": "artifact://eval/dev-counter", "published_on": "2024-06-01"}
+    ],
+    "evidence_lineage": [
+      {"evidence_id": "e-dev-support", "record_id": "r-dev-anchor", "artifact": "artifact://eval/dev-anchor"},
+      {"evidence_id": "e-dev-counter", "record_id": "r-dev-counter", "artifact": "artifact://eval/dev-counter"}
+    ],
+    "qualified_evidence_ids": ["e-dev-support", "e-dev-counter"],
+    "admitted_evidence_ids": ["e-dev-support", "e-dev-counter"],
+    "memory_evidence_ids": ["e-dev-support", "e-dev-counter"],
+    "revoked_evidence_ids": ["e-dev-stale"],
+    "claims": [{"claim_id": "c-dev", "evidence_ids": ["e-dev-support"], "counterevidence_ids": ["e-dev-counter"]}],
+    "surfaced_gaps": ["long-term safety"],
+    "stop_reason": "evidence_sufficient"
+  },
+  {
+    "case_id": "frozen-biomarker",
+    "execution_status": "completed",
+    "retrieved_hits": [
+      {"record_id": "r-frozen-anchor", "source": "snapshot", "query": "biomarker validation", "artifact": "artifact://eval/frozen-anchor", "published_on": "2023-08-10"}
+    ],
+    "records": [
+      {"record_id": "r-frozen-anchor", "source": "snapshot", "query": "biomarker validation", "artifact": "artifact://eval/frozen-anchor", "published_on": "2023-08-10"}
+    ],
+    "evidence_lineage": [
+      {"evidence_id": "e-frozen-support", "record_id": "r-frozen-anchor", "artifact": "artifact://eval/frozen-anchor"}
+    ],
+    "qualified_evidence_ids": ["e-frozen-support"],
+    "admitted_evidence_ids": ["e-frozen-support"],
+    "memory_evidence_ids": ["e-frozen-support"],
+    "revoked_evidence_ids": [],
+    "claims": [{"claim_id": "c-frozen", "evidence_ids": ["e-frozen-support"], "counterevidence_ids": []}],
+    "surfaced_gaps": [],
+    "stop_reason": "evidence_sufficient"
+  },
+  {
+    "case_id": "challenge-negative-evidence",
+    "execution_status": "completed",
+    "retrieved_hits": [
+      {"record_id": "r-challenge-anchor", "source": "snapshot", "query": "negative evidence", "artifact": "artifact://eval/challenge-anchor", "published_on": "2025-05-01"},
+      {"record_id": "r-challenge-counter", "source": "snapshot", "query": "negative evidence replication", "artifact": "artifact://eval/challenge-counter", "published_on": "2025-06-01"}
+    ],
+    "records": [
+      {"record_id": "r-challenge-anchor", "source": "snapshot", "query": "negative evidence", "artifact": "artifact://eval/challenge-anchor", "published_on": "2025-05-01"},
+      {"record_id": "r-challenge-counter", "source": "snapshot", "query": "negative evidence replication", "artifact": "artifact://eval/challenge-counter", "published_on": "2025-06-01"}
+    ],
+    "evidence_lineage": [
+      {"evidence_id": "e-challenge-support", "record_id": "r-challenge-anchor", "artifact": "artifact://eval/challenge-anchor"},
+      {"evidence_id": "e-challenge-counter", "record_id": "r-challenge-counter", "artifact": "artifact://eval/challenge-counter"}
+    ],
+    "qualified_evidence_ids": ["e-challenge-support", "e-challenge-counter"],
+    "admitted_evidence_ids": ["e-challenge-support", "e-challenge-counter"],
+    "memory_evidence_ids": ["e-challenge-support", "e-challenge-counter"],
+    "revoked_evidence_ids": ["e-challenge-retracted"],
+    "claims": [{"claim_id": "c-challenge", "evidence_ids": ["e-challenge-support"], "counterevidence_ids": ["e-challenge-counter"]}],
+    "surfaced_gaps": ["replication cohort"],
+    "stop_reason": "scope_exhausted"
+  }
+]

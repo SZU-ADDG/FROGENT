@@ -1,0 +1,78 @@
+[
+  {
+    "case_id": "dev-target-mechanism",
+    "split": "development",
+    "family_id": "family-dev-target",
+    "lineage_id": "lineage-dev-target-v1",
+    "as_of": "2026-07-15",
+    "relevant_record_ids": ["r-dev-anchor", "r-dev-counter"],
+    "anchor_record_ids": ["r-dev-anchor"],
+    "counterevidence_record_ids": ["r-dev-counter"],
+    "admissible_evidence_ids": ["e-dev-support", "e-dev-counter"],
+    "revoked_evidence_ids": ["e-dev-stale"],
+    "evidence_provenance": [
+      {"evidence_id": "e-dev-support", "record_id": "r-dev-anchor", "artifact": "artifact://eval/dev-anchor"},
+      {"evidence_id": "e-dev-counter", "record_id": "r-dev-counter", "artifact": "artifact://eval/dev-counter"},
+      {"evidence_id": "e-dev-stale", "record_id": "r-dev-anchor", "artifact": "artifact://eval/dev-anchor"}
+    ],
+    "claim_links": [
+      {
+        "claim_id": "c-dev",
+        "evidence_ids": ["e-dev-support"],
+        "counterevidence_ids": ["e-dev-counter"]
+      }
+    ],
+    "required_evidence_gaps": ["long-term safety"],
+    "acceptable_stop_reasons": ["evidence_sufficient"]
+  },
+  {
+    "case_id": "frozen-biomarker",
+    "split": "frozen_core",
+    "family_id": "family-frozen-biomarker",
+    "lineage_id": "lineage-frozen-biomarker-v1",
+    "as_of": "2026-07-15",
+    "relevant_record_ids": ["r-frozen-anchor"],
+    "anchor_record_ids": ["r-frozen-anchor"],
+    "counterevidence_record_ids": [],
+    "admissible_evidence_ids": ["e-frozen-support"],
+    "revoked_evidence_ids": [],
+    "evidence_provenance": [
+      {"evidence_id": "e-frozen-support", "record_id": "r-frozen-anchor", "artifact": "artifact://eval/frozen-anchor"}
+    ],
+    "claim_links": [
+      {
+        "claim_id": "c-frozen",
+        "evidence_ids": ["e-frozen-support"],
+        "counterevidence_ids": []
+      }
+    ],
+    "required_evidence_gaps": [],
+    "acceptable_stop_reasons": ["evidence_sufficient"]
+  },
+  {
+    "case_id": "challenge-negative-evidence",
+    "split": "challenge",
+    "family_id": "family-challenge-negative",
+    "lineage_id": "lineage-challenge-negative-v1",
+    "as_of": "2026-07-15",
+    "relevant_record_ids": ["r-challenge-anchor", "r-challenge-counter"],
+    "anchor_record_ids": ["r-challenge-anchor"],
+    "counterevidence_record_ids": ["r-challenge-counter"],
+    "admissible_evidence_ids": ["e-challenge-support", "e-challenge-counter"],
+    "revoked_evidence_ids": ["e-challenge-retracted"],
+    "evidence_provenance": [
+      {"evidence_id": "e-challenge-support", "record_id": "r-challenge-anchor", "artifact": "artifact://eval/challenge-anchor"},
+      {"evidence_id": "e-challenge-counter", "record_id": "r-challenge-counter", "artifact": "artifact://eval/challenge-counter"},
+      {"evidence_id": "e-challenge-retracted", "record_id": "r-challenge-anchor", "artifact": "artifact://eval/challenge-anchor"}
+    ],
+    "claim_links": [
+      {
+        "claim_id": "c-challenge",
+        "evidence_ids": ["e-challenge-support"],
+        "counterevidence_ids": ["e-challenge-counter"]
+      }
+    ],
+    "required_evidence_gaps": ["replication cohort"],
+    "acceptable_stop_reasons": ["evidence_sufficient", "scope_exhausted"]
+  }
+]

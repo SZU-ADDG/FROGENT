@@ -1,5 +1,117 @@
 # Learnings
 
+## [LRN-20260715-011] best_practice
+
+**Logged**: 2026-07-15T23:48:30+08:00
+**Priority**: high
+**Status**: promoted
+**Area**: tests
+
+### Summary
+Memory 效果评测必须区分 evidence admission、working-memory retention 与 revocation precision。
+
+### Details
+只用 admitted evidence 计算 useful recall 会让 working memory 为空的 candidate 仍取得满分。只计算 stale evidence 的撤回召回会放过对有用 evidence 的过度撤回。Cross-case leakage 若缺少全局唯一、可判定的 case evidence namespace，也会把合法复用与污染混在一起。三种偏差都会把优化方向推向丢失有用信息的 memory 策略。
+
+### Suggested Action
+Useful evidence recall 基于 `memory ∩ admitted ∩ qualified ∩ evaluator-owned traceable`；revocation accuracy 同时计入 stale evidence 的正确撤回和 admissible evidence 的未误撤；benchmark case 的 evidence IDs 保持跨 case 唯一。为 memory omission、over-revocation 与 duplicate cross-case evidence ID 建立 mutation tests。
+
+### Metadata
+- Source: code_review
+- Related Files: plugins/frogent-drug-design/frogent_plugin/eval_metrics.py, plugins/frogent-drug-design/frogent_plugin/eval_manifest.py
+- Tags: memory, evaluation, revocation, retention, leakage
+- Pattern-Key: evaluation.separate_admission_retention_revocation
+- Recurrence-Count: 1
+- First-Seen: 2026-07-15
+- Last-Seen: 2026-07-15
+- Promoted: AGENTS.md, plugins/frogent-drug-design/AGENTS.md
+
+---
+
+## [LRN-20260715-010] best_practice
+
+**Logged**: 2026-07-15T23:22:13+08:00
+**Priority**: high
+**Status**: promoted
+**Area**: tests
+
+### Summary
+效果评测必须把 execution completion、effect outcome 和 promotion eligibility 分开，并保存负向实验。
+
+### Details
+对 Rosin、Pio、Taci 与 Apollo 的只读审计表明，可信的 Agent 改进循环需要冻结 baseline、candidate、panel、scoring policy、provider snapshot 和 memory snapshot，每轮仅开放一个可归因变量。工程执行完成不代表效果改善，效果失败也仍然是有价值的实验结果。缺少独立 oracle 的指标应保持 `not_measured`，baseline 与 candidate 覆盖不一致时应保持 `not_comparable`。负向 delta、超时和失败 case 需要进入正式结果资产，禁止被总分或低层收益抵消。仓库内可见的 case 与 oracle 都属于 exposed data，hidden held-out 需要由独立 score owner 在 candidate freeze 后保管和执行。
+
+### Suggested Action
+FROGENT eval kernel 为每轮生成 content-addressed preregistration、scorecards、delta、failure clusters 和 supervised decision；分别记录 completion、effect 与 promotion 状态。默认 regression 使用 frozen snapshot，live provider 只进入独立 canary。负向回归、未声明变化、时间泄漏和 gold 泄漏直接阻断 promotion。
+
+### Metadata
+- Source: architecture_review
+- Related Files: AGENTS.md, plugins/frogent-drug-design/AGENTS.md
+- Tags: evaluation, ablation, promotion-gate, negative-result, replay
+- Pattern-Key: evaluation.separate_completion_effect_promotion
+- Recurrence-Count: 1
+- First-Seen: 2026-07-15
+- Last-Seen: 2026-07-15
+- Promoted: AGENTS.md, plugins/frogent-drug-design/AGENTS.md
+
+---
+
+## [LRN-20260715-009] best_practice
+
+**Logged**: 2026-07-15T23:22:13+08:00
+**Priority**: high
+**Status**: promoted
+**Area**: backend
+
+### Summary
+文献 canonical record 与 query hit occurrence 必须分层保存，重复召回不能中断多查询检索。
+
+### Details
+多条 query 或多个 source 经常召回同一 PMID、DOI 或 registry record。只按 record ID 直接写唯一 ledger 会把正常重复命中当成错误，同时丢失 query-to-record provenance。检索层应保留每次 hit 的 call、capability、source、query 和 record link，并在 canonical record 层去重。一致重复继续执行，内容冲突的同 ID 记录 fail closed 且保留前序审计材料。
+
+### Suggested Action
+使用 typed retrieval hit links 记录 occurrence；结果分别报告 raw hit count 与 unique record count。固定一致重复、冲突重复、跨 source study-family 和空执行计划 case，并在 retrieval effect eval 中单独计算 duplicate rate、dedup correctness 与 provenance completeness。
+
+### Metadata
+- Source: code_review
+- Related Files: plugins/frogent-drug-design/frogent_plugin/retrieval.py, plugins/frogent-drug-design/skills/plan-literature-search/references/query-strategy.md
+- Tags: retrieval, provenance, deduplication, evidence-ledger
+- Pattern-Key: retrieval.separate_hits_from_canonical_records
+- Recurrence-Count: 1
+- First-Seen: 2026-07-15
+- Last-Seen: 2026-07-15
+- Promoted: plugins/frogent-drug-design/AGENTS.md
+
+---
+
+## [LRN-20260715-008] correction
+
+**Logged**: 2026-07-15T23:41:00+08:00
+**Priority**: critical
+**Status**: promoted
+**Area**: backend
+
+### Summary
+FROGENT 当前优化与效果评测聚焦 retrieval、Deep Research 和 memory management，药物设计模型与完整制药 workflow 暂缓。
+
+### Details
+用户要求像 Rosin、Pio、Taci、Apollo 一样建立持续验证循环，逐个评测 Skills，并评测整体 workflow 的真实效果。当前最重要的三个效果面是检索、Deep Research 和记忆管理。依赖尚未接入模型的药物设计任务不进入当前优化主线；runtime/harness 与可独立优化的研究 Skills 优先。
+
+### Suggested Action
+建立 versioned manifest、locked cases、runner、baseline/ablation profiles、结果资产和回归门禁；严格区分 contract/control-plane 通过与真实效果提升。每轮先跑 baseline，再做单一假设改动，在相同 locked eval 上复测并保留失败案例。
+
+### Metadata
+- Source: user_feedback
+- Related Files: AGENTS.md, plugins/frogent-drug-design/AGENTS.md
+- Tags: retrieval, deep-research, memory, eval-loop, skill-ablation
+- Pattern-Key: evaluation.research_memory_effect_loop
+- Recurrence-Count: 1
+- First-Seen: 2026-07-15
+- Last-Seen: 2026-07-15
+- Promoted: AGENTS.md, plugins/frogent-drug-design/AGENTS.md
+
+---
+
 ## [LRN-20260715-007] correction
 
 **Logged**: 2026-07-15T23:29:00+08:00

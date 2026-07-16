@@ -14,6 +14,8 @@ from .evidence import (
     SearchPlan,
     SynthesisClaim,
 )
+from .eval_manifest import EvalBundle, content_digest, load_bundle
+from .eval_runner import evaluate_bundle, verify_result
 from .harness import (
     CommandKind,
     HarnessCommand,
@@ -31,6 +33,7 @@ from .literature import (
     search_literature,
 )
 from .registry import CapabilityRegistry
+from .retrieval import RetrievalCall, RetrievalHit, RetrievalRunResult, run_retrieval
 from .v4_adapter import V4ChatRequest, v4_messages_to_events
 
 __all__ = [
@@ -43,6 +46,7 @@ __all__ = [
     "EvidenceExcerpt",
     "EvidenceLedger",
     "EvidenceStrength",
+    "EvalBundle",
     "CommandKind",
     "HarnessCommand",
     "HarnessPhase",
@@ -53,6 +57,9 @@ __all__ = [
     "LiteratureProvider",
     "LiteratureQuery",
     "McpServer",
+    "RetrievalCall",
+    "RetrievalHit",
+    "RetrievalRunResult",
     "SERVER_NAMES",
     "ScreeningDecision",
     "ScreeningOutcome",
@@ -64,10 +71,15 @@ __all__ = [
     "V4ChatRequest",
     "admit_evidence",
     "advance",
+    "content_digest",
+    "evaluate_bundle",
     "reconcile_evidence",
+    "run_retrieval",
     "build_registry",
     "load_app_connectors",
     "load_mcp_servers",
+    "load_bundle",
     "search_literature",
     "v4_messages_to_events",
+    "verify_result",
 ]

@@ -13,9 +13,24 @@
 
 - 项目文档和沟通统一使用 `runtime`，不翻译该术语。
 - FROGENT 的两项产品核心功能是信息检索与工具使用；所有模块必须直接服务于 retrieval quality 或 tool-use reliability。
+- 当前效果优化只聚焦 retrieval、Deep Research 和 memory management；依赖未接入药物设计模型的任务与完整制药 workflow 保持 deferred。
 - FROGENT 的核心同时包含生物医学文献 evidence pipeline 与显式 agent harness。
 - 文献原始记录、筛选账本、qualified evidence 和 synthesis 分层保存；未经筛选的结果禁止进入工作 memory。
 - Harness 统一负责 context 装配、策略、状态、工具预算、evidence 准入、事件、停止和恢复。
+
+## 效果评测循环
+
+- 每个 research Skill 和整体 workflow 都必须绑定可运行 eval；仅有 contracts、fixtures 或静态检查不能宣称效果提升。
+- 每轮优化固定执行 `baseline -> 单一假设改动 -> 相同 locked eval 复测 -> 逐案例误差分析 -> regression gate`。
+- Eval 资产至少包含 versioned manifest、development/frozen-core/challenge cases、temporal cutoff、runner、结果文件、失败案例和 replay identity。
+- 仓库内可见的 case 与 oracle 一律视为 exposed data；hidden held-out 必须由独立 score owner 在 candidate freeze 后保管，并对 candidate worker 隐藏 reference。
+- Per-Skill 评测使用 no-skill、single-skill、sequential 和 full profiles；无法独立识别贡献的 Skill 必须显式标记 identifiability 限制。
+- 严格区分 contract/control-plane verification 与 retrieval/Deep Research/memory 的效果评测。
+- 每轮分别记录 execution completion、effect outcome 和 promotion eligibility；负向实验、超时及失败案例同样保存，缺少独立 oracle 的指标标记为 `not_measured`。
+- 默认 regression 仅使用 frozen provider/corpus snapshot；live provider 进入独立 canary，禁止污染可重放 baseline。
+- 文献 query hit occurrence 与 canonical record 分层保存；一致重复保留全部 query-to-record links，冲突重复 fail closed。
+- Memory 效果指标必须区分 evidence admission 与 working-memory retention；useful recall 以可追溯 working memory 为准，revocation 同时惩罚漏撤与误撤，跨 case evidence ID 必须具备可判定的隔离命名空间。
+- 禁止通过修改 held-out 数据、gold、阈值或评测口径制造提升。
 
 ## 当前项目与远端环境
 

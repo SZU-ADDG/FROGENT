@@ -2,6 +2,243 @@
 
 此文件用于记录命令、远端连接及外部工具错误。
 
+## [ERR-20260716-002] learning_insert_context_recurrence
+
+**Logged**: 2026-07-16T13:52:08+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: docs
+
+### Summary
+新增 research eval CLI 错误记录时，补丁遗漏了文件标题后的说明行，导致上下文校验失败。
+
+### Error
+```
+apply_patch verification failed: Failed to find expected lines in .learnings/ERRORS.md
+```
+
+### Context
+- 补丁假设 `# Errors` 后直接进入首个错误条目。
+- 实际文件在标题和首条记录之间含用途说明。
+- 失败补丁没有修改文件内容。
+
+### Suggested Fix
+修改学习记录前先读取目标区域，以完整、唯一的相邻文本作为补丁上下文。
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+- See Also: ERR-20260714-005, ERR-20260715-011
+
+### Resolution
+- **Resolved**: 2026-07-16T13:52:08+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已读取文件开头并改用包含用途说明的精确上下文。
+
+---
+
+## [ERR-20260716-001] research_eval_verify_result_path
+
+**Logged**: 2026-07-16T13:50:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+Main 独立复核时给 `--verify-result` 传入了带插件目录前缀的路径，CLI 将其再次拼接到插件根目录并拒绝读取。
+
+### Error
+```
+FileNotFoundError: .../plugins/frogent-drug-design/plugins/frogent-drug-design/evals/research-eval-v1.result.json
+```
+
+### Context
+- 命令从项目根目录运行。
+- `run_research_eval.py` 将参数解释为相对插件根目录的受控路径。
+- 失败发生在读取 committed result 之前，没有修改代码、eval 资产或其他项目文件。
+
+### Suggested Fix
+统一使用 `--verify-result evals/research-eval-v1.result.json`；在验收文档与自动化中保留插件根目录相对路径语义。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/scripts/run_research_eval.py, plugins/frogent-drug-design/evals/research-eval-v1.result.json
+
+### Resolution
+- **Resolved**: 2026-07-16T13:52:08+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已识别为调用路径错误，随后使用插件根目录相对路径重新验证。
+
+---
+
+## [ERR-20260715-019] manual_probe_float_equality
+
+**Logged**: 2026-07-15T23:51:20+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+Main 独立 mutation probe 使用精确浮点相等比较 `0.666666666667 == 2/3`，导致验收脚本 AssertionError。
+
+### Error
+```
+AssertionError
+```
+
+### Context
+- evaluator 按 contract 将 ratio 舍入到 12 位。
+- 输出 numerator=2、denominator=3、value=0.666666666667，计算行为正确。
+- 项目代码与 committed assets 没有被该只读 probe 修改。
+
+### Suggested Fix
+比率验收优先核对 numerator/denominator；数值字段使用 `math.isclose` 或与 contract 指定的舍入值比较。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/eval_metrics.py
+
+### Resolution
+- **Resolved**: 2026-07-15T23:51:20+08:00
+- **Commit/PR**: N/A
+- **Notes**: 打印实际 scorecard 确认计算正确，并改用 numerator/denominator 与容差复验。
+
+---
+
+## [ERR-20260715-018] eval_schema_error_assertion_drift
+
+**Logged**: 2026-07-15T23:50:10+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+Memory schema 加强后的首次测试中 24 项有 1 项失败；旧断言只接受 `provenance` 错误，新 schema 更早以 `claim link evidence must be admissible` fail closed。
+
+### Error
+```
+23/24 evaluator tests passed; error-message regex did not include admissible
+```
+
+### Context
+- 被测无效 oracle 已被正确拒绝。
+- 失败来自错误阶段提前后的测试文本断言漂移，没有暴露行为放行。
+
+### Suggested Fix
+负向 schema 测试优先断言 stable error category；当多个 fail-closed 层都合法时，文本断言覆盖允许的稳定语义。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/tests/test_eval.py
+
+### Resolution
+- **Resolved**: 2026-07-15T23:50:10+08:00
+- **Commit/PR**: N/A
+- **Notes**: 断言更新为接受 provenance 或 admissible 语义，随后全量 59/59 测试通过。
+
+---
+
+## [ERR-20260715-017] eval_claim_lineage_taxonomy_gap
+
+**Logged**: 2026-07-15T23:44:57+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tests
+
+### Summary
+research eval kernel 首次全量 mutation run 中 56 项有 1 项失败：伪造 evidence-to-record lineage 已被评分判为 unsupported，hard-gate taxonomy 未同步产生 `claim_lineage_break`。
+
+### Error
+```
+Ran 56 tests; 1 failure in candidate evidence lineage mutation
+```
+
+### Context
+- evaluator-owned provenance 已参与 metric 评分。
+- integrity gate 当时只验证 cited evidence 属于 memory，没有再次与 traceable evaluator provenance 取交集。
+- 失败由负向 mutation test 捕获，没有形成错误 committed result。
+
+### Suggested Fix
+评分与 hard gate 共用同一条 retrieval-to-artifact-to-evidence-to-memory-to-claim traceability 定义，并保留伪造 lineage 的独立 mutation test。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/eval_integrity.py, plugins/frogent-drug-design/tests/test_eval.py
+
+### Resolution
+- **Resolved**: 2026-07-15T23:44:57+08:00
+- **Commit/PR**: N/A
+- **Notes**: `claim_lineage_break` 已统一使用 evaluator-owned traceable lineage；随后 56/56 测试通过。
+
+---
+
+## [ERR-20260715-016] eval_stdout_outside_project
+
+**Logged**: 2026-07-15T23:42:05+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: workflow
+
+### Summary
+Implementation 在离线 eval smoke run 中把 stdout 重定向到项目目录之外的 `/tmp/frogent-eval-output.json`，违反本地写入边界。
+
+### Error
+```
+local output path escaped /Users/dongxu/projects/FROGENT/
+```
+
+### Context
+- eval 本身保持离线，没有连接远端、provider、模型、数据库或 MCP。
+- 越界写入来自 shell stdout 重定向。
+- 根据项目边界，后续不会对该项目外文件执行删除、覆盖或其他修改。
+
+### Suggested Fix
+所有临时与生成结果都必须先解析并验证目标绝对路径位于项目根目录内；优先让 CLI 输出到 stdout 供进程直接读取，持久资产通过项目内受控路径创建。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/scripts/run_research_eval.py
+
+### Resolution
+- **Resolved**: 2026-07-15T23:42:05+08:00
+- **Commit/PR**: N/A
+- **Notes**: 停止对项目外路径的任何操作；后续 eval 输出限定在插件目录内或直接由调用进程捕获。
+
+---
+
+## [ERR-20260715-015] thread_message_template_literal
+
+**Logged**: 2026-07-15T23:22:13+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tooling
+
+### Summary
+向 Implementation 任务发送补充审查意见时，JavaScript template literal 中的 Markdown 反引号未转义，消息调用在解析前失败。
+
+### Error
+```
+SyntaxError: Unexpected identifier 'evidence_lineage'
+```
+
+### Context
+- 失败发生在本地消息编排脚本解析阶段。
+- Implementation 任务没有收到该次消息，项目文件未受影响。
+
+### Suggested Fix
+在 JavaScript template literal 中避免未转义反引号，或改用普通字符串安全传递 Markdown 内容。
+
+### Metadata
+- Reproducible: yes
+- Related Files: N/A
+
+### Resolution
+- **Resolved**: 2026-07-15T23:22:13+08:00
+- **Commit/PR**: N/A
+- **Notes**: 移除消息中的 Markdown 反引号后重新发送。
+
+---
+
 ## [ERR-20260715-014] initial_git_diff_whitespace
 
 **Logged**: 2026-07-15T23:28:00+08:00
