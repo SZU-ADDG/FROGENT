@@ -115,11 +115,40 @@ Authority scope 为 `exposed_development_diagnostic`。Claim limits 保持 `expo
 
 该结果只支持 exposed diagnostic 下的 negative single-hypothesis result，不能用于声明真实 retrieval quality 或完整 workflow 效果发生变化。下一轮必须先做逐 case failure analysis，从失败模式提出一个新的单变量假设并建立独立 preregistration；`query deduplication`、stop-rule 改写及其他候选仍需分别实验。
 
+## 2026-07-16 PLAN forward v4 immutable pre-worker lock
+
+`plan-forward-v4` 是独立 immutable preregistration，唯一假设为 `anchor-safe locator fallback query construction`。Candidate snapshot 只在 active/current `plan-literature-search` Skill 的 `Recall and precision controls` 新增一条 locator-first bullet；current snapshot 与 active Skill byte-equal，active Skill 尚未修改。
+
+单一变量的精确语义为：
+
+- 每个 decision-critical anchor 或 counterevidence checkpoint 使用 route-specific locator-first query。
+- Locator branch 可使用精确 PMID、DOI、NCT number、regulatory-document locator、exact title 或 exact study name，且不添加 author、year、outcome、assay 等 `AND` filters；禁止 invent locator。
+- Locator 不可用时，fallback 为每个 essential entity 与 event 各保留一个 alias 的 minimal branch。
+- Query cap、合法 routes 与既有 wave coverage 保持不变。`query deduplication` 与 stop-rule 改写继续 deferred。
+
+V4 精确复用 v2 candidate tasks、candidate-visible constraints、oracles、frozen corpus、common prompt、matcher/replay/scoring、8 项 metrics、3 项 primary metrics 与 hard gates；gold、threshold、provider snapshot 和 exposed panel 均未改变。固定 matrix 为 `PLAN-01`、`PLAN-02` × opaque `skill_a`、`skill_b` × replicate labels `17`、`29`、`43`，共 12 个 sealed envelopes。每个 envelope 恰好一个终止换行；receipt digest payload 显式绑定 `eval_id=plan-forward-v4`，防止跨版本 worker identity collision。
+
+当前状态为 `pack_status=locked`、`fresh_workers=0`、`effect_outcome=not_evaluated`、`promotion_eligible=false`；official v4 outputs 与 result 均不存在。Pre-worker lock 只支持 evaluator/identity integrity，不能写入效果改善结论。
+
+冻结 identity 为：
+
+- evaluator revision：`dee825000247b5dc21d5e6486a97de86f0086f1c59bbcd21eff780659f8cf942`
+- manifest：`e565f8ab98eb42302b041f5b5215078d92a6462f38ae679cd7b1a71abbd4cbac`
+- bundle：`dff9c5358ce268b01b512c72bfb1be388e0e2fd0224fbc9911171bfb9c1b184b`
+- current Skill：`35163a32dd0e625ed07c987e008f4f8ee4754d7b3cb63ffa7e20c07863d3e014`
+- candidate Skill：`e5b27dd9eb116362297600f34512797816f59078e516a20d9d3421168e1c6eb8`
+- shared reference：`e0e74ce98aba91541ba6324589139b6c416e77ecc49c69e75741418fafcb6630`
+- arm instruction：`0746fa95cb4cba2158fd4f71e1412c5bf98905607ae997dc33b9071f10173224`
+
+Evaluator revision 绑定 27 个文件；递归静态 local-import closure 为 25 个文件，另绑定 v2 runner/CLI 作为保守 overbinding。Implementation 13/13、Main fresh 全量 127/127、v1/v2/v3 exact replay、v4 locked CLI、official validator 与 sanitizer 982/0/0 均通过；独立只读审计结论为 PASS，P0=0、P1=0。
+
+Authority scope 为 `exposed_development_diagnostic`。Claim limits 保持 `exposed_development_panel`、`seed_control_unverified`、`candidate_reference_filesystem_isolation_not_established`、`independent_score_owner_not_established`、`model_runtime_provider_memory_identity_closure_incomplete` 与 `actual_prompt_delivery_not_independently_attested`。
+
 ## 当前事实边界
 
-当前交付包含 typed contracts、harness/evidence control plane、structured provider port、v4 compatibility adapter、retrieval composition 和 research eval kernel。`research-eval-v1.result.json` 的 authority scope 只是 `evaluator_fixture`，内容来自 fixture-bound baseline/candidate exact replay；mutation checks 属于测试验收层。`plan-forward-v1`、`plan-forward-v2` 与 `plan-forward-v3` 都已产生 PLAN official exposed diagnostic result；v1 具有冻结 matcher/worker-contract 测量限制，v2 具有上述 attribution、authority 与 coverage 限制，v3 是上述单一 Skill bullet 假设的 negative result。
+当前交付包含 typed contracts、harness/evidence control plane、structured provider port、v4 compatibility adapter、retrieval composition 和 research eval kernel。`research-eval-v1.result.json` 的 authority scope 只是 `evaluator_fixture`，内容来自 fixture-bound baseline/candidate exact replay；mutation checks 属于测试验收层。`plan-forward-v1`、`plan-forward-v2` 与 `plan-forward-v3` 都已产生 PLAN official exposed diagnostic result；v1 具有冻结 matcher/worker-contract 测量限制，v2 具有上述 attribution、authority 与 coverage 限制，v3 是上述单一 Skill bullet 假设的 negative result。`plan-forward-v4` 当前只有 independent immutable pre-worker lock，尚无 fresh worker 或 official effect result。
 
-因此，`research-eval-v1` 固定为 `effect_outcome=not_evaluated`、`promotion_eligible=false`；`plan-forward-v1`、`plan-forward-v2` 与 `plan-forward-v3` 均固定为 `effect_outcome=rejected`、`promotion_eligible=false`。当前结果不得用于声明真实 recall、precision、source coverage、traceability、Deep Research 或 memory quality 提升，也不得用于声明已证明真实 retrieval quality 下降或完整 workflow 效果变化。
+因此，`research-eval-v1` 与 pre-worker `plan-forward-v4` 均为 `effect_outcome=not_evaluated`、`promotion_eligible=false`；`plan-forward-v1`、`plan-forward-v2` 与 `plan-forward-v3` 均固定为 `effect_outcome=rejected`、`promotion_eligible=false`。当前结果不得用于声明真实 recall、precision、source coverage、traceability、Deep Research 或 memory quality 提升，也不得用于声明已证明真实 retrieval quality 下降或完整 workflow 效果变化。
 
 以下 production 能力仍处于待接入或待评测状态：
 
@@ -137,8 +166,8 @@ MCP manifests 和 capability catalog 当前表达配置与稳定能力 ID，不�
 
 ## 后续重构顺序
 
-1. 对 v3 的 6 个 paired comparisons 做逐 case failure analysis，解释 anchor、counterevidence、concept、wave 与 stop-rule regression，并从失败模式提出一个新的单变量假设；完成独立 preregistration 后才可启动下一轮 fresh paired eval。
-2. `query deduplication`、stop-rule 改写及其他假设继续 deferred；若后续启用，必须各自单独实验并保持一轮一个变量。V3 negative result 不得改写为 Skill 改进。
+1. 先由 Main commit/push v4 immutable pre-worker lock；随后只使用 12 个 sealed envelopes 启动 fresh current/candidate paired workers，并机械执行 ingest、evaluate 与 exact verify。Result 出现前保持 `NOT_EVALUATED`，active Skill 继续 byte-equal current snapshot。
+2. `query deduplication`、stop-rule 改写及其他假设继续 deferred；若后续启用，必须各自单独实验并保持一轮一个变量。V3 negative result 与 v4 pre-worker lock 均不得改写为 Skill 改进。
 3. 随后按 locked panel 执行 SCREEN、SYNTH、RESEARCH 的 paired forward eval。上述 6 cases、`sequential`/`full`、Deep Research effect 与 memory effect 均尚未执行；任何负向结果、超时和失败案例都进入正式结果资产。详见 [RESEARCH_EVAL_LOOP.md](RESEARCH_EVAL_LOOP.md)。
 4. 单 Skill 贡献通过逐 case gate 后，再运行固定顺序的 `sequential` profile 与真实整体 workflow 的 `full` profile。
 5. 完成 paired effect evaluation 后再接入真实 literature provider、MCP providers、Flask/Qwen compatibility path，以及所需的 artifact/state store。真实 provider regression 使用冻结 snapshot，live provider 使用独立 canary。

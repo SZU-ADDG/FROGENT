@@ -2,6 +2,144 @@
 
 此文件用于记录命令、远端连接及外部工具错误。
 
+## [ERR-20260717-002] precommit_replay_glob_wrong_workdir
+
+**Logged**: 2026-07-17T00:05:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: eval
+
+### Summary
+pre-commit 复合验收从项目根执行时，v1/v2/v3 replay 使用了插件根相对 glob，zsh 对三组 outputs 报 `no matches found`；复合命令未启用 fail-fast，后续检查继续执行。
+
+### Error
+```
+zsh: no matches found: evals/plan-forward-v1.outputs/*.json
+zsh: no matches found: evals/plan-forward-v2.outputs/*.json
+zsh: no matches found: evals/plan-forward-v3.outputs/*.json
+```
+
+### Context
+- 同一复合命令中的 127/127 tests、v4 locked CLI、validator 与 sanitizer 正常完成。
+- 三个旧版本 exact replay 没有实际启动，因此不能将该轮命令视为 replay 通过证据。
+
+### Suggested Fix
+Exact replay 固定从插件根执行，或为 manifest、outputs 与 result 全部加插件路径前缀。多项 pre-commit gate 使用 `set -e`，让任一子命令失败立即终止。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/scripts/run_plan_forward_eval.py, plugins/frogent-drug-design/scripts/run_plan_forward_v2_eval.py, plugins/frogent-drug-design/scripts/run_plan_forward_v3_eval.py
+- See Also: ERR-20260717-001, ERR-20260716-021
+
+### Resolution
+- **Resolved**: 2026-07-17T00:05:30+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已切换到插件根并启用 fail-fast，重新执行三版 exact replay 与后续门禁。
+
+---
+
+## [ERR-20260717-001] v4_hygiene_learning_path_base
+
+**Logged**: 2026-07-17T00:01:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: eval
+
+### Summary
+v4 hygiene 扫描在插件工作目录下直接引用根目录 `.learnings` 相对路径，`rg` 报告两个文件不存在。
+
+### Error
+```
+rg: .learnings/ERRORS.md: No such file or directory
+rg: .learnings/LEARNINGS.md: No such file or directory
+```
+
+### Context
+- 命令从 `plugins/frogent-drug-design/` 执行；`.learnings` 实际位于项目根。
+- 前置 bundle、SHA、EOF、symlink、cache 与 line-count 检查均已完成；本错误只影响最后一项只读文本扫描。
+
+### Suggested Fix
+跨项目根与插件根执行卫生检查时显式使用项目根 workdir，或使用 `../../.learnings/...`；避免在复合命令中混合两套路径基准。
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+- See Also: ERR-20260716-021
+
+### Resolution
+- **Resolved**: 2026-07-17T00:01:30+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已切换到项目根并使用完整项目相对路径重新执行扫描。
+
+---
+
+## [ERR-20260716-024] plan_v4_mutation_sandbox_name_collision
+
+**Logged**: 2026-07-16T23:59:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: eval
+
+### Summary
+v4 evaluator byte-tamper mutation 测试复用了已存在的项目内 sandbox 名称，第二次复制时触发 `FileExistsError`。
+
+### Error
+```
+FileExistsError
+```
+
+### Context
+- 失败发生在自动清理的项目内 mutation sandbox 初始化阶段。
+- official v4 assets 未被写入；v1/v2/v3 资产与 active Skill 保持只读。
+
+### Suggested Fix
+每个 mutation case 使用独立且确定性的 sandbox 名称，或在同一临时根下使用唯一子目录；测试结束后统一清理，并在最终验证阶段顺序执行 hygiene 检查。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/tests/test_plan_eval_v4.py
+- See Also: ERR-20260716-022
+
+### Resolution
+- **Resolved**: 2026-07-16T23:59:30+08:00
+- **Commit/PR**: N/A
+- **Notes**: byte-tamper mutation 已切换为独立 sandbox 名称，随后重新运行定向测试。
+
+---
+
+## [ERR-20260716-023] plan_v4_failure_analysis_oracle_key
+
+**Logged**: 2026-07-16T23:55:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: eval
+
+### Summary
+v4 failure analysis 读取 v2 evaluator oracle 时猜测了不存在的 required_stop_rules 字段，脚本在打印 stop requirements 时触发 KeyError。
+
+### Error
+```
+KeyError: 'required_stop_rules'
+```
+
+### Context
+- 脚本只读 v2 oracle 与 v3 result；没有修改 locked assets、outputs、result 或 Skill。
+- 实际 schema 字段为 required_stop_groups。
+
+### Suggested Fix
+分析 evaluator-owned schema 前先打印或验证 exact keys，后续只使用 loader 已定义的真实字段名。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/evals/plan-forward-v2.evaluator-oracles.json
+
+### Resolution
+- **Resolved**: 2026-07-16T23:56:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已读取两 case 的 exact key 集，改用 required_stop_groups 继续逐 run failure analysis。
+
+---
+
 ## [ERR-20260716-022] concurrent_hygiene_probe_transient_failure
 
 **Logged**: 2026-07-16T23:45:00+08:00

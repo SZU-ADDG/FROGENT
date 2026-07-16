@@ -486,3 +486,29 @@ FROGENT 当前九个 MCP 服务同时涉及 Python 3.7 至 3.11、不同 RDKit/O
 - See Also: LRN-20260714-002
 
 ---
+## [LRN-20260716-004] best_practice
+
+**Logged**: 2026-07-16T23:59:45+08:00
+**Priority**: high
+**Status**: pending
+**Area**: eval
+
+### Summary
+Versioned eval 的 sealed worker receipt 必须把 `eval_id` 纳入 digest payload，防止跨版本相同 arm 输入发生 identity collision。
+
+### Details
+PLAN forward v4 初版沿用 v3 receipt payload；current arm 的 candidate-visible bytes 与 v3 对应输入相同，导致 v4 `skill_a` receipt 与 v3 digest 重合。即使两轮使用不同 manifest 和 evaluator revision，worker receipt 本身也无法表达所属 eval 版本。把 `eval_id` 绑定进 v4 receipt 后，每个 sealed input 同时具备 case、arm、replicate、assets 与 eval-version identity。
+
+### Suggested Action
+所有新 eval version 的 receipt constructor 都显式纳入 `eval_id`，并增加跨版本 digest 不相等测试；manifest、envelope SHA 与 evaluator revision 按依赖链重算。
+
+### Metadata
+- Source: simplify-and-harden
+- Related Files: plugins/frogent-drug-design/frogent_plugin/plan_eval_v4_assets.py, plugins/frogent-drug-design/tests/test_plan_eval_v4.py
+- Tags: eval-identity, worker-receipt, cross-version-isolation
+- Pattern-Key: harden.eval_receipt_version_binding
+- Recurrence-Count: 1
+- First-Seen: 2026-07-16
+- Last-Seen: 2026-07-16
+
+---

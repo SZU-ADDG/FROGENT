@@ -16,6 +16,7 @@ def main() -> int:
     from frogent_plugin.eval_runner import evaluate_bundle, verify_result
     from frogent_plugin.plan_eval_assets import load_plan_bundle
     from frogent_plugin.plan_eval_v3_assets import load_plan_v3_bundle
+    from frogent_plugin.plan_eval_v4_assets import load_plan_v4_bundle
 
     suite = unittest.defaultTestLoader.discover(str(plugin_root / "tests"))
     result = unittest.TextTestRunner(verbosity=2).run(suite)
@@ -38,6 +39,11 @@ def main() -> int:
     )
     if v3.manifest["pack_status"] != "locked":
         raise ValueError("PLAN forward v3 preregistration must remain locked")
+    v4 = load_plan_v4_bundle(
+        plugin_root, Path("evals/plan-forward-v4.manifest.json")
+    )
+    if v4.manifest["pack_status"] != "locked":
+        raise ValueError("PLAN forward v4 preregistration must remain locked")
     return 0
 
 

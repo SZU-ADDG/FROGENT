@@ -95,6 +95,7 @@ Research kernel fixture 与 PLAN forward diagnostic 具有不同 authority：
 - `plan-forward-v1` 的 authority scope 为 `exposed_development_diagnostic`；它提供正式 exposed diagnostic effect result，仍不具备 hidden 或独立 score-owner authority。
 - `plan-forward-v2` 的 authority scope 同为 `exposed_development_diagnostic`；它已产生 official exposed diagnostic result，仍不具备 hidden 或独立 score-owner authority。
 - `plan-forward-v3` 的 authority scope 同为 `exposed_development_diagnostic`；它已产生 official negative single-hypothesis result，仍不具备 hidden 或独立 score-owner authority。
+- `plan-forward-v4` 的 authority scope 同为 `exposed_development_diagnostic`；当前只完成 independent immutable pre-worker lock，尚无 fresh worker 或 official effect result。
 
 共同限制如下：
 
@@ -113,7 +114,7 @@ Research kernel fixture 与 PLAN forward diagnostic 具有不同 authority：
 - `effect_outcome=not_evaluated`
 - `promotion_eligible=false`
 
-它只支持 `CONTRACT/EVALUATOR INTEGRITY PASS`，不得用于声明 retrieval、Deep Research 或 memory 效果提升。`plan-forward-v1` 的冻结状态与额外测量边界见 5.4，`plan-forward-v2` 与 `plan-forward-v3` 的 official diagnostics 分别见 5.5、5.6。
+它只支持 `CONTRACT/EVALUATOR INTEGRITY PASS`，不得用于声明 retrieval、Deep Research 或 memory 效果提升。`plan-forward-v1` 的冻结状态与额外测量边界见 5.4，`plan-forward-v2` 与 `plan-forward-v3` 的 official diagnostics 分别见 5.5、5.6，`plan-forward-v4` 的 pre-worker lock 见 5.7。
 
 ## 5. 首轮 paired forward-test panel
 
@@ -280,11 +281,51 @@ Evaluator revision 绑定 27 个文件；静态 local-import closure 完整，v2
 
 Claim limits 为 `exposed_development_panel`、`seed_control_unverified`、`candidate_reference_filesystem_isolation_not_established`、`independent_score_owner_not_established`、`model_runtime_provider_memory_identity_closure_incomplete` 与 `actual_prompt_delivery_not_independently_attested`。本地 `inbox` 只承担临时传输，不得视为 official asset；official result receipts 只引用 `evals/plan-forward-v3.outputs/`。
 
-该结果只支持 exposed diagnostic 下的 negative single-hypothesis result，无法证明真实 retrieval quality 或完整 workflow 效果变化。下一轮先做逐 case failure analysis，再从失败模式提出一个新的单变量假设并建立独立 preregistration；`query deduplication`、stop-rule 改写及其他候选继续分别实验。
+该结果只支持 exposed diagnostic 下的 negative single-hypothesis result，无法证明真实 retrieval quality 或完整 workflow 效果变化。逐 case failure analysis 已产出 v4 的新单变量 preregistration；`query deduplication`、stop-rule 改写及其他候选继续分别实验。
 
-### 5.7 执行顺序与数据分层
+### 5.7 PLAN v4 immutable pre-worker lock
 
-1. `PLAN-01`、`PLAN-02` 的 v1/v2/v3 official diagnostics 均已完成且结果均为 rejected；下一轮从 v3 逐 case failure analysis 提出一个新单变量假设，完成独立 preregistration 后再运行 fresh paired workers。
+V4 是独立 immutable preregistration，唯一假设为 `anchor-safe locator fallback query construction`。Candidate snapshot 只在 active/current `plan-literature-search` Skill 的 `Recall and precision controls` 新增一条 locator-first bullet；current snapshot 与 active Skill byte-equal，active Skill 尚未修改。
+
+单一变量固定以下 query construction：
+
+1. 每个 decision-critical anchor/counterevidence checkpoint 使用 route-specific locator-first query。
+2. Locator branch 使用精确 PMID、DOI、NCT number、regulatory-document locator、exact title 或 exact study name，不添加 author、year、outcome、assay 等 `AND` filters，并禁止 invent locator。
+3. Locator 不可用时，fallback 为每个 essential entity/event 各一个 alias 的 minimal branch。
+4. Query cap、合法 routes 与既有 wave coverage 保持不变；`query deduplication` 与 stop-rule 改写继续 deferred。
+
+V4 精确复用 v2 candidate tasks、constraints、oracles、frozen corpus、common prompt、matcher/replay/scoring、8 metrics、3 primary metrics 与 hard gates；gold、threshold、provider snapshot 与 exposed panel 均未改变。
+
+| Pre-worker 状态 | 冻结值 |
+|---|---|
+| Matrix | `PLAN-01/02 × skill_a/skill_b × 17/29/43`；worker-facing arms 保持 opaque |
+| Worker inputs | 12 个 sealed envelopes；每个 envelope 恰好一个终止换行 |
+| Receipt identity | digest payload 显式绑定 `eval_id=plan-forward-v4`，防止跨版本 identity collision |
+| Pack | `locked` |
+| Fresh workers | `0` |
+| Official outputs/result | absent |
+| Effect | `not_evaluated` |
+| Promotion | `false` |
+
+| Identity | SHA-256 |
+|---|---|
+| Evaluator revision | `dee825000247b5dc21d5e6486a97de86f0086f1c59bbcd21eff780659f8cf942` |
+| Manifest | `e565f8ab98eb42302b041f5b5215078d92a6462f38ae679cd7b1a71abbd4cbac` |
+| Bundle | `dff9c5358ce268b01b512c72bfb1be388e0e2fd0224fbc9911171bfb9c1b184b` |
+| Current Skill | `35163a32dd0e625ed07c987e008f4f8ee4754d7b3cb63ffa7e20c07863d3e014` |
+| Candidate Skill | `e5b27dd9eb116362297600f34512797816f59078e516a20d9d3421168e1c6eb8` |
+| Shared reference | `e0e74ce98aba91541ba6324589139b6c416e77ecc49c69e75741418fafcb6630` |
+| Arm instruction | `0746fa95cb4cba2158fd4f71e1412c5bf98905607ae997dc33b9071f10173224` |
+
+Evaluator revision 绑定 27 个文件；递归静态 local-import closure 为 25 个文件，v2 runner/CLI 作为保守 overbinding。Implementation 13/13、Main fresh 全量 127/127、v1/v2/v3 exact replay、v4 locked CLI、official validator 与 sanitizer 982/0/0 均通过；独立只读审计结论为 PASS，P0=0、P1=0。
+
+Claim limits 为 `exposed_development_panel`、`seed_control_unverified`、`candidate_reference_filesystem_isolation_not_established`、`independent_score_owner_not_established`、`model_runtime_provider_memory_identity_closure_incomplete` 与 `actual_prompt_delivery_not_independently_attested`。当前只支持 pre-worker evaluator/identity integrity，禁止写入效果改善结论。
+
+下一步先由 Main commit/push immutable v4 lock，再只用这 12 个 sealed envelopes 启动 fresh paired workers，随后机械执行 ingest、evaluate 与 exact verify。Official result 产生前保持 `NOT_EVALUATED`，active Skill 不变。
+
+### 5.8 执行顺序与数据分层
+
+1. `PLAN-01`、`PLAN-02` 的 v1/v2/v3 official diagnostics 均已完成且结果均为 rejected；v4 已锁定新单变量假设，当前等待 Main commit/push 与 12 个 fresh paired workers。
 2. 随后执行 `SCREEN-01`、`SCREEN-02`，验证 canonicalization、screening ledger 与 memory gate。
 3. 再执行 `SYNTH-01`、`SYNTH-02`，验证 claim scope、counterevidence、conflict 与 temporal sensitivity。
 4. 最后执行 `RESEARCH-01`、`RESEARCH-02`，覆盖 multi-wave workflow、provider failure、budget 与 stop quality。
