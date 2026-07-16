@@ -7,6 +7,7 @@
 - 仓库内 case/oracle 一律属于 exposed data；hidden held-out 只能由独立 score owner 在 candidate freeze 后运行。
 - 默认 regression 仅使用 frozen provider/corpus snapshot；live provider 进入独立 canary。
 - Retrieval eval 使用 grouped aliases，并用实际 query routes 核对来源覆盖；locked identity 同时绑定 Skill、reference、worker input 和 evaluator implementation。
+- Candidate-visible worker contract 明确公开合法输出需要的字段、类型和 enum tokens；oracle、record IDs、match rules 与 scoring reference 继续由 evaluator 保管。
 - 所有 missing、invalid、failed 与负向运行都保存 deterministic rejected result；完整结果必须使用同一组受控输入资产 exact replay。
 - 文献 query hit occurrence 与 canonical record 分层保存，一致重复保留全部 provenance，冲突重复 fail closed。
 - Memory eval 分开测量 admission、working-memory retention 与 revocation；useful recall 只统计 evaluator 可追溯的 working memory，误撤有用 evidence 与漏撤 stale evidence 都必须扣分。

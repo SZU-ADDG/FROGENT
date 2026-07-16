@@ -360,6 +360,22 @@ class PlanEvalTests(unittest.TestCase):
         self.assertFalse((PLUGIN_ROOT / "evals/plan-forward-v1.result.json").exists())
         self.assertFalse((PLUGIN_ROOT / "evals/plan-forward-v1.outputs").exists())
 
+    def test_bound_common_prompt_exposes_exact_worker_schema_tokens(self) -> None:
+        bundle = load_plan_bundle(PLUGIN_ROOT, Path("evals/plan-forward-v1.manifest.json"))
+        spec = bundle.manifest["identity_assets"]["common_prompt"]
+        prompt = (PLUGIN_ROOT / spec["path"]).read_text(encoding="utf-8")
+        for route in ("pubmed", "clinicaltrials_gov", "fda_regulatory"):
+            self.assertIn(route, prompt)
+        for token in (
+            "case_id", "profile", "replicate_label", "worker_input_digest", "as_of",
+            "completed", "failed", "source_map", "concept_blocks", "block_id", "terms",
+            "queries", "query_id", "source", "wave", "query", "purpose",
+            "inclusion_criteria", "exclusion_criteria", "stop_rules", "coverage_gaps",
+            "sentinel", "discovery", "confirmation", "expansion", "challenge", "update",
+            "JSON only", "Markdown", "commentary", "evaluator fields",
+        ):
+            self.assertIn(token, prompt)
+
     def test_authoritative_routes_aliases_and_identifier_bypass_replay(self) -> None:
         bundle = load_plan_bundle(PLUGIN_ROOT, Path("evals/plan-forward-v1.manifest.json"))
         plan01 = self._official_output(bundle, "PLAN-01", "pubmed", "LRRK2 α-synuclein negative")

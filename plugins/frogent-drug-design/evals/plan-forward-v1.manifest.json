@@ -33,7 +33,7 @@
     },
     "common_prompt": {
       "path": "evals/plan-forward-v1.worker-common.txt",
-      "sha256": "a0ec95bbecb044939050f62dea3704a503e112a4c0643d32f6cbbc95b29b8efa"
+      "sha256": "28f82dc96a8b5b361ed5dd1b2ded670c0c4de2da184e1966a0de4da5203bfd89"
     },
     "reference": {
       "path": "skills/plan-literature-search/references/query-strategy.md",

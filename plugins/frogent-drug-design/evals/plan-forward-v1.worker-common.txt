@@ -1,5 +1,10 @@
 You are producing one fresh PLAN forward output for an exposed development diagnostic.
 Use only the supplied candidate-visible case task, as_of, arm instruction, and any arm-authorized Skill material.
 Return one JSON object with exactly these fields: case_id, profile, replicate_label, worker_input_digest, execution_status, question_frame, as_of, source_map, concept_blocks, queries, inclusion_criteria, exclusion_criteria, stop_rules, coverage_gaps.
-Each concept block has block_id and terms. Each query has query_id, source, wave, query, and purpose. Allowed waves are sentinel, discovery, confirmation, expansion, challenge, and update.
-Echo the supplied worker_input_digest exactly. Do not add commentary or evaluator fields.
+Echo case_id, profile, replicate_label, worker_input_digest, and as_of exactly as supplied.
+execution_status must be exactly completed or failed.
+source_map must be a unique list of route IDs. The available exact route IDs are pubmed, clinicaltrials_gov, and fda_regulatory.
+concept_blocks must be a non-empty list of objects with exactly block_id and terms, where terms is a list of non-empty strings.
+queries must be a non-empty list of objects with exactly query_id, source, wave, query, and purpose. source must use an exact available route ID. wave must be exactly sentinel, discovery, confirmation, expansion, challenge, or update.
+inclusion_criteria, exclusion_criteria, and stop_rules must each be a non-empty unique list of non-empty strings. coverage_gaps must be a list of non-empty strings and may be empty.
+Return JSON only. Do not add Markdown, commentary, or evaluator fields.

@@ -2,6 +2,73 @@
 
 此文件用于记录命令、远端连接及外部工具错误。
 
+## [ERR-20260716-005] learning_patch_template_literal
+
+**Logged**: 2026-07-16T15:14:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: docs
+
+### Summary
+学习记录补丁放入 JavaScript 模板字符串时包含未转义反引号，脚本在调用 apply_patch 前发生语法错误。
+
+### Error
+```
+SyntaxError: Unexpected identifier 'check'
+```
+
+### Context
+- 失败发生在工具编排脚本解析阶段，apply_patch 未执行。
+- 项目文件没有发生部分修改。
+
+### Suggested Fix
+复杂补丁使用逐行双引号数组拼接，或移除补丁正文中的反引号，避免 JavaScript 模板字符串提前闭合。
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+
+### Resolution
+- **Resolved**: 2026-07-16T15:14:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已改用逐行字符串数组重新应用补丁。
+
+---
+
+## [ERR-20260716-004] pre_worker_schema_validation_cli_invocation
+
+**Logged**: 2026-07-16T15:13:05+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+Candidate-visible schema 小修复验时先后使用了错误的插件 check.py 路径，并把 PLAN manifest 误当成命名参数传给位置参数接口。
+
+### Error
+```
+check.py entry path not found
+run_plan_forward_eval.py: unrecognized arguments for manifest flag
+```
+
+### Context
+- 两条命令只尝试启动本地验证，没有修改 eval assets、outputs 或 result。
+- Implementation 按本轮 .learnings 只读边界在交接包报告，Main 接管记录。
+
+### Suggested Fix
+从项目根目录运行 python3 plugins/frogent-drug-design/scripts/check.py；PLAN CLI 使用 validate-preregistration evals/plan-forward-v1.manifest.json 位置参数。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/scripts/check.py, plugins/frogent-drug-design/scripts/run_plan_forward_eval.py
+
+### Resolution
+- **Resolved**: 2026-07-16T15:13:05+08:00
+- **Commit/PR**: N/A
+- **Notes**: Implementation 随后使用正确入口完成 84/84、locked CLI、validator 与 sanitizer；Main 将再次独立复验。
+
+---
+
 ## [ERR-20260716-002] learning_insert_context_recurrence
 
 **Logged**: 2026-07-16T13:52:08+08:00
@@ -880,7 +947,7 @@ apply_patch verification failed: Failed to find expected lines
 ---
 ## [ERR-20260716-003] plan_corpus_jq_shell_expansion
 
-**Logged**: 2026-07-16T16:00:00+08:00
+**Logged**: 2026-07-16T14:40:00+08:00
 **Priority**: low
 **Status**: resolved
 **Area**: eval
@@ -905,7 +972,7 @@ jq: error: syntax error, unexpected '|', expecting BINDING or '[' or '{'
 - Related Files: plugins/frogent-drug-design/evals/plan-forward-v1.frozen-corpus.json
 
 ### Resolution
-- **Resolved**: 2026-07-16T16:01:00+08:00
+- **Resolved**: 2026-07-16T14:41:00+08:00
 - **Commit/PR**: N/A
 - **Notes**: 最终把完整 filter 放入 shell 单引号，且移除 `jq` 变量，成功复核 PLAN-01=10、PLAN-02=12、record ID 22/22 唯一。
 

@@ -1,8 +1,36 @@
 # Learnings
 
+## [LRN-20260716-003] best_practice
+
+**Logged**: 2026-07-16T15:15:14+08:00
+**Priority**: high
+**Status**: promoted
+**Area**: tests
+
+### Summary
+Effect eval 必须向 candidate 公开合法输出所需的精确 schema tokens，同时隔离 evaluator-owned reference。
+
+### Details
+当 evaluator 对 source route、status 或 wave 使用精确枚举，而 common worker contract 只给自然语言名称时，fresh worker 会因为猜错接口 token 被当成能力失败。这种误差会污染 baseline 与 Skill arm，也无法解释真实 retrieval planning 效果。公开接口 schema 不会泄漏 oracle；record IDs、match groups、relevance labels 和 scoring requirements 仍需隐藏。
+
+### Suggested Action
+在 candidate freeze 前把字段、容器类型、必填约束和允许 enum IDs 写入共同、逐字节绑定的 worker contract，并用 mutation test固定。Worker contract 对所有 arms相同；evaluator-owned corpus、oracle 与 match rules不进入 candidate prompt。
+
+### Metadata
+- Source: code_review
+- Related Files: plugins/frogent-drug-design/evals/plan-forward-v1.worker-common.txt, plugins/frogent-drug-design/tests/test_plan_eval.py
+- Tags: evaluation, candidate-contract, schema, isolation, fairness
+- Pattern-Key: eval.expose_schema_hide_oracle
+- Recurrence-Count: 1
+- First-Seen: 2026-07-16
+- Last-Seen: 2026-07-16
+- Promoted: AGENTS.md, plugins/frogent-drug-design/AGENTS.md
+
+---
+
 ## [LRN-20260716-002] best_practice
 
-**Logged**: 2026-07-16T16:10:00+08:00
+**Logged**: 2026-07-16T14:45:00+08:00
 **Priority**: high
 **Status**: promoted
 **Area**: tests
