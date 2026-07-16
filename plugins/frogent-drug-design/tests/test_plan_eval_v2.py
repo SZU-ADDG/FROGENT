@@ -3,6 +3,7 @@
 import copy
 import ast
 import hashlib
+import importlib.util
 import json
 import subprocess
 import sys
@@ -11,6 +12,7 @@ import unittest
 from contextlib import contextmanager
 from dataclasses import replace
 from pathlib import Path
+from unittest.mock import patch
 
 sys.dont_write_bytecode = True
 PLUGIN_ROOT = Path(__file__).resolve().parents[1]
@@ -60,15 +62,55 @@ class PlanEvalV2Tests(unittest.TestCase):
         return [self.output(case, profile, replicate) for case in ("PLAN-01", "PLAN-02")
                 for profile in ("no_skill", "single_skill") for replicate in ("17", "29", "43")]
 
-    def test_locked_pack_is_pending_fresh_workers_and_has_exact_constraints(self) -> None:
+    def test_authoritative_post_run_pack_has_exact_replay_integrity(self) -> None:
         self.assertEqual("locked", self.bundle.manifest["pack_status"])
         self.assertEqual(["pubmed"], self.bundle.constraints["PLAN-01"]["available_source_routes"])
         self.assertEqual(12, self.bundle.constraints["PLAN-01"]["max_query_events"])
         self.assertEqual(["pubmed", "clinicaltrials_gov", "fda_regulatory"],
                          self.bundle.constraints["PLAN-02"]["available_source_routes"])
         self.assertEqual(16, self.bundle.constraints["PLAN-02"]["max_query_events"])
-        self.assertFalse((PLUGIN_ROOT / "evals/plan-forward-v2.outputs").exists())
-        self.assertFalse((PLUGIN_ROOT / "evals/plan-forward-v2.result.json").exists())
+        output_dir = PLUGIN_ROOT / "evals/plan-forward-v2.outputs"
+        paths = sorted(output_dir.glob("*.json"))
+        expected_identities = {
+            f"{case}|{profile}|{replicate}"
+            for case in ("PLAN-01", "PLAN-02")
+            for profile in ("no_skill", "single_skill")
+            for replicate in ("17", "29", "43")
+        }
+        values = [json.loads(path.read_bytes()) for path in paths]
+        identities = {
+            "|".join((value["case_id"], value["profile"], value["replicate_label"]))
+            for value in values
+        }
+        self.assertEqual(12, len(paths))
+        self.assertEqual(expected_identities, identities)
+        relative_paths = [str(path.relative_to(PLUGIN_ROOT)) for path in paths]
+        self.assertTrue(all(path.startswith("evals/plan-forward-v2.outputs/") for path in relative_paths))
+        self.assertTrue(all("aborted-prompt-assembly" not in path for path in relative_paths))
+        metadata = [{"identity": relative, "digest": hashlib.sha256(path.read_bytes()).hexdigest()}
+                    for path, relative in zip(paths, relative_paths)]
+        result_path = PLUGIN_ROOT / "evals/plan-forward-v2.result.json"
+        self.assertTrue(result_path.is_file())
+        result = json.loads(result_path.read_bytes())
+        verify_plan_result(self.bundle, values, result, input_metadata=metadata)
+        self.assertEqual("completed", result["worker_completion"]["state"])
+        self.assertEqual(12, result["worker_completion"]["completed"])
+        self.assertEqual(12, result["worker_completion"]["accepted"])
+        self.assertEqual("completed", result["execution_completion"])
+        self.assertEqual("rejected", result["effect_outcome"])
+        self.assertFalse(result["promotion_eligible"])
+        self.assertEqual("87a89609f7992d9b363414d0e17d399ce7415a1efad38e1acdadcf24c4b731cb",
+                         result["replay_digest"])
+        self.assertEqual(["metric_coverage_not_comparable", "quality_metric_regression"], result["findings"])
+        self.assertEqual([
+            "exposed_development_panel", "seed_control_unverified",
+            "candidate_reference_filesystem_isolation_not_established",
+            "independent_score_owner_not_established",
+            "model_runtime_provider_memory_identity_closure_incomplete",
+        ], result["claim_limits"])
+        receipt_paths = {receipt["identity"] for receipt in result["input_receipts"]}
+        self.assertEqual(set(relative_paths), receipt_paths)
+        self.assertFalse(any("aborted-prompt-assembly" in path for path in receipt_paths))
 
     def test_worker_receipts_bind_case_constraints_and_are_unique(self) -> None:
         receipts = [worker_receipt(self.bundle, case, profile, replicate)
@@ -306,19 +348,24 @@ class PlanEvalV2Tests(unittest.TestCase):
         source = self._write_json("policy-violation.json", value)
         validate = [sys.executable, str(cli), "validate-output", str(self.manifest_path), str(source)]
         subprocess.run(validate, cwd=PLUGIN_ROOT, check=True, capture_output=True, text=True)
-        output_dir = PLUGIN_ROOT / "evals/plan-forward-v2.outputs"
-        target = output_dir / "PLAN-01-single_skill-17.json"
-        self.assertFalse(output_dir.exists())
-        try:
-            ingest = [sys.executable, str(cli), "ingest", str(self.manifest_path), str(source)]
-            subprocess.run(ingest, cwd=PLUGIN_ROOT, check=True, capture_output=True, text=True)
-            stored = json.loads(target.read_bytes())
-            self.assertEqual("fda_regulatory", stored["queries"][0]["source"])
-        finally:
-            if target.exists():
-                target.unlink()
-            if output_dir.exists():
-                output_dir.rmdir()
+        spec = importlib.util.spec_from_file_location("plan_forward_v2_cli_test", cli)
+        self.assertIsNotNone(spec)
+        module = importlib.util.module_from_spec(spec)
+        self.assertIsNotNone(spec.loader)
+        spec.loader.exec_module(module)
+        target = self.temp_root / "isolated-ingest" / "PLAN-01-single_skill-17.json"
+
+        def isolated_write(relative: Path, content: str) -> None:
+            self.assertEqual(Path("evals/plan-forward-v2.outputs/PLAN-01-single_skill-17.json"), relative)
+            target.parent.mkdir()
+            target.write_text(content, encoding="utf-8")
+
+        argv = [str(cli), "ingest", str(self.manifest_path), str(source)]
+        with patch.object(sys, "argv", argv), patch.object(module, "_write_exclusive", side_effect=isolated_write):
+            self.assertEqual(0, module.main())
+        stored = json.loads(target.read_bytes())
+        self.assertEqual("fda_regulatory", stored["queries"][0]["source"])
+        self.assertEqual(12, len(list((PLUGIN_ROOT / "evals/plan-forward-v2.outputs").glob("*.json"))))
 
     def test_cli_complete_result_has_asset_bound_exact_verify(self) -> None:
         cli = PLUGIN_ROOT / "scripts/run_plan_forward_v2_eval.py"

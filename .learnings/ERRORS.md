@@ -70,6 +70,110 @@ test_authoritative_pack_is_locked_without_outputs_or_result
 
 ---
 
+## [ERR-20260716-013] plan_v2_cli_plugin_relative_path
+
+**Logged**: 2026-07-16T18:19:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: eval
+
+### Summary
+Main 从项目根执行 v2 verify CLI 时传入了项目根相对的插件前缀路径；CLI 固定以 plugin root 解析参数，路径被重复拼接。
+
+### Error
+```
+FileNotFoundError: .../plugins/frogent-drug-design/plugins/frogent-drug-design/evals/plan-forward-v2.manifest.json
+```
+
+### Context
+- 命令为只读 exact replay 验证，没有修改 manifest、outputs 或 result。
+- 同类 plugin cwd/项目根相对路径错误已在 ERR-20260716-009 与长期任务卫生检查中出现。
+
+### Suggested Fix
+v1/v2 eval CLI 统一在 plugin root 执行，并传入 `evals/...` 相对路径；将标准验证命令固定到验收清单，禁止从项目根拼接插件前缀。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/scripts/run_plan_forward_v2_eval.py
+
+### Resolution
+- **Resolved**: 2026-07-16T18:20:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 切换到 plugin root 并使用 `evals/...` 相对路径后，12-output asset-bound exact replay exit 0。
+
+---
+
+## [ERR-20260716-012] plan_v2_manual_receipt_transcription
+
+**Logged**: 2026-07-16T17:31:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: eval
+
+### Summary
+PLAN v2 重启后的 single-skill/29 调度 prompt 手工转录了错误的 `worker_input_digest`。
+
+### Error
+```
+expected: 6f0bb1702124f8fb2427acea1be50c1b666ceba00c49c6cc5481c2cde7bdeba2
+typed:    6f0bb170212003ff4b76d8898d2b79f2d5619541f60db611852b1f8ba57be9
+```
+
+### Context
+- 错误在 worker 返回输出前由 Main 对照 CLI receipt 捕获。
+- 原 subagent 被立即中断，没有写入 inbox、official outputs 或 result。
+- 随后使用新 subagent 和 CLI 实测的 canonical receipt 从零重启该 replicate。
+
+### Suggested Fix
+后续 worker prompt 从 CLI receipt 输出机械组装并校验，禁止手工复制 digest；调度前比较 prompt 中 receipt 与 `worker-receipt` 的 canonical JSON。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/scripts/run_plan_forward_v2_eval.py, plugins/frogent-drug-design/evals/plan-forward-v2.manifest.json
+
+### Resolution
+- **Resolved**: 2026-07-16T17:32:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 中断无效 worker，使用新 subagent 和正确 canonical receipt 重启；无效输入未形成项目资产。
+
+---
+
+## [ERR-20260716-011] plan_v2_worker_prompt_identity_drift
+
+**Logged**: 2026-07-16T17:13:00+08:00
+**Priority**: critical
+**Status**: resolved
+**Area**: eval
+
+### Summary
+PLAN v2 首次 fresh worker 调度中，Main 对 single-skill arm 压缩转述了 locked common prompt 与 Skill/reference，并用无 JSON 类型标记的 identity 行传递 receipt，破坏了实际 worker input 与 preregistered identity 的一致性。
+
+### Error
+```
+single-skill replicate 29/43 returned replicate_label as JSON number
+actual prompt bytes != locked common prompt + exact Skill/reference bytes
+```
+
+### Context
+- Pre-worker lock commit `e1304fc` 与远端保持正确，污染只发生在尚未提交的 fresh worker 调度层。
+- PLAN-01 baseline 三个输出使用完整 common contract；single-skill prompt使用压缩版 contract/Skill/reference，arm 输入不再只有 preregistered sole variable。
+- 6 个当前尝试均不得进入正式 v2 effect result；有效与无效 raw attempts 都需要保留为 aborted experiment audit。
+- 尚未生成 v2 result，尚未修改 Skill。
+
+### Suggested Fix
+把当前 raw attempts移入版本化 aborted prompt-assembly 目录并记录原因；清空正式 outputs。重新运行全部12个 workers，每个 prompt逐字包含 locked common prompt、candidate task、canonical JSON worker receipt，以及逐字 baseline instruction或逐字 Skill/reference；worker禁止读取仓库、evaluator、网络、memory与其他输出。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/evals/plan-forward-v2.worker-common.txt, plugins/frogent-drug-design/evals/plan-forward-v2.baseline-instruction.txt, plugins/frogent-drug-design/skills/plan-literature-search/SKILL.md, plugins/frogent-drug-design/skills/plan-literature-search/references/query-strategy.md
+
+### Resolution
+- **Resolved**: 2026-07-16T18:02:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 六个污染尝试已完整保存在 `plan-forward-v2.aborted-prompt-assembly/` 并排除于 official inputs；12 个 workers 全部从零重跑，12/12 schema 与 identity 接受，official result 完成 asset-bound exact replay。结果为 `effect_outcome=rejected`，未修改 Skill。
+
+---
+
 ## [ERR-20260716-010] github_push_tls_disconnect
 
 **Logged**: 2026-07-16T16:56:00+08:00

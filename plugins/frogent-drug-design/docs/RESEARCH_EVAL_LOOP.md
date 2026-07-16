@@ -93,7 +93,7 @@ Research kernel fixture 与 PLAN forward diagnostic 具有不同 authority：
 
 - `research-eval-v1.result.json` 的 authority scope 为 `evaluator_fixture`。
 - `plan-forward-v1` 的 authority scope 为 `exposed_development_diagnostic`；它提供正式 exposed diagnostic effect result，仍不具备 hidden 或独立 score-owner authority。
-- `plan-forward-v2` 的 authority scope 同为 `exposed_development_diagnostic`；当前只完成 locked preregistration，没有 worker output 或 effect result。
+- `plan-forward-v2` 的 authority scope 同为 `exposed_development_diagnostic`；它已产生 official exposed diagnostic result，仍不具备 hidden 或独立 score-owner authority。
 
 共同限制如下：
 
@@ -111,7 +111,7 @@ Research kernel fixture 与 PLAN forward diagnostic 具有不同 authority：
 - `effect_outcome=not_evaluated`
 - `promotion_eligible=false`
 
-它只支持 `CONTRACT/EVALUATOR INTEGRITY PASS`，不得用于声明 retrieval、Deep Research 或 memory 效果提升。`plan-forward-v1` 的冻结状态与额外测量边界见 5.4，`plan-forward-v2` 的 pre-worker 状态见 5.5。
+它只支持 `CONTRACT/EVALUATOR INTEGRITY PASS`，不得用于声明 retrieval、Deep Research 或 memory 效果提升。`plan-forward-v1` 的冻结状态与额外测量边界见 5.4，`plan-forward-v2` 的 official diagnostic 见 5.5。
 
 ## 5. 首轮 paired forward-test panel
 
@@ -190,17 +190,31 @@ Commit `97f1969` 冻结 `plan-forward-v1`，完成了 run matrix 的 PLAN slice�
 
 这些限制不改写冻结 result：v1 official diagnostic effect 继续为 `rejected`。它们限制结果可支持的 claim：`PLAN-01` recall 回退不能解释为已证实的真实 retrieval quality 下降，`PLAN-02` 局部 anchor 增益也不能解释为可 promotion 的提升。该 result 另有 `exposed_development_panel`、`seed_control_unverified`、`candidate_reference_filesystem_isolation_not_established`、`independent_score_owner_not_established` 与 `model_runtime_provider_memory_identity_closure_incomplete` claim limits。
 
-### 5.5 PLAN v2 pre-worker lock
+### 5.5 PLAN v2 official exposed diagnostic
 
-`plan-forward-v1` 保持 immutable。独立的 `plan-forward-v2` preregistration 已 locked，当前状态为：
+Commit `e1304fc6033f098f00bb202cb20aca7539796c81` 冻结 pre-worker lock，bundle identity 为 `2c44bff0cc277050c05b8891caaa3b937d39c0280999577551b18284fabe7c23`。`plan-forward-v1` 保持 immutable，`plan-literature-search` Skill 在 v2 run 前后未修改。
 
-| 项目 | 冻结状态 |
+| 层级 | 冻结结论 |
 |---|---|
-| Fresh workers | `0` |
-| Effect outcome | `not_evaluated` |
+| Contract/execution/replay integrity | `PASS` |
+| v2 official diagnostic effect | `REJECTED` |
+| Clean Skill effect attribution | `NOT_ESTABLISHED` |
 | Promotion | `false` |
-| Outputs/result | 均不存在 |
-| Skill | `plan-literature-search` 未修改 |
+
+Official outputs 覆盖 `PLAN-01`、`PLAN-02` × `no_skill`、`single_skill` × replicate labels `17`、`29`、`43`。`worker_completion` 为 expected=accepted=completed=12，failed=invalid=missing=0，state=`completed`；`execution_completion=completed`、`effect_outcome=rejected`、`promotion_eligible=false`。12 份原始 output bytes 与 expected result exact replay 通过，`replay_digest=87a89609f7992d9b363414d0e17d399ce7415a1efad38e1acdadcf24c4b731cb`；result findings 为 `metric_coverage_not_comparable` 与 `quality_metric_regression`。
+
+| Pair | Official delta 与 gate |
+|---|---|
+| `PLAN-01/17` | 全部 delta 为 0；comparable flat |
+| `PLAN-01/29` | counterevidence recall `-0.5`；regression |
+| `PLAN-01/43` | anchor recall `+2/3`、stop-rule coverage `+0.2`、concept coverage `-0.1875`；regression |
+| `PLAN-02/17` | anchor recall `+1`、concept coverage `+0.125`、counterevidence recall `+1`；`retrieval_precision`/`temporal_violation_rate` measured coverage `not_comparable`；stop-rule coverage `-0.2`；not-comparable + regression |
+| `PLAN-02/29` | concept coverage `+0.125`、anchor recall `-1/3`；regression |
+| `PLAN-02/43` | anchor recall `-1/3`、counterevidence recall `-0.5`；regression |
+
+六个 pairs 汇总为 1 flat、4 comparable regressions、1 not-comparable + regression，没有可 promotion pair。每个 run 均使用全部 query cap：`PLAN-01=12`、`PLAN-02=16`；没有 `unsupported_source` 或 `query_budget_exceeded`，所有 source-route coverage 与 wave coverage 均为 1，已测 retrieval precision 均为 1，temporal violation 均为 0。
+
+`PLAN-02/no_skill/17` 在 frozen corpus 中零 hit，使 retrieval precision 与 temporal violation rate 为 `not_applicable`，并使该 pair 的 metric coverage `not_comparable`。Stop-rule coverage 仍弱：`PLAN-01` baseline/candidate 多数为 0，仅 `single_skill/43=0.2`；`PLAN-02` 多数为 0.2，`no_skill/17=0.4`、`single_skill/17=0.2`。
 
 v2 对 measurement interface 做三项修复：
 
@@ -218,17 +232,21 @@ Evaluator revision 绑定 22-file package eager-import closure，revision logica
 | Manifest | `6d0dc61255298dfff58b1f5cbb9a6440c401aaf37c9c4cb7e43263c1a3d7f813` |
 | Bundle | `2c44bff0cc277050c05b8891caaa3b937d39c0280999577551b18284fabe7c23` |
 
-该 lock 的 authority 仍为 exposed development，`seed_control=unverified`。它只支持 evaluator/pre-worker integrity，不能支持 Skill effect、retrieval improvement 或 promotion claim。101/101 tests、v1 exact replay、v2 locked CLI、official validator 与 sanitizer 982/0/0 已通过。
+首次六个 worker 调度发生 prompt identity drift，全部排除。`evals/plan-forward-v2.aborted-prompt-assembly/` 保存六份 raw attempts 与 deterministic incomplete rejected result；该 result 为 4 accepted/completed、2 invalid、8 missing，`effect_outcome=rejected`、promotion=`false`。Official result/input receipts 只引用 corrected 12 outputs，不含 aborted 路径。Corrected run 从零启动 workers，并按 Main 调度记录使用逐字 locked common prompt、canonical receipt、candidate task，以及逐字 baseline instruction 或逐字 Skill/reference。
 
-下一步先 commit/push immutable pre-worker lock，再运行 12 个 fresh `no_skill`/`single_skill` paired workers并生成 exact replay result。`budgeted minimal evidence path` 仍是未决假设，fresh paired evidence 产生前不实施，也不提前写效果结论。
+Claim limits 保持 `exposed_development_panel`、`seed_control_unverified`、`candidate_reference_filesystem_isolation_not_established`、`independent_score_owner_not_established` 与 `model_runtime_provider_memory_identity_closure_incomplete`。Result 无法独立证明 actual prompt delivery bytes；当前只有 Main 调度记录与 aborted audit 支持该执行声明。因此 clean Skill effect attribution 仍未建立，官方 `rejected` 结果也不能支持真实 retrieval quality 提升。独立只读 subagent 已复核 12 identity/raw SHA/receipts、22-file evaluator binding、aborted exclusion 与 gate 结论。
+
+`budgeted minimal evidence path`、anchor/counterevidence reservation、query deduplication 仅为待验假设。任何一个假设都必须进入新版本独立 preregistration，并以单一变量运行 fresh paired eval；当前禁止写成 Skill 改进或效果结论。
 
 ### 5.6 执行顺序与数据分层
 
-1. `PLAN-01`、`PLAN-02` 的 v1 diagnostic 已完成；v2 pre-worker lock 已完成，下一步固定提交该 lock 并运行 12 个 fresh paired workers。
+1. `PLAN-01`、`PLAN-02` 的 v1/v2 official diagnostics 已完成，v2 结果为 rejected；下一轮只允许选择一个待验假设，建立独立 preregistration 后运行 fresh paired workers。
 2. 随后执行 `SCREEN-01`、`SCREEN-02`，验证 canonicalization、screening ledger 与 memory gate。
 3. 再执行 `SYNTH-01`、`SYNTH-02`，验证 claim scope、counterevidence、conflict 与 temporal sensitivity。
 4. 最后执行 `RESEARCH-01`、`RESEARCH-02`，覆盖 multi-wave workflow、provider failure、budget 与 stop quality。
 5. 四个 `single_skill` 贡献通过 per-case gate 后，再执行 `sequential`，随后执行 `full`。
+
+当前 `SCREEN-01/02`、`SYNTH-01/02`、`RESEARCH-01/02`、`sequential`、`full`、Deep Research effect 与 memory effect 均未执行。
 
 上述 8 cases 一旦进入仓库，全部归类为 exposed development data。场景中包含 challenge 条件也不会获得 hidden authority。真正 hidden held-out 后续单独建设，并由独立 score owner 在 candidate freeze 后保管和执行。
 
