@@ -176,21 +176,20 @@ Authority scope 为 `exposed_development_diagnostic`。Claim limits 保持 `expo
 - Europe PMC 与 PubMed live adapters 执行真实 metadata/abstract retrieval；Europe PMC 可按 PMCID 取得 OA `fullTextXML`，并提供 citations/references expansion。
 - `ResearchController` 接收显式 source-query pairs 和 model-knowledge candidates，经 harness policy 执行检索、canonicalization、候选核验、bounded reader isolation、Screener、`EvidenceLedger` memory admission、synthesis、checkpoint/resume 与 revocation。
 - OA 或 provider 失败、abstract-only、reader 异常与无 admitted evidence 都成为显式 coverage gap；单个来源或 reader 失败不会阻断后续 counterevidence 路径。
-- `AuthorLead` 可从 provider metadata 返回作者、ORCID 和 affiliation，服务于后续检索扩展；OpenAlex 与 Unpaywall adapters 保持 optional，当前不在 controller 默认路径中。
-- `run_v4_research` 已提供 typed event compatibility boundary。实际 `app_v4` route、Qwen-backed Reader/Synthesizer、checkpoint persistence、自动 author/citation expansion 和 production Agent loop 尚未接线。
+- `AuthorLead` 可从 provider metadata 返回作者、ORCID 和 affiliation；有界 `ResearchExpander` 已接入 Europe PMC citations/references、verified author leads 与 optional OpenAlex expansion，Unpaywall 提供 OA fallback。
+- `AppV4ResearchManager` 与 plugin-side launcher 已把只读 `sources/frogent/app_v4.py` 接到 `gpt-5.6-sol` medium 的 Planner、Reader、Hybrid Screener 和 Synthesizer。SQLite store 持久化 conversation memory、checkpoint、admitted evidence、answer versions 与 revocation。
 
 旧 `research-eval-v1` 与 PLAN v1–v4 结果保留为历史控制面与 exposed diagnostic 记录。它们不承担当前 capability block 的总体性能证明。
 
-### 小型真实 performance loop
+### 52-case Agent performance loop
 
-三个隐藏 PMID/标签的冷门 PubMedQA cold cases 中，FROGENT literature Skills 与 reader workers 找到正确目标 PMID `3/3`；初始 source-study verdict 为 `1/3`。逐案例误差来自 source-study/current-evidence 混淆，以及把轻微数值差异映射为肯定结论。
+Exposed capability pack 已运行 36 条 PubMedQA、2 条 BioASQ 和 14 条 LongMemEval，共 52/52 completed，0 fail、0 timeout、0 missing。PubMedQA target PMID hit@1/5/10 均为 `100%`，strict accuracy `63.89%`，macro F1 `62.14%`。13 个 strict mismatch 经逐案例复核后分为 7 个 oracle gap、3 个 Agent error、3 个 ambiguous；非歧义 source-study 判断为 `30/33`。三个实际 synthesis error 在相同 evidence 上应用 source-study/current-evidence 分层后全部修复。
 
-`synthesize-biomedical-evidence` Skill 增加 source-study/current-evidence 分离和 verdict calibration 后，在相同已检索证据上复测，source-study verdict 达到 `3/3`。该 `n=3` 结果只证明修正方向有效，无法支持总体 retrieval、synthesis、Deep Research 或完整 workflow 性能声明。
+BioASQ exact answer 为 `2/2`，citation resolvable rate 为 `99.45%`。LongMemEval 初始 clean correctness 为 `7/14`；P1–P3 已针对 session bundle、用户事实、意图扩展、教育阶段、偏好约束与同 session 关联改善 memory retrieval。P3 四个历史失败 case 的 retrieval-only 复核已覆盖关键 evidence；fresh answer-level 复测在模型生成前被 Codex usage limit 阻断，因此 answer effect 保持 `not_measured`。
 
 ### 下一性能块
 
-1. 用 50–100 个隐藏标签的 PubMedQA cold cases 测量 target PMID、source-study verdict、引用正确性、失败类型、延迟与成本，确认 synthesis 修正能否稳定泛化。
-2. 用 BioASQ 检查 multi-document retrieval、证据整合、来源覆盖与 counterevidence；用 LongMemEval 风格任务检查 evidence admission、working-memory retention、resume、revocation 与 stale-evidence 污染。
-3. 将 Qwen-backed Reader/Synthesizer、Screener、checkpoint store 与 `app_v4` 接入当前 workflow，随后用同一任务集做端到端复测。
-4. 按实际失败案例决定是否启用 OpenAlex author graph、Unpaywall fallback、citation expansion 或新的 Skills；每个扩展都要直接改善用户任务结果或解释已观察错误。
-5. 药物设计模型依赖任务与完整制药 workflow 继续 deferred，直到 literature intelligence 与 tool-use capability blocks 具备稳定真实任务表现。
+1. Codex 使用额度恢复后先复跑 P3 的 4 条 answer-level memory case，得到真实效果反馈前冻结 P3 行为。
+2. 完成一次 app_v4 → Codex → live literature 的登录、chat、SSE、checkpoint 与 history 纵向验收。
+3. 扩充 BioASQ multi-document 与 LongMemEval memory case，继续按真实错误优化 Agent。
+4. Literature 与 memory workflow 稳定后，接入药物设计模型、RDKit、结构分析、对接、PLIP 和相关 tool-use Skills。

@@ -6,7 +6,7 @@ FROGENT 当前具备一个可组合运行的 literature intelligence 核心。
 
 它从用户问题和待核验的模型知识候选出发，经过真实数据库、OA、bounded reader workers、筛选、working memory 与 synthesis，最后返回带来源边界、coverage gaps 和 checkpoint 的结果。
 
-当前入口是 Python workflow 与 Skills。调用方需要提供 Reader、Synthesizer，以及可选 Screener。
+当前既可从 Python workflow 调用，也可通过 plugin-side launcher 将只读 `sources/frogent/app_v4.py` 接到 FROGENT Agent。默认 Agent roles 使用 ChatGPT bundled Codex 的 `gpt-5.6-sol`、medium reasoning，无需 OpenAI API key。
 
 ## 输入契约
 
@@ -88,33 +88,35 @@ Harness 的权限、预算、事件与恢复边界见 [HARNESS.md](HARNESS.md)�
 
 - `AuthorLead` 从已检索记录的 provider metadata 提取作者、ORCID 和 affiliation。
 - AuthorLead 用于作者网络、课题组和 watchlist 扩展，不提高 evidence strength。
-- OpenAlex 配置 `OPENALEX_API_KEY` 后可提供作者、机构和 cited-by graph；当前 controller 不会自动调用。
-- Unpaywall 配置联系邮箱后可返回 OA link fallback；当前只解析链接。
-- Europe PMC 已提供 citations/references provider 能力；自动 multi-wave expansion 仍待接入 Agent loop。
+- OpenAlex 配置 `OPENALEX_API_KEY` 后可提供作者、机构和 cited-by graph；缺少凭据时形成 coverage gap。
+- Unpaywall 配置联系邮箱后可返回 OA fallback；Europe PMC OA 失败信息继续保留，避免 fallback 掩盖主来源故障。
+- `ResearchExpander` 已把 verified author leads、citations、references 与 optional OpenAlex expansion 接入有界 Agent loop；达到 expansion query budget 后立即停止额外网络调用。
 
-## 当前接线缺口
+## app_v4 与 Codex runtime
 
-- `app_v4` route 与 production SSE flow 尚未接入该 workflow。
-- Qwen-backed Reader 和 Synthesizer 尚未实现接线。
-- Checkpoint 当前由调用方保存，持久化 store 尚未接入。
-- OpenAlex、Unpaywall 与 AuthorLead expansion 尚未进入默认路径。
-- 当前 capability block 仍需更大真实任务集验证。
+- `scripts/run_app_v4_research.py` 从 plugin runtime 导入只读 `sources/frogent/app_v4.py`，并把原 assistant manager 替换为 `AppV4ResearchManager`。
+- `CodexPlanner`、`CodexReader`、`HybridScreener` 与 `CodexSynthesizer` 已提供严格结构化输出和 evidence-ID 约束。
+- SQLite `ResearchMemory` 持久化 conversation turns、checkpoint、admitted evidence、answer versions 与 revocation；OA 全文不写入 memory 数据库。
+- app_v4 继续使用原有 register、login、chat history、attachments 与 SSE `content/stop/[DONE]` 协议。
+- 启动前安装 `requirements-app-v4.txt`，设置非空 `SECRET_KEY`，并将 `FROGENT_CODEX_EXECUTABLE` 指向可用 Codex executable。默认不设置墙钟 timeout。
+- 一次完整 app_v4 → Codex → live literature SSE 请求仍待 Codex 使用额度恢复后验收。
 
-## 小型真实 performance loop
+## 52-case performance loop
 
-本轮使用 3 个隐藏 PMID 与标签的冷门 PubMedQA cold cases。
+当前 exposed capability pack 包含 36 条 PubMedQA、2 条 BioASQ 和 14 条 LongMemEval，共 52 条；52/52 均完成，0 fail、0 timeout、0 missing。
 
-- Literature Skills 与一次性 reader workers 找到正确目标 PMID `3/3`。
-- 初始 source-study verdict 为 `1/3`。
-- 一个错误混淆 source-study answer 与 current evidence。
-- 一个错误把轻微数值差异映射成肯定结论。
-- Synthesis Skill 增加 answer 分层与 verdict calibration 后，使用相同证据复测达到 `3/3`。
+- PubMedQA target PMID hit@1、hit@5、hit@10 均为 `100%`；strict label accuracy 为 `63.89%`，macro F1 为 `62.14%`。
+- 13 个 strict mismatch 经 source-study 逐案例复核后，7 个属于 oracle gap、3 个属于 Agent error、3 个有歧义；非歧义病例 source-correct 为 `30/33`。
+- 三个实际 synthesis error 在相同 evidence 上应用 source-study/current-evidence 分层后均被修复。
+- BioASQ exact answer 为 `2/2`；旧 gold-document recall@10 为 0，检索结果包含可核验的新来源，因此该旧 gold 指标不能代表当前检索失败。
+- Citation resolvable rate 为 `99.45%`。
+- LongMemEval 初始 clean correctness 为 `7/14`。P1/P2/P3 已围绕 session bundle、用户事实、意图扩展、教育阶段、偏好约束和同 session 关联修复 retrieval。
 
-该 `n=3` 结果说明修正方向有效。它无法支持总体性能、泛化能力或 Deep Research 全流程提升声明。
+P3 对四个历史失败案例的 retrieval-only 复核已覆盖全部关键事实。Answer-level 复测在模型生成前遇到 Codex usage limit，结果保持 `not_measured`，失败记录已保留。
 
-## 下一性能块
+## 下一步
 
-1. 用 50–100 个隐藏标签的 PubMedQA cold cases 测量 target PMID、source-study verdict、引用正确性、失败类型、延迟与成本。
-2. 用 BioASQ 检查 multi-document retrieval、证据整合、来源覆盖与 counterevidence。
-3. 用 LongMemEval 风格任务检查 admission、retention、resume、revocation 与 stale-evidence 污染。
-4. 接入 Qwen 与 `app_v4` 后，用同一任务集做端到端复测。
+1. Codex 使用额度恢复后，先复跑 P3 的 4 条 answer-level memory case，得到效果反馈前冻结 memory retrieval 行为。
+2. 完成一次 app_v4 → Codex → live literature 的真实登录、chat、SSE 与持久化验收。
+3. 扩充 BioASQ multi-document 与 LongMemEval memory task，针对真实错误继续优化 Agent。
+4. Literature 与 memory workflow 稳定后，再接药物设计模型、RDKit、结构分析、对接与 PLIP 工具链。
