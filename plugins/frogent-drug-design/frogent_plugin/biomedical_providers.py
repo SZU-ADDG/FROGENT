@@ -172,6 +172,17 @@ class UnpaywallFallback:
         url = location.get("url_for_pdf") or location.get("url")
         return ArtifactRef("unpaywall-" + doi, doi, "text/html", str(url)) if url else None
 
+    def resolve(self, record: LiteratureRecord, context: ExecutionContext) -> FullTextDocument | None:
+        doi = _identifier(record.identifiers, "doi")
+        artifact = self.resolve_link(doi) if doi else None
+        if artifact is None:
+            return None
+        raw = self.transport.get(artifact.uri, {}, {"User-Agent": "frogent-oa-reader/1"})
+        if len(raw) > 2_000_000:
+            raise ValueError("Unpaywall OA document exceeds 2 MB reader limit")
+        text = raw.decode("utf-8", errors="replace").strip()
+        return FullTextDocument(record.id, artifact, text) if text else None
+
 
 def _pubmed_record(article: ET.Element, query: LiteratureQuery) -> LiteratureRecord:
     pmid = article.findtext(".//MedlineCitation/PMID", "").strip()

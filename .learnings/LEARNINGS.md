@@ -1,5 +1,95 @@
 # Learnings
 
+## [LRN-20260717-005] best_practice
+
+**Logged**: 2026-07-17T18:17:00+08:00
+**Priority**: high
+**Status**: in_progress
+**Area**: memory
+
+### Summary
+长期 conversation memory 需要 session 多样性、用户事实优先、相邻 turn 装配与意图化综合，单纯 lexical top-k 无法可靠处理聚合、时间、偏好和同 session 事实拼接。
+
+### Details
+14 条 LongMemEval 真实运行中，单一事实、显式 knowledge update 和证据完整的时间比较表现稳定。错误集中在两个 session 时长求和、同 session 中商店与优惠券的跨 turn 连接、用户偏好与负约束、项目数量聚合。冗长 assistant 文本会占据 top-k，词形变化会丢失用户事实，独立 turn 还会切断同 session 上下文。对 partial evidence 的谨慎 abstention 也应允许引用合法 memory IDs，否则会触发无必要 repair 并失真地声称“什么都没找到”。
+
+P1 用真实失败病例盲测后，时长求和、相对时间比较和项目计数三项已完整修复；7 个聚焦病例中 3 个完整正确、3 个保守但信息不全、1 个仍错误。剩余失败具有同一机制：高分 session 的关键 companion turn 在低价值 session seeds 之后才进入字符预算；通用 recommendation query 没有召回同 session 的 prefer/avoid/time 约束；`for`、`excited` 等通用词仍会提高无关 session 分数。单纯增加 lexical score 不能完成 conversation-level evidence bundle。
+
+P2 在原有 8 hits / 8000 chars 预算内加入 intent expansion 与 top-session bundle 后，4 个剩余病例全部完成且都比 P1 带回更多相关证据。真实盲测继续暴露三个通用缺口：同 session companion 应优先已直接匹配的用户 turn，避免附近短文本挤掉关键事实；正式教育等多阶段聚合问题需要召回 degree/school/college/university 等阶段词；推荐问题需要把明确时刻、prefer/avoid 等约束作为独立 evidence channel。另一个回答层缺口是同一 session 已同时出现商店与消费事件时过度拒绝合理关联。下一轮应保持有界和可追溯，在答案中明确标注这种 session 内关联为推断。
+
+P3 的无模型真实 retrieval diagnostic 已确认改动命中预期行为：教育问题的 8 hits 同时覆盖高中、PCC associate degree 与 UCLA bachelor/4-year 三个 answer sessions；coupon 问题同一 session 同时覆盖事件和 Target/Cartwheel；guitar 问题覆盖早期 compare/upgrade 与后期 open-D usage；晚间推荐问题把 9:30 preference session 排到第 1。P3 的 fresh 模型效果复测因 Codex usage limit 在生成前全部失败，当前只能确认 retrieval 改善，完整 answer effect 保持 `not_measured`。在配额恢复前继续修改会失去效果反馈，因此应冻结 P3 行为并保留失败结果。
+
+### Suggested Action
+在有界、用户隔离的前提下加入保守词形归一、用户陈述优先、session 去垄断与相邻 turn 装配。高分 session 应先形成小型 turn bundle，再让低价值 session 占用 prompt；bundle 内优先 direct matched user turns。Recommendation、quantitative 与 education-stage 问题使用小型意图扩展检索 prefer/avoid/time、显式数量单位和阶段事实。Answerer 按聚合、时间、偏好等意图先列证据再作答；同 session 的合理关联必须标明为推断，对部分证据不足的 abstention 保留可追溯 support。配额恢复后先用新路径重跑 P3 的 4 条失败资产；得到 answer-level 结果前停止继续调参。
+
+### Metadata
+- Source: real_task_eval
+- Related Files: plugins/frogent-drug-design/frogent_plugin/conversation_memory.py, plugins/frogent-drug-design/frogent_plugin/memory_retrieval.py, plugins/frogent-drug-design/frogent_plugin/memory_answer.py
+- Tags: memory, retrieval, session-diversity, temporal, aggregation, preference, abstention
+- Pattern-Key: memory.retrieve_sessions_and_synthesize_intents
+- Recurrence-Count: 4
+- First-Seen: 2026-07-17
+- Last-Seen: 2026-07-17
+
+---
+
+## [LRN-20260717-004] best_practice
+
+**Logged**: 2026-07-17T16:51:00+08:00
+**Priority**: high
+**Status**: new
+**Area**: eval
+
+### Summary
+公开生物医学 benchmark 的严格 oracle 需要与来源证据和语义判定并列保存，避免把正确 Agent 行为误判为性能回退。
+
+### Details
+一次 hidden-oracle PubMedQA calibration 中，Agent 找到正确 PMID 20736672，并按三项随机研究的显著结果回答 `yes`；官方 `LONG_ANSWER` 也明确写为 perspective-taking increased satisfaction，`final_decision` 却是 `maybe`。一次 BioASQ factoid calibration 正确回答 TAD 为 transcription activation/transactivation domain，并给出三篇较新的可核验 PMID，但这些合理来源不在旧 sample 的 gold document list。严格 label/MAP 仍有诊断价值，来源一致性和语义正确性必须由独立 adjudication 复核。
+
+36 条 PubMedQA 的 13 个严格 mismatch 经来源证据复核后，7 个为 oracle gap，3 个为 Agent 实质错误，3 个为端点或问题口径模糊。真正的 Agent 错误集中在将混合子结果压成 `no`、让后续证据覆盖 source-study 结论，以及将“部分患者可用”的 `yes` 过度降级为 `maybe`。
+
+### Suggested Action
+52-case 结果同时报告 dataset-exact score、source-grounded semantic adjudication 和 oracle-gap 分类。遇到 label 与官方 explanation 冲突、或正确的非-gold 文献时，保留原始分数并标记 benchmark limitation；禁止为了贴合有缺口的 gold 降低 Agent 的证据判断质量。
+
+### Metadata
+- Source: real_task_eval
+- Related Files: plugins/frogent-drug-design/benchmarks/scoring.py, plugins/frogent-drug-design/benchmarks/data/capability-52.exposed.json
+- Tags: pubmedqa, bioasq, oracle-gap, semantic-adjudication, retrieval
+- Pattern-Key: eval.keep_exact_and_source_grounded_scores
+- Recurrence-Count: 2
+- First-Seen: 2026-07-17
+- Last-Seen: 2026-07-17
+
+---
+
+## [LRN-20260717-003] correction
+
+**Logged**: 2026-07-17T16:35:00+08:00
+**Priority**: critical
+**Status**: promoted
+**Area**: agent
+
+### Summary
+FROGENT 的搜索与研究默认不设置固定墙钟 timeout；并行 subagents 自身具备模型能力，无需 OpenAI API key。
+
+### Details
+用户指出，固定 180/240 秒会截断仍在正常推进的 Planner、Reader 或 synthesis，无法反映复杂研究任务的真实完成条件。Agent 应依据证据充分性、查询与工具预算、结果重复收敛、明确工具失败或用户停止来结束。部署环境仍可选配正数 timeout 处理特殊运维要求。批量 benchmark 可直接使用 subagents 作为并行 Agent workers；外部数据库各自需要的联系邮箱或 provider key 继续按对应服务要求配置，不能误写为 OpenAI 模型调用凭据。
+
+### Suggested Action
+Codex runtime 默认传入 `timeout=None`，环境变量缺失、空白或 0 均表示关闭 timeout；正有限值显式启用。52-case 评测使用 subagents 分片运行同一 FROGENT workflow，保留每个 case 的完整输出与失败信息。
+
+### Metadata
+- Source: user_feedback
+- Related Files: AGENTS.md, plugins/frogent-drug-design/frogent_plugin/codex_client.py, plugins/frogent-drug-design/frogent_plugin/research_factory.py
+- Tags: timeout, subagents, model-runtime, search, research
+- Pattern-Key: runtime.no_default_wall_clock_timeout
+- Recurrence-Count: 1
+- First-Seen: 2026-07-17
+- Last-Seen: 2026-07-17
+- Promoted: AGENTS.md
+
+---
+
 ## [LRN-20260717-002] best_practice
 
 **Logged**: 2026-07-17T01:49:48+08:00

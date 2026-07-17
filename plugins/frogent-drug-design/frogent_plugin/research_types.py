@@ -39,10 +39,13 @@ class ResearchQuery:
     source: str
     query: str
     limit: int = 20
+    wave: str = "planned"
+    provenance: str = "planner"
 
     def __post_init__(self) -> None:
         for value, name in ((self.capability_id, "capability id"), (self.source, "source"),
-                            (self.query, "query")):
+                            (self.query, "query"), (self.wave, "wave"),
+                            (self.provenance, "provenance")):
             _text(value, name)
         if self.limit <= 0:
             raise ValueError("query limit must be positive")
@@ -153,12 +156,34 @@ class AuthorLead:
 
 
 @dataclass(frozen=True, slots=True)
+class ResearchHit:
+    source: str
+    query: str
+    wave: str
+    rank: int
+    occurrence: int
+    record_id: str
+
+
+@dataclass(frozen=True, slots=True)
+class HarnessTelemetry:
+    provider_calls: int = 0
+    reader_tasks: int = 0
+    elapsed_seconds: float = 0.0
+
+
+@dataclass(frozen=True, slots=True)
 class WorkflowCheckpoint:
     completed_queries: tuple[str, ...]
     records: tuple[LiteratureRecord, ...]
     reports: tuple[ReaderReport, ...] = ()
     coverage_gaps: tuple[str, ...] = ()
     revoked_record_ids: tuple[str, ...] = ()
+    expansion_queries: tuple[ResearchQuery, ...] = ()
+    hits: tuple[ResearchHit, ...] = ()
+    provider_calls: int = 0
+    reader_tasks: int = 0
+    elapsed_seconds: float = 0.0
 
 
 @dataclass(frozen=True, slots=True)
@@ -173,3 +198,5 @@ class ResearchResult:
     checkpoint: WorkflowCheckpoint
     events: tuple[StreamEvent, ...]
     author_leads: tuple[AuthorLead, ...] = ()
+    hits: tuple[ResearchHit, ...] = ()
+    telemetry: HarnessTelemetry = HarnessTelemetry()

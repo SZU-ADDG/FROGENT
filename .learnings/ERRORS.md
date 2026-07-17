@@ -2,6 +2,726 @@
 
 此文件用于记录命令、远端连接及外部工具错误。
 
+## [ERR-20260717-030] jq_lpad_filter_quoting
+
+**Logged**: 2026-07-17T19:17:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: eval
+
+### Summary
+LongMemEval session 只读展开命令在嵌套字符串中加入 `lpad` 格式化，导致 jq filter 编译失败。
+
+### Error
+```
+jq: error: syntax error, unexpected INVALID_CHARACTER
+```
+
+### Context
+- 命令只读取 exposed benchmark pack，没有修改任何 benchmark 资产。
+- turn 编号补零对本次行为诊断没有必要。
+
+### Suggested Fix
+诊断输出保持最小格式，直接使用 `turn-\(.key)`，减少 jq 字符串嵌套和转义。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/benchmarks/data/capability-52.exposed.json
+
+### Resolution
+- **Resolved**: 2026-07-17T19:17:20+08:00
+- **Commit/PR**: N/A
+- **Notes**: 移除补零表达式后成功展开 008、009、014 的目标 session turns。
+
+---
+
+## [ERR-20260717-029] shell_command_v_option_misuse
+
+**Logged**: 2026-07-17T19:08:30+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tooling
+
+### Summary
+解释器探测命令误用 `command -v -a`，zsh 将 `-v` 当成待执行命令。
+
+### Error
+```
+zsh:1: command not found: -v
+```
+
+### Context
+- 失败发生在只读解释器盘点中，没有修改项目文件。
+- zsh 的 `command -v` 不支持 `which -a` 风格的 `-a` 参数。
+
+### Suggested Fix
+需要列出全部可执行路径时使用 `which -a python3`；只需要首个路径时使用 `command -v python3`。
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+
+### Resolution
+- **Resolved**: 2026-07-17T19:08:45+08:00
+- **Commit/PR**: N/A
+- **Notes**: 改用 `which -a python3` 后成功列出候选解释器。
+
+---
+
+## [ERR-20260717-028] plugin_validator_missing_yaml_in_project_venv
+
+**Logged**: 2026-07-17T19:07:55+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tooling
+
+### Summary
+项目 app-v4 venv 未安装 PyYAML，导致官方插件 validator 在导入阶段退出。
+
+### Error
+```
+ModuleNotFoundError: No module named 'yaml'
+```
+
+### Context
+- Agent runtime 的 focused/full tests 已使用项目 venv 正常通过。
+- validator 自身依赖 PyYAML；项目 web runtime 依赖清单无需因此增加验证工具依赖。
+
+### Suggested Fix
+复用已有且具备 PyYAML 的 Miniconda 解释器运行官方 validator，避免向项目 runtime 安装无关包。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/requirements-app-v4.txt
+
+### Resolution
+- **Resolved**: 2026-07-17T19:09:10+08:00
+- **Commit/PR**: N/A
+- **Notes**: `/Users/dongxu/miniconda3/bin/python3` 已成功运行 validator，输出 `Plugin validation passed`。
+
+---
+
+## [ERR-20260717-027] homebrew_python_json_import_stall
+
+**Logged**: 2026-07-17T18:30:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tests
+
+### Summary
+Homebrew Python 3.14 导入 FROGENT 时长时间停在 `_json` native extension，导致两次独立 unittest/import probe 被中断。
+
+### Context
+- `python3 -X importtime -c 'import frogent_plugin'` 显示 `_json` 导入耗时约 123.8 秒。
+- 同期 `syspolicyd` 持续占用较高 CPU，问题位于本机 Python/native-extension 加载路径，并非 FROGENT import 循环。
+- 项目内 `.runtime/app-v4/venv` 的 Python 3.13 导入正常，memory runtime tests 24/24 与 app_v4 tests 4/4 快速通过。
+
+### Resolution
+- **Resolved**: 2026-07-17T18:30:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 当前验收和 app_v4 直接运行统一使用项目内 Python 3.13 venv；不再用本机 Homebrew Python 3.14 路径做长测试。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/.runtime/app-v4/venv, plugins/frogent-drug-design/frogent_plugin/config.py
+
+---
+
+## [ERR-20260717-026] app_v4_venv_test_import_path
+
+**Logged**: 2026-07-17T18:25:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+首次使用项目内 app_v4 venv 运行 launcher tests 时从项目根调用 unittest，`frogent_plugin` 不在 import path。
+
+### Error
+```
+ModuleNotFoundError: No module named 'frogent_plugin'
+```
+
+### Resolution
+- **Resolved**: 2026-07-17T18:25:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 将 cwd 切换到 `plugins/frogent-drug-design`后使用同一 venv 复验，4/4 测试全部通过，包含真实 register/login/chat/SSE/history route。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/tests/test_app_v4_launcher.py
+
+---
+
+## [ERR-20260717-025] awk_latest_result_expression
+
+**Logged**: 2026-07-17T18:14:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: eval
+
+### Summary
+用 awk 提取每个 LongMemEval case 最后一条 JSONL 结果时写了无效的 pattern/action 组合，命令报 syntax error。
+
+### Resolution
+- **Resolved**: 2026-07-17T18:14:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 改用 `jq -s | group_by(.case_id) | map(last)` 做结构化提取，14 个最新 case 结果完整输出。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/.runtime/subagent-results/capability-52.results.jsonl
+
+---
+
+## [ERR-20260717-024] benchmark_worker_unscheduled_retry
+
+**Logged**: 2026-07-17T18:10:51+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: eval
+
+### Summary
+LongMemEval worker 在 memory runtime 修复前自动重试失败 case，造成旧代码重复运行，并留下一个孤立 native-schema 临时文件。
+
+### Context
+- Wave 1A 的 worker 完成首轮后自行启动 failure retry，而 Main 正在等待 memory-answer recovery 代码生效。
+- Main 中断该轮并精确终止重复 parent process；已完成的 JSONL 结果与 SQLite memory 未丢失。
+- 时间戳对应的 `.codex-schema-*.json` 在所有 benchmark/Codex child 结束后确认为 orphan。
+
+### Resolution
+- **Resolved**: 2026-07-17T18:10:51+08:00
+- **Commit/PR**: N/A
+- **Notes**: 后续 worker 每次只运行一个明确 case/pass；修复代码验收后由 Main 调度指定 retry。临时 schema 只在确认无活跃子进程后按精确路径清理。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/.runtime/subagent-results/longmemeval-wave1-a.jsonl, plugins/frogent-drug-design/frogent_plugin/codex_client.py
+
+---
+
+## [ERR-20260717-023] non_unique_error_status_patch
+
+**Logged**: 2026-07-17T17:28:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: docs
+
+### Summary
+更新 ERR-020 时使用了非唯一 `Priority/Status` 上下文，补丁先将文件顶部 ERR-022 改为 resolved；后续给 ERR-022 添加 resolution 的补丁又因预期 pending 状态不匹配而失败。
+
+### Resolution
+- **Resolved**: 2026-07-17T17:29:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 改用唯一错误 ID 分别核对并修正 ERR-020/022 的 status 与 resolution。以后状态补丁必须把错误 ID 包含在同一补丁上下文中。
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+
+---
+
+## [ERR-20260717-022] memory_abstention_support_inconsistent
+
+**Logged**: 2026-07-17T17:15:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: memory
+
+### Summary
+LongMemEval live runs 中两个 memory answer 因 `abstain` 与 `supporting_memory_ids` 组合不一致被 typed validator 拒绝，case 结果丢失为 failed。
+
+### Context
+- `longmemeval-001` gold 为 17 days，运行 118.336 秒后失败。
+- `longmemeval-004` 是应当 abstain 的 vintage films 问题，运行 133.965 秒后失败。
+- 同批 `longmemeval-002/003/006/007` 正常完成，说明持久化 ingest、bounded retrieval 与 answer path 整体可运行。
+
+### Suggested Fix
+Memory native schema 动态绑定本次 retrieved memory IDs；语义不一致时只做一次带 validation feedback 的 repair。Repair 仍失败时返回明确安全 abstention并保留 retrieved hits、运行状态与 typed error，禁止丢弃 audit output。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/memory_answer.py, plugins/frogent-drug-design/frogent_plugin/codex_schemas.py
+
+### Resolution
+- **Resolved**: 2026-07-17T17:27:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Memory schema 现绑定 retrieved IDs，语义不一致仅 repair 一次；repair 失败返回安全 abstention、保留 hits 与 typed recoverable error。零 hits 直接 abstain 且零模型调用。
+
+---
+
+## [ERR-20260717-021] subagent_result_schema_mismatch
+
+**Logged**: 2026-07-17T17:02:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: eval
+
+### Summary
+首个 subagent JSONL prompt 漏列 `citation_map`，并允许 `wall_time_seconds=null`，与现有 scorer 的严格结果 schema 不一致，前两次 score 命令 fail closed。
+
+### Context
+- 第一条错误为 `result line 1 has invalid citation map`。
+- 补齐空 map 后第二条错误为 `result line 1 has invalid wall time`。
+- 原始 Agent 答案、PMID、证据与 verdict 未丢失。
+
+### Resolution
+- **Resolved**: 2026-07-17T17:07:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 补齐旧结果的空 `citation_map`；scorer 现允许 `wall_time_seconds=null` 并从 latency percentile 排除未测值，避免用 `0.0` 伪装未测延迟。后续 subagent prompt 已直接要求完整 schema。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/benchmarks/scoring.py
+
+---
+
+## [ERR-20260717-020] synthesis_unbound_evidence_id
+
+**Logged**: 2026-07-17T16:55:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: agent
+
+### Summary
+无固定 timeout 的 PubMedQA live runtime 完成 Planner、retrieval 和并行 Reader 后，Synthesizer 返回 working memory 之外的 evidence ID，严格引用校验使整个 case 失败。
+
+### Context
+- Case wall time 836.058 秒，失败信息为 `synthesis cited evidence outside admitted memory`。
+- Fail-closed 阻止了伪造引用进入最终答案，说明 evidence admission 边界有效。
+- 当前 native synthesis schema 只约束 citation 为字符串，允许模型生成任意 ID；实际 admitted ID 只在 Python validator 中检查。
+
+### Suggested Fix
+根据本次 admitted evidence 动态生成 citation/counterevidence enum；空 evidence 时强制空数组。语义校验仍失败时仅允许一次带合法 ID 和错误反馈的 repair，repair 失败继续 fail closed，并保留检索与 Reader audit output。
+
+### Metadata
+- Reproducible: unknown
+- Related Files: plugins/frogent-drug-design/frogent_plugin/codex_schemas.py, plugins/frogent-drug-design/frogent_plugin/codex_roles.py
+
+### Resolution
+- **Resolved**: 2026-07-17T17:20:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Synthesizer schema 现按 admitted IDs 动态约束引用，语义不一致仅修复一次；再次失败时生成 evidence-only partial、typed recoverable error 和 coverage gap，并持久化 checkpoint/hits/telemetry。
+
+---
+
+## [ERR-20260717-019] pubmedqa_planner_timeout_variance
+
+**Logged**: 2026-07-17T16:29:06+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: runtime
+
+### Summary
+首次 PubMedQA 全路径 live calibration 在进入文献 provider 前达到 Codex Planner 180 秒 subprocess timeout；此前同模型 Planner canary 为 135.806 秒，实际延迟存在显著波动。
+
+### Context
+- 调用固定使用 ChatGPT.app 内置 Codex 0.144.5、`gpt-5.6-sol`、`medium`、read-only、ephemeral。
+- benchmark 正确保留失败记录，但旧 SSE 只暴露错误文本，最初无法稳定区分 timeout taxonomy。
+- 本次失败未产生 provider call、reader task 或污染 session。
+
+### Suggested Fix
+将直接可用默认 timeout 调整到 240 秒，保留环境覆盖；SSE 同时输出稳定 `error_type`；完成独立测试后只重试该 case 一次。
+
+### Metadata
+- Reproducible: unknown
+- Related Files: plugins/frogent-drug-design/frogent_plugin/codex_client.py, plugins/frogent-drug-design/frogent_plugin/research_service.py
+
+### Resolution
+- **Resolved**: 2026-07-17T16:44:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 用户明确取消默认搜索时限。Runtime 已改为默认 `timeout=None`；缺失、空白或 `0` 均关闭 cutoff，正有限值保留为部署级可选覆盖，typed timeout 错误链继续可测。
+
+---
+
+## [ERR-20260717-018] longmemeval_exact_match_false_negative
+
+**Logged**: 2026-07-17T16:12:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: eval
+
+### Summary
+首个 LongMemEval live calibration 给出语义正确答案 “You’ve taken your Canon EOS 80D on five trips.”，gold 为 “five”，严格整句 normalized match 错记为 0。
+
+### Context
+- memory runtime 从 48 个 session 中召回 8 个 bounded hits，并引用了包含当前 trip count 的正确 turn。
+- Agent 完成，provider_calls=0、reader_tasks=0、wall_time=124.044 秒。
+- LongMemEval semantic correctness 原本已标记为 `not_measured`，该结果证明 strict exact 只能作为窄诊断信号。
+
+### Resolution
+- **Resolved**: 2026-07-17T16:12:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 保留 strict exact/normalized match，同时新增 `normalized_gold_containment`；正式语义正确性继续等待独立 judge 或人工复核，禁止把 exact 假阴性归因给 Agent。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/benchmarks/scoring.py
+
+---
+
+## [ERR-20260717-016] benchmark_document_rank_identifier_inflation
+
+**Logged**: 2026-07-17T15:58:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: eval
+
+### Summary
+真实 benchmark score 路径把同一 canonical study 的 record ID、PMID、DOI 和 PMCID 展开为多个排名位置，会压低后续文献的 hit@5/hit@10。
+
+### Context
+- Research checkpoint 已保存 ordered query-hit provenance 和 canonical records，runner 没有使用该顺序生成单文献排名。
+- 问题在 live benchmark 前由 Main review 发现，因此没有污染正式性能结果。
+
+### Resolution
+- **Resolved**: 2026-07-17T15:58:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: runner 现在按 ordered hits 的首次出现顺序去重 canonical study，每篇只占一个位置并优先输出 PMID；新增非词典序、重复 hit 回归测试。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/benchmarks/runner.py
+
+---
+
+## [ERR-20260717-015] longmemeval_numeric_answer_schema
+
+**Logged**: 2026-07-17T15:51:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: eval
+
+### Summary
+首次使用官方 LongMemEval cleaned-S 准备 52-case pack 时，runner 假设所有 `answer` 均为文本，遇到数值答案后 fail closed。
+
+### Error
+```
+ValueError: LongMemEval question and answer must be text
+```
+
+### Context
+- 官方 cleaned-S 共 500 条，其中 468 条 answer 为字符串，32 条为 number。
+- prepare 在输出文件写入前失败，没有生成半成品 case pack。
+- 问题字段仍全部为字符串；数值答案需要保持其 JSON 标量语义并规范化为可评分文本。
+
+### Suggested Fix
+在 case pack 边界显式支持非布尔有限数值 answer，使用稳定 JSON 文本表示；其他复合类型继续 fail closed，并加入数值答案回归测试。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/benchmarks/case_pack.py
+
+### Resolution
+- **Resolved**: 2026-07-17T15:52:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: case pack 现在把有限数值 answer 稳定规范化为 JSON 文本，复合类型继续 fail closed；回归测试通过，52-case exposed pack 成功生成。
+
+---
+
+## [ERR-20260717-014] codex_output_schema_unique_items
+
+**Logged**: 2026-07-17T15:26:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: backend
+
+### Summary
+首次 native `--output-schema` Planner canary 被服务端拒绝，因为 Structured Outputs 子集不支持 `uniqueItems`。
+
+### Error
+```
+invalid_json_schema: keyword uniqueItems is not supported
+```
+
+### Context
+- Canary 在 113.752 秒返回 schema 校验错误，模型没有生成计划。
+- `wave` enum、positive limit、min/max items 与 `additionalProperties:false` 并未被该错误否定。
+- runtime typed validation 已经负责数组唯一性，因此删除 schema keyword 不降低最终门禁。
+
+### Suggested Fix
+Native schema 只使用服务端支持的 JSON Schema 子集；跨字段约束和唯一性继续由 typed runtime 验证。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/codex_schemas.py
+
+### Resolution
+- **Resolved**: 2026-07-17T15:26:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已移除所有 `uniqueItems`，新增 focused regression assertion，保留 typed uniqueness checks。
+
+---
+
+## [ERR-20260717-013] subagent_wait_below_minimum
+
+**Logged**: 2026-07-17T15:22:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: infra
+
+### Summary
+轮询 benchmark subagent 时把 `timeout_ms` 设为 1000，低于工具规定的 10000 下限。
+
+### Error
+```
+timeout_ms must be at least 10000
+```
+
+### Context
+- 调用在参数验证阶段失败，没有中断 subagent 或修改文件。
+- 随后使用 10000 毫秒重试，正常返回等待超时状态。
+
+### Suggested Fix
+`collaboration.wait_agent` 一律使用 10000–3600000 毫秒范围；短状态检查使用 `list_agents`。
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+
+### Resolution
+- **Resolved**: 2026-07-17T15:22:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已使用合法下限重试，subagent 继续运行。
+
+---
+
+## [ERR-20260717-012] planner_empty_wave_live_output
+
+**Logged**: 2026-07-17T15:08:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: backend
+
+### Summary
+Codex 0.144.5 成功调用 `gpt-5.6-sol` medium 后，真实 Planner 输出包含空 `wave`，typed contract 因此拒绝整份计划。
+
+### Error
+```
+ValueError: query wave must be non-empty text
+```
+
+### Context
+- 请求使用 ephemeral、read-only sandbox、ignore-user-config，并在约 170 秒内返回 JSON。
+- 模型连通性已经建立；失败发生在 Planner structured output 可靠性层。
+- runtime fail closed，没有执行错误 query、provider call 或 memory 写入。
+
+### Suggested Fix
+为 Planner、Reader、Screener、Synthesizer 使用 Codex CLI 原生 `--output-schema`，在模型输出阶段约束 enum、必填字段和 unknown fields；保留 runtime typed validation 作为第二道门禁。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/codex_client.py, plugins/frogent-drug-design/frogent_plugin/codex_roles.py
+
+### Resolution
+- **Resolved**: 2026-07-17T15:31:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 四角色已接入 native output schema；移除不受支持的 uniqueItems 后，Codex 0.144.5 final Planner canary 在 135.806 秒成功返回 2 条合法 queries，waves 为 discovery 与 challenge。
+
+---
+
+## [ERR-20260717-011] benchmark_dataset_network_timeout
+
+**Logged**: 2026-07-17T15:12:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: eval
+
+### Summary
+准备 PubMedQA 与 LongMemEval 最小评测资产时，Hugging Face Dataset Viewer 和 GitHub raw 请求均在 30 秒内未返回数据。
+
+### Error
+```
+curl: (28) Operation timed out after 30007-30011 milliseconds with 0 bytes received
+```
+
+### Context
+- 请求均为只读 metadata 或小型 JSON 读取。
+- GitHub raw 主数据读取失败后，官方 PubMedQA 仓库的 sparse clone 成功取得 2.5 MB 主数据与 11 KB test oracle；BioASQ 官方公开 sample 也已取得并验证为 8 题。
+- Hugging Face 官方 LongMemEval cleaned-S 直连在 curl 与 wget 的有限重试中仍连接超时；下载器产生的零字节占位文件已精确清理，没有形成残缺 benchmark 资产。
+- Europe PMC live workflow 此前可用，故障当前限定在 benchmark 托管源连通性。
+
+### Suggested Fix
+LongMemEval 改用可续传的官方备用入口或网络恢复后单次下载；下载后校验 case 数和 schema。禁止把超时当作空数据集。
+
+### Metadata
+- Reproducible: unknown
+- Related Files: .runtime/benchmark-data/
+
+### Resolution
+- **Resolved**: 2026-07-17T15:52:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: PubMedQA 改用官方仓库 sparse clone；LongMemEval cleaned-S 经可续传镜像取得后与官方 SHA-256 `d6f21ea9d60a0d56f34a05b609c79c88a451d2ae03597821ea3d5a9678c3a442` 一致。成功抽取 52-case pack 后已删除 265 MB 原始 LongMemEval 文件。
+
+---
+
+## [ERR-20260717-010] shared_runtime_cache_race
+
+**Logged**: 2026-07-17T15:04:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: infra
+
+### Summary
+Implementation 在 Main 并行准备项目内 Codex CLI 时，把新出现的 `.runtime/npm-cache` 误判为自身临时缓存并删除。
+
+### Error
+```
+find .runtime -depth -delete
+```
+
+### Context
+- 被删除内容只有 npm 日志、元数据缓存和 `_cacache`，没有 CLI binary、源码、评测输出或持久化 memory。
+- `.runtime/` 与 `.gitignore` 正由 Main 并发创建，Implementation 的清理前状态判断已经过时。
+- Main 后续只读 npm 查询重新生成了同类 cache；项目功能没有受损。
+
+### Suggested Fix
+长期任务共享工作树时，清理新出现的目录前再次核对 `git status`、所有者和 Main 当前操作；无法证明属于本任务的内容一律保留并向 Main 报告。CLI provisioning 由 Main 独占执行。
+
+### Metadata
+- Reproducible: yes
+- Related Files: .gitignore, .runtime/
+
+### Resolution
+- **Resolved**: 2026-07-17T15:04:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Implementation 已停止写入；Main 确认无 binary 或项目资产丢失，并改用 ChatGPT 应用内置 Codex 0.144.5，避免重复下载。
+
+---
+
+## [ERR-20260717-009] codex_planner_canary_timeout
+
+**Logged**: 2026-07-17T14:35:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: backend
+
+### Summary
+`gpt-5.6-sol` medium 的最小 structured Planner canary 在 90 秒边界超时，runtime 已安全隔离失败。
+
+### Error
+```
+Codex Planner canary exceeded 90 seconds
+```
+
+### Context
+- 参数为 medium reasoning、ephemeral、read-only sandbox、ignore-user-config。
+- 超时没有写入会话 memory，也没有阻断 Europe PMC 主流程。
+- Main 已要求进行一次 180 秒的有限重试，禁止无限循环。
+
+### Suggested Fix
+核对一次 180 秒重试的实际延迟；成功后依据延迟设置可配置默认值，重复失败则把 live Codex availability 标记为 blocker。
+
+### Metadata
+- Reproducible: unknown
+- Related Files: plugins/frogent-drug-design/frogent_plugin/codex_client.py, plugins/frogent-drug-design/frogent_plugin/research_factory.py
+
+### Resolution
+- **Resolved**: 2026-07-17T15:08:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 系统 CLI 0.136.0 确认过旧；改用 ChatGPT 应用内置 Codex 0.144.5 后成功到达模型。随后暴露的 Planner 空 wave 已单列为 ERR-20260717-012。
+
+---
+
+## [ERR-20260717-008] europe_pmc_tls_eof
+
+**Logged**: 2026-07-17T14:33:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: backend
+
+### Summary
+首次 Europe PMC live smoke 在 TLS 握手收到 unexpected EOF，有限重试后完整 controller 路径成功。
+
+### Error
+```
+UNEXPECTED_EOF_WHILE_READING
+```
+
+### Context
+- 首次请求尚未进入 Europe PMC 响应解析。
+- 重试后取得 2 个有序 hits、2 个 reader reports、2 份 admitted evidence 与可用 OA fullTextXML。
+
+### Suggested Fix
+保留 provider 失败隔离和有界重试；TLS 握手错误进入 coverage gap，禁止静默丢失。
+
+### Metadata
+- Reproducible: no
+- Related Files: plugins/frogent-drug-design/frogent_plugin/biomedical_providers.py, plugins/frogent-drug-design/frogent_plugin/research_workflow.py
+
+### Resolution
+- **Resolved**: 2026-07-17T14:35:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 单次有限重试成功，完整真实 controller 路径通过。
+
+---
+
+## [ERR-20260717-007] invalid_exec_wait_cell
+
+**Logged**: 2026-07-17T14:20:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: infra
+
+### Summary
+轮询长期 Implementation 任务时误把 `functions.wait` 用于不存在的 exec cell。
+
+### Error
+```
+exec cell 999 not found
+```
+
+### Context
+- 等待 Implementation 完成 runtime integration。
+- 没有正在 yield 的 exec cell，也没有进程被终止或文件被修改。
+
+### Suggested Fix
+`functions.wait` 只用于前一条 `functions.exec` 返回的真实 cell ID；任务轮询使用 `codex_app__read_thread`，subagent 轮询使用 `collaboration.wait_agent`。
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+
+### Resolution
+- **Resolved**: 2026-07-17T14:20:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已切回正确的任务状态接口，Implementation 未受影响。
+
+---
+
+## [ERR-20260717-006] zsh_unmatched_config_glob
+
+**Logged**: 2026-07-17T14:06:29+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: config
+
+### Summary
+检查 Codex 模型配置时，zsh 对不存在的 `*.config.toml` 通配路径提前报错。
+
+### Error
+```
+zsh: no matches found: /Users/dongxu/.codex/*.config.toml
+```
+
+### Context
+- 只读检查当前 Codex model 与 reasoning effort。
+- 命令未修改项目或 Codex 配置。
+
+### Suggested Fix
+对可选配置文件使用显式路径，或先用 `find`/`rg --files` 获取实际文件列表，避免把可能为空的 glob 直接交给 zsh。
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+
+### Resolution
+- **Resolved**: 2026-07-17T14:06:29+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已改用 `/Users/dongxu/.codex/config.toml` 显式路径，确认当前 model 为 `gpt-5.6-sol`；后续集成将显式设置 medium reasoning。
+
+---
+
 ## [ERR-20260717-005] research_workflow_control_nesting
 
 **Logged**: 2026-07-17T01:25:00+08:00
@@ -1897,5 +2617,34 @@ jq: error: syntax error, unexpected '|', expecting BINDING or '[' or '{'
 - **Resolved**: 2026-07-16T14:41:00+08:00
 - **Commit/PR**: N/A
 - **Notes**: 最终把完整 filter 放入 shell 单引号，且移除 `jq` 变量，成功复核 PLAN-01=10、PLAN-02=12、record ID 22/22 唯一。
+
+---
+## [ERR-20260717-031] codex_usage_limit_blocks_p3_live_eval
+
+**Logged**: 2026-07-17T20:17:00+08:00
+**Priority**: high
+**Status**: blocked
+**Area**: eval
+
+### Summary
+Memory P3 的 4 条 fresh LongMemEval 盲测均在模型生成前被 ChatGPT Codex usage limit 阻断。
+
+### Error
+```
+ERROR: You've hit your usage limit. Visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Jul 23rd, 2026 12:47 PM.
+```
+
+### Context
+- 两个并行 subagents 各执行一组全新 SQLite/result 路径，共 4 cases。
+- 未设置 benchmark timeout、未使用 OpenAI API key、未请求 runner retry。
+- Codex CLI 内部 WebSocket 重连与 HTTP fallback 后仍返回 usage limit；4 条记录均保存为 `failed`，`raw_output=null`，没有伪装成 abstention 或零命中。
+- 同一 Codex 通道也阻断当前完整 app_v4 live SSE 验收。
+
+### Suggested Fix
+保留失败结果；配额恢复后用新的 SQLite/result 路径各运行一次，禁止覆盖或重试当前负向资产。等待期间只执行不需要模型调用的 retrieval diagnostics 与代码回归。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/.runtime/subagent-results/longmemeval-memory-v5a.jsonl, plugins/frogent-drug-design/.runtime/subagent-results/longmemeval-memory-v5b.jsonl
 
 ---

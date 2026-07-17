@@ -23,9 +23,11 @@ Read [evidence-model.md](references/evidence-model.md) before grading confidence
 
 ## Verdict calibration
 
-- When a question targets a named or clearly retrievable source study, answer that study's conclusion first. Put later replications, corrections, alternative diagnoses, and current-field updates in a separate paragraph.
+- When a question targets a named or clearly retrievable source study, derive and record `source_study_verdict` from that primary record before considering later evidence. Keep that verdict fixed; put replications, corrections, alternative diagnoses, and `current_evidence_verdict` in a separate paragraph.
 - Do not map every numerical difference to `yes`. Check the authors' stated conclusion, uncertainty or statistical support, effect size, and decision relevance. A small or unsupported difference may still support `no meaningful difference` or `maybe`.
 - For a yes/no source-title question, follow the conclusion's qualitative polarity. Wording such as `only slight`, `similar`, or `no meaningful difference` maps to `no` while the numeric difference remains visible in the explanation.
+- Decompose compound questions into their named populations, outcomes, or conditions before choosing one label. Mixed positive and null sub-results normally map to `maybe`; use `yes` or `no` only when the question's quantifier makes one polarity decisive, and show the sub-result matrix in the explanation.
+- Interpret quantifiers literally. `Can`, `may`, `some`, or `a subset` asks whether a supported capability exists and does not require benefit for every participant. `All`, `every`, `generally`, or an unqualified population-level claim requires broader support; state any responding subgroup in the answer boundary.
 - If source-study and current-field answers differ, return both labels explicitly and explain why; never silently replace the original study answer with later evidence.
 
 ## Synthesis rules
