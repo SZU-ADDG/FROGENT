@@ -177,19 +177,27 @@ Authority scope 为 `exposed_development_diagnostic`。Claim limits 保持 `expo
 - `ResearchController` 接收显式 source-query pairs 和 model-knowledge candidates，经 harness policy 执行检索、canonicalization、候选核验、bounded reader isolation、Screener、`EvidenceLedger` memory admission、synthesis、checkpoint/resume 与 revocation。
 - OA 或 provider 失败、abstract-only、reader 异常与无 admitted evidence 都成为显式 coverage gap；单个来源或 reader 失败不会阻断后续 counterevidence 路径。
 - `AuthorLead` 可从 provider metadata 返回作者、ORCID 和 affiliation；有界 `ResearchExpander` 已接入 Europe PMC citations/references、verified author leads 与 optional OpenAlex expansion，Unpaywall 提供 OA fallback。
-- `AppV4ResearchManager` 与 plugin-side launcher 已把只读 `sources/frogent/app_v4.py` 接到 `gpt-5.6-sol` medium 的 Planner、Reader、Hybrid Screener 和 Synthesizer。SQLite store 持久化 conversation memory、checkpoint、admitted evidence、answer versions 与 revocation。
+- `AppV4ResearchManager` 与 plugin-side launcher 已把只读 `sources/frogent/app_v4.py` 接到 `gpt-5.6-sol` medium 的 Planner、Reader、Hybrid Screener 和 Synthesizer。Codex roles 使用 ChatGPT bundled executable，无需 OpenAI API key，默认关闭固定墙钟 timeout。Native schemas 与 typed validation 已进入四个 roles；synthesis 和 memory answer 的 evidence-ID 语义错误最多 repair 一次，并提供 safe partial answer/abstention。SQLite store 持久化 cross-chat conversation memory、checkpoint、admitted evidence、answer versions 与 revocation。
 
 旧 `research-eval-v1` 与 PLAN v1–v4 结果保留为历史控制面与 exposed diagnostic 记录。它们不承担当前 capability block 的总体性能证明。
 
 ### 52-case Agent performance loop
 
-Exposed capability pack 已运行 36 条 PubMedQA、2 条 BioASQ 和 14 条 LongMemEval，共 52/52 completed，0 fail、0 timeout、0 missing。PubMedQA target PMID hit@1/5/10 均为 `100%`，strict accuracy `63.89%`，macro F1 `62.14%`。13 个 strict mismatch 经逐案例复核后分为 7 个 oracle gap、3 个 Agent error、3 个 ambiguous；非歧义 source-study 判断为 `30/33`。三个实际 synthesis error 在相同 evidence 上应用 source-study/current-evidence 分层后全部修复。
+Exposed capability pack 已运行 36 条 PubMedQA、2 条 BioASQ 和 14 条 LongMemEval，共 52/52 completed。PubMedQA target PMID hit@1/5/10 均为 `100%`，strict accuracy `63.89%`。13 个 strict mismatch 经逐案例复核后分为 7 个 oracle gap、3 个 Agent error、3 个 ambiguous；非歧义 source-study 判断为 `30/33`。三个实际 synthesis error 在相同 evidence 上应用 source-study/current-evidence 分层后全部修复。
 
-BioASQ exact answer 为 `2/2`，citation resolvable rate 为 `99.45%`。LongMemEval 初始 clean correctness 为 `7/14`；P1–P3 已针对 session bundle、用户事实、意图扩展、教育阶段、偏好约束与同 session 关联改善 memory retrieval。P3 四个历史失败 case 的 retrieval-only 复核已覆盖关键 evidence；fresh answer-level 复测在模型生成前被 Codex usage limit 阻断，因此 answer effect 保持 `not_measured`。
+BioASQ exact answer 为 `2/2`；旧 gold-document recall@10=0 记录为 outdated-gold limitation，因为 Agent 检索到可核验的新来源。Citation resolvability 为 `99.45%`。
+
+LongMemEval baseline clean correctness 为 `7/14`。P1 real blind rerun 修复 duration sum、relative event order 与 project count，在 7 个失败 case 中取得 3 correct、3 partial/cautious、1 wrong。P2 real blind rerun 4/4 completed 且 retrieval 改善，answers 仍偏保守或方向错误。
+
+P3 保持 8 hits / 8000 chars，加入 direct matched companions、education-stage intent、preference/time constraints 与 qualified same-session linkage。Retrieval-only diagnostic 覆盖三个 education answer sessions、coupon 与 Target、guitar 前后语境，并把 `9:30` preference 排名第一。4 条 fresh answer rerun 在模型生成前因 Codex usage limit 失败，失败记录已保留，P3 answer effect 为 `not_measured`。
+
+### Verification
+
+Focused Agent runtime 28/28、full `scripts/check.py` 178/178、plugin validator、sanitizer、architecture 与 hygiene 均 PASS。App route integration 已通过，先前 live evidence 已分别确认 Codex Planner 与 Europe PMC/OA；一次完整 app_v4 real SSE call 仍受共享 Codex usage limit 阻断。
 
 ### 下一性能块
 
-1. Codex 使用额度恢复后先复跑 P3 的 4 条 answer-level memory case，得到真实效果反馈前冻结 P3 行为。
-2. 完成一次 app_v4 → Codex → live literature 的登录、chat、SSE、checkpoint 与 history 纵向验收。
-3. 扩充 BioASQ multi-document 与 LongMemEval memory case，继续按真实错误优化 Agent。
-4. Literature 与 memory workflow 稳定后，接入药物设计模型、RDKit、结构分析、对接、PLIP 和相关 tool-use Skills。
+1. Codex 使用额度恢复后，先完成一次 app_v4 → Codex → live literature 的登录、chat、SSE、checkpoint 与 history 纵向验收。
+2. 针对同 4 个 case 使用新的 SQLite 与结果路径重跑 P3 answer-level cases，保留现有 failed records；得到效果反馈前冻结 P3 retrieval 行为。
+3. 扩大 real provider/Reader throughput evaluation，继续按 evidence recall、引用、counterevidence、失败恢复、延迟与成本优化 Agent。
+4. 药物设计模型、RDKit、结构分析、对接、PLIP 与相关 tool-use workflows 继续 deferred。

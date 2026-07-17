@@ -8,14 +8,6 @@ FROGENT 当前具备一个可组合运行的 literature intelligence 核心。
 
 当前既可从 Python workflow 调用，也可通过 plugin-side launcher 将只读 `sources/frogent/app_v4.py` 接到 FROGENT Agent。默认 Agent roles 使用 ChatGPT bundled Codex 的 `gpt-5.6-sol`、medium reasoning，无需 OpenAI API key。
 
-## 输入契约
-
-- 明确问题、使用场景和精确 `as_of`。
-- 用 `SearchPlan` 固定来源、纳入排除条件与 stop rules。
-- 用 `ResearchQuery` 提供显式 source-query pairs。
-- 模型知识只生成 `KnowledgeCandidate` 检索种子。
-- PMID、DOI、标题、作者、课题组与事实在外部核验前保持 unverified。
-
 ## 实际用户流程
 
 ### 1. 问题与模型知识候选
@@ -74,14 +66,6 @@ Verdict calibration 同时检查作者结论、统计支持、效应量和决策
 - Correction、retraction 或新排除决定撤回对应 evidence。
 - Working memory 随 ledger reconciliation 更新，再执行 synthesis。
 
-## 如何调用
-
-1. 构造 `ResearchRequest`，包含 plan、source-query pairs 和可选 knowledge candidates。
-2. 配置 Europe PMC/PubMed providers、OA resolver、Reader、Synthesizer 与 Screener。
-3. 用 `ExecutionContext` 和 `HarnessPolicy` 调用 `ResearchController.run(...)`。
-4. 检查 `ResearchResult` 的 records、reader reports、ledger、working-memory IDs、gaps、answer 和 checkpoint。
-5. 恢复时传回 checkpoint；撤回时传入 `revoked_record_ids`。
-
 Harness 的权限、预算、事件与恢复边界见 [HARNESS.md](HARNESS.md)。
 
 ## AuthorLead 与 optional providers
@@ -96,7 +80,8 @@ Harness 的权限、预算、事件与恢复边界见 [HARNESS.md](HARNESS.md)�
 
 - `scripts/run_app_v4_research.py` 从 plugin runtime 导入只读 `sources/frogent/app_v4.py`，并把原 assistant manager 替换为 `AppV4ResearchManager`。
 - `CodexPlanner`、`CodexReader`、`HybridScreener` 与 `CodexSynthesizer` 已提供严格结构化输出和 evidence-ID 约束。
-- SQLite `ResearchMemory` 持久化 conversation turns、checkpoint、admitted evidence、answer versions 与 revocation；OA 全文不写入 memory 数据库。
+- 四个角色均使用 native output schema 与 typed validation；synthesis 与 memory answer 的 evidence-ID 语义错误最多 repair 一次，仍失败时返回可审计的 partial answer 或 abstention。
+- SQLite `ResearchMemory` 持久化 cross-chat conversation turns、checkpoint、admitted evidence、answer versions 与 revocation；OA 全文不写入 memory 数据库。
 - app_v4 继续使用原有 register、login、chat history、attachments 与 SSE `content/stop/[DONE]` 协议。
 - 启动前安装 `requirements-app-v4.txt`，设置非空 `SECRET_KEY`，并将 `FROGENT_CODEX_EXECUTABLE` 指向可用 Codex executable。默认不设置墙钟 timeout。
 - 一次完整 app_v4 → Codex → live literature SSE 请求仍待 Codex 使用额度恢复后验收。
@@ -105,18 +90,29 @@ Harness 的权限、预算、事件与恢复边界见 [HARNESS.md](HARNESS.md)�
 
 当前 exposed capability pack 包含 36 条 PubMedQA、2 条 BioASQ 和 14 条 LongMemEval，共 52 条；52/52 均完成，0 fail、0 timeout、0 missing。
 
-- PubMedQA target PMID hit@1、hit@5、hit@10 均为 `100%`；strict label accuracy 为 `63.89%`，macro F1 为 `62.14%`。
+- PubMedQA target PMID hit@1、hit@5、hit@10 均为 `100%`；strict label accuracy 为 `63.89%`。
 - 13 个 strict mismatch 经 source-study 逐案例复核后，7 个属于 oracle gap、3 个属于 Agent error、3 个有歧义；非歧义病例 source-correct 为 `30/33`。
 - 三个实际 synthesis error 在相同 evidence 上应用 source-study/current-evidence 分层后均被修复。
 - BioASQ exact answer 为 `2/2`；旧 gold-document recall@10 为 0，检索结果包含可核验的新来源，因此该旧 gold 指标不能代表当前检索失败。
 - Citation resolvable rate 为 `99.45%`。
-- LongMemEval 初始 clean correctness 为 `7/14`。P1/P2/P3 已围绕 session bundle、用户事实、意图扩展、教育阶段、偏好约束和同 session 关联修复 retrieval。
+- LongMemEval baseline clean correctness 为 `7/14`。
+- P1 real blind rerun 修复 duration sum、relative event order 和 project count；7 个此前失败 case 中，3 个 fully correct、3 个 partial/cautious、1 个 wrong。
+- P2 real blind rerun 4/4 completed 并改善 retrieval，answers 仍偏保守或方向错误。
+- P3 保持 8 hits / 8000 chars，并加入 direct matched companions、education-stage intent、显式 preference/time constraints 与 qualified same-session linkage。
 
-P3 对四个历史失败案例的 retrieval-only 复核已覆盖全部关键事实。Answer-level 复测在模型生成前遇到 Codex usage limit，结果保持 `not_measured`，失败记录已保留。
+P3 retrieval-only diagnostic 已覆盖三个 education answer sessions、coupon 与 Target context、early guitar comparison 与 later usage，并把 `9:30` preference session 排名第一。
+
+P3 answer-level fresh rerun 在模型生成前产生 4 条 failed records，原因是 ChatGPT Codex usage limit。失败记录已保留，answer effect 保持 `not_measured`，当前不形成 P3 answer improvement 声明。
+
+## 最新验证
+
+- Focused Agent runtime：`28/28 PASS`。
+- Full `scripts/check.py`：`178/178 PASS`。
+- Plugin validator、sanitizer、architecture 与 hygiene：PASS。
 
 ## 下一步
 
-1. Codex 使用额度恢复后，先复跑 P3 的 4 条 answer-level memory case，得到效果反馈前冻结 memory retrieval 行为。
-2. 完成一次 app_v4 → Codex → live literature 的真实登录、chat、SSE 与持久化验收。
-3. 扩充 BioASQ multi-document 与 LongMemEval memory task，针对真实错误继续优化 Agent。
-4. Literature 与 memory workflow 稳定后，再接药物设计模型、RDKit、结构分析、对接与 PLIP 工具链。
+1. Codex 使用额度恢复后，完成一次 app_v4 → Codex → live literature 的真实登录、chat、SSE 与持久化验收。
+2. 针对同 4 个 case 使用新的 SQLite 与结果路径执行 P3 answer rerun，保留现有 failed records；得到效果反馈前冻结 memory retrieval 行为。
+3. 扩大 real provider/Reader throughput evaluation，持续测量 evidence recall、引用、counterevidence、失败恢复、延迟与成本。
+4. 药物设计模型、RDKit、结构分析、对接与 PLIP workflows 继续 deferred。
