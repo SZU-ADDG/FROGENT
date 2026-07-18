@@ -855,3 +855,30 @@ Mixed-source Reader 性能验收要分开测量 metadata、文档准备与模型
 - Last-Seen: 2026-07-19
 
 ---
+
+## [LRN-20260719-012] best_practice
+
+**Logged**: 2026-07-19T04:00:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: retrieval
+
+### Summary
+PubChem exact InChIKey lookup can return multiple CID records for the same structural identity with different metadata completeness.
+
+### Details
+The official PubChem property endpoint for sodium acetate InChIKey `VMHLLURERBWHNL-UHFFFAOYSA-M` returned two records. CID 31372 lacked `Title`; CID 517045 had `Title=Sodium Acetate`. Both records had the same canonical/isomeric SMILES, InChIKey, formula, and charge. Rejecting every multi-record response lost a valid verified identity even though the structural fingerprint was unambiguous.
+
+### Suggested Action
+For exact structural lookup, inspect all records before selection. Accept a single fully complete record only when every record's available structural fields agree on the same fingerprint and incomplete duplicates add no conflict. Multiple complete records or any structural disagreement remain fail closed. Keep name lookup conservative because name ambiguity has different semantics.
+
+### Metadata
+- Source: real_provider_validation
+- Related Files: plugins/frogent-drug-design/frogent_plugin/pubchem_identity.py
+- Tags: pubchem, inchikey, duplicate-records, identity-resolution, fail-closed
+- Pattern-Key: retrieval.canonicalize_consistent_provider_duplicates
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---

@@ -190,18 +190,22 @@ Reader quality 为 `4/4` identities/designs/primary findings with locators、`4/
 - Candidate/baseline comparison 使用对称 retrieval terms、exact candidate/baseline binding 与固定 role order，并把 target/pocket 继续传到 tool plan。
 - `evaluate-candidate`、`optimize-small-molecule` 与 `plan-retrosynthesis` Skills 现在都从 `prepare-molecule` 开始。
 
-Real PubChem verification 已覆盖 aspirin、caffeine、L-lactic acid、sodium acetate 与 choline；经 PubChem 校正身份后的 caffeine-vs-theobromine comparison 通过。Fresh direct-subagent forward tests 通过 salt full/parent selection、multi-organic exact-fragment selection、counterion rejection 与 candidate/baseline ADMET comparison。App-v4 venv 已安装 RDKit 2026.03.4；这些 forward tests 未使用 OpenAI API key 或 nested Codex CLI。
+Official no-key PubChem PUG REST resolver 现在可以按 exact selected full/parent InChIKey 验证结构，或解析用户提供的 name；两条路径都要求 PubChem identity 与本地 RDKit normalization 结构一致。Provider failure 时，Agent 仍可使用本地 RDKit identity 与 tool plan。Verified CID 是 exact retrieval identity，verified title 只扩展 broad retrieval context，不能作为 experimental evidence。Resolver 不持久化 raw responses，也不需要 API key。
 
-当前边界：PubChem/name resolver 仍是 external verification，runtime 尚未实现 name resolution。ADMET、docking、retrosynthesis 与 SAR providers 处于 planned 状态，本轮没有执行。Literature Skill 相对 executable tool steps 的顺序仍由 workflow layer 决定。Docking pose artifact/interaction set 与 target/pocket external validation 尚待接入。Charged-species exact mass 可能因数据库采用不同 electron-mass convention 而有差异。依赖完整 drug-design/model runtime 的 workflows 继续 deferred。
+Candidate/baseline resolution 保持 symmetric 与 role-bound；两侧 identity 相同会阻止 false comparison。Exact InChIKey duplicate handling 允许结构一致的不完整重复：sodium acetate response 中 CID 31372 不完整、CID 517045 带 title 且完整，两者 structural fingerprints 一致，因此 runtime 只选择 CID 517045。存在结构冲突、多个完整记录或其他 ambiguity 时 fail closed；name lookup 保持 strict single-record。
+
+Fresh forward evidence：L-lactic acid name→CID 107689 并形成 ready ADMET plan；把 caffeine structure 错标为 theobromine 会被校正或拒绝；校正后的 caffeine CID 2519 与 theobromine CID 5429 形成 distinct symmetric comparison；sodium acetate full→CID 517045、parent acetate→CID 175，scope 分开且 gaps=0。此前 bounded live metadata panel 对 aspirin、caffeine、theobromine、L-lactic acid、sodium acetate、choline 的 PubChem→RDKit agreement 为 `6/6 PASS`。
+
+当前边界：PubChem resolver 是 direct runtime helper，尚未自动注入 generic Planner/factory。Catalog ADMET provider 的 port 9004 当前没有 listener，因此 routing 已验证，prediction execution/effect=`not_measured`。Docking、retrosynthesis 与 SAR providers 也未执行；Literature Skill ordering 仍是 workflow-layer concern。Docking pose artifact/interaction set、target/pocket external validation 尚待接入。Charged-species exact mass 可能因 electron-mass convention 不同而有差异。依赖完整 drug-design/model runtime 的 workflows 继续 deferred。
 
 ## 最新验证
 
-- App-v4 venv full suite：`206/206 PASS`。
-- Focused molecular + architecture：`18/18 PASS`。
-- `prepare-molecule` Skill validator 与 official plugin validator PASS；sanitizer `982/0/0`；diff/hygiene PASS。
+- App-v4 venv full suite：`214/214 PASS`。
+- Focused molecular identity：`26/26 PASS`。
+- `prepare-molecule` Skill validator 与 official plugin validator PASS；sanitizer `982/0/0`；diff PASS。
 
 ## 下一步
 
-1. 下一 capability block 在显式 molecular selection 后接入一个真实 provider，完成 typed tool input→result/artifact→failure recovery 的小型端到端 workflow。
-2. Docking 前先闭合 target/pocket external validation、pose artifact 与 interaction-set provenance；Literature Skill ordering 在 workflow layer 固定。
-3. PDF/registry 测量项继续保留，依赖未接入模型的完整 drug-design tasks 继续 deferred。
+1. 为现有 exact molecular bindings 接通一个项目授权的 ADMET provider，执行 `admet.predict`/`admet.compare` 并测量 prediction effect 与 failure recovery。
+2. 将 PubChem helper 自动注入 generic Planner/factory 前，先固定 name/structure conflict 和 provider-failure behavior。
+3. Docking provenance、PDF/registry 测量项继续保留，依赖未接入模型的完整 drug-design tasks 继续 deferred。

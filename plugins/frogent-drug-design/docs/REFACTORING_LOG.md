@@ -239,16 +239,20 @@ Batch timing 测量 live preparation/concurrency。Deterministic barrier `reader
 
 `prepare_molecular_request` 接受 SMILES，返回 evidence-bound identity、retrieval terms 与 tool plan。App-v4 venv 的 RDKit 2026.03.4 保留 original input，并生成 canonical isomeric/connectivity SMILES、InChI/InChIKey、formula、exact mass、charge、fragments 与 stereo。完整 salt/mixture identity 始终保留，derived parent 只作为 candidate；工具执行前必须显式选择 full/parent 并绑定 tool input。Multi-organic selection 必须命名 exact normalized fragment，counterion fail closed，`[Na+]` 不能作为 parent。
 
-Candidate/baseline comparison 采用对称 retrieval terms、exact binding、固定 role order 与 target/pocket propagation。`evaluate-candidate`、`optimize-small-molecule`、`plan-retrosynthesis` Skills 均从 `prepare-molecule` 开始。Real PubChem verification 通过 aspirin、caffeine、L-lactic acid、sodium acetate、choline，以及校正身份后的 caffeine-vs-theobromine comparison。Fresh direct-subagent forward tests 通过 salt full/parent、multi-organic fragment、counterion rejection 与 candidate/baseline ADMET comparison；未使用 OpenAI API key 或 nested Codex CLI。
+Candidate/baseline comparison 采用对称 retrieval terms、exact binding、固定 role order 与 target/pocket propagation。`evaluate-candidate`、`optimize-small-molecule`、`plan-retrosynthesis` Skills 均从 `prepare-molecule` 开始。
 
-PubChem/name resolver 仍是 external verification，runtime 尚未实现。ADMET/docking/retrosynthesis/SAR providers 仅为 planned，本轮未执行；Literature Skill ordering 属于 workflow-layer concern。Docking pose artifact/interaction set、target/pocket external validation 仍待接入。Charged-species exact mass 可能受 electron-mass convention 影响。依赖完整 drug-design/model runtime 的 workflows 继续 deferred。
+Official no-key PubChem PUG REST resolver 可按 exact selected full/parent InChIKey 验证，或解析 supplied name，并要求 PubChem→RDKit structural agreement。Provider failure 时本地 identity/tool plan 继续可用；CID 仅作为 exact retrieval identity，title 仅作 broad context，不能作为 experimental evidence。Resolver 无 raw persistence、无 API key。Candidate/baseline resolution symmetric 且 role-bound，相同 identities 会阻止 false comparison。
+
+Sodium acetate exact lookup 同时返回 incomplete CID 31372 与 titled complete CID 517045；两者 structural fingerprints 一致，runtime 因恰有一个带 title 的完整记录而选择 CID 517045。结构冲突、多个完整 records 或 ambiguity fail closed；name lookup 保持 strict single-record。Fresh evidence 包含 L-lactic acid→CID 107689 ready ADMET plan、错误 theobromine label 的 caffeine structure 被校正/拒绝、caffeine CID 2519 vs theobromine CID 5429 distinct symmetric comparison，以及 sodium acetate full→CID 517045/parent acetate→CID 175 的独立 scopes 与 zero gaps。Bounded live metadata panel 的 aspirin/caffeine/theobromine/L-lactic acid/sodium acetate/choline PubChem→RDKit agreement 为 6/6。
+
+PubChem resolver 当前是 direct runtime helper，尚未自动注入 generic Planner/factory。Catalog ADMET port 9004 没有 listener，routing 已验证，prediction execution/effect=`not_measured`。Docking/retrosynthesis/SAR providers 未执行；Literature Skill ordering 属于 workflow layer。Pose artifact/interaction set、target/pocket external validation 仍待接入，charged-species exact mass 可能受 electron-mass convention 影响；完整 model-dependent workflows 继续 deferred。
 
 ### Verification
 
-App-v4 venv full suite 206/206、focused molecular + architecture 18/18 均 PASS；`prepare-molecule` Skill validator 与 official plugin validator PASS，sanitizer 982/0/0、diff/hygiene PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
+App-v4 venv full suite 214/214、focused molecular identity 26/26 均 PASS；`prepare-molecule` Skill validator 与 official plugin validator PASS，sanitizer 982/0/0、diff PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
 
 ### 下一性能块
 
-1. 下一 capability block 在显式 molecular selection 后接入一个真实 provider，完成 typed tool input→result/artifact→failure recovery 的小型端到端 workflow。
-2. Docking 前先闭合 target/pocket external validation、pose artifact 与 interaction-set provenance；Literature Skill ordering 在 workflow layer 固定。
-3. PDF/registry 测量项继续保留，依赖未接入模型的完整 drug-design tasks 继续 deferred。
+1. 为 exact molecular bindings 接通一个项目授权的 ADMET provider，执行 `admet.predict`/`admet.compare` 并测量 prediction effect 与 failure recovery。
+2. PubChem helper 自动注入 generic Planner/factory 前，先固定 name/structure conflict 与 provider-failure behavior。
+3. Docking provenance、PDF/registry 测量项继续保留，依赖未接入模型的完整 drug-design tasks 继续 deferred。

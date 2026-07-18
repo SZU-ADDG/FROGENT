@@ -13,6 +13,7 @@ Normalize identity before retrieving evidence or choosing chemistry tools.
 2. Inspect canonical identities, fragments, charge, and assigned or unresolved stereocenters. Keep salts and mixtures intact.
 3. Treat any largest-organic-fragment parent as a derived candidate. Report every removed fragment. Bind downstream steps to either the exact full structure or an exact selected parent fragment. For multiple organic fragments, require the selected canonical fragment identity; a generic confirmation cannot choose it.
 4. Search literature with verified canonical SMILES, InChIKey, and InChI. Use formula as a broad supplemental term. Require an external resolver before assigning a chemical name.
+   When PubChem is available, resolve the exact selected InChIKey or supplied name, require local RDKit identity agreement, and attach only the verified PubChem title and CID. Keep provider failures as coverage gaps.
 5. Follow the returned ordered capability plan and surface every blocker. Each step must carry the exact candidate structure, candidate/baseline role order, any normalized baseline, and known target/pocket identifiers. Require target and pocket for docking, a baseline for molecular comparison, and interaction evidence for fragment reconstruction.
 6. Keep ADMET, docking, retrosynthesis, and SAR outputs labeled as computational predictions. Use screened literature for experimental evidence.
 

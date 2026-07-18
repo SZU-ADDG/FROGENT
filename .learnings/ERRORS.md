@@ -3311,3 +3311,63 @@ Before any cache cleanup in a shared worktree, compare exact file timestamps and
 - **Notes**: The directory contained Python bytecode cache only and is not tracked by Git; no source or result asset was removed. Main confirmed the path is absent and instructed all tasks to preserve uncertain shared caches going forward.
 
 ---
+
+## [ERR-20260719-054] test_log_written_outside_project_root
+
+**Logged**: 2026-07-19T04:08:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: filesystem-safety
+
+### Summary
+Implementation redirected a full-check log to `/tmp/frogent-check-pubchem.log`, violating the rule that all local writes must remain inside `/Users/dongxu/projects/FROGENT`.
+
+### Error
+```
+test output redirected to /tmp/frogent-check-pubchem.log
+```
+
+### Suggested Fix
+Keep validation output in the terminal. When a persistent log is genuinely required, place it in an explicitly approved project-contained temporary directory after validating containment and symlink boundaries.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/scripts/check.py
+- See Also: ERR-20260719-053
+
+### Resolution
+- **Resolved**: 2026-07-19T04:08:00+08:00
+- **Commit/PR**: pending PubChem verified identity resolver block
+- **Notes**: The external log contains test output only. Main will not access, modify, or delete it; all subsequent validation runs remain inside the project boundary and stream output directly.
+
+---
+
+## [ERR-20260719-055] admet_provider_unavailable
+
+**Logged**: 2026-07-19T04:07:24+08:00
+**Priority**: high
+**Status**: pending
+**Area**: tool-use
+
+### Summary
+Fresh molecular forward checks produced correctly bound ADMET tool plans, while the catalog endpoint on port 9004 had no listening provider.
+
+### Error
+```
+ADMET provider endpoint unavailable: no listener on configured port 9004
+```
+
+### Context
+- L-lactic acid name resolution produced a verified PubChem/RDKit identity and a ready `admet.predict` step.
+- A corrected caffeine-versus-theobromine request produced distinct, symmetric identities and a ready `admet.compare` step.
+- Direct subagent probes could not execute either prediction because the configured local provider was unavailable.
+- PubChem identity resolution and routing remain usable; no ADMET effect result was produced.
+
+### Suggested Fix
+Treat real provider execution as the next tool-use capability block: establish an available project-authorized ADMET provider or a clearly scoped local implementation, execute the existing exact molecular bindings, and preserve provider failures as typed gaps.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/catalog.py, plugins/frogent-drug-design/frogent_plugin/molecular_routing.py
+
+---

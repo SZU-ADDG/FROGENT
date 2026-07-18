@@ -86,6 +86,8 @@ class MolecularSearchTerm:
     value: str
     scope: str
     exact: bool
+    provenance: str = "local_rdkit"
+    artifact_url: str = ""
 
 
 class MoleculeNormalizer(Protocol):

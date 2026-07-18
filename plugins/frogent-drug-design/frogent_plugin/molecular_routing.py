@@ -58,6 +58,8 @@ class MolecularIntakeResult:
     baseline_identity: MolecularIdentity | None
     search_terms: tuple[MolecularSearchTerm, ...]
     baseline_search_terms: tuple[MolecularSearchTerm, ...]
+    selected_input: MolecularInputBinding
+    selected_baseline_input: MolecularInputBinding | None
     tool_plan: MolecularToolPlan
 
 
@@ -91,7 +93,7 @@ def prepare_molecular_request(smiles: str, intent: str,
         target_id=target_id, pocket_id=pocket_id, baseline=baseline,
         baseline_input=baseline_input, interaction_evidence=interaction_evidence)
     return MolecularIntakeResult(smiles, _provenance(identity), identity, baseline, terms,
-                                 baseline_terms, plan)
+                                 baseline_terms, candidate_input, baseline_input, plan)
 
 
 def route_molecular_tools(intent: str, identity: MolecularIdentity, *, target_id: str = "",
@@ -128,6 +130,9 @@ def route_molecular_tools(intent: str, identity: MolecularIdentity, *, target_id
                                     role_order, target_id, pocket_id)
     if comparison and baseline_input is None:
         blockers.append("molecular comparison requires a normalized baseline molecule")
+        specs = [(capability, "blocked", purpose) for capability, _, purpose in specs]
+    if comparison and baseline_input and primary.inchikey == baseline_input.inchikey:
+        blockers.append("molecular comparison requires distinct candidate and baseline identities")
         specs = [(capability, "blocked", purpose) for capability, _, purpose in specs]
     specs = _selection_specs(specs, identity, primary, "input", blockers)
     if comparison and baseline:
