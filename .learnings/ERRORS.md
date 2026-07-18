@@ -2648,3 +2648,34 @@ ERROR: You've hit your usage limit. Visit https://chatgpt.com/codex/settings/usa
 - Related Files: plugins/frogent-drug-design/.runtime/subagent-results/longmemeval-memory-v5a.jsonl, plugins/frogent-drug-design/.runtime/subagent-results/longmemeval-memory-v5b.jsonl
 
 ---
+
+## [ERR-20260718-032] codex_thread_status_tools_stalled
+
+**Logged**: 2026-07-18T02:40:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tooling
+
+### Summary
+每小时恢复巡检中，Codex task list/read 调用连续两次超过 40 秒无返回并被精确终止。
+
+### Context
+- `list_threads` 与直接读取 Implementation/Document task 均停滞。
+- 项目 Git 状态可独立读取，当前 `main` 与 `origin/main` 同步且无代码改动。
+- 最近已知的 Implementation 与 Document checkpoint 均为完成后等待；未盲目恢复或创建新任务。
+
+### Suggested Fix
+后续巡检重试 task status 工具；恢复后核对三个长期任务并将本条标记 resolved。
+
+### Metadata
+- Reproducible: unknown
+- Related Files: .learnings/ERRORS.md
+- Recurrence-Count: 2
+- Last-Seen: 2026-07-18T11:47:00+08:00
+
+### Resolution
+- **Resolved**: 2026-07-18T12:44:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 状态工具曾恢复后再次停滞；当前 `list_threads` 已再次恢复并确认 Implementation 完成等待、Document idle。项目 Git 检查始终正常，未盲目恢复任务。
+
+---
