@@ -771,6 +771,10 @@ class ResearchWorkflowBehaviorTests(unittest.TestCase):
             HarnessPolicy(max_tool_calls=2), max_readers=2)
         result = controller.run(request, self.context)
         self.assertEqual(("Z", "A"), tuple(item.record_id for item in result.reader_reports))
+        self.assertEqual(("Z", "A"), tuple(item.record_id for item in result.telemetry.documents))
+        self.assertEqual(result.telemetry.documents, result.checkpoint.read_telemetry)
+        self.assertEqual((2, 2), (result.telemetry.peak_reader_concurrency,
+                                 result.checkpoint.peak_reader_concurrency))
         completed = tuple(event.payload["record_id"] for event in result.events
                           if event.kind == "tool.completed" and event.payload.get("name") == "reader")
         self.assertEqual(("Z", "A"), completed)
@@ -802,6 +806,52 @@ class ResearchWorkflowBehaviorTests(unittest.TestCase):
         self.assertIsNotNone(reader.tasks["A"].full_text_artifact)
         self.assertTrue(any("Z: OSError: OA unavailable" in gap for gap in partial.coverage_gaps))
         self.assertTrue(any("Z: abstract-only evidence" in gap for gap in partial.coverage_gaps))
+
+    def test_mixed_reader_telemetry_preserves_order_peak_and_local_failure(self):
+        records = tuple(record(name, name, name + " paper", {"pmid": str(index)}, "abstract " + name)
+                        for index, name in enumerate(("jats", "bioc", "repository", "abstract"), 1))
+
+        class Resolver:
+            def resolve(self, item, context):
+                if item.id == "abstract":
+                    return None
+                source_path = {"jats": "jats", "bioc": "bioc",
+                               "repository": "repository_pdf"}[item.id]
+                media = "application/pdf" if source_path == "repository_pdf" else "application/xml"
+                return FullTextDocument(item.id, ArtifactRef(
+                    "full-" + item.id, item.id, media, "memory://" + item.id),
+                    "[TITLE] " + item.title + "\n[SECTION 1 Results P1] evidence", source_path)
+
+        barrier = threading.Barrier(4)
+
+        class MixedReader(FakeReader):
+            max_chars = 60_000
+            def read(self, task):
+                barrier.wait(timeout=2)
+                if task.record.id == "bioc":
+                    raise ValueError("isolated reader failure")
+                return super().read(task)
+
+        reader = MixedReader()
+        batch = read_records(records, {item.source: Resolver() for item in records}, reader,
+                             self.context, max_workers=4)
+        reports, gaps, events = batch
+        self.assertEqual(("jats", "repository", "abstract"),
+                         tuple(report.record_id for report in reports))
+        self.assertEqual(("jats", "bioc", "repository", "abstract"),
+                         tuple(item.record_id for item in batch.telemetry))
+        self.assertEqual(("jats", "bioc", "repository_pdf", "abstract"),
+                         tuple(item.source_path for item in batch.telemetry))
+        self.assertEqual(("completed", "reader_failed", "completed", "completed"),
+                         tuple(item.status for item in batch.telemetry))
+        self.assertEqual((False, True, True, True), tuple(item.fallback for item in batch.telemetry))
+        self.assertEqual(4, batch.peak_reader_concurrency)
+        self.assertTrue(all(item.packed_chars > 0 and item.preparation_seconds >= 0
+                            and item.reader_seconds >= 0 and item.total_seconds >= 0
+                            for item in batch.telemetry))
+        self.assertTrue(any("isolated reader failure" in gap for gap in gaps))
+        self.assertEqual(("jats", "repository", "abstract"),
+                         tuple(event.payload["record_id"] for event in events))
 
 
 if __name__ == "__main__":

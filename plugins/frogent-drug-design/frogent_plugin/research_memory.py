@@ -11,8 +11,8 @@ from typing import Mapping
 from .contracts import ArtifactRef
 from .evidence import LiteratureRecord, SearchPlan
 from .research_types import (
-    KnowledgeCandidate, ReaderClaim, ReaderReport, ResearchHit, ResearchQuery, ResearchRequest,
-    WorkflowCheckpoint,
+    DocumentReadTelemetry, KnowledgeCandidate, ReaderClaim, ReaderReport, ResearchHit,
+    ResearchQuery, ResearchRequest, WorkflowCheckpoint,
 )
 
 SCHEMA_VERSION = 1
@@ -141,7 +141,9 @@ def _checkpoint_dict(checkpoint: WorkflowCheckpoint) -> dict[str, object]:
             "hits": [{"source": item.source, "query": item.query, "wave": item.wave,
                       "rank": item.rank, "occurrence": item.occurrence, "record_id": item.record_id}
                      for item in checkpoint.hits], "provider_calls": checkpoint.provider_calls,
-            "reader_tasks": checkpoint.reader_tasks, "elapsed_seconds": checkpoint.elapsed_seconds}
+            "reader_tasks": checkpoint.reader_tasks, "elapsed_seconds": checkpoint.elapsed_seconds,
+            "read_telemetry": [_read_telemetry_dict(item) for item in checkpoint.read_telemetry],
+            "peak_reader_concurrency": checkpoint.peak_reader_concurrency}
 
 
 def _checkpoint(value: object) -> WorkflowCheckpoint:
@@ -152,11 +154,27 @@ def _checkpoint(value: object) -> WorkflowCheckpoint:
     hits = tuple(ResearchHit(str(item["source"]), str(item["query"]), str(item["wave"]),
                  int(item["rank"]), int(item["occurrence"]), str(item["record_id"]))
                  for item in data.get("hits", ()))
+    read_telemetry = tuple(_read_telemetry(item) for item in data.get("read_telemetry", ()))
     return WorkflowCheckpoint(tuple(data["completed_queries"]), tuple(_record(item) for item in data["records"]),
                               tuple(_report(item) for item in data["reports"]), tuple(data["coverage_gaps"]),
                               tuple(data["revoked_record_ids"]), expansion, hits,
                               int(data.get("provider_calls", 0)), int(data.get("reader_tasks", 0)),
-                              float(data.get("elapsed_seconds", 0.0)))
+                              float(data.get("elapsed_seconds", 0.0)), read_telemetry,
+                              int(data.get("peak_reader_concurrency", 0)))
+
+
+def _read_telemetry_dict(item: DocumentReadTelemetry) -> dict[str, object]:
+    return {name: getattr(item, name) for name in ("record_id", "source_path",
+            "preparation_seconds", "reader_seconds", "total_seconds", "status", "fallback",
+            "packed_chars")}
+
+
+def _read_telemetry(value: object) -> DocumentReadTelemetry:
+    item = _mapping(value)
+    return DocumentReadTelemetry(str(item["record_id"]), str(item["source_path"]),
+        float(item["preparation_seconds"]), float(item["reader_seconds"]),
+        float(item["total_seconds"]), str(item["status"]), bool(item["fallback"]),
+        int(item["packed_chars"]))
 
 
 def _record_dict(item: LiteratureRecord) -> dict[str, object]:

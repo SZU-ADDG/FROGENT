@@ -105,7 +105,7 @@ class OpenAlexRepositoryResolver:
             self._gaps[record.id] = detail + "; repository PDF extraction returned no text"
             return None
         self._gaps[record.id] = detail + "; repository PDF evidence extracted"
-        return FullTextDocument(record.id, artifact, text)
+        return FullTextDocument(record.id, artifact, text, "repository_pdf")
 
     def coverage_gap(self, record_id: str) -> str:
         return self._gaps.pop(record_id, "")

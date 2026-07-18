@@ -225,12 +225,22 @@ Fresh direct-subagent panel 结果：PMID 38101901→NCT04154072 PASS，保留 2
 
 真实 UCL 60k pack 保留 10 个 PDF page markers、observed effect、planned endpoint 与 registry state。当前限制包括 current mutable registry/no historical reconstruction、`hasResults=true` values 尚未解析、PMID discovery 只扫描前 25 条 references、无 automated verdict，以及 registry enrollment 与 randomized/analysis population 可能采用不同语义。
 
+### Mixed Reader throughput effect
+
+每个 OA→registry→Reader document 现有 typed telemetry：`record_id`、最终 `source_path`（`jats`/`bioc`/`repository_pdf`/`abstract`/`oa_fallback`/`other_full_text`）、preparation/reader/total seconds、`completed`/`reader_failed`、fallback 与 `packed_chars`。`ReadBatch` 保持 first-hit order 并记录 observed peak concurrency；单个 Reader failure 只省略该 report，保留 telemetry/gap，其余 documents 继续。`ResearchResult`、checkpoint 与 SQLite 持久化 telemetry/peak，不保存 OA/full text；resume/revoke 保留测量。`CodexReader` 复用 bounded pack，避免重复 packing。
+
+Fresh real four-document panel 使用 direct subagent Readers，无 nested Codex CLI 或 API key。PMID/source/preparation/packed chars 分别为：42113543 JATS 2.668s/8,325；28781108 BioC 4.389s/52,236；39919773 UCL repository PDF 6.145s/60,000；38101901 abstract fallback 1.160s/5,598。Batch wall 6.146s、peak=4、first-hit order 保持；preparation sum≈14.363s，observed preparation speedup≈2.34×。Repository pack 在 truncation 后仍保留 title、0.92/p=.47、10 PDF page markers、registry boundary 与 planned endpoint。Live Reader failures=0；deterministic BioC failure injection 仍产生 3 reports、4 telemetry entries、peak=4 与 ordered aggregation。
+
+Reader quality 为 `4/4` identities/designs/primary findings with locators 和 `4/4` counterevidence/safety/limitations。JATS 保留 early-onset criteria 漏掉 68–77% variant carriers 与未解决的 clinical utility/cost-effectiveness；BioC 保留 week-60 `-3.5` signal、planned OFF-med endpoint 与 unresolved disease modification；repository 保留 negative 0.92（95% CI -1.56 to 3.39，p=.47）及 serious-event narrative/table discrepancy；abstract 保留两剂 NLY01 negative 与 gastrointestinal/nausea counterevidence。三个 trials 均隔离 observed publication 与 planned/current registry，`BACKGROUND` pollution=0，admitted-set-external claims=0。
+
+Batch timing 测量 live preparation/concurrency。Deterministic barrier `reader_seconds` 包含 synchronization wait；direct worker evidence review 仅观察到 JATS≈22s、repository≈43s，BioC/abstract reasoning 未单独 instrument，完整 Reader latency distribution=`not_measured`。n=4 只建立方向与 failure visibility。Repository PDF 仍是 preparation bottleneck，PDF extraction/table layout 与 mutable registry snapshots 保持已知限制。
+
 ### Verification
 
-Focused workflow + runtime 54/54、full suite 195/195 均 PASS；official validator PASS、sanitizer 982/0/0、diff PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
+Main focused workflow + runtime 55/55、full `scripts/check.py` 196/196 均 PASS；official validator PASS、sanitizer 982/0/0、diff/hygiene PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
 
 ### 下一性能块
 
-1. 在小型 mixed JATS/BioC/repository/abstract + registry panel 上端到端测量 multi-paper Reader latency、throughput 与 failures。
-2. 依据真实失败决定 OCR 或 section-aware PDF packing 的优先级。
-3. 完成该性能块后进入 tool/workflow capability work；依赖未接入药物设计模型的完整 workflow 继续 deferred。
+1. 下一 capability block 转向 evidence-backed molecular identity/structure normalization 与 RDKit-assisted query/tool routing，直接改善 biomedical/drug-design decision 的 tool use。
+2. PDF/OCR、table layout、mutable registry snapshot 与完整 Reader latency distribution 保持已知测量项，出现更强真实 failure 时再提升优先级。
+3. 依赖未接入模型的完整 drug-design tasks 继续 deferred。

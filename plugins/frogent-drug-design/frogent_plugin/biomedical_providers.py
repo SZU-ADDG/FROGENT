@@ -65,7 +65,7 @@ class EuropePMCProvider:
         except Exception as primary_error:
             return self._resolve_bioc(record, pmcid, primary_error)
         artifact = ArtifactRef("oa-" + record.id, pmcid + ".xml", "application/xml", primary_url)
-        return FullTextDocument(record.id, artifact, text)
+        return FullTextDocument(record.id, artifact, text, "jats")
 
     def coverage_gap(self, record_id: str) -> str:
         return self._resolution_gaps.pop(record_id, "")
@@ -86,7 +86,7 @@ class EuropePMCProvider:
             + "; open-access and publisher-version status not asserted")
         name = pmcid + ".bioc.xml [author_manuscript" + license_note + "]"
         artifact = ArtifactRef("bioc-author-manuscript-" + record.id, name, "application/xml", url)
-        return FullTextDocument(record.id, artifact, article.text)
+        return FullTextDocument(record.id, artifact, article.text, "bioc")
 
     def related(self, source: str, identifier: str, relation: str = "citations",
                 limit: int = 25) -> tuple[str, ...]:
@@ -217,7 +217,7 @@ class UnpaywallFallback:
         if len(raw) > 2_000_000:
             raise ValueError("Unpaywall OA document exceeds 2 MB reader limit")
         text = raw.decode("utf-8", errors="replace").strip()
-        return FullTextDocument(record.id, artifact, text) if text else None
+        return FullTextDocument(record.id, artifact, text, "oa_fallback") if text else None
 
 
 def _pubmed_record(article: ET.Element, query: LiteratureQuery) -> LiteratureRecord:

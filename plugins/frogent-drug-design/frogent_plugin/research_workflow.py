@@ -13,7 +13,7 @@ from .evidence import (
 from .harness import HarnessPhase, HarnessPolicy, HarnessState
 from .literature import LiteratureProvider
 from .research_execution import query_key, retrieve_queries
-from .research_reading import family_id, read_records
+from .research_reading import ReadBatch, family_id, read_records
 from .research_screening import conservative_assessment
 from .synthesis_recovery import synthesize_or_partial
 from .research_types import (
@@ -78,18 +78,25 @@ class ResearchController:
         candidates = _verify_candidates(request.knowledge_candidates, canonical, gaps)
         completed_keys = tuple(sorted(completed | set(new_completed)))
         if stop_after_retrieval:
-            telemetry = _telemetry(counters, saved.reader_tasks, saved.elapsed_seconds, started, self.clock)
+            telemetry = _telemetry(counters, saved.reader_tasks, saved.elapsed_seconds, started,
+                                   self.clock, saved.peak_reader_concurrency, saved.read_telemetry)
             saved = WorkflowCheckpoint(completed_keys, canonical, (), tuple(sorted(set(gaps))),
                                        saved.revoked_record_ids, expansion_queries if self.expander else (),
                                        tuple(hits), telemetry.provider_calls, telemetry.reader_tasks,
-                                       telemetry.elapsed_seconds)
+                                       telemetry.elapsed_seconds, telemetry.documents,
+                                       telemetry.peak_reader_concurrency)
             return _result(canonical, (), EvidenceLedger(), candidates, gaps, "", saved, events,
                            hits=hits, telemetry=telemetry)
         reports = list(saved.reports)
         reader_tasks = saved.reader_tasks
+        read_telemetry = list(saved.read_telemetry)
+        peak_reader_concurrency = saved.peak_reader_concurrency
         if not reports:
             selected = canonical[:self.max_reader_documents]
-            reports, reader_gaps, reader_events = self._read(selected, context)
+            batch = self._read(selected, context)
+            reports, reader_gaps, reader_events = batch
+            read_telemetry.extend(batch.telemetry)
+            peak_reader_concurrency = max(peak_reader_concurrency, batch.peak_reader_concurrency)
             reader_tasks += len(selected)
             if len(canonical) > len(selected):
                 gaps.append(f"reader document cap omitted {len(canonical) - len(selected)} records")
@@ -103,21 +110,24 @@ class ResearchController:
             gaps.append("no evidence passed screening and memory admission")
         answer = synthesize_or_partial(self.synthesizer, request.plan.question, evidence,
                                        tuple(reports), gaps, events)
-        telemetry = _telemetry(counters, reader_tasks, saved.elapsed_seconds, started, self.clock)
+        telemetry = _telemetry(counters, reader_tasks, saved.elapsed_seconds, started, self.clock,
+                               peak_reader_concurrency, tuple(read_telemetry))
         saved = WorkflowCheckpoint(completed_keys, canonical, tuple(reports), tuple(sorted(set(gaps))), revoked,
                                    expansion_queries if self.expander else (), tuple(hits),
-                                   telemetry.provider_calls, telemetry.reader_tasks, telemetry.elapsed_seconds)
+                                   telemetry.provider_calls, telemetry.reader_tasks, telemetry.elapsed_seconds,
+                                   telemetry.documents, telemetry.peak_reader_concurrency)
         events.append(StreamEvent("done", {"records": len(canonical), "admitted": len(evidence),
                                             "coverage_gaps": len(set(gaps)),
                                             "provider_calls": telemetry.provider_calls,
                                             "reader_tasks": telemetry.reader_tasks,
+                                            "peak_reader_concurrency": telemetry.peak_reader_concurrency,
                                             "elapsed_seconds": telemetry.elapsed_seconds}))
         leads = _author_leads(canonical, self.providers)
         return _result(canonical, tuple(reports), ledger, candidates, gaps, answer, saved, events, leads,
                        hits, telemetry)
 
     def _read(self, records: tuple[LiteratureRecord, ...], context: ExecutionContext
-              ) -> tuple[list[ReaderReport], list[str], list[StreamEvent]]:
+              ) -> ReadBatch:
         return read_records(records, self.resolvers, self.reader, context, self.max_readers,
                             self.registry_resolver)
 def _build_ledger(records: tuple[LiteratureRecord, ...], reports: tuple[ReaderReport, ...],
@@ -178,9 +188,9 @@ def _canonicalize(records: list[LiteratureRecord], hits) -> tuple[LiteratureReco
     for record in ordered:
         families.setdefault(family_id(record), record)
     return tuple(families.values())
-def _telemetry(counters, readers, previous_elapsed, started, clock) -> HarnessTelemetry:
+def _telemetry(counters, readers, previous_elapsed, started, clock, peak=0, documents=()) -> HarnessTelemetry:
     elapsed = previous_elapsed + max(0.0, clock() - started)
-    return HarnessTelemetry(counters["provider_calls"], readers, elapsed)
+    return HarnessTelemetry(counters["provider_calls"], readers, elapsed, peak, tuple(documents))
 def _author_leads(records, providers) -> tuple[AuthorLead, ...]:
     leads = {}
     for record in records:

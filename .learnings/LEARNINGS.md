@@ -828,3 +828,30 @@ NCT01971242 的 primary outcome `measure` 仅为泛化的 `Efficacy`，具体计
 - Last-Seen: 2026-07-19
 
 ---
+
+## [LRN-20260719-011] best_practice
+
+**Logged**: 2026-07-19T02:43:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: retrieval
+
+### Summary
+Mixed-source Reader 性能验收要分开测量 metadata、文档准备与模型阅读，并用同一真实 panel 同时检查证据保留和并发收益。
+
+### Details
+四篇 fresh panel 覆盖 JATS、BioC author manuscript、repository PDF 和 abstract。当前 runtime 并发准备总墙钟为 6.15 秒，四篇 preparation 累加约 14.36 秒，观察到约 2.34 倍并发收益与 peak=4；first-hit 输出顺序保持。Direct subagent Readers 对四篇均提取出核心结论、反证和限制，三个 trial case 都保持 publication observed evidence 与 registry planned evidence 的来源边界。同步 barrier 中的 `reader_seconds` 包含等待时间，只能用于验证并发计数；真实模型阅读延迟需要生产 CodexReader 或 worker 外层计时单独测量。
+
+### Suggested Action
+后续 throughput panel 固定同时报告 per-document preparation、Reader、total、source path、packed chars、failure status 和 batch wall time。Direct subagent eval 报告 evidence quality 与 worker wall time；测试 barrier 只证明控制流和 failure isolation，禁止把它写成真实模型 latency。
+
+### Metadata
+- Source: real_provider_validation
+- Related Files: plugins/frogent-drug-design/frogent_plugin/research_reading.py, plugins/frogent-drug-design/frogent_plugin/research_types.py
+- Tags: reader, throughput, concurrency, telemetry, evidence-preservation
+- Pattern-Key: retrieval.separate_reader_performance_stages
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---

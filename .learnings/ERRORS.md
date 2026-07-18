@@ -3190,3 +3190,66 @@ Runtime 行为测试使用 app venv；official plugin validator 使用已配置 
 - **Notes**: 194/194 runtime tests 在此错误前已完整通过；validator 改用系统 Python 独立复验。
 
 ---
+
+## [ERR-20260719-050] parallel_thread_status_read_hung
+
+**Logged**: 2026-07-19T02:19:09+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: orchestration
+
+### Summary
+Main hourly recovery inspection attempted to read the Implementation and Document task status in one parallel app request. The request yielded no result for roughly 150 seconds and was terminated.
+
+### Error
+```
+codex_app__read_thread parallel request remained running without output
+```
+
+### Suggested Fix
+Use one bounded status read. If the sequential retry also stalls, continue from the latest explicit handoff checkpoint and defer task-service inspection instead of blocking the performance loop.
+
+### Metadata
+- Reproducible: unknown
+- Related Tasks: FROGENT Implementation, FROGENT Document
+
+### Resolution
+- **Resolved**: 2026-07-19T02:19:09+08:00
+- **Commit/PR**: pending next capability block
+- **Notes**: The parallel request and one 40-second sequential retry were explicitly terminated. No project file or task state was changed; the latest explicit Implementation and Document handoffs remain safe checkpoints.
+
+---
+
+## [ERR-20260719-051] rdkit_missing_from_app_venv
+
+**Logged**: 2026-07-19T02:47:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: config
+
+### Summary
+下一 tool-use block 的依赖探针确认 app_v4 精简 venv 未安装 RDKit；系统 Python 已提供 RDKit 2026.03.1。
+
+### Error
+```
+ModuleNotFoundError: No module named 'rdkit'
+```
+
+### Context
+- Probe: `plugins/frogent-drug-design/.runtime/app-v4/venv/bin/python -c 'import rdkit'`
+- System `python3` import succeeded with version `2026.03.1`.
+- No package installation or environment mutation was attempted.
+
+### Suggested Fix
+RDKit tool integration should use an injectable adapter and explicit availability gap. Decide deployment packaging separately; tests can use a fake adapter and optional system-RDKit integration test without silently coupling app_v4 to the system interpreter.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/requirements-app-v4.txt
+
+### Resolution
+- **Resolved**: 2026-07-19T02:47:00+08:00
+- **Commit/PR**: pending next tool-use capability block
+- **Notes**: Dependency boundary is now known; the current mixed Reader block is unaffected.
+
+---

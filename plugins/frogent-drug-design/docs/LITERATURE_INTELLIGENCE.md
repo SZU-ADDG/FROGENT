@@ -42,6 +42,9 @@ Primary OA 失败后，runtime 依次尝试 NCBI PMC BioC 与 OpenAlex repositor
 - Registry evidence 保留 link provenance、status/date、design、enrollment、arms/interventions、sponsor、全部 primary outcomes 的 bounded descriptions、前 10 个 secondary outcomes 与 omitted count、results-posting state，以及 current-mutable/`as_of` 限制。
 - Reader 必须比较 publication 的 observed design/outcomes 与 registry 的 planned evidence；protocol fields 不能作为 observed efficacy 或 safety。Registry failure 保持局部隔离，article/abstract Reader 继续运行。
 - 60k pack 同时保留 article/PDF evidence 与 bounded registry evidence。
+- 每个 OA→registry→Reader document 生成 typed telemetry：`record_id`、最终 `source_path`（`jats`、`bioc`、`repository_pdf`、`abstract`、`oa_fallback`、`other_full_text`）、preparation/reader/total seconds、`completed`/`reader_failed`、fallback 与 `packed_chars`。
+- `ReadBatch` 保持 first-hit report/telemetry order，并记录 observed peak Reader concurrency。单个 Reader failure 只省略该 report，保留 `reader_failed` telemetry 与 gap，其余 documents 继续。
+- `ResearchResult`、`WorkflowCheckpoint` 与 SQLite 持久化 document telemetry/peak，不保存 OA/full text；resume 与 revoke 保留这些测量。`CodexReader` 复用已生成的 bounded pack，避免重复 packing。
 - Reader 输出 claim、locator、研究上下文、方向、量级、限制和 integrity status。
 - 身份错配、畸形输出或单个 reader 失败被隔离，并写入 coverage gap。
 
@@ -161,14 +164,31 @@ Fresh direct-subagent panel 验证了 publication→registry augmentation：
 
 当前限制：registry 是 current mutable view，无法重建历史快照；`hasResults=true` 的 result values 尚未解析；PMID discovery 只扫描前 25 条 references；没有 automated verdict；registry enrollment 语义可能与 publication 的 randomized 或 analysis population 不同。
 
+## Mixed Reader throughput effect
+
+Fresh real panel 使用四个 direct subagent Reader workers，无 nested Codex CLI 或 API key：
+
+| PMID | Final source path | Preparation | Packed chars | Reader evidence |
+| --- | --- | ---: | ---: | --- |
+| 42113543 | JATS | 2.668s | 8,325 | Early-onset criteria 在 prospective cohorts 漏掉 68–77% variant carriers；broader testing direction 有支持，clinical utility/cost-effectiveness 未解决。 |
+| 28781108 | BioC author manuscript | 4.389s | 52,236 | Week-60 MDS-UPDRS III `-3.5` signal 与 planned OFF-med endpoint 均保留；disease modification 未解决。 |
+| 39919773 | UCL repository PDF | 6.145s | 60,000 | 0.92（95% CI -1.56 to 3.39，p=.47）支持 negative disease-modification result；serious-event narrative/table discrepancy 保留。 |
+| 38101901 | Abstract fallback | 1.160s | 5,598 | 两个 NLY01 doses 均 negative；gastrointestinal/nausea counterevidence 保留，registry protocol fields 未被当作 observed outcomes。 |
+
+同一 batch 的 real concurrent preparation wall time 为 6.146s，observed peak=4，first-hit report/telemetry order 保持。四篇 preparation 累计约 14.363s，对 sequential sum 的 observed preparation speedup 约 2.34×。Repository 60k input 虽有 truncation，仍保留 title、observed 0.92/p=.47、10 个 PDF page markers、registry boundary 与 planned endpoint。
+
+Reader quality 为 `4/4` identities/designs/primary findings with locators、`4/4` counterevidence/safety/limitations。三个 trial papers 均分开 publication observed results 与 ClinicalTrials.gov planned/current fields；`BACKGROUND` trial pollution=0，admitted-set-external claims=0。Live panel 的 Reader failures=0。Deterministic mixed-source test 注入一个 BioC Reader failure 后仍得到 3 reports、4 telemetry entries、peak=4 与 ordered aggregation。
+
+测量边界：batch timing 准确覆盖 live provider/OA/PDF/registry preparation 与 concurrency；deterministic barrier 的 `reader_seconds` 包含 synchronization wait，不能代表真实 model latency。Direct worker end-to-end evidence review 可观察到 JATS 约 22s、repository 约 43s；BioC/abstract model reasoning 未单独 instrument，完整 Reader latency distribution 为 `not_measured`。该 n=4 panel 只建立方向与 failure visibility。Repository PDF 仍是 preparation bottleneck，PDF extraction/table layout 与 mutable registry snapshots 继续作为已知限制。
+
 ## 最新验证
 
-- Focused workflow + runtime：`54/54 PASS`。
-- Full suite：`195/195 PASS`。
-- Official validator PASS；sanitizer `982/0/0`；diff PASS。
+- Main focused workflow + runtime：`55/55 PASS`。
+- Main full `scripts/check.py`：`196/196 PASS`。
+- Official validator PASS；sanitizer `982/0/0`；diff/hygiene PASS。
 
 ## 下一步
 
-1. 在小型 mixed JATS/BioC/repository/abstract + registry panel 上端到端测量 multi-paper Reader latency、throughput 与 failures。
-2. 依据真实失败决定 OCR 或 section-aware PDF packing 的优先级。
-3. 完成该性能块后进入 tool/workflow capability work；依赖未接入药物设计模型的完整 workflow 继续 deferred。
+1. 下一 capability block 转向 evidence-backed molecular identity/structure normalization 与 RDKit-assisted query/tool routing，直接改善 biomedical/drug-design decision 的 tool use。
+2. PDF/OCR、table layout、mutable registry snapshot 与完整 Reader latency distribution 保持已知测量项，出现更强真实 failure 时再提升优先级。
+3. 依赖未接入模型的完整 drug-design tasks 继续 deferred。

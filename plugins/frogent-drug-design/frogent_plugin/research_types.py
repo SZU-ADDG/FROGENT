@@ -67,10 +67,14 @@ class FullTextDocument:
     record_id: str
     artifact: ArtifactRef
     text: str
+    source_path: str = ""
 
     def __post_init__(self) -> None:
         _text(self.record_id, "full-text record id")
         _text(self.text, "full text")
+        if self.source_path and self.source_path not in {
+                "jats", "bioc", "repository_pdf", "oa_fallback", "other_full_text"}:
+            raise ValueError("full-text source path is invalid")
 
 
 @dataclass(frozen=True, slots=True)
@@ -99,6 +103,7 @@ class ReaderTask:
     record: LiteratureRecord
     full_text_artifact: ArtifactRef | None
     text: str
+    text_truncated: bool = False
 
 
 @dataclass(frozen=True, slots=True)
@@ -172,10 +177,38 @@ class ResearchHit:
 
 
 @dataclass(frozen=True, slots=True)
+class DocumentReadTelemetry:
+    record_id: str
+    source_path: str
+    preparation_seconds: float
+    reader_seconds: float
+    total_seconds: float
+    status: str
+    fallback: bool
+    packed_chars: int
+
+    def __post_init__(self) -> None:
+        if not self.record_id.strip() or self.source_path not in {
+                "jats", "bioc", "repository_pdf", "abstract", "oa_fallback", "other_full_text"}:
+            raise ValueError("document read telemetry identity is invalid")
+        values = (self.preparation_seconds, self.reader_seconds, self.total_seconds)
+        if any(isinstance(value, bool) or not isinstance(value, (int, float)) or value < 0
+               for value in values):
+            raise ValueError("document read durations must be non-negative numbers")
+        if self.status not in {"completed", "reader_failed"}:
+            raise ValueError("document read status is invalid")
+        if not isinstance(self.fallback, bool) or isinstance(self.packed_chars, bool) \
+                or not isinstance(self.packed_chars, int) or self.packed_chars < 0:
+            raise ValueError("document read fallback or packed character count is invalid")
+
+
+@dataclass(frozen=True, slots=True)
 class HarnessTelemetry:
     provider_calls: int = 0
     reader_tasks: int = 0
     elapsed_seconds: float = 0.0
+    peak_reader_concurrency: int = 0
+    documents: tuple[DocumentReadTelemetry, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -190,6 +223,8 @@ class WorkflowCheckpoint:
     provider_calls: int = 0
     reader_tasks: int = 0
     elapsed_seconds: float = 0.0
+    read_telemetry: tuple[DocumentReadTelemetry, ...] = ()
+    peak_reader_concurrency: int = 0
 
 
 @dataclass(frozen=True, slots=True)

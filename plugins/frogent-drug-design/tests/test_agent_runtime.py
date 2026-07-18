@@ -33,7 +33,7 @@ from frogent_plugin.reader_text import pack_reader_text  # noqa: E402
 from frogent_plugin.research_screening import HybridScreener  # noqa: E402
 from frogent_plugin.research_service import ResearchService  # noqa: E402
 from frogent_plugin.research_types import (  # noqa: E402
-    FullTextDocument, ReaderClaim, ReaderReport, ResearchQuery, ResearchRequest,
+    DocumentReadTelemetry, FullTextDocument, ReaderClaim, ReaderReport, ResearchQuery, ResearchRequest,
     ScreeningAssessment, ReaderTask, WorkflowCheckpoint,
 )
 from frogent_plugin.research_workflow import ResearchController  # noqa: E402
@@ -276,8 +276,11 @@ class AgentRuntimeTests(unittest.TestCase):
         client, _ = self.client([json.dumps(planner_json)])
         request = CodexPlanner(client, ("europe_pmc",)).plan("Q", date(2024, 12, 31),
                                                              ExecutionContext("u", "c", "j", ROOT))
+        document = DocumentReadTelemetry("1", "repository_pdf", 0.25, 1.5, 1.75,
+                                         "completed", True, 58_886)
         checkpoint = WorkflowCheckpoint(("europe-pmc.search|europe_pmc|Q",), (record(),),
-                                        revoked_record_ids=("1",))
+                                        revoked_record_ids=("1",), read_telemetry=(document,),
+                                        peak_reader_concurrency=3)
         with tempfile.TemporaryDirectory(dir=ROOT / "tests") as temp:
             store = SQLiteResearchStore(Path(temp) / "memory.sqlite3", ROOT)
             state = ResearchMemory(request, checkpoint, ({"id": "ev-1", "record_id": "1"},),
@@ -285,6 +288,8 @@ class AgentRuntimeTests(unittest.TestCase):
             store.save("u", "c", state)
             loaded = store.load("u", "c")
             self.assertEqual(checkpoint.completed_queries, loaded.checkpoint.completed_queries)
+            self.assertEqual((document,), loaded.checkpoint.read_telemetry)
+            self.assertEqual(3, loaded.checkpoint.peak_reader_concurrency)
             self.assertEqual(("1",), loaded.revocations)
             self.assertIsNone(store.load("u", "other"))
             store.save("other-user", "c", state)
@@ -625,9 +630,11 @@ class AgentRuntimeTests(unittest.TestCase):
             revoked = store.load("u", "chat").checkpoint
             self.assertEqual(
                 (before_revoke.provider_calls, before_revoke.reader_tasks,
-                 before_revoke.elapsed_seconds, before_revoke.hits),
+                 before_revoke.elapsed_seconds, before_revoke.hits,
+                 before_revoke.read_telemetry, before_revoke.peak_reader_concurrency),
                 (revoked.provider_calls, revoked.reader_tasks,
-                 revoked.elapsed_seconds, revoked.hits),
+                 revoked.elapsed_seconds, revoked.hits,
+                 revoked.read_telemetry, revoked.peak_reader_concurrency),
             )
             third = tuple(service.stream_payload("u", payload, history=[]))
             self.assertNotIn("ev-1", "".join(third))
