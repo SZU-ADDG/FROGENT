@@ -15,7 +15,7 @@ Build a route set with explicit search depth, assumptions, and stopping conditio
 
 ## Workflow
 
-1. Validate the target structure and preserve the submitted representation.
+1. Use `$prepare-molecule` to validate the target structure and preserve the submitted representation.
 2. Start with `retrosynthesis.flash` for a fast, shallow route set.
 3. Check every route against user constraints and record unsupported steps.
 4. Use `retrosynthesis.explorer` when the fast search has no viable route, low confidence, or insufficient depth.

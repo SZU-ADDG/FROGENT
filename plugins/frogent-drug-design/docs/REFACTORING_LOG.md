@@ -235,12 +235,20 @@ Reader quality 为 `4/4` identities/designs/primary findings with locators 和 `
 
 Batch timing 测量 live preparation/concurrency。Deterministic barrier `reader_seconds` 包含 synchronization wait；direct worker evidence review 仅观察到 JATS≈22s、repository≈43s，BioC/abstract reasoning 未单独 instrument，完整 Reader latency distribution=`not_measured`。n=4 只建立方向与 failure visibility。Repository PDF 仍是 preparation bottleneck，PDF extraction/table layout 与 mutable registry snapshots 保持已知限制。
 
+### Molecular identity and tool routing effect
+
+`prepare_molecular_request` 接受 SMILES，返回 evidence-bound identity、retrieval terms 与 tool plan。App-v4 venv 的 RDKit 2026.03.4 保留 original input，并生成 canonical isomeric/connectivity SMILES、InChI/InChIKey、formula、exact mass、charge、fragments 与 stereo。完整 salt/mixture identity 始终保留，derived parent 只作为 candidate；工具执行前必须显式选择 full/parent 并绑定 tool input。Multi-organic selection 必须命名 exact normalized fragment，counterion fail closed，`[Na+]` 不能作为 parent。
+
+Candidate/baseline comparison 采用对称 retrieval terms、exact binding、固定 role order 与 target/pocket propagation。`evaluate-candidate`、`optimize-small-molecule`、`plan-retrosynthesis` Skills 均从 `prepare-molecule` 开始。Real PubChem verification 通过 aspirin、caffeine、L-lactic acid、sodium acetate、choline，以及校正身份后的 caffeine-vs-theobromine comparison。Fresh direct-subagent forward tests 通过 salt full/parent、multi-organic fragment、counterion rejection 与 candidate/baseline ADMET comparison；未使用 OpenAI API key 或 nested Codex CLI。
+
+PubChem/name resolver 仍是 external verification，runtime 尚未实现。ADMET/docking/retrosynthesis/SAR providers 仅为 planned，本轮未执行；Literature Skill ordering 属于 workflow-layer concern。Docking pose artifact/interaction set、target/pocket external validation 仍待接入。Charged-species exact mass 可能受 electron-mass convention 影响。依赖完整 drug-design/model runtime 的 workflows 继续 deferred。
+
 ### Verification
 
-Main focused workflow + runtime 55/55、full `scripts/check.py` 196/196 均 PASS；official validator PASS、sanitizer 982/0/0、diff/hygiene PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
+App-v4 venv full suite 206/206、focused molecular + architecture 18/18 均 PASS；`prepare-molecule` Skill validator 与 official plugin validator PASS，sanitizer 982/0/0、diff/hygiene PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
 
 ### 下一性能块
 
-1. 下一 capability block 转向 evidence-backed molecular identity/structure normalization 与 RDKit-assisted query/tool routing，直接改善 biomedical/drug-design decision 的 tool use。
-2. PDF/OCR、table layout、mutable registry snapshot 与完整 Reader latency distribution 保持已知测量项，出现更强真实 failure 时再提升优先级。
-3. 依赖未接入模型的完整 drug-design tasks 继续 deferred。
+1. 下一 capability block 在显式 molecular selection 后接入一个真实 provider，完成 typed tool input→result/artifact→failure recovery 的小型端到端 workflow。
+2. Docking 前先闭合 target/pocket external validation、pose artifact 与 interaction-set provenance；Literature Skill ordering 在 workflow layer 固定。
+3. PDF/registry 测量项继续保留，依赖未接入模型的完整 drug-design tasks 继续 deferred。

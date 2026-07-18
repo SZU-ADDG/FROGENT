@@ -34,6 +34,35 @@ jq: error: syntax error, unexpected INVALID_CHARACTER
 - **Notes**: 移除补零表达式后成功展开 008、009、014 的目标 session turns。
 
 ---
+
+## [ERR-20260719-052] mislabeled_theobromine_smiles_in_forward_eval
+
+**Logged**: 2026-07-19T03:12:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+Main supplied a caffeine-equivalent SMILES while labeling it theobromine in the first molecular comparison forward test. RDKit correctly normalized both inputs to the same caffeine identity, so that comparison result was invalid as a caffeine-versus-theobromine evaluation.
+
+### Error
+```
+candidate and baseline both normalized to C8H10N4O2 / RYYVLZVUVIJVGH-UHFFFAOYSA-N
+```
+
+### Suggested Fix
+Resolve named compounds through an external authoritative identity source before constructing forward-eval inputs, then assert that candidate and baseline InChIKeys differ when the task claims two distinct molecules.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/molecular_identity.py
+
+### Resolution
+- **Resolved**: 2026-07-19T03:12:00+08:00
+- **Commit/PR**: pending molecular identity and tool routing block
+- **Notes**: The invalid comparison evidence was discarded. Main will use PubChem-resolved theobromine identity and rerun the worker and local probe.
+
+---
 ## [ERR-20260719-036] openalex_pubmed_repository_misclassification
 
 **Logged**: 2026-07-19T00:15:00+08:00
@@ -3250,6 +3279,35 @@ RDKit tool integration should use an injectable adapter and explicit availabilit
 ### Resolution
 - **Resolved**: 2026-07-19T02:47:00+08:00
 - **Commit/PR**: pending next tool-use capability block
-- **Notes**: Dependency boundary is now known; the current mixed Reader block is unaffected.
+- **Notes**: Main later installed the declared requirements into the project-local app-v4 venv; RDKit 2026.03.4 and the real molecular tests now pass there.
+
+---
+
+## [ERR-20260719-053] preexisting_pycache_removed_during_hygiene
+
+**Logged**: 2026-07-19T03:24:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: filesystem-safety
+
+### Summary
+Implementation removed `plugins/frogent-drug-design/frogent_plugin/__pycache__` during final hygiene after earlier handoffs had explicitly identified that directory as a pre-existing shared-worktree asset. Main's correction arrived after the directory was already absent.
+
+### Error
+```
+pre-existing shared __pycache__ was reclassified as current-turn cache and deleted
+```
+
+### Suggested Fix
+Before any cache cleanup in a shared worktree, compare exact file timestamps and ownership against the current turn. Preserve directories previously reported as shared assets unless current-turn creation is proven file by file.
+
+### Metadata
+- Reproducible: no
+- Related Files: plugins/frogent-drug-design/frogent_plugin/__pycache__
+
+### Resolution
+- **Resolved**: 2026-07-19T03:24:00+08:00
+- **Commit/PR**: pending molecular identity and tool routing block
+- **Notes**: The directory contained Python bytecode cache only and is not tracked by Git; no source or result asset was removed. Main confirmed the path is absent and instructed all tasks to preserve uncertain shared caches going forward.
 
 ---

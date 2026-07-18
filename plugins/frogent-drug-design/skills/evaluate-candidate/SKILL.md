@@ -16,7 +16,7 @@ Produce a fair comparison from a consistent evaluation setup.
 
 ## Workflow
 
-1. Validate candidate identifiers and keep the original input order.
+1. Use `$prepare-molecule` for every small-molecule input; preserve original order and identity warnings.
 2. Split small molecules and peptides into separate evaluation groups.
 3. Score small molecules with `docking.score` under identical parameters.
 4. Score peptides with `peptide.docking-score` under identical parameters.

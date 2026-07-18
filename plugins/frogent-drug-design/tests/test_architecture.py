@@ -106,6 +106,7 @@ class ArchitectureTests(unittest.TestCase):
             "optimize-small-molecule",
             "plan-literature-search",
             "plan-retrosynthesis",
+            "prepare-molecule",
             "research-biomedical-literature",
             "screen-literature-evidence",
             "synthesize-biomedical-evidence",

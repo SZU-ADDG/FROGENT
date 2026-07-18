@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prepare Molecule"
+  short_description: "Normalize identity and route molecular tools"
+  default_prompt: "Use $prepare-molecule to normalize this structure and build a prerequisite-aware tool plan."

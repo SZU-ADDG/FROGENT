@@ -15,13 +15,14 @@ Run a traceable lead-optimization loop while preserving the baseline.
 
 ## Workflow
 
-1. Generate a reference pose with `docking.generate-conformation`.
-2. Inspect fragment interactions with `sar.analyze-with-docking`.
-3. Select a fragment for replacement only when the interaction evidence supports it.
-4. Prepare the retained scaffold with `fragment.reconstruct`.
-5. Generate a bounded analogue set with `ligand.generate-from-fragments`.
-6. Evaluate the parent and analogues together with `docking.score` and `admet.compare` or `admet.predict`.
-7. Stop when a candidate passes the thresholds, the iteration limit is reached, or no measured improvement remains.
+1. Use `$prepare-molecule` on the baseline and resolve every identity or stereochemistry blocker.
+2. Generate a reference pose with `docking.generate-conformation`.
+3. Inspect fragment interactions with `sar.analyze-with-docking`.
+4. Select a fragment for replacement only when the interaction evidence supports it.
+5. Prepare the retained scaffold with `fragment.reconstruct`.
+6. Generate a bounded analogue set with `ligand.generate-from-fragments`.
+7. Evaluate the parent and analogues together with `docking.score` and `admet.compare` or `admet.predict`.
+8. Stop when a candidate passes the thresholds, the iteration limit is reached, or no measured improvement remains.
 
 ## Output
 

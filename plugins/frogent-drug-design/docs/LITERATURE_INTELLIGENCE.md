@@ -181,14 +181,27 @@ Reader quality 为 `4/4` identities/designs/primary findings with locators、`4/
 
 测量边界：batch timing 准确覆盖 live provider/OA/PDF/registry preparation 与 concurrency；deterministic barrier 的 `reader_seconds` 包含 synchronization wait，不能代表真实 model latency。Direct worker end-to-end evidence review 可观察到 JATS 约 22s、repository 约 43s；BioC/abstract model reasoning 未单独 instrument，完整 Reader latency distribution 为 `not_measured`。该 n=4 panel 只建立方向与 failure visibility。Repository PDF 仍是 preparation bottleneck，PDF extraction/table layout 与 mutable registry snapshots 继续作为已知限制。
 
+## Molecular identity and tool routing effect
+
+`prepare_molecular_request` 接受 SMILES，并生成 evidence-bound molecular identity、retrieval terms 与 tool plan。App-v4 project venv 中的 RDKit 2026.03.4 会保留 original input，并计算 canonical isomeric/connectivity SMILES、InChI、InChIKey、formula、exact mass、formal charge、fragments 与 stereo information。
+
+- 完整 salt/mixture identity 始终可选；derived parent 只作为 candidate。调用工具前必须显式选择 full identity 或 parent，并把选择绑定进 tool input。
+- Multi-organic 输入必须指定 exact normalized fragment；无效 counterion selection fail closed，`[Na+]` 不能作为 parent。
+- Candidate/baseline comparison 使用对称 retrieval terms、exact candidate/baseline binding 与固定 role order，并把 target/pocket 继续传到 tool plan。
+- `evaluate-candidate`、`optimize-small-molecule` 与 `plan-retrosynthesis` Skills 现在都从 `prepare-molecule` 开始。
+
+Real PubChem verification 已覆盖 aspirin、caffeine、L-lactic acid、sodium acetate 与 choline；经 PubChem 校正身份后的 caffeine-vs-theobromine comparison 通过。Fresh direct-subagent forward tests 通过 salt full/parent selection、multi-organic exact-fragment selection、counterion rejection 与 candidate/baseline ADMET comparison。App-v4 venv 已安装 RDKit 2026.03.4；这些 forward tests 未使用 OpenAI API key 或 nested Codex CLI。
+
+当前边界：PubChem/name resolver 仍是 external verification，runtime 尚未实现 name resolution。ADMET、docking、retrosynthesis 与 SAR providers 处于 planned 状态，本轮没有执行。Literature Skill 相对 executable tool steps 的顺序仍由 workflow layer 决定。Docking pose artifact/interaction set 与 target/pocket external validation 尚待接入。Charged-species exact mass 可能因数据库采用不同 electron-mass convention 而有差异。依赖完整 drug-design/model runtime 的 workflows 继续 deferred。
+
 ## 最新验证
 
-- Main focused workflow + runtime：`55/55 PASS`。
-- Main full `scripts/check.py`：`196/196 PASS`。
-- Official validator PASS；sanitizer `982/0/0`；diff/hygiene PASS。
+- App-v4 venv full suite：`206/206 PASS`。
+- Focused molecular + architecture：`18/18 PASS`。
+- `prepare-molecule` Skill validator 与 official plugin validator PASS；sanitizer `982/0/0`；diff/hygiene PASS。
 
 ## 下一步
 
-1. 下一 capability block 转向 evidence-backed molecular identity/structure normalization 与 RDKit-assisted query/tool routing，直接改善 biomedical/drug-design decision 的 tool use。
-2. PDF/OCR、table layout、mutable registry snapshot 与完整 Reader latency distribution 保持已知测量项，出现更强真实 failure 时再提升优先级。
-3. 依赖未接入模型的完整 drug-design tasks 继续 deferred。
+1. 下一 capability block 在显式 molecular selection 后接入一个真实 provider，完成 typed tool input→result/artifact→failure recovery 的小型端到端 workflow。
+2. Docking 前先闭合 target/pocket external validation、pose artifact 与 interaction-set provenance；Literature Skill ordering 在 workflow layer 固定。
+3. PDF/registry 测量项继续保留，依赖未接入模型的完整 drug-design tasks 继续 deferred。
