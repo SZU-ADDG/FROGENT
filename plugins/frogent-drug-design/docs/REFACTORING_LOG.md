@@ -189,15 +189,15 @@ BioASQ exact answer 为 `2/2`；旧 gold-document recall@10=0 记录为 outdated
 
 LongMemEval baseline clean correctness 为 `7/14`。P1 real blind rerun 修复 duration sum、relative event order 与 project count，在 7 个失败 case 中取得 3 correct、3 partial/cautious、1 wrong。P2 real blind rerun 4/4 completed 且 retrieval 改善，answers 仍偏保守或方向错误。
 
-P3 保持 8 hits / 8000 chars，加入 direct matched companions、education-stage intent、preference/time constraints 与 qualified same-session linkage。Retrieval-only diagnostic 覆盖三个 education answer sessions、coupon 与 Target、guitar 前后语境，并把 `9:30` preference 排名第一。4 条 fresh answer rerun 在模型生成前因 Codex usage limit 失败，失败记录已保留，P3 answer effect 为 `not_measured`。
+P3 保持 8 hits / 8000 chars，加入 direct matched companions、education-stage intent、preference/time constraints 与 qualified same-session linkage。4 条 answer rerun 改由 collaboration subagents 直接使用真实 FROGENT retrieval bundles，4/4 completed、零 CLI、零 API key；逐例结果为 2 correct、2 partial/cautious、0 clearly wrong。Target 与晚间活动约束回答正确；教育聚合漏报 PCC 两年；购琴回答使用了 Stratocaster、Les Paul 与 open-D 证据，仍缺完整 neck、weight、sound-profile 对比。
 
 ### Verification
 
-Focused Agent runtime 28/28、full `scripts/check.py` 178/178、plugin validator、sanitizer、architecture 与 hygiene 均 PASS。App route integration 已通过，先前 live evidence 已分别确认 Codex Planner 与 Europe PMC/OA；一次完整 app_v4 real SSE call 仍受共享 Codex usage limit 阻断。
+Focused Agent runtime 28/28、full `scripts/check.py` 178/178、plugin validator、sanitizer、architecture 与 hygiene 均 PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
 
 ### 下一性能块
 
-1. Codex 使用额度恢复后，先完成一次 app_v4 → Codex → live literature 的登录、chat、SSE、checkpoint 与 history 纵向验收。
-2. 针对同 4 个 case 使用新的 SQLite 与结果路径重跑 P3 answer-level cases，保留现有 failed records；得到效果反馈前冻结 P3 retrieval 行为。
-3. 扩大 real provider/Reader throughput evaluation，继续按 evidence recall、引用、counterevidence、失败恢复、延迟与成本优化 Agent。
+1. 针对两条 partial memory case，提高教育阶段时长召回与购琴 compare-dimensions 综合，再用 subagents 复测。
+2. 扩大 real provider/Reader throughput evaluation，继续按 evidence recall、引用、counterevidence、失败恢复、延迟与成本优化 Agent。
+3. 独立部署继续保留 bundled Codex adapter canary；subagent-native Agent 开发与批量评测不依赖该通道。
 4. 药物设计模型、RDKit、结构分析、对接、PLIP 与相关 tool-use workflows 继续 deferred。

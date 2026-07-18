@@ -6,7 +6,7 @@ FROGENT 当前具备一个可组合运行的 literature intelligence 核心。
 
 它从用户问题和待核验的模型知识候选出发，经过真实数据库、OA、bounded reader workers、筛选、working memory 与 synthesis，最后返回带来源边界、coverage gaps 和 checkpoint 的结果。
 
-当前既可从 Python workflow 调用，也可通过 plugin-side launcher 将只读 `sources/frogent/app_v4.py` 接到 FROGENT Agent。默认 Agent roles 使用 ChatGPT bundled Codex 的 `gpt-5.6-sol`、medium reasoning，无需 OpenAI API key。
+当前既可从 Python workflow 调用，也可通过 plugin-side launcher 将只读 `sources/frogent/app_v4.py` 接到 FROGENT Agent。独立部署可选用 ChatGPT bundled Codex 的 `gpt-5.6-sol`、medium reasoning；开发与批量评测直接使用 subagents 承担 Agent roles，两条路径都无需 OpenAI API key。
 
 ## 实际用户流程
 
@@ -84,7 +84,7 @@ Harness 的权限、预算、事件与恢复边界见 [HARNESS.md](HARNESS.md)�
 - SQLite `ResearchMemory` 持久化 cross-chat conversation turns、checkpoint、admitted evidence、answer versions 与 revocation；OA 全文不写入 memory 数据库。
 - app_v4 继续使用原有 register、login、chat history、attachments 与 SSE `content/stop/[DONE]` 协议。
 - 启动前安装 `requirements-app-v4.txt`，设置非空 `SECRET_KEY`，并将 `FROGENT_CODEX_EXECUTABLE` 指向可用 Codex executable。默认不设置墙钟 timeout。
-- 一次完整 app_v4 → Codex → live literature SSE 请求仍待 Codex 使用额度恢复后验收。
+- subagent-native live probe 已通过真实 Europe PMC/OA、Reader、Screener、evidence admission、Synthesizer、SSE、history 与 SQLite checkpoint。独立部署时仍可由 bundled Codex adapter 提供同一组 roles。
 
 ## 52-case performance loop
 
@@ -102,7 +102,7 @@ Harness 的权限、预算、事件与恢复边界见 [HARNESS.md](HARNESS.md)�
 
 P3 retrieval-only diagnostic 已覆盖三个 education answer sessions、coupon 与 Target context、early guitar comparison 与 later usage，并把 `9:30` preference session 排名第一。
 
-P3 answer-level fresh rerun 在模型生成前产生 4 条 failed records，原因是 ChatGPT Codex usage limit。失败记录已保留，answer effect 保持 `not_measured`，当前不形成 P3 answer improvement 声明。
+P3 answer-level rerun 改由 collaboration subagents 直接读取真实 FROGENT retrieval bundles 并作 evidence-bound reasoning，4/4 completed、零 CLI、零 API key。逐例复核为 2 correct、2 partial/cautious、0 clearly wrong：Target 与晚间活动约束正确；教育聚合漏报 PCC 两年；购琴回答利用了 Stratocaster、Les Paul 与 open-D 证据，但比较维度仍不完整。
 
 ## 最新验证
 
@@ -112,7 +112,7 @@ P3 answer-level fresh rerun 在模型生成前产生 4 条 failed records，原�
 
 ## 下一步
 
-1. Codex 使用额度恢复后，完成一次 app_v4 → Codex → live literature 的真实登录、chat、SSE 与持久化验收。
-2. 针对同 4 个 case 使用新的 SQLite 与结果路径执行 P3 answer rerun，保留现有 failed records；得到效果反馈前冻结 memory retrieval 行为。
-3. 扩大 real provider/Reader throughput evaluation，持续测量 evidence recall、引用、counterevidence、失败恢复、延迟与成本。
+1. 针对两条 partial memory case，提高教育阶段时长召回与购琴 compare-dimensions 综合，再用 subagents 复测。
+2. 扩大 real provider/Reader throughput evaluation，持续测量 evidence recall、引用、counterevidence、失败恢复、延迟与成本。
+3. 在独立部署环境做 bundled Codex adapter canary；它不阻塞 subagent-native Agent 开发和评测。
 4. 药物设计模型、RDKit、结构分析、对接与 PLIP workflows 继续 deferred。

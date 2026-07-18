@@ -2623,7 +2623,7 @@ jq: error: syntax error, unexpected '|', expecting BINDING or '[' or '{'
 
 **Logged**: 2026-07-17T20:17:00+08:00
 **Priority**: high
-**Status**: blocked
+**Status**: resolved
 **Area**: eval
 
 ### Summary
@@ -2646,6 +2646,11 @@ ERROR: You've hit your usage limit. Visit https://chatgpt.com/codex/settings/usa
 ### Metadata
 - Reproducible: yes
 - Related Files: plugins/frogent-drug-design/.runtime/subagent-results/longmemeval-memory-v5a.jsonl, plugins/frogent-drug-design/.runtime/subagent-results/longmemeval-memory-v5b.jsonl
+
+### Resolution
+- **Resolved**: 2026-07-18T15:54:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 该错误只证明当次嵌套 Codex CLI 通道额度耗尽。用户确认当前有额度，Main 已停止等待并改用 collaboration subagents 直接完成 P3 answer 与 app_v4 workflow 验收；原四条失败资产继续保留。
 
 ---
 
@@ -2677,5 +2682,67 @@ ERROR: You've hit your usage limit. Visit https://chatgpt.com/codex/settings/usa
 - **Resolved**: 2026-07-18T12:44:00+08:00
 - **Commit/PR**: N/A
 - **Notes**: 状态工具曾恢复后再次停滞；当前 `list_threads` 已再次恢复并确认 Implementation 完成等待、Document idle。项目 Git 检查始终正常，未盲目恢复任务。
+
+---
+
+## [ERR-20260718-033] automation_status_enum
+
+**Logged**: 2026-07-18T16:05:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tooling
+
+### Summary
+更新每小时恢复自动化时首次使用小写 `active`，被状态枚举校验拒绝。
+
+### Error
+```
+status must be ACTIVE or PAUSED
+```
+
+### Context
+- 自动化内容尚未更新，项目文件未受影响。
+- 随即使用 `ACTIVE` 重试成功，并移除旧的全局配额假设。
+
+### Suggested Fix
+调用 automation update 时使用大写状态枚举 `ACTIVE` 或 `PAUSED`。
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+
+### Resolution
+- **Resolved**: 2026-07-18T16:06:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 使用 `ACTIVE` 更新成功；自动化现优先恢复 collaboration subagents，历史 CLI quota 只约束原调用路径。
+
+---
+
+## [ERR-20260718-034] app_probe_contract_typos
+
+**Logged**: 2026-07-18T16:40:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tests
+
+### Summary
+Subagent-native app probe 先使用错误的 `lrk2` marker 阻断 Reader，修正后又在结果序列化时读取不存在的 `StreamEvent.source`。
+
+### Context
+- 首次非空 probe 的 OA XML 实际包含 `LRRK2`，失败来自探针字面量。
+- 修正版实际 Agent 路径已完成 Reader、Screener、evidence admission、synthesis、SSE、history 与 checkpoint。
+- 后置审计序列化失败只影响 typed-event payload 留存，未影响 Agent 回答或持久化结果。
+
+### Suggested Fix
+Live probe 的关键 marker 从已保存原文机械验证；事件序列化只使用 contract 中的 `kind` 与 `payload`。Agent 主流程成功后，不为非关键审计字段重复运行昂贵 live workflow。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/contracts.py, plugins/frogent-drug-design/.runtime/app-v4/subagent-native-live-20260718-3/probe-observation.json
+
+### Resolution
+- **Resolved**: 2026-07-18T16:43:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 使用持久化 SQLite、raw provider assets、SSE 和 source-integrity evidence 完成主流程验收；typed-event 精确 payload 标为未捕获。
 
 ---

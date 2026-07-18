@@ -1,10 +1,38 @@
 # Learnings
 
+## [LRN-20260718-006] correction
+
+**Logged**: 2026-07-18T15:54:00+08:00
+**Priority**: critical
+**Status**: promoted
+**Area**: agent
+
+### Summary
+FROGENT 的批量 Agent 评测优先直接使用 subagents 的模型能力，禁止用某次 Codex CLI usage-limit 报错推断当前 Codex task 或 subagent 没有额度。
+
+### Details
+Main 将 7 月 17 日 benchmark subprocess 的 Codex CLI usage-limit 错误持续解释为整个 Codex 环境不可用，并据此等待到提示的恢复时间。用户明确指出当前拥有额度，也再次要求直接使用 subagents。当前 Codex task 能正常运行，说明 CLI executable、Codex app task 与 collaboration subagent 可能属于不同执行通道；单一路径的额度错误只能约束该次路径。评测期间应由 subagents 直接承担 Planner、Reader、Screener、Synthesizer 或 memory answer worker，外部 provider 只负责数据库和工具调用。
+
+### Suggested Action
+批量评测与实验先复用现有 subagents；每个 worker 使用自身模型能力，禁止启动嵌套 Codex CLI 或请求 OpenAI API key。部署用 app_v4 CLI 路径单独做结构和可用性验收，其额度状态只通过当次实际调用判断。任何旧 quota/timeout 记录都不得被自动外推为当前全局状态。
+
+### Metadata
+- Source: user_feedback
+- Related Files: AGENTS.md, plugins/frogent-drug-design/frogent_plugin/codex_client.py, plugins/frogent-drug-design/benchmarks/runner.py
+- Tags: subagents, quota, evaluation, runtime, correction
+- Pattern-Key: workflow.subagents_are_model_workers
+- Recurrence-Count: 1
+- First-Seen: 2026-07-18
+- Last-Seen: 2026-07-18
+- Promoted: AGENTS.md already contains the required subagent rule
+
+---
+
 ## [LRN-20260717-005] best_practice
 
 **Logged**: 2026-07-17T18:17:00+08:00
 **Priority**: high
-**Status**: in_progress
+**Status**: validated
 **Area**: memory
 
 ### Summary
@@ -17,19 +45,19 @@ P1 用真实失败病例盲测后，时长求和、相对时间比较和项目�
 
 P2 在原有 8 hits / 8000 chars 预算内加入 intent expansion 与 top-session bundle 后，4 个剩余病例全部完成且都比 P1 带回更多相关证据。真实盲测继续暴露三个通用缺口：同 session companion 应优先已直接匹配的用户 turn，避免附近短文本挤掉关键事实；正式教育等多阶段聚合问题需要召回 degree/school/college/university 等阶段词；推荐问题需要把明确时刻、prefer/avoid 等约束作为独立 evidence channel。另一个回答层缺口是同一 session 已同时出现商店与消费事件时过度拒绝合理关联。下一轮应保持有界和可追溯，在答案中明确标注这种 session 内关联为推断。
 
-P3 的无模型真实 retrieval diagnostic 已确认改动命中预期行为：教育问题的 8 hits 同时覆盖高中、PCC associate degree 与 UCLA bachelor/4-year 三个 answer sessions；coupon 问题同一 session 同时覆盖事件和 Target/Cartwheel；guitar 问题覆盖早期 compare/upgrade 与后期 open-D usage；晚间推荐问题把 9:30 preference session 排到第 1。P3 的 fresh 模型效果复测因 Codex usage limit 在生成前全部失败，当前只能确认 retrieval 改善，完整 answer effect 保持 `not_measured`。在配额恢复前继续修改会失去效果反馈，因此应冻结 P3 行为并保留失败结果。
+P3 的 retrieval diagnostic 已确认改动命中预期行为：教育问题覆盖高中、PCC associate degree 与 UCLA bachelor/4-year 三个 answer sessions；coupon 问题同一 session 覆盖事件和 Target/Cartwheel；guitar 问题覆盖早期 compare/upgrade 与后期 open-D usage；晚间推荐问题把 9:30 preference session 排到第 1。随后 4 条任务改由 collaboration subagents 直接读取真实 FROGENT retrieval bundle 并作 evidence-bound reasoning，零 Codex CLI、零 API key。结果为 2 条正确、2 条 partial/cautious、0 条明显错误：Target 与晚间活动约束回答正确；教育聚合诚实 abstain 但漏报 PCC 两年；购琴建议利用了 Stratocaster、Les Paul 与 open-D 证据，但没有完整展开 neck、weight、sound-profile 对比。该结果证明 subagent-native Agent 路径可用，同时显示 education companion recall 与偏好型比较的结构化综合仍需加强。
 
 ### Suggested Action
-在有界、用户隔离的前提下加入保守词形归一、用户陈述优先、session 去垄断与相邻 turn 装配。高分 session 应先形成小型 turn bundle，再让低价值 session 占用 prompt；bundle 内优先 direct matched user turns。Recommendation、quantitative 与 education-stage 问题使用小型意图扩展检索 prefer/avoid/time、显式数量单位和阶段事实。Answerer 按聚合、时间、偏好等意图先列证据再作答；同 session 的合理关联必须标明为推断，对部分证据不足的 abstention 保留可追溯 support。配额恢复后先用新路径重跑 P3 的 4 条失败资产；得到 answer-level 结果前停止继续调参。
+保持有界、用户隔离、session bundle 与 exact evidence-ID 约束。下一轮针对两条 partial case 做小而直接的改进：教育聚合优先保存每个阶段的起止年份或显式时长；偏好比较先生成 compare dimensions checklist，再基于已检索事实逐项回答。批量验证继续使用 subagents 直接承担 answer workers，部署 CLI 通道独立验收。
 
 ### Metadata
 - Source: real_task_eval
 - Related Files: plugins/frogent-drug-design/frogent_plugin/conversation_memory.py, plugins/frogent-drug-design/frogent_plugin/memory_retrieval.py, plugins/frogent-drug-design/frogent_plugin/memory_answer.py
 - Tags: memory, retrieval, session-diversity, temporal, aggregation, preference, abstention
 - Pattern-Key: memory.retrieve_sessions_and_synthesize_intents
-- Recurrence-Count: 4
+- Recurrence-Count: 5
 - First-Seen: 2026-07-17
-- Last-Seen: 2026-07-17
+- Last-Seen: 2026-07-18
 
 ---
 
