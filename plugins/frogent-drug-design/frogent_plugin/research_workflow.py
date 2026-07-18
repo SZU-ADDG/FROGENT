@@ -1,6 +1,5 @@
 """Executable literature intelligence controller with bounded reader isolation."""
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from time import monotonic
@@ -14,11 +13,12 @@ from .evidence import (
 from .harness import HarnessPhase, HarnessPolicy, HarnessState
 from .literature import LiteratureProvider
 from .research_execution import query_key, retrieve_queries
+from .research_reading import family_id, read_records
 from .research_screening import conservative_assessment
 from .synthesis_recovery import synthesize_or_partial
 from .research_types import (
     AuthorLead, FullTextResolver, HarnessTelemetry, KnowledgeCandidate, Reader, ReaderClaim,
-    ReaderReport, ReaderTask, ResearchRequest, ResearchResult, Screener, ScreeningAssessment,
+    ReaderReport, ResearchRequest, ResearchResult, Screener, ScreeningAssessment,
     Synthesizer, WorkflowCheckpoint,
 )
 
@@ -116,36 +116,7 @@ class ResearchController:
 
     def _read(self, records: tuple[LiteratureRecord, ...], context: ExecutionContext
               ) -> tuple[list[ReaderReport], list[str], list[StreamEvent]]:
-        tasks, gaps, events = [], [], []
-        for record in records:
-            document = None
-            resolver = self.resolvers.get(record.source)
-            if resolver:
-                try:
-                    document = resolver.resolve(record, context)
-                except Exception as exc:
-                    gaps.append(f"{record.id}: {type(exc).__name__}: {exc}")
-                resolver_gap = resolver.coverage_gap(record.id) if callable(
-                    getattr(resolver, "coverage_gap", None)) else ""
-                if resolver_gap:
-                    gaps.append(f"{record.id}: {resolver_gap}")
-            if document is None:
-                gaps.append(f"{record.id}: abstract-only evidence")
-            text = document.text if document else (record.abstract or record.title)
-            artifact = document.artifact if document else None
-            tasks.append(ReaderTask("reader-" + record.id, _family_id(record), record, artifact, text))
-        reports: list[ReaderReport] = []
-        with ThreadPoolExecutor(max_workers=min(self.max_readers, len(tasks) or 1)) as pool:
-            futures = {pool.submit(self.reader.read, task): task for task in tasks}
-            for future in as_completed(futures):
-                task = futures[future]
-                report, gap = _reader_result(future, task)
-                if report:
-                    reports.append(report)
-                    events.append(StreamEvent("tool.completed", {"name": "reader", "record_id": task.record.id}))
-                if gap:
-                    gaps.append(gap)
-        return sorted(reports, key=lambda item: item.task_id), gaps, events
+        return read_records(records, self.resolvers, self.reader, context, self.max_readers)
 def _build_ledger(records: tuple[LiteratureRecord, ...], reports: tuple[ReaderReport, ...],
                   revoked: tuple[str, ...], screener: Screener | None,
                   gaps: list[str] | None = None) -> EvidenceLedger:
@@ -202,28 +173,11 @@ def _canonicalize(records: list[LiteratureRecord], hits) -> tuple[LiteratureReco
     ordered.extend(record for record in records if record.id not in observed)
     families: dict[str, LiteratureRecord] = {}
     for record in ordered:
-        families.setdefault(_family_id(record), record)
+        families.setdefault(family_id(record), record)
     return tuple(families.values())
-def _family_id(record: LiteratureRecord) -> str:
-    values = {key.lower(): value.casefold() for key, value in record.identifiers.items()}
-    for key in ("doi", "nct", "pmid"):
-        if values.get(key):
-            return key + ":" + values[key]
-    return "title:" + " ".join(record.title.casefold().split())
 def _telemetry(counters, readers, previous_elapsed, started, clock) -> HarnessTelemetry:
     elapsed = previous_elapsed + max(0.0, clock() - started)
     return HarnessTelemetry(counters["provider_calls"], readers, elapsed)
-def _reader_result(future, task: ReaderTask) -> tuple[ReaderReport | None, str]:
-    try:
-        report = future.result()
-        if not isinstance(report, ReaderReport):
-            raise TypeError("malformed reader output")
-        if (report.task_id, report.family_id, report.record_id) != (
-                task.task_id, task.family_id, task.record.id):
-            raise ValueError("reader output identity mismatch")
-        return report, ""
-    except Exception as exc:
-        return None, f"{task.record.id}: malformed reader output: {type(exc).__name__}: {exc}"
 def _author_leads(records, providers) -> tuple[AuthorLead, ...]:
     leads = {}
     for record in records:

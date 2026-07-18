@@ -1,6 +1,7 @@
 """Behavior tests for the executable literature intelligence workflow."""
 
 import sys
+import threading
 import unittest
 from unittest.mock import patch
 from datetime import date, datetime, timezone
@@ -17,12 +18,14 @@ from frogent_plugin.literature import LiteratureBatch  # noqa: E402
 from frogent_plugin.literature import LiteratureQuery  # noqa: E402
 from frogent_plugin.biomedical_providers import (  # noqa: E402
     EuropePMCProvider, NCBIConfig, OpenAlexProvider, PubMedProvider, UnpaywallFallback,
+    UrllibTransport,
 )
 from frogent_plugin.research_types import (  # noqa: E402
     FullTextDocument, KnowledgeCandidate, ReaderClaim, ReaderReport, ResearchQuery,
     ResearchRequest, ScreeningAssessment,
 )
 from frogent_plugin.research_workflow import ResearchController  # noqa: E402
+from frogent_plugin.research_reading import read_records  # noqa: E402
 from frogent_plugin.research_v4 import run_v4_research  # noqa: E402
 from frogent_plugin.v4_adapter import V4ChatRequest  # noqa: E402
 
@@ -87,7 +90,10 @@ class FakeTransport:
     def __init__(self, responses): self.responses, self.calls = list(responses), []
     def get(self, url, params, headers={}):
         self.calls.append((url, dict(params)))
-        return self.responses.pop(0)
+        response = self.responses.pop(0)
+        if isinstance(response, Exception):
+            raise response
+        return response
 
 
 class ResearchWorkflowBehaviorTests(unittest.TestCase):
@@ -169,12 +175,27 @@ class ResearchWorkflowBehaviorTests(unittest.TestCase):
         epmc_json = (b'{"resultList":{"result":[{"pmid":"1","pmcid":"PMC1",'
                      b'"doi":"10.1/a","title":"LRRK2 anchor","firstPublicationDate":"2020-01-01",'
                      b'"abstractText":"abstract"}]}}')
-        epmc = EuropePMCProvider(FakeTransport([epmc_json, b"<article><p>claim text</p></article>"]))
+        full_xml = (b"<article><front><article-meta><title-group><article-title>Structured paper"
+                    b"</article-title></title-group><abstract><p>Abstract claim</p></abstract>"
+                    b"</article-meta></front><body><sec><title>Methods</title><p>method detail</p>"
+                    b"</sec><sec><title>Results</title><p>claim text</p></sec><sec>"
+                    b"<title>Discussion</title><p>limiting evidence</p></sec></body><back>"
+                    b"<ref-list><ref><mixed-citation>reference secret</mixed-citation></ref>"
+                    b"</ref-list></back></article>")
+        epmc_transport = FakeTransport([epmc_json, full_xml])
+        epmc = EuropePMCProvider(epmc_transport)
         query = LiteratureQuery("plan-1", "europe_pmc", "LRRK2", date(2024, 12, 31), 2)
         batch = epmc.search(query, self.context)
         self.assertEqual(("1",), tuple(item.id for item in batch.records))
         self.assertEqual("PMC1", batch.records[0].identifiers["pmcid"])
-        self.assertIn("claim text", epmc.resolve(batch.records[0], self.context).text)
+        full_text = epmc.resolve(batch.records[0], self.context).text
+        self.assertIn("[TITLE] Structured paper", full_text)
+        self.assertIn("[ABSTRACT 1 P1] Abstract claim", full_text)
+        self.assertIn("[SECTION 2 Results P1] claim text", full_text)
+        self.assertIn("[SECTION 3 Discussion P1] limiting evidence", full_text)
+        self.assertNotIn("reference secret", full_text)
+        self.assertEqual("", epmc.coverage_gap("1"))
+        self.assertEqual(2, len(epmc_transport.calls))
         related = EuropePMCProvider(FakeTransport([
             b'{"citationList":{"citation":[{"id":"c1"}]}}',
             b'{"referenceList":{"reference":[{"id":"r1"}]}}']))
@@ -196,6 +217,75 @@ class ResearchWorkflowBehaviorTests(unittest.TestCase):
         with patch.dict("os.environ", {}, clear=True):
             self.assertIn("OPENALEX_API_KEY", OpenAlexProvider.from_env()[1])
             self.assertIn("UNPAYWALL_EMAIL", UnpaywallFallback.from_env()[1])
+
+    def test_europe_pmc_primary_failure_uses_section_preserving_bioc_author_manuscript(self):
+        bioc = b"""<collection><infon key="license">custom-author-manuscript</infon><document>
+        <passage><infon key="section_type">TITLE</infon><text>Structured manuscript</text></passage>
+        <passage><infon key="section_type">ABSTRACT</infon><text>Abstract evidence</text></passage>
+        <passage><infon key="section_type">METHODS</infon><text>Long methods</text></passage>
+        <passage><infon key="section_type">RESULTS</infon><text>Late result evidence</text></passage>
+        <passage><infon key="section_type">DISCUSS</infon><text>Limiting interpretation</text></passage>
+        <passage><infon key="section_type">CONCLUSION</infon><text>Bounded conclusion</text></passage>
+        <passage><infon key="section_type">CORRECTION</infon><text>Corrected value</text></passage>
+        <passage><infon key="section_type">LIMITATION</infon><text>Small cohort</text></passage>
+        <passage><infon key="section_type">TABLE</infon><text>Table 1 effect estimate</text></passage>
+        <passage><infon key="section_type">FIG</infon><text>Figure 2 trend</text></passage>
+        <passage><infon key="section_type">REF</infon><text>reference secret</text></passage>
+        </document></collection>"""
+        transport = FakeTransport([OSError("HTTP 404"), bioc])
+        provider = EuropePMCProvider(transport)
+        manuscript = record("M", "europe_pmc", "Manuscript", {"pmcid": "PMC5831666"})
+        document = provider.resolve(manuscript, self.context)
+        self.assertIn("[TITLE] Structured manuscript", document.text)
+        for evidence in ("Late result evidence", "Limiting interpretation", "Bounded conclusion",
+                         "Corrected value", "Small cohort", "Table 1 effect estimate", "Figure 2 trend"):
+            self.assertIn(evidence, document.text)
+        self.assertNotIn("reference secret", document.text)
+        self.assertEqual("bioc-author-manuscript-M", document.artifact.id)
+        self.assertIn("author_manuscript", document.artifact.name)
+        self.assertIn("license=custom-author-manuscript", document.artifact.name)
+        self.assertEqual(EuropePMCProvider.BIOC_BASE + "/PMC5831666/unicode", document.artifact.uri)
+        gap = provider.coverage_gap("M")
+        self.assertIn("Europe PMC fullTextXML failed: OSError: HTTP 404", gap)
+        self.assertIn("NCBI BioC author_manuscript fallback used", gap)
+        self.assertIn("open-access and publisher-version status not asserted", gap)
+        self.assertEqual(2, len(transport.calls))
+
+    def test_europe_pmc_and_bioc_failure_preserve_both_gaps_and_abstract_fallback(self):
+        provider = EuropePMCProvider(FakeTransport([
+            OSError("primary unavailable"), OSError("BioC unavailable")]))
+        manuscript = record("M", "europe_pmc", "Manuscript", {"pmcid": "PMC1"})
+        self.assertIsNone(provider.resolve(manuscript, self.context))
+        gap = provider.coverage_gap("M")
+        self.assertIn("Europe PMC fullTextXML failed: OSError: primary unavailable", gap)
+        self.assertIn("NCBI BioC author_manuscript fallback failed: OSError: BioC unavailable", gap)
+        resolver = EuropePMCProvider(FakeTransport([
+            OSError("primary unavailable"), OSError("BioC unavailable")]))
+        reader = FakeReader()
+        reports, gaps, _ = read_records((manuscript,), {"europe_pmc": resolver}, reader,
+                                        self.context, max_workers=1)
+        self.assertEqual(1, len(reports))
+        self.assertEqual("Manuscript", reader.tasks[0].text)
+        self.assertIsNone(reader.tasks[0].full_text_artifact)
+        self.assertTrue(any("primary unavailable" in item and "BioC unavailable" in item
+                            for item in gaps))
+        self.assertIn("M: abstract-only evidence", gaps)
+
+    def test_urllib_transport_has_no_default_timeout_and_accepts_positive_override(self):
+        class Response:
+            def __enter__(self): return self
+            def __exit__(self, *args): return False
+            def read(self): return b"ok"
+
+        with patch("frogent_plugin.biomedical_providers.urllib.request.urlopen",
+                   side_effect=(Response(), Response())) as urlopen:
+            self.assertEqual(b"ok", UrllibTransport().get("https://example.test", {}))
+            self.assertEqual(b"ok", UrllibTransport(12.5).get("https://example.test", {}))
+        self.assertEqual({}, urlopen.call_args_list[0].kwargs)
+        self.assertEqual({"timeout": 12.5}, urlopen.call_args_list[1].kwargs)
+        for invalid in (0, -1, float("nan"), float("inf")):
+            with self.subTest(timeout=invalid), self.assertRaisesRegex(ValueError, "positive finite"):
+                UrllibTransport(invalid)
 
     def test_v4_adapter_emits_typed_answer_and_done_events(self):
         europe = FakeProvider({"anchor": (self.anchor,), "challenge": (self.counter,)})
@@ -234,6 +324,78 @@ class ResearchWorkflowBehaviorTests(unittest.TestCase):
         self.assertEqual(("Institute",), result.author_leads[0].affiliations)
         self.assertEqual("LRRK2 Consortium", result.author_leads[1].name)
         self.assertTrue(all(item.strength.value == "low" for item in result.ledger.admitted()))
+
+    def test_oa_reader_pipelines_overlap_preserve_order_and_isolate_oa_failure(self):
+        first = record("Z", "europe_pmc", "First paper", {"doi": "10.1/z"}, "first abstract")
+        second = record("A", "europe_pmc", "Second paper", {"doi": "10.1/a"}, "second abstract")
+        plan = SearchPlan("plan-1", "Q", date(2024, 12, 31), ("Q",), ("europe_pmc",),
+                          ("relevant",), ("unrelated",), ("complete",))
+        request = ResearchRequest(plan, (ResearchQuery(
+            "europe-pmc.search", "europe_pmc", "Q", 2),))
+
+        class Provider:
+            def search(self, query, context):
+                return LiteratureBatch(query, (first, second), "fake")
+
+        resolve_barrier, read_barrier = threading.Barrier(2), threading.Barrier(2)
+        second_read = threading.Event()
+
+        class Resolver:
+            def resolve(self, item, context):
+                resolve_barrier.wait(timeout=2)
+                return FullTextDocument(item.id, ArtifactRef(
+                    "oa-" + item.id, item.id + ".xml", "application/xml", "memory://" + item.id),
+                    "[TITLE] " + item.title + "\n[SECTION 1 Results P1] full " + item.id)
+
+        class OrderedReader:
+            def read(self, task):
+                read_barrier.wait(timeout=2)
+                if task.record.id == "Z":
+                    if not second_read.wait(timeout=2):
+                        raise AssertionError("second reader pipeline did not overlap")
+                else:
+                    second_read.set()
+                claim = ReaderClaim("claim", "Results P1", "model", "intervention",
+                                    "control", "outcome", "support", "reported")
+                return ReaderReport(task.task_id, task.family_id, task.record.id, (claim,), False,
+                                    "clear", (), ())
+
+        controller = ResearchController({"europe-pmc.search": Provider()},
+            {"europe_pmc": Resolver()}, OrderedReader(), FakeSynthesizer(),
+            HarnessPolicy(max_tool_calls=2), max_readers=2)
+        result = controller.run(request, self.context)
+        self.assertEqual(("Z", "A"), tuple(item.record_id for item in result.reader_reports))
+        completed = tuple(event.payload["record_id"] for event in result.events
+                          if event.kind == "tool.completed" and event.payload.get("name") == "reader")
+        self.assertEqual(("Z", "A"), completed)
+
+        class PartialResolver:
+            def resolve(self, item, context):
+                if item.id == "Z":
+                    raise OSError("OA unavailable")
+                return FullTextDocument(item.id, ArtifactRef(
+                    "oa-A", "A.xml", "application/xml", "memory://A"), "full second evidence")
+
+        class CapturingReader:
+            def __init__(self): self.tasks = {}
+            def read(self, task):
+                self.tasks[task.record.id] = task
+                claim = ReaderClaim("claim", "source P1", "model", "intervention",
+                                    "control", "outcome", "support", "reported")
+                return ReaderReport(task.task_id, task.family_id, task.record.id, (claim,), False,
+                                    "clear", (), ())
+
+        reader = CapturingReader()
+        partial = ResearchController({"europe-pmc.search": Provider()},
+            {"europe_pmc": PartialResolver()}, reader, FakeSynthesizer(),
+            HarnessPolicy(max_tool_calls=2), max_readers=2).run(request, self.context)
+        self.assertEqual(("Z", "A"), tuple(item.record_id for item in partial.reader_reports))
+        self.assertEqual(("first abstract", None),
+                         (reader.tasks["Z"].text, reader.tasks["Z"].full_text_artifact))
+        self.assertEqual("full second evidence", reader.tasks["A"].text)
+        self.assertIsNotNone(reader.tasks["A"].full_text_artifact)
+        self.assertTrue(any("Z: OSError: OA unavailable" in gap for gap in partial.coverage_gaps))
+        self.assertTrue(any("Z: abstract-only evidence" in gap for gap in partial.coverage_gaps))
 
 
 if __name__ == "__main__":

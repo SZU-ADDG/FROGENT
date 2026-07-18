@@ -25,9 +25,9 @@ Agent 先理解用户问题，再把模型记忆中的论文、作者、标识�
 
 ### 3. OA 与 abstract fallback
 
-Europe PMC 记录含 PMCID 时，workflow 可获取 OA `fullTextXML` 并生成 `ArtifactRef`。
+Europe PMC 记录含 PMCID 时，workflow 优先获取 OA `fullTextXML` 并生成 `ArtifactRef`。JATS parser 保留 title、abstract、named sections 与 paragraph locators，同时排除 references。
 
-OA 超时、解析失败或全文不可用时，Agent 保留 abstract-only 路径，并明确记录 coverage gap。
+Primary OA 失败后，runtime 可尝试 NCBI PMC BioC；两条全文路径均失败时保留 abstract-only 路径，并明确记录 coverage gap 与版本边界。
 
 全文保留在 artifact 边界；Main 只接收结构化 reader 输出和失败信息。
 
@@ -35,7 +35,8 @@ OA 超时、解析失败或全文不可用时，Agent 保留 abstract-only 路�
 
 - Canonical records 按 paper/study family 去重。
 - 每个 family 形成独立 `ReaderTask`。
-- `max_readers` 限制并行度，避免无界并发和 Main context 污染。
+- 选定记录的 OA resolve→Reader pipelines 在 `max_readers` 内并发运行，reports/events 仍按 first-hit 顺序汇总；单路失败被隔离并回退到 abstract。
+- Deterministic packing 在既有 char cap 下优先保留 title、abstract、Results、Discussion、Conclusion、Correction、Limitations 与 Counterevidence；无结构全文采用 balanced head/tail。
 - Reader 输出 claim、locator、研究上下文、方向、量级、限制和 integrity status。
 - 身份错配、畸形输出或单个 reader 失败被隔离，并写入 coverage gap。
 
@@ -117,15 +118,30 @@ Fresh direct-subagent evaluation 使用 `007/008/009/014`，直接读取 FROGENT
 
 当前结论：P4 改善显式 comparison synthesis，并保持 source-grounded timeline reasoning；普通 recommendation regression 已修复。低价值 generic-word noise 仍可观察，但没有进入 support IDs。
 
+## Reader Block 1 effect
+
+Live P0 暴露了明确的 provider boundary：PMID 28781108 / PMC5831666 的 Europe PMC `fullTextXML` 返回 404，NCBI PMC BioC 返回 `author_manuscript`，OA API 同时报告 `idIsNotOpenAccess`。Runtime 仅在 primary OA 失败后使用 NCBI BioC，保留该 coverage gap 与版本边界，排除 `REF` passages；两条全文路径均失败时回退到 abstract。HTTP、search 与 research 默认没有固定墙钟 timeout，部署方仍可设置显式正值 override。
+
+Fresh direct-subagent effect evaluation 未使用 nested CLI、API key 或固定 timeout，panel 包含 PMID 28781108、38101901、38598572、39919773，以及 Expression of Concern PMID 42330995：
+
+- `5/5` identity 与 coverage levels 正确；`4/4` trials 的 primary effects 带 locators。
+- `4/4` trials 保留 counterevidence、safety 与 limitations；EOC 双向关联、状态保持 unresolved，未被称为 retraction。
+- Synthesis 使用 admitted PMIDs 之外的 citation 数为 0，并分开 source-study verdict 与 current-evidence verdict。
+- 241606-byte BioC author manuscript 被解析为 50606 evidence chars；title、abstract、Results、Discussion、table、primary `-3.5` effect 与 disease-modification uncertainty 均保留，`REF` 被排除，在 60k cap 下没有 truncation。
+
+该 panel 的证据结论是：随机人体证据尚未建立 GLP-1 receptor agonists 能减缓 Parkinson disease progression。较小的 exenatide/lixisenatide phase-2 motor signals 仍可能来自持续 symptomatic effects 或 exploratory signals；NLY01 为 null，较大的 96-week exenatide phase 3 为 null 且必须携带 unresolved EOC。即使降低 integrity-qualified phase 3 的权重，NLY01 与 unresolved positive trials 仍使 progression slowing 处于 unproven。GI intolerance 与 weight loss 反复出现，当前证据不支持 individualized benefit-risk claim。
+
+Throughput latency 本轮未计时，状态为 `not_measured`；synthetic synchronization 只证明 concurrent pipeline behavior。剩余直接能力缺口是 institutional-repository discovery：PMID 39919773 存在可用的 UCL repository PDF，Europe PMC metadata 未提供 full text，当前 runtime 未自动发现该 PDF。
+
 ## 最新验证
 
-- Focused Agent runtime：`30/30 PASS`。
-- Full `scripts/check.py`：`180/180 PASS`。
-- Main 独立复跑 full `180/180 PASS`；plugin validator、sanitizer `982/0/0`、architecture、diff 与 hygiene 均 PASS。
+- Focused research + runtime：`44/44 PASS`。
+- Full `scripts/check.py`：`185/185 PASS`。
+- Main 独立运行 focused `research_workflow 13/13 PASS` 与 saved live-provider replay；plugin validator、sanitizer `982/0/0`、architecture、diff 与 hygiene 均 PASS。
 
 ## 下一步
 
-1. 下一 performance block 转向 real provider 与 bounded Reader throughput，持续测量 evidence recall、引用、counterevidence、失败恢复、延迟与成本。
-2. 保留 low-value generic-word noise 观察项，只有它进入 support IDs 或影响答案时才升级修复优先级。
-3. 在独立部署环境继续 bundled Codex adapter canary；subagent-native Agent 开发和评测不依赖该通道。
+1. 扩展 real-provider coverage，先补充 institutional-repository discovery，使 Europe PMC 无全文 metadata 时仍能发现可核验的 repository copy。
+2. 随后测量 multi-paper Reader latency/throughput，并继续观察 evidence recall、引用、counterevidence、失败恢复与成本。
+3. 保留 low-value generic-word noise 观察项；它进入 support IDs 或影响答案时再升级修复优先级。
 4. 药物设计模型、RDKit、结构分析、对接与 PLIP workflows 继续 deferred。

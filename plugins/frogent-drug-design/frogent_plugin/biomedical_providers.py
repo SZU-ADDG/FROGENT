@@ -1,6 +1,7 @@
 """Injectable live adapters for biomedical literature and OA metadata."""
 
 import json
+import math
 import os
 import time
 import urllib.parse
@@ -11,7 +12,9 @@ from datetime import date, datetime, timezone
 from typing import Callable, Mapping, Protocol
 
 from .contracts import ArtifactRef, ExecutionContext
+from .bioc_fulltext import parse_bioc_full_text
 from .evidence import LiteratureRecord
+from .epmc_fulltext import parse_epmc_full_text
 from .literature import LiteratureBatch, LiteratureQuery
 from .research_types import FullTextDocument
 
@@ -21,19 +24,28 @@ class HttpTransport(Protocol):
 
 
 class UrllibTransport:
+    def __init__(self, timeout: float | None = None) -> None:
+        if timeout is not None and (not math.isfinite(timeout) or timeout <= 0):
+            raise ValueError("HTTP timeout must be a positive finite value or None")
+        self.timeout = timeout
+
     def get(self, url: str, params: Mapping[str, str], headers: Mapping[str, str] = {}) -> bytes:
         target = url + ("?" + urllib.parse.urlencode(params) if params else "")
         request = urllib.request.Request(target, headers=dict(headers))
-        with urllib.request.urlopen(request, timeout=20) as response:
+        opener = (urllib.request.urlopen(request) if self.timeout is None else
+                  urllib.request.urlopen(request, timeout=self.timeout))
+        with opener as response:
             return response.read()
 
 
 class EuropePMCProvider:
     BASE = "https://www.ebi.ac.uk/europepmc/webservices/rest"
+    BIOC_BASE = "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_xml"
 
     def __init__(self, transport: HttpTransport | None = None) -> None:
         self.transport = transport or UrllibTransport()
         self._metadata: dict[str, Mapping[str, object]] = {}
+        self._resolution_gaps: dict[str, str] = {}
 
     def search(self, query: LiteratureQuery, context: ExecutionContext) -> LiteratureBatch:
         raw = self.transport.get(self.BASE + "/search", {"query": query.query, "format": "json",
@@ -46,12 +58,35 @@ class EuropePMCProvider:
         pmcid = _identifier(record.identifiers, "pmcid")
         if not pmcid:
             return None
-        raw = self.transport.get(f"{self.BASE}/{pmcid}/fullTextXML", {})
-        root = ET.fromstring(raw)
-        text = " ".join(part.strip() for part in root.itertext() if part.strip())
-        artifact = ArtifactRef("oa-" + record.id, pmcid + ".xml", "application/xml",
-                               f"{self.BASE}/{pmcid}/fullTextXML")
+        self._resolution_gaps.pop(record.id, None)
+        primary_url = f"{self.BASE}/{pmcid}/fullTextXML"
+        try:
+            text = parse_epmc_full_text(self.transport.get(primary_url, {}))
+        except Exception as primary_error:
+            return self._resolve_bioc(record, pmcid, primary_error)
+        artifact = ArtifactRef("oa-" + record.id, pmcid + ".xml", "application/xml", primary_url)
         return FullTextDocument(record.id, artifact, text)
+
+    def coverage_gap(self, record_id: str) -> str:
+        return self._resolution_gaps.pop(record_id, "")
+
+    def _resolve_bioc(self, record: LiteratureRecord, pmcid: str,
+                      primary_error: Exception) -> FullTextDocument | None:
+        url = f"{self.BIOC_BASE}/{urllib.parse.quote(pmcid, safe='')}/unicode"
+        primary = "Europe PMC fullTextXML failed: " + _failure(primary_error)
+        try:
+            article = parse_bioc_full_text(self.transport.get(url, {}))
+        except Exception as fallback_error:
+            self._resolution_gaps[record.id] = (
+                primary + "; NCBI BioC author_manuscript fallback failed: " + _failure(fallback_error))
+            return None
+        license_note = f"; license={article.license}" if article.license else ""
+        self._resolution_gaps[record.id] = (
+            primary + "; NCBI BioC author_manuscript fallback used" + license_note
+            + "; open-access and publisher-version status not asserted")
+        name = pmcid + ".bioc.xml [author_manuscript" + license_note + "]"
+        artifact = ArtifactRef("bioc-author-manuscript-" + record.id, name, "application/xml", url)
+        return FullTextDocument(record.id, artifact, article.text)
 
     def related(self, source: str, identifier: str, relation: str = "citations",
                 limit: int = 25) -> tuple[str, ...]:
@@ -206,3 +241,7 @@ def _parse_date(value: object) -> date | None:
         return date.fromisoformat(str(value)[:10])
     except ValueError:
         return None
+
+
+def _failure(error: Exception) -> str:
+    return f"{type(error).__name__}: {error}"

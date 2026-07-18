@@ -2746,3 +2746,36 @@ Live probe 的关键 marker 从已保存原文机械验证；事件序列化只�
 - **Notes**: 使用持久化 SQLite、raw provider assets、SSE 和 source-integrity evidence 完成主流程验收；typed-event 精确 payload 标为未捕获。
 
 ---
+## [ERR-20260718-035] europe_pmc_fulltext_404_for_free_pmc_article
+
+**Logged**: 2026-07-18T23:26:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: backend
+
+### Summary
+2017 exenatide phase-2 论文 PMID 28781108 / PMCID PMC5831666 可在 PubMed Central 免费阅读全文，但 Europe PMC `/{pmcid}/fullTextXML` live 请求返回 HTTP 404。
+
+### Error
+```
+curl: (56) The requested URL returned error: 404
+```
+
+### Context
+- Europe PMC core metadata panel 请求成功。
+- 失败仅发生于 `https://www.ebi.ac.uk/europepmc/webservices/rest/PMC5831666/fullTextXML`。
+- NCBI PMC BioC endpoint 返回完整 `author_manuscript`，同时 OA API 明确返回 `idIsNotOpenAccess`；真实 Reader panel 应保留该访问状态与 Europe PMC coverage gap。
+
+### Suggested Fix
+为 Europe PMC resolver 增加经过验证的 NCBI PMC BioC author-manuscript fallback，并在 primary 404 时保留 coverage gap；用真实 PMID/PMCID 集合测试 provider access metadata 与全文可用性不一致的情况。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/biomedical_providers.py
+
+### Resolution
+- **Resolved**: 2026-07-18T23:58:00+08:00
+- **Commit/PR**: current Reader Block 1 commit
+- **Notes**: Europe PMC primary 失败后受控尝试 NCBI BioC；author-manuscript 身份、primary failure 与 OA/publisher-version 未断言状态均进入 coverage gap。双失败时保持 abstract-only，真实 PMID 28781108 replay 和 185/185 全量测试通过。
+
+---

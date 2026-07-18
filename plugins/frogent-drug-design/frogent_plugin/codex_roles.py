@@ -7,6 +7,7 @@ from .codex_client import CodexClient
 from .codex_schemas import planner_schema, reader_schema, screener_schema, synthesizer_schema
 from .contracts import ExecutionContext
 from .evidence import EvidenceExcerpt, EvidenceStrength, LiteratureRecord, SearchPlan
+from .reader_text import pack_reader_text
 from .research_types import (
     KnowledgeCandidate, ReaderClaim, ReaderReport, ReaderTask, ResearchQuery, ResearchRequest,
     ScreeningAssessment,
@@ -96,17 +97,20 @@ class CodexPlanner:
 
 class CodexReader:
     def __init__(self, client: CodexClient, max_chars: int = 60000) -> None:
+        if max_chars <= 0:
+            raise ValueError("reader text bound must be positive")
         self.client, self.max_chars = client, max_chars
 
     def read(self, task: ReaderTask) -> ReaderReport:
         contract = ("fields task_id,family_id,record_id,claims,counterevidence,integrity_status,"
                     "limitations,unresolved_questions. Each claim has statement,locator,population_or_model,"
                     "intervention,comparator,outcome,direction,magnitude,limitations.")
+        packed = pack_reader_text(task.text, self.max_chars)
         value = self.client.generate("bounded biomedical paper reader", contract,
             {"task_id": task.task_id, "family_id": task.family_id, "record_id": task.record.id,
              "title": task.record.title, "identifiers": dict(task.record.identifiers),
              "artifact": task.full_text_artifact.uri if task.full_text_artifact else task.record.raw_artifact.uri,
-             "text": task.text[:self.max_chars], "text_truncated": len(task.text) > self.max_chars},
+             "text": packed, "text_truncated": len(task.text) > len(packed)},
             schema=reader_schema())
         required = {"task_id", "family_id", "record_id", "claims", "counterevidence",
                     "integrity_status", "limitations", "unresolved_questions"}

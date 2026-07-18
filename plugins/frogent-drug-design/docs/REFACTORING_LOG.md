@@ -199,13 +199,23 @@ P4 为显式四位年份范围增加 source-grounded stage timeline retrieval，
 
 `014` 初版因 comparison markers 泄漏到普通 recommendation intent 而回退。P0/P1 将 preference/time/scope/constraint retrieval 与 compare/evaluate/replace/upgrade retrieval 分开；fresh rerun 恢复 joint-friendly、early-evening、yoga/flexibility 与 `9:30` wind-down 回答，compare/upgrade-only distractor hits 为 0。P4 当前改善显式 comparison synthesis 并保持 source-grounded timeline reasoning；普通 recommendation regression 已修复。Low-value generic-word noise 仍可观察，但没有进入 support IDs。
 
+### Reader Block 1 effect
+
+Europe PMC JATS parsing 现保留 title、abstract、named sections 与 paragraph locators，并排除 references。Deterministic Reader packing 在既有 char cap 下优先 title/abstract 与 Results、Discussion、Conclusion、Correction、Limitations、Counterevidence；无结构全文采用 balanced head/tail。选定 OA resolve→Reader pipelines 在 `max_readers` 内并发运行，reports/events 保持 first-hit 顺序，单路失败隔离并回退到 abstract。HTTP、search 与 research 默认无固定墙钟 timeout，同时接受显式正值部署 override。
+
+Live P0 中，PMID 28781108 / PMC5831666 的 Europe PMC `fullTextXML` 返回 404，NCBI PMC BioC 返回 `author_manuscript`，OA API 报告 `idIsNotOpenAccess`。Runtime 只在 primary failure 后采用 NCBI BioC，保留 coverage gap/version boundary，排除 `REF` passages；两条全文路径均失败时回退到 abstract。
+
+Fresh direct-subagent evaluation 未使用 nested CLI、API key 或固定 timeout，覆盖 PMID 28781108、38101901、38598572、39919773 与 EOC 42330995。结果为 `5/5` identity/coverage levels 正确、`4/4` trial primary effects 带 locators、`4/4` 保留 counterevidence/safety/limitations；EOC 双向关联且保持 unresolved，synthesis 的 admitted-set 外 citation 为 0，并分开 source-study 与 current-evidence verdict。241606-byte BioC author manuscript 形成 50606 evidence chars，在 60k cap 下保留 title、abstract、Results、Discussion、table、primary `-3.5` effect 与 disease-modification uncertainty，排除 `REF`，没有 truncation。
+
+该 exposed panel 支持的结论是：随机人体证据尚未建立 GLP-1 receptor agonists 能减缓 Parkinson disease progression。较小 phase-2 motor signals 仍兼容 persistent symptomatic effects 或 exploratory signals；NLY01 和较大的 96-week exenatide phase 3 为 null，后者必须携带 unresolved EOC。降低 integrity-qualified phase 3 权重后，progression slowing 仍为 unproven。GI intolerance/weight loss 反复出现，不支持 individualized benefit-risk claim。Throughput latency 未计时，记为 `not_measured`；synthetic synchronization 只证明 concurrent pipeline behavior。直接缺口仍包括 institutional-repository discovery：PMID 39919773 的 UCL repository PDF 未被 runtime 自动发现。
+
 ### Verification
 
-Focused Agent runtime 30/30、full `scripts/check.py` 180/180 均 PASS。Main 独立复跑 full 180/180，并确认 plugin validator、sanitizer 982/0/0、architecture、diff 与 hygiene PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
+Focused research + runtime 44/44、full `scripts/check.py` 185/185 均 PASS。Main 独立运行 focused `research_workflow 13/13 PASS` 与 saved live-provider replay，并确认 plugin validator、sanitizer 982/0/0、architecture、diff 与 hygiene PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
 
 ### 下一性能块
 
-1. 下一 performance block 转向 real provider 与 bounded Reader throughput，继续按 evidence recall、引用、counterevidence、失败恢复、延迟与成本优化 Agent。
-2. Low-value generic-word noise 保持观察；进入 support IDs 或影响答案时再提升修复优先级。
-3. 独立部署继续保留 bundled Codex adapter canary；subagent-native Agent 开发与批量评测不依赖该通道。
+1. 扩展 real-provider coverage，先补充 institutional-repository discovery，覆盖 Europe PMC 无全文 metadata 但 repository copy 可用的文献。
+2. 随后测量 multi-paper Reader latency/throughput，并继续观察 evidence recall、引用、counterevidence、失败恢复与成本。
+3. Low-value generic-word noise 保持观察；进入 support IDs 或影响答案时再提升修复优先级。
 4. 药物设计模型、RDKit、结构分析、对接、PLIP 与相关 tool-use workflows 继续 deferred。

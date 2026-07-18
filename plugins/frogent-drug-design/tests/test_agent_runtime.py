@@ -29,6 +29,7 @@ from frogent_plugin.research_expansion import ExpansionPolicy, ResearchExpander 
 from frogent_plugin.research_factory import OAFallbackResolver, RuntimeConfig, build_research_service  # noqa: E402
 from frogent_plugin.research_memory import ResearchMemory, SQLiteResearchStore  # noqa: E402
 from frogent_plugin.memory_answer import CodexMemoryAnswerer  # noqa: E402
+from frogent_plugin.reader_text import pack_reader_text  # noqa: E402
 from frogent_plugin.research_screening import HybridScreener  # noqa: E402
 from frogent_plugin.research_service import ResearchService  # noqa: E402
 from frogent_plugin.research_types import (  # noqa: E402
@@ -156,6 +157,44 @@ class AgentRuntimeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unknown fields"):
             CodexSynthesizer(bad_synth).synthesize("question", evidence, (report,), ())
         self.assertEqual(1, len(bad_runner.calls))
+
+    def test_reader_text_packing_retains_late_structured_evidence_and_balanced_boundaries(self):
+        structured = "\n".join((
+            "[TITLE] A structured paper",
+            "[ABSTRACT 1 P1] Concise abstract evidence.",
+            "[SECTION 1 Methods P1] " + "method noise " * 1000 + "METHOD-END",
+            "[SECTION 2 Results P1] Late measured result survives.",
+            "[SECTION 3 Discussion P1] Late limiting interpretation survives.",
+            "[SECTION 4 Correction P1] Corrected value and caveat survives.",
+        ))
+        packed = pack_reader_text(structured, 440)
+        self.assertLessEqual(len(packed), 440)
+        for value in ("[TITLE]", "[ABSTRACT", "[SECTION 2 Results P1]",
+                      "[SECTION 3 Discussion P1]", "[SECTION 4 Correction P1]"):
+            self.assertIn(value, packed)
+        self.assertNotIn("METHOD-END", packed)
+        unstructured = "HEAD-EVIDENCE " + "middle " * 500 + " TAIL-COUNTEREVIDENCE"
+        balanced = pack_reader_text(unstructured, 180)
+        self.assertEqual(180, len(balanced))
+        self.assertIn("HEAD-EVIDENCE", balanced)
+        self.assertIn("TAIL-COUNTEREVIDENCE", balanced)
+        self.assertIn("[OMITTED MIDDLE]", balanced)
+
+        output = {"task_id": "reader-1", "family_id": "pmid:1", "record_id": "1",
+                  "claims": [{"statement": "claim", "locator": "Results P1",
+                              "population_or_model": "model", "intervention": "drug",
+                              "comparator": "control", "outcome": "outcome",
+                              "direction": "support", "magnitude": "reported", "limitations": []}],
+                  "counterevidence": False, "integrity_status": "clear",
+                  "limitations": [], "unresolved_questions": []}
+        client, runner = self.client([json.dumps(output)])
+        task = ReaderTask("reader-1", "pmid:1", record(), None, structured)
+        CodexReader(client, max_chars=440).read(task)
+        prompt = runner.calls[0][1]
+        self.assertIn("Late measured result survives", prompt)
+        self.assertIn("Late limiting interpretation survives", prompt)
+        self.assertIn("Corrected value and caveat survives", prompt)
+        self.assertNotIn("METHOD-END", prompt)
 
     def test_synthesizer_dynamic_binding_empty_evidence_and_single_repair(self):
         valid = {"source_study_answer": "Bounded answer", "current_evidence_update": "Current update",
@@ -423,7 +462,9 @@ class AgentRuntimeTests(unittest.TestCase):
         result = controller.run(request, ExecutionContext("u", "c", "bounded", ROOT))
         self.assertEqual(identifiers, tuple(item.id for item in result.raw_records))
         self.assertEqual(identifiers, tuple(item.record_id for item in result.hits))
-        self.assertEqual(list(identifiers[:6]), resolver.calls)
+        self.assertEqual(6, len(resolver.calls))
+        self.assertCountEqual(identifiers[:6], resolver.calls)
+        self.assertEqual(identifiers[:6], tuple(item.record_id for item in result.reader_reports))
         self.assertEqual((20, 6, 6), (len(result.raw_records), len(result.reader_reports),
                                      result.telemetry.reader_tasks))
         self.assertTrue(any("reader document cap omitted 14 records" in gap for gap in result.coverage_gaps))

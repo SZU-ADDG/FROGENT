@@ -75,6 +75,10 @@ class OAFallbackResolver:
         except Exception as exc:
             self.failures[record.id] = f"Europe PMC OA failed: {type(exc).__name__}: {exc}"
             document = None
+        primary_gap = (self.primary.coverage_gap(record.id) if callable(
+            getattr(self.primary, "coverage_gap", None)) else "")
+        if primary_gap:
+            self.failures[record.id] = primary_gap
         if document or not self.fallback:
             return document
         try:
