@@ -137,6 +137,8 @@ class AgentRuntimeTests(unittest.TestCase):
         client, runner = self.client([json.dumps(reader_json), json.dumps(screening_json), json.dumps(synthesis_json)])
         task = ReaderTask("reader-1", "pmid:1", record(), None, "FULL TEXT")
         report = CodexReader(client).read(task)
+        self.assertIn("Compare publication enrollment, design, and outcomes", runner.calls[0][1])
+        self.assertIn("not observed efficacy or safety results", runner.calls[0][1])
         assessment = CodexScreener(client).assess(report, task.record)
         evidence = (EvidenceExcerpt("ev-1", "1", "claim", "abstract:1", EvidenceStrength.MODERATE),
                     EvidenceExcerpt("ev-2", "1", "counter", "abstract:2", EvidenceStrength.LOW))
@@ -399,6 +401,9 @@ class AgentRuntimeTests(unittest.TestCase):
             self.assertEqual(("europe_pmc",), service.planner.routes)
             self.assertEqual((10, 6), (config.max_results_per_query, config.max_reader_documents))
             self.assertIsInstance(service.controller.screener, HybridScreener)
+            self.assertEqual("ClinicalTrialsResolver",
+                             type(service.controller.registry_resolver).__name__)
+            self.assertIsNone(service.controller.registry_resolver.transport.timeout)
             gaps = service.controller.configuration_gaps
             self.assertTrue(any("PubMed unavailable" in gap for gap in gaps))
             self.assertTrue(any("OPENALEX_API_KEY" in gap for gap in gaps))

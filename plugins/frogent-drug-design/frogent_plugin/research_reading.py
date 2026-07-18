@@ -5,15 +5,17 @@ from typing import Mapping
 
 from .contracts import ExecutionContext, StreamEvent
 from .evidence import LiteratureRecord
-from .research_types import FullTextResolver, Reader, ReaderReport, ReaderTask
+from .research_types import FullTextResolver, Reader, ReaderReport, ReaderTask, RegistryEvidenceResolver
 
 
 def read_records(records: tuple[LiteratureRecord, ...], resolvers: Mapping[str, FullTextResolver],
-                 reader: Reader, context: ExecutionContext, max_workers: int
+                 reader: Reader, context: ExecutionContext, max_workers: int,
+                 registry: RegistryEvidenceResolver | None = None
                  ) -> tuple[list[ReaderReport], list[str], list[StreamEvent]]:
     outcomes = {}
     with ThreadPoolExecutor(max_workers=min(max_workers, len(records) or 1)) as pool:
-        futures = {pool.submit(_pipeline, record, resolvers.get(record.source), reader, context): index
+        futures = {pool.submit(_pipeline, record, resolvers.get(record.source), reader, context,
+                               registry): index
                    for index, record in enumerate(records)}
         for future in as_completed(futures):
             outcomes[futures[future]] = future.result()
@@ -29,7 +31,8 @@ def read_records(records: tuple[LiteratureRecord, ...], resolvers: Mapping[str, 
 
 
 def _pipeline(record: LiteratureRecord, resolver: FullTextResolver | None, reader: Reader,
-              context: ExecutionContext) -> tuple[ReaderReport | None, tuple[str, ...]]:
+              context: ExecutionContext, registry: RegistryEvidenceResolver | None
+              ) -> tuple[ReaderReport | None, tuple[str, ...]]:
     document, gaps = None, []
     if resolver:
         try:
@@ -46,6 +49,9 @@ def _pipeline(record: LiteratureRecord, resolver: FullTextResolver | None, reade
     if document is None:
         gaps.append(f"{record.id}: abstract-only evidence")
     text = document.text if document else (record.abstract or record.title)
+    registry_text = _registry_text(record, registry, context, gaps)
+    if registry_text:
+        text = text.rstrip() + "\n\n[REGISTRY SOURCE BOUNDARY]\n" + registry_text
     artifact = document.artifact if document else None
     task = ReaderTask("reader-" + record.id, family_id(record), record, artifact, text)
     try:
@@ -55,6 +61,23 @@ def _pipeline(record: LiteratureRecord, resolver: FullTextResolver | None, reade
     except Exception as exc:
         gaps.append(f"{record.id}: malformed reader output: {type(exc).__name__}: {exc}")
         return None, tuple(gaps)
+
+
+def _registry_text(record, registry, context, gaps) -> str:
+    if registry is None:
+        return ""
+    try:
+        text = registry.resolve(record, context)
+    except Exception as exc:
+        gaps.append(f"{record.id}: registry failed: {type(exc).__name__}: {exc}")
+        text = ""
+    try:
+        detail = registry.coverage_gap(record.id)
+        if detail:
+            gaps.append(f"{record.id}: {detail}")
+    except Exception as exc:
+        gaps.append(f"{record.id}: registry gap failed: {type(exc).__name__}: {exc}")
+    return text
 
 
 def _validate_report(report, task: ReaderTask) -> None:

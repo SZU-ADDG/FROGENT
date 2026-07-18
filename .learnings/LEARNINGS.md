@@ -747,3 +747,84 @@ PLAN forward v4 初版沿用 v3 receipt payload；current arm 的 candidate-visi
 - Last-Seen: 2026-07-16
 
 ---
+
+## [LRN-20260719-008] best_practice
+
+**Logged**: 2026-07-19T02:18:00+08:00
+**Priority**: critical
+**Status**: validated
+**Area**: retrieval
+
+### Summary
+ClinicalTrials.gov 的 PMID 搜索结果必须按同 PMID 的 registry reference type 过滤，只有 `RESULT` 或 `DERIVED` 可以作为论文—试验连接。
+
+### Details
+官方 API 的 `AREA[ReferencePMID]28781108` 返回三个 study。目标 trial `NCT01971242` 在 `protocolSection.referencesModule.references` 中将 PMID 28781108 标为 `DERIVED`；`NCT04431713` 和 `NCT03840005` 也命中搜索，但只把该论文标为 `BACKGROUND`。若把所有搜索命中都注入 Reader，会把两个无关试验的入组、终点与结果混入当前论文上下文，随后污染 evidence 与 working memory。PMID 38101901→NCT04154072 和 PMID 39919773→NCT04232969 也通过精确 `DERIVED` reference 得到确认。
+
+### Suggested Action
+论文到 ClinicalTrials.gov 的自动 discovery 逐 study 检查 exact PMID 与 reference type，只接受 `RESULT`/`DERIVED`；`BACKGROUND`、缺失类型和未知类型全部排除。PubMed XML 中来自 ClinicalTrials.gov databank 的 exact NCT accession 可以直接查询，再对返回 NCT identity 做 fail-closed 校验。
+
+### Metadata
+- Source: real_provider_validation
+- Related Files: plugins/frogent-drug-design/frogent_plugin/biomedical_providers.py, plugins/frogent-drug-design/frogent_plugin/clinical_trials.py
+- Tags: clinicaltrials-gov, pmid, trial-linkage, evidence-pollution, retrieval
+- Pattern-Key: retrieval.filter_registry_reference_type
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-009] best_practice
+
+**Logged**: 2026-07-19T02:54:00+08:00
+**Priority**: critical
+**Status**: validated
+**Area**: retrieval
+
+### Summary
+向接近 Reader 字符上限的论文追加高优先级工具证据时，packer 必须保留 marker 之前的正文并单独约束附加证据规模。
+
+### Details
+真实 UCL repository PDF 含 11 个 `[PDF PAGE]` marker 和 58,886 字符；ClinicalTrials.gov augmentation 增加 8,705 字符、56 个 registry markers。旧 `_blocks` 只从第一个已识别 marker 开始构造 blocks，`PDF PAGE` 又不在识别集合中。组合文本超过 60k 后，packer 输出只剩 registry，11 个 PDF pages、论文标题和主效应 `0.92` 全部丢失。静态 registry packing 测试使用了 `[SECTION]` 文章形态，因此没有暴露 repository PDF 的跨格式组合失败。
+
+### Suggested Action
+组合 evidence packing 必须测试真实的每种上游 marker 形态和接近边界的大小。保留首 marker 前缀或识别 PDF pages；registry 等附加工具证据设置独立内容上限，保留所有 primary outcomes，对大量 secondary outcomes保存有界子集和 omitted count。验收同时断言 article observed result 与 registry planned outcome都存在。
+
+### Metadata
+- Source: real_provider_validation
+- Related Files: plugins/frogent-drug-design/frogent_plugin/reader_text.py, plugins/frogent-drug-design/frogent_plugin/clinical_trials.py
+- Tags: reader, context-packing, pdf, registry, evidence-preservation
+- Pattern-Key: retrieval.preserve_primary_evidence_when_augmenting
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-010] best_practice
+
+**Logged**: 2026-07-19T03:36:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: retrieval
+
+### Summary
+临床试验注册的 primary outcome 不能只保留 `measure` 和 `timeFrame`，必须有界保留 `description` 中的关键终点定义。
+
+### Details
+NCT01971242 的 primary outcome `measure` 仅为泛化的 `Efficacy`，具体计划终点“MDS-UPDRS part 3 motor subscale in the practically defined OFF medication state”只出现在 `description`。只渲染 measure/timeFrame 会让 Reader 看到 60 周，却无法核对论文观察终点与注册计划终点是否一致。
+
+### Suggested Action
+保留所有 primary outcomes 的有界 description，截断时显式标记；secondary outcomes 继续只保留有界数量的 measure/timeFrame。真实验收必须使用 measure 泛化、具体定义在 description 的 trial fixture。
+
+### Metadata
+- Source: real_provider_validation
+- Related Files: plugins/frogent-drug-design/frogent_plugin/clinical_trials.py, plugins/frogent-drug-design/tests/test_research_workflow.py
+- Tags: clinicaltrials-gov, primary-outcome, endpoint-drift, reader-evidence
+- Pattern-Key: retrieval.preserve_registry_primary_outcome_semantics
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---

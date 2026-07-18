@@ -21,6 +21,8 @@ from frogent_plugin.biomedical_providers import (  # noqa: E402
     EuropePMCProvider, NCBIConfig, OpenAlexProvider, PubMedProvider, UnpaywallFallback,
     UrllibTransport,
 )
+from frogent_plugin.clinical_trials import ClinicalTrialsResolver  # noqa: E402
+from frogent_plugin.reader_text import pack_reader_text  # noqa: E402
 from frogent_plugin.research_types import (  # noqa: E402
     FullTextDocument, KnowledgeCandidate, ReaderClaim, ReaderReport, ResearchQuery,
     ResearchRequest, ScreeningAssessment,
@@ -100,6 +102,35 @@ class FakeTransport:
         if isinstance(response, Exception):
             raise response
         return response
+
+
+def trial_payload(nct_id="NCT04154072", pmid="38101901", reference_type="DERIVED"):
+    return {"hasResults": False, "protocolSection": {
+        "identificationModule": {"nctId": nct_id, "briefTitle": "NLY01 in Early Parkinson Disease",
+                                 "officialTitle": "A Study of NLY01 in Early Parkinson Disease"},
+        "statusModule": {"overallStatus": "COMPLETED",
+                         "startDateStruct": {"date": "2020-02-03"},
+                         "completionDateStruct": {"date": "2023-01-17"},
+                         "lastUpdatePostDateStruct": {"date": "2024-03-04", "type": "ACTUAL"}},
+        "designModule": {"studyType": "INTERVENTIONAL", "phases": ["PHASE_2"],
+                         "designInfo": {"allocation": "RANDOMIZED",
+                                        "maskingInfo": {"masking": "QUADRUPLE"}},
+                         "enrollmentInfo": {"count": 255, "type": "ACTUAL"}},
+        "armsInterventionsModule": {"armGroups": [
+            {"label": "NLY01 low dose", "type": "EXPERIMENTAL",
+             "interventionNames": ["DRUG: NLY01 low dose"]},
+            {"label": "NLY01 high dose", "type": "EXPERIMENTAL",
+             "interventionNames": ["DRUG: NLY01 high dose"]},
+            {"label": "Placebo", "type": "PLACEBO_COMPARATOR",
+             "interventionNames": ["DRUG: Placebo"]}]},
+        "outcomesModule": {
+            "primaryOutcomes": [{"measure": "MDS-UPDRS Parts II and III",
+                                  "timeFrame": "Baseline to 36 weeks"}],
+            "secondaryOutcomes": [{"measure": "Clinical Global Impression",
+                                    "timeFrame": "36 weeks"}]},
+        "sponsorCollaboratorsModule": {"leadSponsor": {"name": "Study Sponsor",
+                                                         "class": "INDUSTRY"}},
+        "referencesModule": {"references": [{"pmid": pmid, "type": reference_type}]}}}
 
 
 class ResearchWorkflowBehaviorTests(unittest.TestCase):
@@ -211,18 +242,216 @@ class ResearchWorkflowBehaviorTests(unittest.TestCase):
         efetch = (b"<PubmedArticleSet><PubmedArticle><MedlineCitation><PMID>1</PMID><Article>"
                   b"<ArticleTitle>LRRK2 anchor</ArticleTitle><Abstract><AbstractText>abstract</AbstractText></Abstract>"
                   b"<Journal><JournalIssue><PubDate><Year>2020</Year></PubDate></JournalIssue></Journal>"
-                  b"</Article></MedlineCitation><PubmedData><ArticleIdList><ArticleId IdType='doi'>10.1/a"
+                  b"</Article><DataBankList><DataBank><DataBankName>ClinicalTrials.gov</DataBankName>"
+                  b"<AccessionNumberList><AccessionNumber>NCT04154072</AccessionNumber>"
+                  b"<AccessionNumber>not-a-trial</AccessionNumber><AccessionNumber>NCT04232969"
+                  b"</AccessionNumber><AccessionNumber>NCT04154072</AccessionNumber>"
+                  b"</AccessionNumberList></DataBank></DataBankList></MedlineCitation>"
+                  b"<PubmedData><ArticleIdList><ArticleId IdType='doi'>10.1/a"
                   b"</ArticleId></ArticleIdList></PubmedData></PubmedArticle></PubmedArticleSet>")
         transport, sleeps = FakeTransport([esearch, efetch]), []
         pubmed = PubMedProvider(NCBIConfig("dev@example.org", "frogent"), transport,
                                 clock=lambda: 0.0, sleeper=sleeps.append)
         pubmed_query = LiteratureQuery("plan-1", "pubmed", "LRRK2", date(2024, 12, 31), 2)
-        self.assertEqual("1", pubmed.search(pubmed_query, self.context).records[0].id)
+        pubmed_record = pubmed.search(pubmed_query, self.context).records[0]
+        self.assertEqual("1", pubmed_record.id)
+        self.assertEqual(("NCT04154072", "NCT04232969"),
+                         (pubmed_record.identifiers["nct"], pubmed_record.identifiers["nct_2"]))
+        self.assertNotIn("not-a-trial", pubmed_record.identifiers.values())
         self.assertEqual("dev@example.org", transport.calls[0][1]["email"])
         self.assertTrue(sleeps and sleeps[0] >= 1 / 3)
         with patch.dict("os.environ", {}, clear=True):
             self.assertIn("OPENALEX_API_KEY", OpenAlexProvider.from_env()[1])
             self.assertIn("UNPAYWALL_EMAIL", UnpaywallFallback.from_env()[1])
+
+    def test_clinical_trials_direct_identity_and_compact_nly01_evidence(self):
+        study = trial_payload()
+        transport = FakeTransport([json.dumps(study).encode()])
+        resolver = ClinicalTrialsResolver(transport)
+        item = record("38101901", "pubmed", "NLY01 publication",
+                      {"pmid": "38101901", "nct": "NCT04154072"})
+        text = resolver.resolve(item, self.context)
+        self.assertEqual((ClinicalTrialsResolver.BASE + "/studies/NCT04154072",
+                          {"format": "json"}), transport.calls[0])
+        for expected in ("[REGISTRY NCT04154072 STATUS] overallStatus=COMPLETED",
+                         "lastUpdatePostDate=2024-03-04; lastUpdatePostType=ACTUAL",
+                         "link_method=pubmed_accession",
+                         "snapshot=current_mutable; historical_as_of_reconstruction=not_established",
+                         "[REGISTRY NCT04154072 ENROLLMENT] count=255; type=ACTUAL",
+                         "[REGISTRY NCT04154072 SPONSOR] lead=Study Sponsor; class=INDUSTRY",
+                         "[REGISTRY NCT04154072 ARM 3] label=Placebo",
+                         "[REGISTRY NCT04154072 PLANNED PRIMARY OUTCOME 1]",
+                         "timeFrame=Baseline to 36 weeks",
+                         "hasResults=false; resultsFirstPosted=not_reported; observedResults=none; "
+                         "registry supplies no observed efficacy/safety result"):
+            self.assertIn(expected, text)
+        mismatch = trial_payload("NCT00000001")
+        failed = ClinicalTrialsResolver(FakeTransport([json.dumps(mismatch).encode()]))
+        self.assertEqual("", failed.resolve(item, self.context))
+        self.assertIn("direct study identity mismatch", failed.coverage_gap(item.id))
+        malformed = ClinicalTrialsResolver(FakeTransport([]))
+        bad = record("bad", "pubmed", "Bad trial", {"nct": "NCT123"})
+        self.assertEqual("", malformed.resolve(bad, self.context))
+        self.assertIn("malformed NCT identifier", malformed.coverage_gap("bad"))
+        bounded = ClinicalTrialsResolver(FakeTransport([]), max_studies=1)
+        too_many = record("many", "pubmed", "Multiple trials",
+                          {"nct": "NCT04154072", "nct_2": "NCT04232969"})
+        self.assertEqual("", bounded.resolve(too_many, self.context))
+        self.assertIn("direct NCT identifiers exceed", bounded.coverage_gap("many"))
+        posted = {**study, "hasResults": True, "protocolSection": {**study["protocolSection"],
+                  "statusModule": {**study["protocolSection"]["statusModule"],
+                                   "resultsFirstPostDateStruct": {"date": "2024-05-01"}}}}
+        posted_text = ClinicalTrialsResolver(FakeTransport([json.dumps(posted).encode()])).resolve(
+            item, self.context)
+        self.assertIn("resultsFirstPosted=2024-05-01; observedResults=posted; "
+                      "resultsSection values not extracted", posted_text)
+        ignored = record("ignored", "pubmed", "Unrelated accession",
+                         {"other_registry": "NCT04154072"})
+        unrelated = ClinicalTrialsResolver(FakeTransport([]))
+        self.assertEqual("", unrelated.resolve(ignored, self.context))
+        self.assertEqual("", unrelated.coverage_gap("ignored"))
+
+    def test_registry_secondary_outcomes_are_bounded_with_omitted_count(self):
+        study = trial_payload()
+        secondary = [{"measure": f"Secondary measure {index}", "timeFrame": f"Week {index}",
+                      "description": "secondary hidden description"}
+                     for index in range(1, 46)]
+        study["protocolSection"]["outcomesModule"]["secondaryOutcomes"] = secondary
+        item = record("38101901", "pubmed", "NLY01 publication",
+                      {"pmid": "38101901", "nct": "NCT04154072"})
+        text = ClinicalTrialsResolver(FakeTransport([json.dumps(study).encode()])).resolve(
+            item, self.context)
+        self.assertEqual(10, text.count("PLANNED SECONDARY OUTCOME "))
+        self.assertIn("[REGISTRY NCT04154072 SECONDARY OUTCOMES OMITTED] count=35", text)
+        self.assertIn("[REGISTRY NCT04154072 PLANNED PRIMARY OUTCOME 1]", text)
+        self.assertNotIn("secondary hidden description", text)
+
+    def test_primary_outcome_keeps_bounded_off_medication_description(self):
+        study = trial_payload("NCT01971242", "28781108")
+        description = ("Change in Movement Disorder Society Unified Parkinson's Disease Rating "
+                       "Scale MDS-UPDRS part 3 score in the practically defined OFF medication state. "
+                       + "Detailed protocol qualifier. " * 80)
+        study["protocolSection"]["outcomesModule"]["primaryOutcomes"] = [{
+            "measure": "Efficacy", "timeFrame": "Baseline to week 36",
+            "description": description}]
+        item = record("28781108", "pubmed", "Trial publication",
+                      {"pmid": "28781108", "nct": "NCT01971242"})
+        text = ClinicalTrialsResolver(FakeTransport([json.dumps(study).encode()])).resolve(
+            item, self.context)
+        primary = next(line for line in text.splitlines() if "PLANNED PRIMARY OUTCOME 1" in line)
+        self.assertIn("MDS-UPDRS part 3", primary)
+        self.assertIn("OFF medication state", primary)
+        self.assertIn("[TRUNCATED: primary outcome description limit]", primary)
+        self.assertLess(len(primary), 1500)
+
+    def test_pmid_discovery_accepts_only_result_or_derived_and_is_bounded_deduped(self):
+        background_a = trial_payload("NCT04431713", "28781108", "BACKGROUND")
+        background_b = trial_payload("NCT03840005", "28781108", "BACKGROUND")
+        derived = trial_payload("NCT01971242", "28781108", "DERIVED")
+        payload = {"studies": [background_a, background_b, derived, derived], "totalCount": 4}
+        transport = FakeTransport([json.dumps(payload).encode()])
+        resolver = ClinicalTrialsResolver(transport, max_studies=1)
+        item = record("28781108", "europe_pmc", "Trial publication", {"pmid": "28781108"})
+        text = resolver.resolve(item, self.context)
+        self.assertEqual({"query.term": "AREA[ReferencePMID]28781108", "pageSize": "25",
+                          "countTotal": "true", "format": "json"}, transport.calls[0][1])
+        self.assertEqual(1, text.count("[REGISTRY SOURCE NCT01971242]"))
+        self.assertIn("link_method=ctg_reference; inputPMID=28781108; reference_type=DERIVED", text)
+        self.assertNotIn("NCT04431713", text)
+        self.assertNotIn("NCT03840005", text)
+        self.assertEqual("", resolver.coverage_gap(item.id))
+        quiet = ClinicalTrialsResolver(FakeTransport([json.dumps(
+            {"studies": [background_a, background_b]}).encode()]))
+        self.assertEqual("", quiet.resolve(item, self.context))
+        self.assertEqual("", quiet.coverage_gap(item.id))
+        empty = ClinicalTrialsResolver(FakeTransport([b'{"totalCount":0}']))
+        self.assertEqual("", empty.resolve(item, self.context))
+        self.assertEqual("", empty.coverage_gap(item.id))
+        conflict = {**derived, "protocolSection": {**derived["protocolSection"],
+                    "identificationModule": {**derived["protocolSection"]["identificationModule"],
+                                               "briefTitle": "Conflicting title"}}}
+        conflicted = ClinicalTrialsResolver(FakeTransport([json.dumps(
+            {"studies": [derived, conflict]}).encode()]))
+        self.assertEqual("", conflicted.resolve(item, self.context))
+        self.assertIn("conflicting duplicate trial identity", conflicted.coverage_gap(item.id))
+        retracted = {**derived, "protocolSection": {**derived["protocolSection"],
+                     "referencesModule": {**derived["protocolSection"]["referencesModule"],
+                                          "retractions": [{"pmid": "28781108"}]}}}
+        integrity = ClinicalTrialsResolver(FakeTransport([json.dumps(
+            {"studies": [retracted]}).encode()]))
+        self.assertEqual("", integrity.resolve(item, self.context))
+        self.assertIn("appears in registry retractions", integrity.coverage_gap(item.id))
+
+    def test_registry_evidence_is_prioritized_and_reader_failures_stay_local(self):
+        registry_text = "\n".join(("[REGISTRY SOURCE NCT04154072] https://clinicaltrials.gov/study/NCT04154072",
+            "[REGISTRY NCT04154072 ENROLLMENT] count=255; type=ACTUAL",
+            "[REGISTRY NCT04154072 PLANNED PRIMARY OUTCOME 1] measure=Motor score; timeFrame=36 weeks",
+            "[REGISTRY NCT04154072 RESULTS] hasResults=false; resultsFirstPosted=not_reported"))
+        long_text = ("[TITLE] Long paper\n[SECTION 1 Methods P1] " + "method " * 2000
+                     + "\n" + registry_text)
+        packed = pack_reader_text(long_text, 520)
+        self.assertLessEqual(len(packed), 520)
+        self.assertIn("[REGISTRY NCT04154072 ENROLLMENT]", packed)
+        self.assertIn("[REGISTRY NCT04154072 RESULTS]", packed)
+
+        first = record("P1", "europe_pmc", "First publication", {"pmid": "1"}, "abstract one")
+        second = record("P2", "europe_pmc", "Second publication", {"pmid": "2"}, "abstract two")
+        plan = SearchPlan("plan-1", "Q", date(2024, 12, 31), ("Q",), ("europe_pmc",),
+                          ("relevant",), ("unrelated",), ("complete",))
+        request = ResearchRequest(plan, (ResearchQuery(
+            "europe-pmc.search", "europe_pmc", "Q", 2),))
+
+        class Provider:
+            def search(self, query, context): return LiteratureBatch(query, (first, second), "fake")
+        class Registry:
+            def resolve(self, item, context):
+                if item.id == "P1": raise OSError("registry unavailable")
+                return registry_text
+            def coverage_gap(self, record_id): return ""
+        reader = FakeReader()
+        result = ResearchController({"europe-pmc.search": Provider()}, {}, reader,
+            FakeSynthesizer(), HarnessPolicy(max_tool_calls=2), max_readers=2,
+            registry_resolver=Registry()).run(request, self.context)
+        self.assertEqual(("P1", "P2"), tuple(report.record_id for report in result.reader_reports))
+        self.assertEqual("abstract one", reader.tasks[0].text)
+        self.assertIn("[REGISTRY SOURCE BOUNDARY]", reader.tasks[1].text)
+        self.assertIn("hasResults=false", reader.tasks[1].text)
+        self.assertTrue(any("P1: registry failed: OSError: registry unavailable" in gap
+                            for gap in result.coverage_gaps))
+
+    def test_pdf_article_survives_large_registry_suffix_under_reader_bound(self):
+        pages = []
+        for page in range(1, 12):
+            lead = "UCL publication title " if page == 1 else ""
+            effect = "primary effect estimate 0.92 " if page == 8 else ""
+            pages.append(f"[PDF PAGE {page}] {lead}{effect}" + "publication evidence " * 255)
+        article = "\n".join(pages)
+        registry_lines = [
+            "[REGISTRY SOURCE NCT04232969] link_method=ctg_reference; snapshot=current_mutable",
+            "[REGISTRY NCT04232969 ENROLLMENT] count=194; type=ACTUAL",
+            "[REGISTRY NCT04232969 PLANNED PRIMARY OUTCOME 1] measure=Efficacy; timeFrame=96 weeks; "
+            "description=MDS-UPDRS part 3 in the practically defined OFF medication state",
+            "[REGISTRY NCT04232969 RESULTS] hasResults=false; observedResults=none",
+        ]
+        registry_lines.extend(
+            f"[REGISTRY NCT04232969 PLANNED SECONDARY OUTCOME {index}] "
+            f"measure={'secondary protocol field ' * 5}{index}; timeFrame=96 weeks"
+            for index in range(1, 46))
+        registry_lines.append("[REGISTRY NCT04232969 SECONDARY OUTCOMES OMITTED] count=35")
+        registry = "\n".join(registry_lines)
+        combined = article + "\n[REGISTRY SOURCE BOUNDARY]\n" + registry
+        self.assertTrue(58_000 < len(article) < 60_000)
+        self.assertGreater(len(registry), 8_000)
+        packed = pack_reader_text(combined, 60_000)
+        self.assertLessEqual(len(packed), 60_000)
+        self.assertIn("UCL publication title", packed)
+        self.assertIn("primary effect estimate 0.92", packed)
+        self.assertGreaterEqual(packed.count("[PDF PAGE "), 4)
+        for expected in ("[REGISTRY SOURCE NCT04232969]", "count=194",
+                         "PLANNED PRIMARY OUTCOME 1", "MDS-UPDRS part 3",
+                         "OFF medication state", "hasResults=false",
+                         "SECONDARY OUTCOMES OMITTED] count=35"):
+            self.assertIn(expected, packed)
 
     def test_europe_pmc_primary_failure_uses_section_preserving_bioc_author_manuscript(self):
         bioc = b"""<collection><infon key="license">custom-author-manuscript</infon><document>

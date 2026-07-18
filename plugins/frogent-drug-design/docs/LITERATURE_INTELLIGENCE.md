@@ -38,6 +38,10 @@ Primary OA 失败后，runtime 依次尝试 NCBI PMC BioC 与 OpenAlex repositor
 - 选定记录的 OA resolve→Reader pipelines 在 `max_readers` 内并发运行，reports/events 仍按 first-hit 顺序汇总；单路失败被隔离并回退到 abstract。
 - Deterministic packing 在既有 char cap 下优先保留 title、abstract、Results、Discussion、Conclusion、Correction、Limitations 与 Counterevidence；无结构全文采用 balanced head/tail。
 - Repository PDF 进入 Reader 前需要通过 20 MB 与 PDF signature gates；`pypdf>=6,<7` 提取 page-addressable markers，并把 truncation、OCR unavailable、encrypted 或 malformed 状态写成显式 gap。
+- Publication Reader 会从 PubMed 的 direct NCT accessions，或 relation type 为 `RESULT`/`DERIVED` 的 exact PMID references，自动补充 ClinicalTrials.gov evidence；`BACKGROUND` trials 保持排除。
+- Registry evidence 保留 link provenance、status/date、design、enrollment、arms/interventions、sponsor、全部 primary outcomes 的 bounded descriptions、前 10 个 secondary outcomes 与 omitted count、results-posting state，以及 current-mutable/`as_of` 限制。
+- Reader 必须比较 publication 的 observed design/outcomes 与 registry 的 planned evidence；protocol fields 不能作为 observed efficacy 或 safety。Registry failure 保持局部隔离，article/abstract Reader 继续运行。
+- 60k pack 同时保留 article/PDF evidence 与 bounded registry evidence。
 - Reader 输出 claim、locator、研究上下文、方向、量级、限制和 integrity status。
 - 身份错配、畸形输出或单个 reader 失败被隔离，并写入 coverage gap。
 
@@ -145,14 +149,26 @@ OpenAlex repository discovery 已接在 Europe PMC/BioC 之后。Runtime 只使�
 
 当前 PDF 路径仍会 flatten tables/figures，OCR 不可用。Section-aware PDF packing 延后到真实 failure 出现后再决定，避免为未观察到的失败提前增加复杂度。
 
+## ClinicalTrials evidence link effect
+
+Fresh direct-subagent panel 验证了 publication→registry augmentation：
+
+- PMID 38101901→NCT04154072 PASS：registry 保留 255 randomized、3 arms、36-week MDS-UPDRS II+III；publication 为 negative，registry `hasResults=false`。
+- PMID 28781108→NCT01971242 首轮正确 FAIL：`measure=Efficacy` 掩盖了 endpoint description。P0 现保留 bounded primary description；fresh rerun PASS，两个 `BACKGROUND` trials 均被排除，planned 60-week OFF-med MDS-UPDRS III 与 publication observed `-3.5`、p=.0318 均保留，并把 registry 60 与 publication 62 randomized/60 analysis 记录为 qualified discrepancy。
+- PMID 39919773→NCT04232969 PASS：registry 保留 194 randomized、96-week OFF-med MDS-UPDRS III；publication observed effect 为 0·92（95% CI -1·56 to 3·39，p=0·47），registry `hasResults=false`，且 current registry update 晚于 publication。
+
+真实 UCL 60k pack 同时保留 10 个 PDF page markers、observed effect、planned endpoint 与 registry state。
+
+当前限制：registry 是 current mutable view，无法重建历史快照；`hasResults=true` 的 result values 尚未解析；PMID discovery 只扫描前 25 条 references；没有 automated verdict；registry enrollment 语义可能与 publication 的 randomized 或 analysis population 不同。
+
 ## 最新验证
 
-- Focused research + runtime：`48/48 PASS`。
-- Full app venv：`189/189 PASS`。
-- Plugin validator、sanitizer、diff 与 hygiene 均 PASS。
+- Focused workflow + runtime：`54/54 PASS`。
+- Full suite：`195/195 PASS`。
+- Official validator PASS；sanitizer `982/0/0`；diff PASS。
 
 ## 下一步
 
-1. 在小型 mixed JATS/BioC/repository/abstract panel 上端到端测量 multi-paper Reader latency、throughput 与 failures。
+1. 在小型 mixed JATS/BioC/repository/abstract + registry panel 上端到端测量 multi-paper Reader latency、throughput 与 failures。
 2. 依据真实失败决定 OCR 或 section-aware PDF packing 的优先级。
 3. 完成该性能块后进入 tool/workflow capability work；依赖未接入药物设计模型的完整 workflow 继续 deferred。

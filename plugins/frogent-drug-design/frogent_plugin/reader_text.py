@@ -2,7 +2,7 @@
 
 import re
 
-_MARKER = re.compile(r"(?m)^\[(?:TITLE|ABSTRACT|SECTION)[^\]]*\]")
+_MARKER = re.compile(r"(?m)^\[(?:TITLE|ABSTRACT|SECTION|REGISTRY|PDF PAGE)[^\]]*\]")
 _EVIDENCE = ("result", "discussion", "conclusion", "correction", "limitation",
              "counterevidence", "conflict")
 _LOW_VALUE = ("method", "introduction")
@@ -28,20 +28,22 @@ def pack_reader_text(text: str, max_chars: int) -> str:
         available = max_chars - used - (1 if selected else 0)
         if available < 24:
             continue
-        selected[index] = block[:available]
+        selected[index] = block[:available] if _MARKER.match(block) else _head_tail(block, available)
         used += len(selected[index]) + (1 if len(selected) > 1 else 0)
     return "\n".join(selected[index] for index in sorted(selected))[:max_chars]
 
 
 def _blocks(text: str) -> tuple[tuple[int, str], ...]:
     starts = tuple(match.start() for match in _MARKER.finditer(text))
-    return tuple((index, text[start:starts[index + 1] if index + 1 < len(starts) else None].strip())
-                 for index, start in enumerate(starts))
+    blocks = ([text[:starts[0]].strip()] if starts and text[:starts[0]].strip() else [])
+    blocks.extend(text[start:starts[index + 1] if index + 1 < len(starts) else None].strip()
+                  for index, start in enumerate(starts))
+    return tuple(enumerate(blocks))
 
 
 def _priority(block: str) -> int:
     label = block.split("]", 1)[0].casefold()
-    if label.startswith("[title") or label.startswith("[abstract"):
+    if label.startswith("[title") or label.startswith("[abstract") or label.startswith("[registry"):
         return 0
     if any(term in label for term in _EVIDENCE):
         return 1

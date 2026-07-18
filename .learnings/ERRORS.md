@@ -2897,3 +2897,296 @@ repository PDF download failed: HTTPError: HTTP Error 403: Forbidden
 - **Notes**: 后续检查统一根据命令 cwd 使用 plugin-relative 路径；无文件副作用。
 
 ---
+
+## [ERR-20260719-040] mixed_panel_probe_lost_output
+
+**Logged**: 2026-07-19T01:13:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tooling
+
+### Summary
+首次 4-paper mixed live probe 约 23 秒后结束，统一 exec session 仅返回 `exit=undefined` 且无 stdout/stderr；进程已退出，无法判定完成范围。
+
+### Suggested Fix
+将 metadata retrieval 与 concurrent full-text resolution 分成两个可观察步骤，逐步输出 checkpoint；避免单个长 heredoc 丢失全部诊断。
+
+### Resolution
+- **Resolved**: 2026-07-19T01:18:00+08:00
+- **Commit/PR**: pending mixed Reader performance block
+- **Notes**: 使用 unbuffered TTY 与 `metadata_ready` checkpoint 重跑成功；4 篇 concurrent resolution 用时 6.638 秒，JATS/BioC/repository/abstract 四条路径均返回 Reader task，4 reports、4 ordered events。
+
+---
+
+## [ERR-20260719-041] mixed_reader_read_only_probe_routes
+
+**Logged**: 2026-07-19T02:05:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+Mixed Reader 的两个只读 subagent 探针分别误判了 JATS XML 结构与 abstract 获取入口，随后改用精确 XML 节点读取和 NCBI EFetch 完成验收。
+
+### Error
+```
+JATS structure probe: TypeError from treating a nested XML node as the expected scalar value
+Abstract probe: generic web-open route rejected the query before NCBI EFetch succeeded
+```
+
+### Context
+- 错误只发生在 Main 的一次性只读 effect probe，不影响 FROGENT runtime、正式测试或项目文件。
+- JATS Reader 仍完成 PMID 42113543 的设计、效应与局限提取；abstract Reader 仍完成 PMID 38101901 的 source-grounded 判定。
+- 两个 subagent 都没有执行项目写入。
+
+### Suggested Fix
+JATS 结构探针先读取并打印节点类型再访问字段；已知 PMID 的摘要优先使用 NCBI EFetch 或现有 provider，避免通用网页路由的不确定查询解析。
+
+### Metadata
+- Reproducible: unknown
+- Related Files: plugins/frogent-drug-design/frogent_plugin/epmc_fulltext.py, plugins/frogent-drug-design/frogent_plugin/biomedical_providers.py
+
+### Resolution
+- **Resolved**: 2026-07-19T02:06:00+08:00
+- **Commit/PR**: pending ClinicalTrials.gov evidence block
+- **Notes**: 两个 probe 均在只读边界内改用精确数据入口完成；未重复昂贵模型调用，正式 mixed Reader 结论保持有效。
+
+---
+
+## [ERR-20260719-042] clinicaltrials_nested_reference_query
+
+**Logged**: 2026-07-19T02:24:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: backend
+
+### Summary
+ClinicalTrials.gov v2 拒绝了探索性的 `SEARCH[Reference](...)` 嵌套查询语法；精确 PMID 的基础 AREA 查询可用，reference type 需要在返回 study 内做同一条 reference 的本地核验。
+
+### Error
+```
+HTTP 400 for SEARCH[Reference](AREA[ReferencePMID]... AND AREA[ReferenceType]...)
+```
+
+### Context
+- `AREA[ReferencePMID]28781108` 正常返回 study records。
+- 简单的 `AREA[ReferencePMID]... AND AREA[ReferenceType]DERIVED` 不能保证两个条件属于同一条 reference，实际仍返回 BACKGROUND matches。
+- 只读 API 探针没有修改项目或远端状态。
+
+### Suggested Fix
+使用官方可用的 PMID AREA 查询，再逐 study 检查 `protocolSection.referencesModule.references`，要求同一条 entry 同时满足 exact PMID 与 `RESULT`/`DERIVED`。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/clinical_trials.py
+
+### Resolution
+- **Resolved**: 2026-07-19T02:25:00+08:00
+- **Commit/PR**: pending ClinicalTrials.gov evidence block
+- **Notes**: 已固定本地同-entry fail-closed 过滤规则，并将 BACKGROUND negative fixture 纳入 Implementation 验收。
+
+---
+
+## [ERR-20260719-043] thread_message_template_literal
+
+**Logged**: 2026-07-19T02:31:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tooling
+
+### Summary
+向长期 Implementation 任务发送 P1 时，JavaScript template literal 内的 Markdown backticks 提前结束字符串并触发语法错误。
+
+### Error
+```
+SyntaxError: Unexpected identifier 'hasResults'
+```
+
+### Suggested Fix
+functions.exec 中的长 prompt 避免嵌入未转义 backticks，或改用不含 Markdown code span 的纯文本。
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+
+### Resolution
+- **Resolved**: 2026-07-19T02:31:20+08:00
+- **Commit/PR**: pending ClinicalTrials.gov evidence block
+- **Notes**: 移除 prompt 内的 Markdown backticks 后，同一 P1 消息成功发送；Implementation 已收到。
+
+---
+
+## [ERR-20260719-044] zsh_readonly_status_variable
+
+**Logged**: 2026-07-19T02:44:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+Implementation 的全量验证包装脚本使用 zsh 只读变量名 `status`，导致包装命令提前退出且首次结果无效。
+
+### Error
+```
+zsh: read-only variable: status
+```
+
+### Suggested Fix
+zsh 命令包装统一使用 `rc`、`exit_code` 等非保留变量保存返回码。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/scripts/check.py
+
+### Resolution
+- **Resolved**: 2026-07-19T02:44:30+08:00
+- **Commit/PR**: pending ClinicalTrials.gov evidence block
+- **Notes**: Implementation 改用 `rc` 后完整重跑，192/192、validator、sanitizer 与 hygiene 全部通过；首次无效结果未用于验收。
+
+---
+
+## [ERR-20260719-045] repository_registry_probe_contract_args
+
+**Logged**: 2026-07-19T02:51:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+Main 的 repository+registry 机械 canary 首两次漏传 `PypdfTextExtractor.extract` 的 artifact 与 `ExecutionContext` 的完整四字段，产生两个本地 TypeError。
+
+### Error
+```
+TypeError: PypdfTextExtractor.extract() missing 1 required positional argument: 'artifact'
+TypeError: ExecutionContext.__init__() missing 2 required positional arguments: 'job_id' and 'workspace'
+```
+
+### Suggested Fix
+一次性 live probe 先读取 typed contract 签名，再构造与正式 runtime 相同的 ArtifactRef 和 ExecutionContext。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/pdf_text.py, plugins/frogent-drug-design/frogent_plugin/contracts.py
+
+### Resolution
+- **Resolved**: 2026-07-19T02:52:00+08:00
+- **Commit/PR**: pending ClinicalTrials.gov evidence block
+- **Notes**: 补齐参数后 canary 成功运行并复现 registry packing P0；失败调用没有网络副作用或项目写入。
+
+---
+
+## [ERR-20260719-046] read_thread_status_hung
+
+**Logged**: 2026-07-19T03:02:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tooling
+
+### Summary
+Main 在 P0 验证期间读取 Implementation 最近状态的只读 thread 工具超过 70 秒仍无输出。
+
+### Error
+```
+codex_app read_thread remained running across two 30-second waits
+```
+
+### Suggested Fix
+状态读取超过一个短轮询窗口后终止只读调用，依靠共享 worktree 与后续任务交接继续，避免阻塞 Agent 主线。
+
+### Metadata
+- Reproducible: unknown
+- Related Files: .learnings/ERRORS.md
+
+### Resolution
+- **Resolved**: 2026-07-19T03:03:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已终止只读状态调用；Implementation 写入与测试进程未被中断，共享工作树仍可正常读取。
+
+---
+
+## [ERR-20260719-047] lancet_decimal_token_assumption
+
+**Logged**: 2026-07-19T03:20:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+Main 的 UCL repository PDF 精确 packing canary 首次用 ASCII `0.92` 断言主效应，而 Lancet PDF 字节提取保留了中点小数 `0·92`，导致一次假失败。
+
+### Error
+```
+AssertionError: expected observed effect token 0.92 was absent
+```
+
+### Suggested Fix
+真实 PDF 的机械 canary 优先核对提取后的原始标点，或在不改变语义的前提下同时接受期刊常用的中点与 ASCII 小数表示。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/pdf_text.py, plugins/frogent-drug-design/frogent_plugin/reader_text.py
+
+### Resolution
+- **Resolved**: 2026-07-19T03:21:00+08:00
+- **Commit/PR**: pending ClinicalTrials.gov evidence block
+- **Notes**: 改为核对 `0·92` 与 `p=0·47`后同一 canary 通过；60k 输入同时保留论文观察结果、NCT 、入组数、计划主终点、未发布结果状态与二级终点截断说明。
+
+---
+
+## [ERR-20260719-048] stale_app_venv_path
+
+**Logged**: 2026-07-19T03:26:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+Main 独立复验首次使用了项目根下已不存在的 `.runtime/app-v4/venv/bin/python`，实际 app venv 位于插件目录内。
+
+### Error
+```
+zsh: no such file or directory: .runtime/app-v4/venv/bin/python
+```
+
+### Suggested Fix
+运行验证前使用 `rg --files -uu` 或显式目录核对当前 venv 路径，避免沿用旧 checkpoint 的相对路径。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/.runtime/app-v4/venv/bin/python
+
+### Resolution
+- **Resolved**: 2026-07-19T03:27:00+08:00
+- **Commit/PR**: pending ClinicalTrials.gov evidence block
+- **Notes**: 已定位正确解释器 `plugins/frogent-drug-design/.runtime/app-v4/venv/bin/python`；错误命令在启动测试前就退出，没有产生项目副作用。
+
+---
+
+## [ERR-20260719-049] plugin_validator_wrong_interpreter
+
+**Logged**: 2026-07-19T03:30:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+Main 把 official plugin validator 与 runtime tests 放在同一 app venv 中运行，该精简 venv 未安装 validator 所需的 PyYAML。
+
+### Error
+```
+ModuleNotFoundError: No module named 'yaml'
+```
+
+### Suggested Fix
+Runtime 行为测试使用 app venv；official plugin validator 使用已配置 PyYAML 的系统项目 Python，两类验证分开执行。
+
+### Metadata
+- Reproducible: yes
+- Related Files: /Users/dongxu/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py
+
+### Resolution
+- **Resolved**: 2026-07-19T03:31:00+08:00
+- **Commit/PR**: pending ClinicalTrials.gov evidence block
+- **Notes**: 194/194 runtime tests 在此错误前已完整通过；validator 改用系统 Python 独立复验。
+
+---

@@ -132,6 +132,12 @@ class FullTextResolver(Protocol):
     def resolve(self, record: LiteratureRecord, context: ExecutionContext) -> FullTextDocument | None: ...
 
 
+class RegistryEvidenceResolver(Protocol):
+    def resolve(self, record: LiteratureRecord, context: ExecutionContext) -> str: ...
+
+    def coverage_gap(self, record_id: str) -> str: ...
+
+
 @dataclass(frozen=True, slots=True)
 class ScreeningAssessment:
     outcome: str

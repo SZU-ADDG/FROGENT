@@ -226,11 +226,23 @@ def _pubmed_record(article: ET.Element, query: LiteratureQuery) -> LiteratureRec
     doi = next((item.text or "" for item in article.findall(".//ArticleId") if item.get("IdType") == "doi"), "")
     pmcid = next((item.text or "" for item in article.findall(".//ArticleId") if item.get("IdType") == "pmc"), "")
     identifiers = {key: value for key, value in (("pmid", pmid), ("doi", doi), ("pmcid", pmcid)) if value}
+    for index, nct_id in enumerate(_pubmed_nct_ids(article), 1):
+        identifiers["nct" if index == 1 else f"nct_{index}"] = nct_id
     abstract = " ".join("".join(item.itertext()).strip() for item in article.findall(".//AbstractText"))
     year = article.findtext(".//PubDate/Year", "")
     artifact = ArtifactRef("pubmed-" + pmid, title, "application/xml", f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/")
     return LiteratureRecord(pmid, query.plan_id, query.source, title, datetime.now(timezone.utc), identifiers,
                             artifact, date(int(year), 1, 1) if year.isdigit() else None, abstract)
+
+def _pubmed_nct_ids(article: ET.Element) -> tuple[str, ...]:
+    values = []
+    for bank in article.findall(".//DataBank"):
+        name = "".join((bank.findtext("DataBankName", "")).split()).casefold()
+        if name == "clinicaltrials.gov":
+            values.extend((item.text or "").strip().upper()
+                          for item in bank.findall(".//AccessionNumber"))
+    return tuple(dict.fromkeys(value for value in values
+                               if len(value) == 11 and value.startswith("NCT") and value[3:].isdigit()))
 
 
 def _identifier(values: Mapping[str, str], wanted: str) -> str:

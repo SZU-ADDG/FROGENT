@@ -217,12 +217,20 @@ OpenAlex repository discovery 现接在 Europe PMC/BioC 之后，只接受 exact
 
 当前 limitations 是 flattened tables/figures 与 OCR unavailable。Section-aware PDF packing 延后到真实 failure 出现后再决定。
 
+### ClinicalTrials evidence link effect
+
+Publication Reader 现从 PubMed direct NCT accessions，或 relation type 为 `RESULT`/`DERIVED` 的 exact PMID references，自动补充 ClinicalTrials.gov evidence；`BACKGROUND` trials 保持排除。Registry block 保留 link provenance、status/date、design、enrollment、arms/interventions、sponsor、全部 primary outcomes 的 bounded descriptions、前 10 个 secondary outcomes 与 omitted count、results-posting state 与 current-mutable/`as_of` 限制。Reader 对照 publication observed design/outcomes 与 registry planned evidence，禁止把 protocol fields 当作 observed efficacy/safety；registry failure 局部隔离，article/abstract 继续，60k pack 同时保留 article/PDF 与 bounded registry evidence。
+
+Fresh direct-subagent panel 结果：PMID 38101901→NCT04154072 PASS，保留 255 randomized、3 arms、36-week MDS-UPDRS II+III、negative publication 与 `hasResults=false`。PMID 28781108→NCT01971242 首轮因 `measure=Efficacy` 掩盖 endpoint description 而正确 FAIL；P0 保留 bounded primary description 后 fresh rerun PASS，排除两个 `BACKGROUND` trials，保留 planned 60-week OFF-med MDS-UPDRS III、publication observed `-3.5`/p=.0318，并把 registry 60 与 publication 62 randomized/60 analysis 记录为 qualified discrepancy。PMID 39919773→NCT04232969 PASS，保留 194 randomized、96-week OFF-med MDS-UPDRS III、observed 0·92（95% CI -1·56 to 3·39，p=0·47）、`hasResults=false` 与 publication 之后更新的 current registry。
+
+真实 UCL 60k pack 保留 10 个 PDF page markers、observed effect、planned endpoint 与 registry state。当前限制包括 current mutable registry/no historical reconstruction、`hasResults=true` values 尚未解析、PMID discovery 只扫描前 25 条 references、无 automated verdict，以及 registry enrollment 与 randomized/analysis population 可能采用不同语义。
+
 ### Verification
 
-Focused research + runtime 48/48、full app venv 189/189 均 PASS；plugin validator、sanitizer、diff 与 hygiene PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
+Focused workflow + runtime 54/54、full suite 195/195 均 PASS；official validator PASS、sanitizer 982/0/0、diff PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
 
 ### 下一性能块
 
-1. 在小型 mixed JATS/BioC/repository/abstract panel 上端到端测量 multi-paper Reader latency、throughput 与 failures。
+1. 在小型 mixed JATS/BioC/repository/abstract + registry panel 上端到端测量 multi-paper Reader latency、throughput 与 failures。
 2. 依据真实失败决定 OCR 或 section-aware PDF packing 的优先级。
 3. 完成该性能块后进入 tool/workflow capability work；依赖未接入药物设计模型的完整 workflow 继续 deferred。

@@ -9,6 +9,7 @@ from .biomedical_providers import (
     EuropePMCProvider, NCBIConfig, OpenAlexProvider, PubMedProvider, UnpaywallFallback,
 )
 from .codex_client import CodexClient
+from .clinical_trials import ClinicalTrialsResolver
 from .codex_roles import CodexPlanner, CodexReader, CodexScreener, CodexSynthesizer
 from .conversation_memory import ConversationMemoryStore
 from .harness import HarnessPolicy
@@ -147,7 +148,8 @@ def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=
         europe, unpaywall, repository)},
         CodexReader(client), CodexSynthesizer(client), HarnessPolicy(max_tool_calls=32),
         config.max_readers, HybridScreener(CodexScreener(client)), expander, tuple(gaps),
-        max_reader_documents=config.max_reader_documents)
+        max_reader_documents=config.max_reader_documents,
+        registry_resolver=ClinicalTrialsResolver())
     planner = CodexPlanner(client, tuple(routes), config.max_queries, config.max_results_per_query)
     store = SQLiteResearchStore(config.memory_path, root)
     memory_store = ConversationMemoryStore(config.memory_path, root)

@@ -18,7 +18,7 @@ from .research_screening import conservative_assessment
 from .synthesis_recovery import synthesize_or_partial
 from .research_types import (
     AuthorLead, FullTextResolver, HarnessTelemetry, KnowledgeCandidate, Reader, ReaderClaim,
-    ReaderReport, ResearchRequest, ResearchResult, Screener, ScreeningAssessment,
+    ReaderReport, RegistryEvidenceResolver, ResearchRequest, ResearchResult, Screener, ScreeningAssessment,
     Synthesizer, WorkflowCheckpoint,
 )
 
@@ -31,7 +31,8 @@ class ResearchController:
                  synthesizer: Synthesizer, policy: HarnessPolicy, max_readers: int = 4,
                  screener: Screener | None = None, expander=None,
                  configuration_gaps: tuple[str, ...] = (), clock=monotonic,
-                 max_reader_documents: int = 6) -> None:
+                 max_reader_documents: int = 6,
+                 registry_resolver: RegistryEvidenceResolver | None = None) -> None:
         if max_readers <= 0 or max_reader_documents <= 0:
             raise ValueError("reader limits must be positive")
         self.providers = providers
@@ -45,6 +46,7 @@ class ResearchController:
         self.expander = expander
         self.configuration_gaps = configuration_gaps
         self.clock = clock
+        self.registry_resolver = registry_resolver
 
     def run(self, request: ResearchRequest, context: ExecutionContext,
             checkpoint: WorkflowCheckpoint | None = None, *, stop_after_retrieval: bool = False,
@@ -116,7 +118,8 @@ class ResearchController:
 
     def _read(self, records: tuple[LiteratureRecord, ...], context: ExecutionContext
               ) -> tuple[list[ReaderReport], list[str], list[StreamEvent]]:
-        return read_records(records, self.resolvers, self.reader, context, self.max_readers)
+        return read_records(records, self.resolvers, self.reader, context, self.max_readers,
+                            self.registry_resolver)
 def _build_ledger(records: tuple[LiteratureRecord, ...], reports: tuple[ReaderReport, ...],
                   revoked: tuple[str, ...], screener: Screener | None,
                   gaps: list[str] | None = None) -> EvidenceLedger:

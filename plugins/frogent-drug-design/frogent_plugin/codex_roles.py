@@ -106,7 +106,11 @@ class CodexReader:
                     "limitations,unresolved_questions. Each claim has statement,locator,population_or_model,"
                     "intervention,comparator,outcome,direction,magnitude,limitations.")
         packed = pack_reader_text(task.text, self.max_chars)
-        value = self.client.generate("bounded biomedical paper reader", contract,
+        instruction = ("Extract claim-level evidence only; never return full text. Compare publication "
+                       "enrollment, design, and outcomes against [REGISTRY] evidence; report endpoint "
+                       "drift and result-posting gaps. Registry protocol fields describe planned design "
+                       "and are not observed efficacy or safety results.")
+        value = self.client.generate("bounded biomedical paper reader", contract + " " + instruction,
             {"task_id": task.task_id, "family_id": task.family_id, "record_id": task.record.id,
              "title": task.record.title, "identifiers": dict(task.record.identifiers),
              "artifact": task.full_text_artifact.uri if task.full_text_artifact else task.record.raw_artifact.uri,
