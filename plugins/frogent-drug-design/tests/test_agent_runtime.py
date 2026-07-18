@@ -982,6 +982,126 @@ class AgentRuntimeTests(unittest.TestCase):
         self.assertIn("two years", runner.calls[0][1])
         self.assertIn("three years", runner.calls[0][1])
 
+    def test_memory_stage_timelines_and_evidence_bound_comparison_checklist(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / "tests") as temp:
+            store = ConversationMemoryStore(Path(temp) / "memory.sqlite3", ROOT)
+            stages = (
+                ("foundation", "Foundation training ran from 2011 to 2014."),
+                ("intermediate", "Intermediate certification covered 2015-2017, a three-year stage."),
+                ("advanced", "Advanced study lasted two years, from 2018 through 2019."),
+                ("final", "Final specialization began later; its end date and duration were never recorded."),
+            )
+            for index, (turn_id, content) in enumerate(stages):
+                store.ingest_session("u", turn_id, turn_id, (ConversationTurn(
+                    turn_id, "user", content, f"2024-01-{index + 1:02d}T00:00:00+00:00"),))
+            for index in range(7):
+                store.ingest_session("u", f"stage-noise-{index}", f"stage-noise-{index}", (
+                    ConversationTurn(f"stage-noise-{index}", "assistant",
+                        "General training completion advice discusses schedules, planning, and "
+                        "professional development without a personal timeline. " * 8,
+                        f"2024-02-{index + 1:02d}T00:00:00+00:00"),))
+            timeline = store.retrieve(
+                "u", "Summarize my training stage timeline and identify the missing duration.",
+                limit=8, max_prompt_chars=8000)
+            stage_hits = {item.turn_id: item for item in timeline if item.role == "user"}
+            self.assertTrue({item[0] for item in stages}.issubset(stage_hits))
+            self.assertLess(max(timeline.index(stage_hits[item[0]]) for item in stages), 8)
+
+            store.ingest_session("u", "device-history", "device-history", (
+                ConversationTurn("device-comparison", "user",
+                    "My current device is compact; the target upgrade should be lighter with better "
+                    "battery performance.", "2024-03-01T00:00:00+00:00"),
+                ConversationTurn("device-background", "assistant",
+                    "Generic purchasing background. " * 180,
+                    "2024-03-01T00:01:00+00:00"),
+                ConversationTurn("device-usage", "user",
+                    "I use it daily for field work, prefer a firm grip, and avoid sharp edges.",
+                    "2024-03-01T00:02:00+00:00")))
+            for index in range(7):
+                store.ingest_session("u", f"device-noise-{index}", f"device-noise-{index}", (
+                    ConversationTurn(f"device-noise-{index}", "assistant",
+                        "General equipment recommendations cover shopping options and popular advice. "
+                        * 8, f"2024-04-{index + 1:02d}T00:00:00+00:00"),))
+            comparison = store.retrieve(
+                "u", "Recommend what I should evaluate before replacing my equipment.",
+                limit=8, max_prompt_chars=8000)
+            comparison_ids = {item.turn_id for item in comparison}
+            self.assertTrue({"device-comparison", "device-usage"}.issubset(comparison_ids))
+
+        timeline_ids = [stage_hits[item[0]].memory_id for item in stages]
+        comparison_support = [item.memory_id for item in comparison
+                              if item.turn_id in {"device-comparison", "device-usage"}]
+        outputs = (
+            {"answer": "Known ranges are 2011-2014, 2015-2017, and 2018-2019; "
+                       "the final specialization duration is missing.",
+             "supporting_memory_ids": timeline_ids, "abstain": True},
+            {"answer": "Compare the compact current device with the lighter target on battery, "
+                       "daily field use, grip, and edge comfort; price remains an evidence gap.",
+             "supporting_memory_ids": comparison_support, "abstain": False},
+        )
+        client, runner = self.client([json.dumps(item) for item in outputs])
+        partial = CodexMemoryAnswerer(client).answer(
+            "Summarize my training stage timeline and identify the missing duration.", timeline)
+        guidance = CodexMemoryAnswerer(client).answer(
+            "Recommend what I should evaluate before replacing my equipment.", comparison)
+        self.assertTrue(partial.abstain)
+        self.assertEqual(tuple(timeline_ids), partial.supporting_memory_ids)
+        self.assertFalse(guidance.abstain)
+        timeline_prompt = runner.calls[0][1]
+        self.assertIn("2011 to 2014", timeline_prompt)
+        self.assertIn("2015-2017", timeline_prompt)
+        self.assertIn("2018 through 2019", timeline_prompt)
+        self.assertIn("duration were never recorded", timeline_prompt)
+        comparison_prompt = runner.calls[1][1]
+        self.assertIn("current device is compact", comparison_prompt)
+        self.assertIn("daily for field work", comparison_prompt)
+        self.assertIn("current item or context", comparison_prompt)
+        self.assertIn("unsupported dimensions as evidence gaps", comparison_prompt)
+        self.assertIn("generic shopping advice", comparison_prompt)
+        self.assertEqual(tuple(comparison_support), guidance.supporting_memory_ids)
+
+    def test_memory_comparison_expansion_requires_explicit_change_intent(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / "tests") as temp:
+            store = ConversationMemoryStore(Path(temp) / "memory.sqlite3", ROOT)
+            store.ingest_session("u", "activity-preference", "activity-preference", (
+                ConversationTurn("activity-preference", "user",
+                    "I prefer a quiet setting and avoid crowds.",
+                    "2024-01-01T00:00:00+00:00"),
+                ConversationTurn("activity-time", "user",
+                    "I have time in the evening for a short activity.",
+                    "2024-01-01T00:01:00+00:00")))
+            for index in range(7):
+                store.ingest_session("u", f"comparison-noise-{index}",
+                    f"comparison-noise-{index}", (ConversationTurn(
+                        f"comparison-noise-{index}", "user",
+                        "My current equipment target uses daily performance tracking.",
+                        f"2024-02-{index + 1:02d}T00:00:00+00:00"),))
+            store.ingest_session("u", "legacy-compare-noise", "legacy-compare-noise", (
+                ConversationTurn("legacy-compare-noise", "user",
+                    "I compared and upgraded unrelated equipment.",
+                    "2024-02-08T00:00:00+00:00"),))
+            recommendation = store.retrieve(
+                "u", "Suggest a short activity for my evening.", limit=8,
+                max_prompt_chars=8000)
+            self.assertEqual({"activity-preference"},
+                             {item.session_id for item in recommendation})
+            self.assertEqual({"activity-preference", "activity-time"},
+                             {item.turn_id for item in recommendation})
+
+            store.ingest_session("u", "explicit-comparison", "explicit-comparison", (
+                ConversationTurn("explicit-current-target", "user",
+                    "My current device is compact and the target replacement should be lighter.",
+                    "2024-03-01T00:00:00+00:00"),
+                ConversationTurn("explicit-usage", "user",
+                    "I use it daily and need stronger battery performance.",
+                    "2024-03-01T00:01:00+00:00")))
+            comparison = store.retrieve(
+                "u", "Compare my current compact device with the lighter target upgrade for daily use.",
+                limit=8,
+                max_prompt_chars=8000)
+            self.assertTrue({"explicit-current-target", "explicit-usage"}.issubset(
+                {item.turn_id for item in comparison}))
+
     def test_memory_answer_guides_qualified_session_linkage_and_conflict_abstention(self):
         with tempfile.TemporaryDirectory(dir=ROOT / "tests") as temp:
             store = ConversationMemoryStore(Path(temp) / "memory.sqlite3", ROOT)

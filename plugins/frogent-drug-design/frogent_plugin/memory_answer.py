@@ -52,8 +52,12 @@ class CodexMemoryAnswerer:
             "them only while citing both exact IDs. Abstain when conflicting entities or sessions make "
             "the linkage ambiguous. For recommendations, extract a preference checklist of prefer, "
             "avoid, time, and scope constraints first, then filter every suggestion against the negative "
-            "constraints; provide constraint-aware tips from sufficient evidence without requiring an "
-            "exact product choice. Cite every used memory_id and "
+            "constraints. For comparisons, build an evidence checklist for current item or context, "
+            "target or desired change, usage, fit or feel and physical constraints, performance, and "
+            "avoid or preference constraints. Compare every supported dimension, label unsupported "
+            "dimensions as evidence gaps, and avoid generic shopping advice that ignores the saved "
+            "current item and desired change. Provide constraint-aware tips from sufficient evidence "
+            "without requiring an exact product choice. Cite every used memory_id and "
             "abstain when required evidence is incomplete; an abstention may cite available partial "
             "evidence while explaining the missing facts. Return answer, supporting_memory_ids, abstain.",
             payload, schema=schema)

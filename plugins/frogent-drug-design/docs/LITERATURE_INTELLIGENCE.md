@@ -104,15 +104,28 @@ P3 retrieval-only diagnostic 已覆盖三个 education answer sessions、coupon 
 
 P3 answer-level rerun 改由 collaboration subagents 直接读取真实 FROGENT retrieval bundles 并作 evidence-bound reasoning，4/4 completed、零 CLI、零 API key。逐例复核为 2 correct、2 partial/cautious、0 clearly wrong：Target 与晚间活动约束正确；教育聚合漏报 PCC 两年；购琴回答利用了 Stratocaster、Les Paul 与 open-D 证据，但比较维度仍不完整。
 
+## Memory P4 effect
+
+P4 为显式四位年份范围增加 source-grounded stage timeline retrieval，并为显式 comparison 增加 evidence checklist：current context、target/change、usage、fit/physical、performance、preference/avoid。缺少的维度必须在回答中披露。
+
+Fresh direct-subagent evaluation 使用 `007/008/009/014`，直接读取 FROGENT memory bundles，无 nested Codex CLI 或 API key：
+
+- `007` 保留全部 source-stated stages 与 known durations，报告 8 个 known years；Associate start/duration 与 Master's completion 缺失，因此对 complete total abstain。Exposed oracle 额外采用的两年 Associate duration 没有 source 明文支持，属于 oracle/source-grounding limitation，不能记作 Agent regression。
+- `008` 保持 qualified same-session Target inference，并引用两个 evidence IDs。
+- `009` 基于 repertoire 与 open-D evidence 给出具体 Stratocaster-vs-Les Paul A/B plan，同时披露 neck、weight、tone/performance、pickups、budget 与 preference evidence 缺口。
+- `014` 初版因 comparison markers 泄漏到普通 recommendation intent 而回退。P0/P1 将 preference/time/scope/constraint retrieval 与 compare/evaluate/replace/upgrade retrieval 分开；fresh rerun 恢复 joint-friendly、early-evening、yoga/flexibility 与 `9:30` wind-down 回答，compare/upgrade-only distractor hits 为 0。
+
+当前结论：P4 改善显式 comparison synthesis，并保持 source-grounded timeline reasoning；普通 recommendation regression 已修复。低价值 generic-word noise 仍可观察，但没有进入 support IDs。
+
 ## 最新验证
 
-- Focused Agent runtime：`28/28 PASS`。
-- Full `scripts/check.py`：`178/178 PASS`。
-- Plugin validator、sanitizer、architecture 与 hygiene：PASS。
+- Focused Agent runtime：`30/30 PASS`。
+- Full `scripts/check.py`：`180/180 PASS`。
+- Main 独立复跑 full `180/180 PASS`；plugin validator、sanitizer `982/0/0`、architecture、diff 与 hygiene 均 PASS。
 
 ## 下一步
 
-1. 针对两条 partial memory case，提高教育阶段时长召回与购琴 compare-dimensions 综合，再用 subagents 复测。
-2. 扩大 real provider/Reader throughput evaluation，持续测量 evidence recall、引用、counterevidence、失败恢复、延迟与成本。
-3. 在独立部署环境做 bundled Codex adapter canary；它不阻塞 subagent-native Agent 开发和评测。
+1. 下一 performance block 转向 real provider 与 bounded Reader throughput，持续测量 evidence recall、引用、counterevidence、失败恢复、延迟与成本。
+2. 保留 low-value generic-word noise 观察项，只有它进入 support IDs 或影响答案时才升级修复优先级。
+3. 在独立部署环境继续 bundled Codex adapter canary；subagent-native Agent 开发和评测不依赖该通道。
 4. 药物设计模型、RDKit、结构分析、对接与 PLIP workflows 继续 deferred。

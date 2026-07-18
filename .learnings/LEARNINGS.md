@@ -1,5 +1,33 @@
 # Learnings
 
+## [LRN-20260718-007] correction
+
+**Logged**: 2026-07-18T22:05:00+08:00
+**Priority**: high
+**Status**: promoted
+**Area**: agent
+
+### Summary
+FROGENT 的长期任务在一轮交付后可以 idle 等待验收，但已存在明确性能路线且用户要求持续建设时，Main 必须主动启动下一能力块。
+
+### Details
+每小时巡检连续把“当前轮次完成、工作树干净”解释为整个项目无需继续，导致已知的两条 memory partial cases 与 real provider/Reader throughput 路线没有自动进入下一轮。用户明确询问项目是否还会继续推进。长期任务的 idle 只表示当前写入结束，不代表产品目标完成；Main 应根据已经验收的 failure analysis 选择下一个最小 coherent capability block，并恢复 Implementation → Main 效果验收 → Document 记录循环。
+
+### Suggested Action
+巡检发现工作树干净且任务 idle 时，同时核对已确认的下一性能块。存在安全、已授权且由失败分析直接支持的工作时，Main 继续推进；只有缺少方向、缺少授权、用户暂停或存在真实 blocker 时保持静默。
+
+### Metadata
+- Source: user_feedback
+- Related Files: AGENTS.md, plugins/frogent-drug-design/docs/REFACTORING_LOG.md
+- Tags: continuity, agent-performance, long-running-tasks, recovery
+- Pattern-Key: workflow.idle_is_not_project_complete
+- Recurrence-Count: 1
+- First-Seen: 2026-07-18
+- Last-Seen: 2026-07-18
+- Promoted: hourly recovery behavior
+
+---
+
 ## [LRN-20260718-006] correction
 
 **Logged**: 2026-07-18T15:54:00+08:00
@@ -47,15 +75,17 @@ P2 在原有 8 hits / 8000 chars 预算内加入 intent expansion 与 top-sessio
 
 P3 的 retrieval diagnostic 已确认改动命中预期行为：教育问题覆盖高中、PCC associate degree 与 UCLA bachelor/4-year 三个 answer sessions；coupon 问题同一 session 覆盖事件和 Target/Cartwheel；guitar 问题覆盖早期 compare/upgrade 与后期 open-D usage；晚间推荐问题把 9:30 preference session 排到第 1。随后 4 条任务改由 collaboration subagents 直接读取真实 FROGENT retrieval bundle 并作 evidence-bound reasoning，零 Codex CLI、零 API key。结果为 2 条正确、2 条 partial/cautious、0 条明显错误：Target 与晚间活动约束回答正确；教育聚合诚实 abstain 但漏报 PCC 两年；购琴建议利用了 Stratocaster、Les Paul 与 open-D 证据，但没有完整展开 neck、weight、sound-profile 对比。该结果证明 subagent-native Agent 路径可用，同时显示 education companion recall 与偏好型比较的结构化综合仍需加强。
 
+P4 为教育 timeline 增加四位年份范围信号，并为显式比较增加 current、target、usage、fit、performance 与 preference evidence checklist。真实复跑中，教育回答完整保留三个已知阶段，同时拒绝从缺失的 Associate 起始年份虚构两年时长；该差异来自 exposed oracle 对来源没有明说的时间段作了推断，Agent 的 source-grounded abstention 更安全。购琴回答恢复 Stratocaster、Les Paul、曲风和 open-D 证据，给出逐项 A/B 试奏方案并明确 neck、重量、音色、拾音器与预算缺口。初版把 comparison markers 扩展到所有 recommendation，导致晚间活动检索被无关 current/usage/performance facts 挤占；将 compare/evaluate/replace/upgrade 独立成显式 intent，并移除 legacy compare/upgrade preference/constraint marker 后，fresh subagent 复跑恢复关节友好、early-evening、yoga/flexibility、9:30 wind-down 与减少社交媒体建议，compare/upgrade-only distractor 命中为 0。普通 recommendation 和显式 comparison 必须保持两条独立 evidence channel。
+
 ### Suggested Action
-保持有界、用户隔离、session bundle 与 exact evidence-ID 约束。下一轮针对两条 partial case 做小而直接的改进：教育聚合优先保存每个阶段的起止年份或显式时长；偏好比较先生成 compare dimensions checklist，再基于已检索事实逐项回答。批量验证继续使用 subagents 直接承担 answer workers，部署 CLI 通道独立验收。
+保持有界、用户隔离、session bundle 与 exact evidence-ID 约束。教育 timeline 对缺失起点继续明确 abstain，避免迎合推断型 oracle；显式 comparison 继续使用逐维度 evidence checklist，普通 recommendation 只使用 preference/time/scope/constraint channel。下一性能块转向 real provider 与 bounded Reader throughput，同时保留低价值通用词噪声作为后续 memory precision 观察项。批量验证继续使用 subagents 直接承担 answer workers，部署 CLI 通道独立验收。
 
 ### Metadata
 - Source: real_task_eval
 - Related Files: plugins/frogent-drug-design/frogent_plugin/conversation_memory.py, plugins/frogent-drug-design/frogent_plugin/memory_retrieval.py, plugins/frogent-drug-design/frogent_plugin/memory_answer.py
 - Tags: memory, retrieval, session-diversity, temporal, aggregation, preference, abstention
 - Pattern-Key: memory.retrieve_sessions_and_synthesize_intents
-- Recurrence-Count: 5
+- Recurrence-Count: 6
 - First-Seen: 2026-07-17
 - Last-Seen: 2026-07-18
 

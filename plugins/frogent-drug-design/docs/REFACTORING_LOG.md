@@ -191,13 +191,21 @@ LongMemEval baseline clean correctness 为 `7/14`。P1 real blind rerun 修复 d
 
 P3 保持 8 hits / 8000 chars，加入 direct matched companions、education-stage intent、preference/time constraints 与 qualified same-session linkage。4 条 answer rerun 改由 collaboration subagents 直接使用真实 FROGENT retrieval bundles，4/4 completed、零 CLI、零 API key；逐例结果为 2 correct、2 partial/cautious、0 clearly wrong。Target 与晚间活动约束回答正确；教育聚合漏报 PCC 两年；购琴回答使用了 Stratocaster、Les Paul 与 open-D 证据，仍缺完整 neck、weight、sound-profile 对比。
 
+### Memory P4 effect
+
+P4 为显式四位年份范围增加 source-grounded stage timeline retrieval，并为显式 comparison 增加 current context、target/change、usage、fit/physical、performance、preference/avoid evidence checklist。Fresh direct-subagent evaluation 直接运行 `007/008/009/014`，无 nested Codex CLI 或 API key。
+
+`007` 保留全部 source-stated stages 和 known durations，报告 8 个 known years，并因 Associate start/duration 与 Master's completion 缺失而对 complete total abstain；exposed oracle 的额外两年 Associate duration 没有 source 明文支持，记录为 oracle/source-grounding limitation。`008` 保持带两个 evidence IDs 的 qualified same-session Target inference。`009` 给出 repertoire/open-D grounded Stratocaster-vs-Les Paul A/B plan，并披露 neck、weight、tone/performance、pickups、budget 与 preference 缺口。
+
+`014` 初版因 comparison markers 泄漏到普通 recommendation intent 而回退。P0/P1 将 preference/time/scope/constraint retrieval 与 compare/evaluate/replace/upgrade retrieval 分开；fresh rerun 恢复 joint-friendly、early-evening、yoga/flexibility 与 `9:30` wind-down 回答，compare/upgrade-only distractor hits 为 0。P4 当前改善显式 comparison synthesis 并保持 source-grounded timeline reasoning；普通 recommendation regression 已修复。Low-value generic-word noise 仍可观察，但没有进入 support IDs。
+
 ### Verification
 
-Focused Agent runtime 28/28、full `scripts/check.py` 178/178、plugin validator、sanitizer、architecture 与 hygiene 均 PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
+Focused Agent runtime 30/30、full `scripts/check.py` 180/180 均 PASS。Main 独立复跑 full 180/180，并确认 plugin validator、sanitizer 982/0/0、architecture、diff 与 hygiene PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
 
 ### 下一性能块
 
-1. 针对两条 partial memory case，提高教育阶段时长召回与购琴 compare-dimensions 综合，再用 subagents 复测。
-2. 扩大 real provider/Reader throughput evaluation，继续按 evidence recall、引用、counterevidence、失败恢复、延迟与成本优化 Agent。
+1. 下一 performance block 转向 real provider 与 bounded Reader throughput，继续按 evidence recall、引用、counterevidence、失败恢复、延迟与成本优化 Agent。
+2. Low-value generic-word noise 保持观察；进入 support IDs 或影响答案时再提升修复优先级。
 3. 独立部署继续保留 bundled Codex adapter canary；subagent-native Agent 开发与批量评测不依赖该通道。
 4. 药物设计模型、RDKit、结构分析、对接、PLIP 与相关 tool-use workflows 继续 deferred。

@@ -5,6 +5,8 @@ from math import log
 
 _WORD = re.compile(r"[\w]+", re.UNICODE)
 _CLOCK = re.compile(r"\b\d{1,2}(?::\d{2})?\s*(?:am|pm)\b", re.IGNORECASE)
+_DATE_RANGE = re.compile(r"\b(?:19|20)\d{2}\s*(?:-|–|—|to|through)\s*(?:19|20)\d{2}\b",
+                         re.IGNORECASE)
 _STOP = frozenset({
     "a", "about", "an", "and", "are", "did", "do", "does", "earlier", "from", "i", "in",
     "is", "it", "me", "memory", "my", "of", "on", "our", "please", "remember", "said",
@@ -30,20 +32,34 @@ _CANONICAL = {
     "preference": "prefer", "preferences": "prefer", "preferred": "prefer", "prefers": "prefer",
     "projects": "project", "recommendations": "recommend", "recommended": "recommend",
     "recommending": "recommend", "redeemed": "redeem", "redeeming": "redeem",
-    "redeems": "redeem", "stores": "store", "suggested": "suggest",
+    "redeems": "redeem", "replaced": "replace", "replacing": "replace",
+    "stores": "store", "suggested": "suggest",
     "suggesting": "suggest", "suggestions": "suggest", "tips": "tip",
     "upgraded": "upgrade", "upgrading": "upgrade", "used": "use", "uses": "use",
     "using": "use", "weeks": "week", "years": "year",
 }
-_RECOMMEND = frozenset({"compare", "new", "recommend", "suggest", "tip", "upgrade"})
-_PREFERENCE = frozenset({"avoid", "compare", "constraint", "prefer", "scope", "time", "upgrade"})
+_RECOMMEND = frozenset({"compare", "evaluate", "new", "recommend", "replace", "suggest",
+                        "tip", "upgrade"})
+_COMPARE = frozenset({"compare", "evaluate", "replace", "upgrade"})
+_PREFERENCE = frozenset({"avoid", "constraint", "prefer", "scope", "time"})
 _QUANTIFY = frozenset({"count", "day", "duration", "month", "week", "year"})
-_EDUCATION = frozenset({"college", "complete", "degree", "education", "school", "university"})
+_EDUCATION = frozenset({"college", "complete", "degree", "education", "school", "stage",
+                        "timeline", "training", "university"})
 _STAGES = frozenset({"associate", "bachelor", "college", "degree", "high", "master",
                      "school", "undergraduate", "university"}) | _QUANTIFY
-_CONSTRAINT = frozenset({"avoid", "compare", "prefer", "scope", "upgrade"})
+_CONSTRAINT = frozenset({"avoid", "prefer", "scope"})
 _TIME = frozenset({"afternoon", "evening", "midday", "morning", "night", "noon",
                    "time", "weekday", "weekend"})
+_COMPARISON = {
+    "comparison_current": frozenset({"current", "existing", "have", "own"}),
+    "comparison_target": frozenset({"change", "desired", "replace", "target", "upgrade", "want"}),
+    "comparison_usage": frozenset({"daily", "practice", "use", "usage", "work"}),
+    "comparison_fit": frozenset({"comfort", "feel", "fit", "grip", "physical", "size", "weight"}),
+    "comparison_performance": frozenset({"accuracy", "battery", "performance", "power", "quality",
+                                          "range", "speed"}),
+    "comparison_preference": frozenset({"avoid", "prefer"}),
+}
+_INTERNAL_MARKERS = frozenset(_COMPARISON) | {"stage_fact"}
 
 
 def ranked_rows(rows, query, temporal_terms):
@@ -58,7 +74,8 @@ def ranked_rows(rows, query, temporal_terms):
         matched = tuple(sorted(terms & document))
         if matched:
             score = _relevance(row, matched, frequency, len(rows), intent - base)
-            ranked.append((score, row[3] == "user", row[5], row[6], row, matched))
+            visible = tuple(term for term in matched if term not in _INTERNAL_MARKERS)
+            ranked.append((score, row[3] == "user", row[5], row[6], row, visible))
     ranked.sort(key=lambda item: item[:4], reverse=True)
     return ranked
 
@@ -150,6 +167,11 @@ def _document_terms(value):
         result.add("constraint")
     if raw & _TIME or _CLOCK.search(value):
         result.update({"constraint", "time"})
+    if _DATE_RANGE.search(value):
+        result.update({"duration", "stage_fact", "timeline"})
+    for marker, terms in _COMPARISON.items():
+        if raw & terms:
+            result.add(marker)
     return frozenset(result)
 
 
@@ -157,12 +179,14 @@ def _intent(raw):
     result = set()
     if raw & _RECOMMEND:
         result.update(_PREFERENCE)
+    if raw & _COMPARE:
+        result.update(_COMPARISON)
     if "total" in raw or "duration" in raw or "count" in raw:
         result.update(_QUANTIFY)
     if "how" in raw and raw & {"long", "many"}:
         result.update(_QUANTIFY)
     if raw & _EDUCATION:
-        result.update(_STAGES)
+        result.update(_STAGES | {"stage_fact", "timeline"})
     return frozenset(result)
 
 
