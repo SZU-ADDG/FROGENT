@@ -207,15 +207,22 @@ Live P0 中，PMID 28781108 / PMC5831666 的 Europe PMC `fullTextXML` 返回 404
 
 Fresh direct-subagent evaluation 未使用 nested CLI、API key 或固定 timeout，覆盖 PMID 28781108、38101901、38598572、39919773 与 EOC 42330995。结果为 `5/5` identity/coverage levels 正确、`4/4` trial primary effects 带 locators、`4/4` 保留 counterevidence/safety/limitations；EOC 双向关联且保持 unresolved，synthesis 的 admitted-set 外 citation 为 0，并分开 source-study 与 current-evidence verdict。241606-byte BioC author manuscript 形成 50606 evidence chars，在 60k cap 下保留 title、abstract、Results、Discussion、table、primary `-3.5` effect 与 disease-modification uncertainty，排除 `REF`，没有 truncation。
 
-该 exposed panel 支持的结论是：随机人体证据尚未建立 GLP-1 receptor agonists 能减缓 Parkinson disease progression。较小 phase-2 motor signals 仍兼容 persistent symptomatic effects 或 exploratory signals；NLY01 和较大的 96-week exenatide phase 3 为 null，后者必须携带 unresolved EOC。降低 integrity-qualified phase 3 权重后，progression slowing 仍为 unproven。GI intolerance/weight loss 反复出现，不支持 individualized benefit-risk claim。Throughput latency 未计时，记为 `not_measured`；synthetic synchronization 只证明 concurrent pipeline behavior。直接缺口仍包括 institutional-repository discovery：PMID 39919773 的 UCL repository PDF 未被 runtime 自动发现。
+该 exposed panel 支持的结论是：随机人体证据尚未建立 GLP-1 receptor agonists 能减缓 Parkinson disease progression。较小 phase-2 motor signals 仍兼容 persistent symptomatic effects 或 exploratory signals；NLY01 和较大的 96-week exenatide phase 3 为 null，后者必须携带 unresolved EOC。降低 integrity-qualified phase 3 权重后，progression slowing 仍为 unproven。GI intolerance/weight loss 反复出现，不支持 individualized benefit-risk claim。Throughput latency 未计时，记为 `not_measured`；synthetic synchronization 只证明 concurrent pipeline behavior。Reader Block 1 当时仍有 institutional-repository discovery 缺口，PMID 39919773 的 UCL repository PDF 未被 runtime 自动发现；下述 Repository PDF Reader block 已关闭该缺口。
+
+### Repository PDF Reader effect
+
+OpenAlex repository discovery 现接在 Europe PMC/BioC 之后，只接受 exact repository locations，并过滤 PubMed 与 publisher locations。Direct PDF provenance 保留 repository、host、landing page、version 与 license。默认 app dependency 包含 `pypdf>=6,<7`；runtime 以 20 MB 与 PDF signature gates 约束输入，输出 page-addressable markers，并把 truncation、OCR unavailable、encrypted 与 malformed 状态写为显式 gap。该路径默认无固定墙钟 timeout。
+
+真实 PMID 39919773 canary 在显式 `FROGENT` User-Agent 下完成 full metadata→UCL repository PDF→`pypdf`，耗时 6.101 秒；469065-byte PDF 解析为 11 pages、58886 chars、11 个 page markers，在 60k cap 下无 truncation。两个 direct subagents 独立接受 source-grounded design/effect/safety/limitations extraction：primary effect 0.92（95% CI -1.56 to 3.39，p=.47），同时保留 narrative 与 Table 4 serious-event discrepancy 和 unresolved integrity notice。
+
+当前 limitations 是 flattened tables/figures 与 OCR unavailable。Section-aware PDF packing 延后到真实 failure 出现后再决定。
 
 ### Verification
 
-Focused research + runtime 44/44、full `scripts/check.py` 185/185 均 PASS。Main 独立运行 focused `research_workflow 13/13 PASS` 与 saved live-provider replay，并确认 plugin validator、sanitizer 982/0/0、architecture、diff 与 hygiene PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
+Focused research + runtime 48/48、full app venv 189/189 均 PASS；plugin validator、sanitizer、diff 与 hygiene PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
 
 ### 下一性能块
 
-1. 扩展 real-provider coverage，先补充 institutional-repository discovery，覆盖 Europe PMC 无全文 metadata 但 repository copy 可用的文献。
-2. 随后测量 multi-paper Reader latency/throughput，并继续观察 evidence recall、引用、counterevidence、失败恢复与成本。
-3. Low-value generic-word noise 保持观察；进入 support IDs 或影响答案时再提升修复优先级。
-4. 药物设计模型、RDKit、结构分析、对接、PLIP 与相关 tool-use workflows 继续 deferred。
+1. 在小型 mixed JATS/BioC/repository/abstract panel 上端到端测量 multi-paper Reader latency、throughput 与 failures。
+2. 依据真实失败决定 OCR 或 section-aware PDF packing 的优先级。
+3. 完成该性能块后进入 tool/workflow capability work；依赖未接入药物设计模型的完整 workflow 继续 deferred。

@@ -3,6 +3,7 @@
 import sys
 import threading
 import unittest
+import json
 from unittest.mock import patch
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -26,6 +27,11 @@ from frogent_plugin.research_types import (  # noqa: E402
 )
 from frogent_plugin.research_workflow import ResearchController  # noqa: E402
 from frogent_plugin.research_reading import read_records  # noqa: E402
+from frogent_plugin.research_factory import OAFallbackResolver  # noqa: E402
+from frogent_plugin.repository_fulltext import (  # noqa: E402
+    OpenAlexRepositoryLocator, OpenAlexRepositoryResolver,
+)
+from frogent_plugin.pdf_text import PypdfTextExtractor  # noqa: E402
 from frogent_plugin.research_v4 import run_v4_research  # noqa: E402
 from frogent_plugin.v4_adapter import V4ChatRequest  # noqa: E402
 
@@ -271,6 +277,141 @@ class ResearchWorkflowBehaviorTests(unittest.TestCase):
                             for item in gaps))
         self.assertIn("M: abstract-only evidence", gaps)
 
+    def test_openalex_selects_only_repository_location_and_propagates_pdf_provenance(self):
+        class HeaderTransport(FakeTransport):
+            def __init__(self, responses):
+                super().__init__(responses)
+                self.headers = []
+            def get(self, url, params, headers={}):
+                self.headers.append(dict(headers))
+                return super().get(url, params, headers)
+
+        payload = {
+            "ids": {"pmid": "https://pubmed.ncbi.nlm.nih.gov/39919773",
+                    "doi": "https://doi.org/10.1016/S0140-6736(24)02808-3"},
+            "best_oa_location": {"landing_page_url": "https://publisher.test/article",
+                                 "pdf_url": "https://publisher.test/article.pdf"},
+            "locations": [
+                {"landing_page_url": "https://publisher.test/article",
+                 "pdf_url": "https://publisher.test/article.pdf", "version": "publishedVersion",
+                 "license": "cc-by", "source": {"type": "journal", "display_name": "Journal"}},
+                {"landing_page_url": "https://discovery.ucl.ac.uk/id/eprint/10204617/",
+                 "pdf_url": "https://discovery.ucl.ac.uk/10204617/1/paper.pdf",
+                 "version": "submittedVersion", "license": "cc-by",
+                 "source": {"type": "repository", "display_name": "UCL Discovery"}},
+            ],
+        }
+        encoded = json.dumps(payload).encode()
+        transport = HeaderTransport([encoded, encoded, b"%PDF-1.7 repository bytes"])
+        locator = OpenAlexRepositoryLocator(transport)
+        location = locator.locate(pmid="39919773", doi="10.1016/S0140-6736(24)02808-3")
+        self.assertEqual("UCL Discovery", location.repository_name)
+        self.assertEqual("discovery.ucl.ac.uk", location.repository_host)
+        self.assertEqual("submittedVersion", location.version)
+        self.assertEqual("cc-by", location.license)
+        self.assertEqual({"select": "ids,locations"}, transport.calls[0][1])
+        self.assertIn("/works/pmid:39919773", transport.calls[0][0])
+        keyed = FakeTransport([encoded])
+        OpenAlexRepositoryLocator(keyed, "configured-key").locate(pmid="39919773",
+            doi="10.1016/S0140-6736(24)02808-3")
+        self.assertEqual({"select": "ids,locations", "api_key": "configured-key"}, keyed.calls[0][1])
+
+        class Extractor:
+            def __init__(self): self.calls = []
+            def extract(self, content, artifact):
+                self.calls.append((content, artifact))
+                return "[TITLE] Repository manuscript\n[SECTION 1 Results P1] result evidence"
+
+        extractor = Extractor()
+        resolver = OpenAlexRepositoryResolver(locator, extractor, transport)
+        manuscript = record("R", "europe_pmc", "Repository paper", {
+            "pmid": "39919773", "doi": "10.1016/S0140-6736(24)02808-3"})
+        document = resolver.resolve(manuscript, self.context)
+        self.assertIn("result evidence", document.text)
+        self.assertEqual("application/pdf", document.artifact.media_type)
+        self.assertEqual("https://discovery.ucl.ac.uk/10204617/1/paper.pdf", document.artifact.uri)
+        for value in ("repository=UCL Discovery", "host=discovery.ucl.ac.uk",
+                      "version=submittedVersion", "license=cc-by",
+                      "landing=https://discovery.ucl.ac.uk/id/eprint/10204617/"):
+            self.assertIn(value, document.artifact.name)
+        self.assertEqual(b"%PDF-1.7 repository bytes", extractor.calls[0][0])
+        self.assertEqual(({}, {}, {"User-Agent":
+            "FROGENT/1.0 (biomedical literature research)"}), tuple(transport.headers))
+        self.assertIn("repository PDF evidence extracted", resolver.coverage_gap("R"))
+
+    def test_openalex_repository_identity_filter_and_extractor_unavailable_are_fail_closed(self):
+        publisher_only = {"ids": {"pmid": "https://pubmed.ncbi.nlm.nih.gov/7"},
+                          "best_oa_location": {"pdf_url": "https://repo.test/best.pdf"},
+                          "locations": [
+                              {"landing_page_url": "https://publisher.test/article",
+                               "pdf_url": "https://publisher.test/article.pdf",
+                               "source": {"type": "journal", "display_name": "Journal"}},
+                              {"landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/7",
+                               "pdf_url": None,
+                               "source": {"type": "repository", "display_name": "PubMed"}},
+                          ]}
+        locator = OpenAlexRepositoryLocator(FakeTransport([json.dumps(publisher_only).encode()]))
+        self.assertIsNone(locator.locate(pmid="7"))
+        with self.assertRaisesRegex(ValueError, "requires DOI or PMID"):
+            locator.locate()
+        mismatch = {**publisher_only, "ids": {"pmid": "https://pubmed.ncbi.nlm.nih.gov/8"}}
+        with self.assertRaisesRegex(ValueError, "PMID identity mismatch"):
+            OpenAlexRepositoryLocator(FakeTransport([
+                json.dumps(mismatch).encode()])).locate(pmid="7")
+
+        repository = {"ids": {"pmid": "https://pubmed.ncbi.nlm.nih.gov/7"},
+                      "locations": [{"landing_page_url": "https://repo.test/item/7",
+                                     "pdf_url": "https://repo.test/item/7.pdf",
+                                     "version": "submittedVersion", "license": "cc-by",
+                                     "source": {"type": "repository",
+                                                "display_name": "Institution Repository"}}]}
+
+        class Primary:
+            def resolve(self, item, context): return None
+            def coverage_gap(self, record_id): return "Europe PMC/BioC unavailable"
+
+        transport = FakeTransport([json.dumps(repository).encode()])
+        repository_resolver = OpenAlexRepositoryResolver(OpenAlexRepositoryLocator(transport))
+        resolver = OAFallbackResolver(Primary(), repository=repository_resolver)
+        item = record("7", "europe_pmc", "Repository candidate", {"pmid": "7"}, "abstract evidence")
+        reader = FakeReader()
+        reports, gaps, _ = read_records((item,), {"europe_pmc": resolver}, reader,
+                                        self.context, max_workers=1)
+        self.assertEqual(1, len(reports))
+        self.assertEqual("abstract evidence", reader.tasks[0].text)
+        self.assertIsNone(reader.tasks[0].full_text_artifact)
+        combined = " ".join(gaps)
+        self.assertIn("Europe PMC/BioC unavailable", combined)
+        self.assertIn("repository=Institution Repository", combined)
+        self.assertIn("version=submittedVersion", combined)
+        self.assertIn("license=cc-by", combined)
+        self.assertIn("repository PDF extraction unavailable", combined)
+        self.assertEqual(1, len(transport.calls))
+
+        class CountingExtractor:
+            def __init__(self): self.calls = 0
+            def extract(self, content, artifact):
+                self.calls += 1
+                return "must not be called"
+
+        encoded = json.dumps(repository).encode()
+        cases = ((b"<html>temporary error</html>", 100, "not PDF (%PDF- signature missing)"),
+                 (b"%PDF-" + b"x" * 20, 8, "exceeds 8 byte limit"))
+        for content, limit, expected in cases:
+            with self.subTest(repository_response=expected):
+                extractor = CountingExtractor()
+                attempt = FakeTransport([encoded, content])
+                boundary = OpenAlexRepositoryResolver(OpenAlexRepositoryLocator(attempt), extractor,
+                                                       attempt, max_pdf_bytes=limit)
+                self.assertIsNone(boundary.resolve(item, self.context))
+                self.assertIn(expected, boundary.coverage_gap("7"))
+                self.assertEqual(0, extractor.calls)
+        for invalid in (0, -1, float("nan"), float("inf"), True):
+            with self.subTest(pdf_limit=invalid), self.assertRaisesRegex(
+                    ValueError, "positive and finite"):
+                OpenAlexRepositoryResolver(OpenAlexRepositoryLocator(FakeTransport([])),
+                                           max_pdf_bytes=invalid)
+
     def test_urllib_transport_has_no_default_timeout_and_accepts_positive_override(self):
         class Response:
             def __enter__(self): return self
@@ -286,6 +427,42 @@ class ResearchWorkflowBehaviorTests(unittest.TestCase):
         for invalid in (0, -1, float("nan"), float("inf")):
             with self.subTest(timeout=invalid), self.assertRaisesRegex(ValueError, "positive finite"):
                 UrllibTransport(invalid)
+
+    def test_pypdf_extractor_preserves_pages_bounds_and_clean_failures(self):
+        artifact = ArtifactRef("pdf", "paper.pdf", "application/pdf", "memory://paper.pdf")
+
+        class Page:
+            def __init__(self, text): self.text = text
+            def extract_text(self): return self.text
+
+        class Module:
+            def __init__(self, pages=(), encrypted=False, error=None):
+                self.pages, self.encrypted, self.error = pages, encrypted, error
+            def PdfReader(self, stream):
+                if self.error:
+                    raise self.error
+                return type("Reader", (), {"pages": self.pages,
+                                            "is_encrypted": self.encrypted})()
+
+        pages = (Page(" first\npage  text "), Page("second page"), Page("third page"))
+        bounded = PypdfTextExtractor(2, 1000, module=Module(pages)).extract(b"%PDF-1.7", artifact)
+        self.assertEqual("[PDF PAGE 1] first page text\n[PDF PAGE 2] second page\n"
+                         "[PDF TEXT TRUNCATED: page limit]", bounded)
+        self.assertNotIn("PAGE 3", bounded)
+        truncated = PypdfTextExtractor(3, 75, module=Module(pages)).extract(b"%PDF-1.7", artifact)
+        self.assertLessEqual(len(truncated), 75)
+        self.assertTrue(truncated.startswith("[PDF PAGE 1] first"))
+        self.assertTrue(truncated.endswith("[PDF TEXT TRUNCATED: character limit]"))
+        with self.assertRaisesRegex(ValueError, "OCR required"):
+            PypdfTextExtractor(module=Module((Page(""), Page(None)))).extract(b"%PDF-1.7", artifact)
+        with self.assertRaisesRegex(ValueError, "encrypted PDF"):
+            PypdfTextExtractor(module=Module(encrypted=True)).extract(b"%PDF-1.7", artifact)
+        with self.assertRaisesRegex(ValueError, "PDF is unreadable.*malformed"):
+            PypdfTextExtractor(module=Module(error=RuntimeError("malformed"))).extract(
+                b"%PDF-bad", artifact)
+        for bounds in ((0, 100), (10, 0), (True, 100), (10, 20)):
+            with self.subTest(bounds=bounds), self.assertRaisesRegex(ValueError, "positive integers"):
+                PypdfTextExtractor(*bounds, module=Module())
 
     def test_v4_adapter_emits_typed_answer_and_done_events(self):
         europe = FakeProvider({"anchor": (self.anchor,), "challenge": (self.counter,)})

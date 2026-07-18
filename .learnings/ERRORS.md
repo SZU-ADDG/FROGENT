@@ -34,6 +34,40 @@ jq: error: syntax error, unexpected INVALID_CHARACTER
 - **Notes**: 移除补零表达式后成功展开 008、009、014 的目标 session turns。
 
 ---
+## [ERR-20260719-036] openalex_pubmed_repository_misclassification
+
+**Logged**: 2026-07-19T00:15:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: backend
+
+### Summary
+OpenAlex 将 PubMed landing location 标记为 `source.type=repository`；仅按 source type 过滤会在缺少其他仓储位置时误把 PubMed 当作 institutional repository candidate。
+
+### Error
+```
+source.type=repository, source.display_name=PubMed,
+landing_page_url=https://pubmed.ncbi.nlm.nih.gov/39919773, pdf_url=null
+```
+
+### Context
+- Main 使用 `select=ids,locations` 对 PMID 39919773 运行无 key live canary。
+- 同一响应同时包含 UCL Discovery direct PDF；当前排序会优先选 UCL，因此该 case 的最终选择正确。
+- PubMed-only work 会暴露分类错误，和 runtime 的 institutional-repository 语义不一致。
+
+### Suggested Fix
+Repository location normalization 在 source-type 检查后显式排除 PubMed source/host，并增加 publisher + PubMed-only 负向测试；保留真正机构仓储位置。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/repository_fulltext.py
+
+### Resolution
+- **Resolved**: 2026-07-19T00:19:00+08:00
+- **Commit/PR**: current Repository Reader block commit
+- **Notes**: Location normalization 现显式排除 `pubmed.ncbi.nlm.nih.gov`；publisher + PubMed-only fixture 返回无 repository candidate，UCL direct PDF 选择保持。Main live canary 与全量 187/187 验证通过。
+
+---
 
 ## [ERR-20260717-029] shell_command_v_option_misuse
 
@@ -2777,5 +2811,89 @@ curl: (56) The requested URL returned error: 404
 - **Resolved**: 2026-07-18T23:58:00+08:00
 - **Commit/PR**: current Reader Block 1 commit
 - **Notes**: Europe PMC primary 失败后受控尝试 NCBI BioC；author-manuscript 身份、primary failure 与 OA/publisher-version 未断言状态均进入 coverage gap。双失败时保持 abstract-only，真实 PMID 28781108 replay 和 185/185 全量测试通过。
+
+---
+## [ERR-20260719-037] wrong_app_v4_launcher_path
+
+**Logged**: 2026-07-19T00:18:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tooling
+
+### Summary
+Main 复核 PDF tool 接线时读取了不存在的 `frogent_plugin/run_app_v4_research.py`；实际 launcher 模块为 `frogent_plugin/app_v4_launcher.py`。
+
+### Error
+```
+nl: plugins/frogent-drug-design/frogent_plugin/run_app_v4_research.py: No such file or directory
+```
+
+### Context
+- 同一只读命令中的 `rg` 返回了正确模块路径。
+- 项目文件未修改，随后改用 `app_v4_launcher.py`。
+
+### Suggested Fix
+读取 launcher 前先用 `rg --files | rg 'app_v4.*launcher|run_app_v4'` 定位真实路径。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/app_v4_launcher.py
+
+### Resolution
+- **Resolved**: 2026-07-19T00:18:30+08:00
+- **Commit/PR**: N/A
+- **Notes**: 已通过 `rg` 定位并继续读取正确 launcher；无副作用。
+
+---
+
+## [ERR-20260719-038] repository_pdf_urllib_403
+
+**Logged**: 2026-07-19T00:43:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: backend
+
+### Summary
+OpenAlex 成功定位 UCL repository direct PDF，浏览器型下载可用，但默认 `UrllibTransport` 请求该 PDF 返回 HTTP 403，使真实 repository Reader 链回落到 abstract。
+
+### Error
+```
+repository PDF download failed: HTTPError: HTTP Error 403: Forbidden
+```
+
+### Context
+- OpenAlex PMID 39919773 lookup 返回 UCL Discovery、`submittedVersion`、`cc-by` 和 direct PDF。
+- 同一 PDF 已由 `curl` 成功下载为 469065 bytes，`pypdf` 可提取 11 页、58886 字符。
+- `OpenAlexRepositoryResolver(OpenAlexRepositoryLocator(), PypdfTextExtractor())` 的默认 live canary 在 PDF 下载阶段失败。
+- 当前 `UrllibTransport` 不设置 User-Agent；repository host 对默认 Python urllib 请求实施访问拒绝。
+
+### Suggested Fix
+为 repository PDF 下载使用明确、可审计的非伪装 User-Agent，并保持 metadata API 请求、无固定 timeout、20 MB 门禁和 fake transport contracts。用相同 PMID 39919773 集成 canary 复验完整 metadata -> PDF -> pypdf 链。
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/repository_fulltext.py, plugins/frogent-drug-design/frogent_plugin/biomedical_providers.py
+
+### Resolution
+- **Resolved**: 2026-07-19T00:54:00+08:00
+- **Commit/PR**: current Repository Reader block commit
+- **Notes**: repository PDF 下载使用明确 `FROGENT/1.0 (biomedical literature research)` User-Agent；OpenAlex metadata 请求保持 `select=ids,locations`。相同 PMID 39919773 live canary 在 6.101 秒内完成 metadata、PDF 下载和 pypdf 提取，得到 11 页、58886 字符且无截断。
+
+---
+
+## [ERR-20260719-039] repeated_project_prefix_from_plugin_cwd
+
+**Logged**: 2026-07-19T00:52:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tooling
+
+### Summary
+在插件目录作为 cwd 时，`rg` 仍使用了项目根相对前缀，产生两条只读路径不存在错误；同一命令的 48 项测试正常通过。
+
+### Resolution
+- **Resolved**: 2026-07-19T00:52:10+08:00
+- **Commit/PR**: N/A
+- **Notes**: 后续检查统一根据命令 cwd 使用 plugin-relative 路径；无文件副作用。
 
 ---

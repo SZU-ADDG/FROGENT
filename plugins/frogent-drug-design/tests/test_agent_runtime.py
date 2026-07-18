@@ -437,6 +437,37 @@ class AgentRuntimeTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "positive finite"):
                     CodexClient(ROOT, runner=FakeRunner([]), timeout=invalid)
 
+    def test_factory_uses_installed_pypdf_reports_missing_and_honors_injection(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / "tests") as temp, patch.dict(
+                "os.environ", {}, clear=True):
+            def config(name):
+                return RuntimeConfig(ROOT, Path(temp) / f"{name}.sqlite3")
+
+            installed = object()
+            with patch("frogent_plugin.research_factory.PypdfTextExtractor",
+                       return_value=installed) as constructor:
+                service = build_research_service(config("installed"), runner=FakeRunner([]))
+            self.assertEqual(1, constructor.call_count)
+            resolver = service.controller.resolvers["europe_pmc"].repository
+            self.assertIs(installed, resolver.extractor)
+            self.assertFalse(any("pypdf" in gap for gap in service.controller.configuration_gaps))
+
+            missing = ModuleNotFoundError("No module named 'pypdf'")
+            with patch("frogent_plugin.research_factory.PypdfTextExtractor", side_effect=missing):
+                service = build_research_service(config("missing"), runner=FakeRunner([]))
+            resolver = service.controller.resolvers["europe_pmc"].repository
+            self.assertIsNone(resolver.extractor)
+            self.assertTrue(any("pypdf>=6,<7 is not installed" in gap
+                                for gap in service.controller.configuration_gaps))
+
+            explicit = object()
+            with patch("frogent_plugin.research_factory.PypdfTextExtractor",
+                       side_effect=AssertionError("default extractor must not be constructed")):
+                service = build_research_service(config("explicit"), runner=FakeRunner([]),
+                                                 pdf_extractor=explicit)
+            resolver = service.controller.resolvers["europe_pmc"].repository
+            self.assertIs(explicit, resolver.extractor)
+
     def test_all_hits_are_preserved_while_reader_cap_uses_first_hit_order(self):
         identifiers = ("z", "a", "y", "b", "x", "c") + tuple(f"r{index:02d}" for index in range(14))
         records = tuple(record(value) for value in identifiers)

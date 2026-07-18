@@ -14,7 +14,9 @@ from .conversation_memory import ConversationMemoryStore
 from .harness import HarnessPolicy
 from .research_expansion import ExpansionPolicy, ResearchExpander
 from .research_memory import SQLiteResearchStore
+from .repository_fulltext import OpenAlexRepositoryLocator, OpenAlexRepositoryResolver
 from .memory_answer import CodexMemoryAnswerer
+from .pdf_text import PypdfTextExtractor
 from .research_screening import HybridScreener
 from .research_service import ResearchService
 from .research_workflow import ResearchController
@@ -66,32 +68,55 @@ def _optional_timeout(raw: str) -> float | None:
 
 
 class OAFallbackResolver:
-    def __init__(self, primary, fallback=None) -> None:
-        self.primary, self.fallback, self.failures = primary, fallback, {}
+    def __init__(self, primary, fallback=None, repository=None) -> None:
+        self.primary, self.repository, self.fallback = primary, repository, fallback
+        self.failures = {}
 
     def resolve(self, record, context):
+        self.failures.pop(record.id, None)
+        gaps = []
         try:
             document = self.primary.resolve(record, context)
         except Exception as exc:
-            self.failures[record.id] = f"Europe PMC OA failed: {type(exc).__name__}: {exc}"
+            gaps.append(f"Europe PMC OA failed: {type(exc).__name__}: {exc}")
             document = None
         primary_gap = (self.primary.coverage_gap(record.id) if callable(
             getattr(self.primary, "coverage_gap", None)) else "")
         if primary_gap:
-            self.failures[record.id] = primary_gap
-        if document or not self.fallback:
-            return document
+            gaps.append(primary_gap)
+        if document:
+            return self._finish(record.id, document, gaps)
+        if self.repository:
+            try:
+                document = self.repository.resolve(record, context)
+            except Exception as exc:
+                gaps.append(f"OpenAlex repository resolver failed: {type(exc).__name__}: {exc}")
+                document = None
+            repository_gap = (self.repository.coverage_gap(record.id) if callable(
+                getattr(self.repository, "coverage_gap", None)) else "")
+            if repository_gap:
+                gaps.append(repository_gap)
+            if document:
+                return self._finish(record.id, document, gaps)
+        if not self.fallback:
+            return self._finish(record.id, None, gaps)
         try:
-            return self.fallback.resolve(record, context)
+            document = self.fallback.resolve(record, context)
         except Exception as exc:
-            primary = self.failures.pop(record.id, "Europe PMC OA unavailable")
-            raise RuntimeError(f"{primary}; OA fallback failed: {type(exc).__name__}: {exc}") from exc
+            detail = "; ".join(gaps) or "Europe PMC OA unavailable"
+            raise RuntimeError(f"{detail}; OA fallback failed: {type(exc).__name__}: {exc}") from exc
+        return self._finish(record.id, document, gaps)
+
+    def _finish(self, record_id, document, gaps):
+        if gaps:
+            self.failures[record_id] = "; ".join(dict.fromkeys(gaps))
+        return document
 
     def coverage_gap(self, record_id: str) -> str:
         return self.failures.pop(record_id, "")
 
 
-def build_research_service(config: RuntimeConfig, *, runner=None) -> ResearchService:
+def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=None) -> ResearchService:
     root = config.plugin_root.resolve()
     client_args = {"timeout": config.codex_timeout, "executable": config.codex_executable}
     if runner is not None:
@@ -107,10 +132,19 @@ def build_research_service(config: RuntimeConfig, *, runner=None) -> ResearchSer
     else:
         gaps.append("PubMed unavailable: FROGENT_PUBMED_EMAIL is unset")
     openalex, openalex_gap = OpenAlexProvider.from_env()
+    pdf_gap = None
+    if pdf_extractor is None:
+        try:
+            pdf_extractor = PypdfTextExtractor()
+        except ModuleNotFoundError as exc:
+            pdf_gap = f"Repository PDF extraction unavailable: pypdf>=6,<7 is not installed ({exc})"
+    repository = OpenAlexRepositoryResolver(OpenAlexRepositoryLocator(api_key=os.getenv(
+        "OPENALEX_API_KEY", "")), pdf_extractor)
     unpaywall, unpaywall_gap = UnpaywallFallback.from_env()
-    gaps.extend(item for item in (openalex_gap, unpaywall_gap) if item)
+    gaps.extend(item for item in (openalex_gap, unpaywall_gap, pdf_gap) if item)
     expander = ResearchExpander(europe, openalex, ExpansionPolicy(config.max_expansion_queries))
-    controller = ResearchController(providers, {"europe_pmc": OAFallbackResolver(europe, unpaywall)},
+    controller = ResearchController(providers, {"europe_pmc": OAFallbackResolver(
+        europe, unpaywall, repository)},
         CodexReader(client), CodexSynthesizer(client), HarnessPolicy(max_tool_calls=32),
         config.max_readers, HybridScreener(CodexScreener(client)), expander, tuple(gaps),
         max_reader_documents=config.max_reader_documents)

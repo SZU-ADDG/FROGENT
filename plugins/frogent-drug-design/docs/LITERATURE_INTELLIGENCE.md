@@ -27,7 +27,7 @@ Agent 先理解用户问题，再把模型记忆中的论文、作者、标识�
 
 Europe PMC 记录含 PMCID 时，workflow 优先获取 OA `fullTextXML` 并生成 `ArtifactRef`。JATS parser 保留 title、abstract、named sections 与 paragraph locators，同时排除 references。
 
-Primary OA 失败后，runtime 可尝试 NCBI PMC BioC；两条全文路径均失败时保留 abstract-only 路径，并明确记录 coverage gap 与版本边界。
+Primary OA 失败后，runtime 依次尝试 NCBI PMC BioC 与 OpenAlex repository discovery，最后保留 abstract-only 路径。Repository discovery 只接受 exact repository locations，并过滤 PubMed 与 publisher locations；每次降级都明确记录 coverage gap 与版本边界。
 
 全文保留在 artifact 边界；Main 只接收结构化 reader 输出和失败信息。
 
@@ -37,6 +37,7 @@ Primary OA 失败后，runtime 可尝试 NCBI PMC BioC；两条全文路径均�
 - 每个 family 形成独立 `ReaderTask`。
 - 选定记录的 OA resolve→Reader pipelines 在 `max_readers` 内并发运行，reports/events 仍按 first-hit 顺序汇总；单路失败被隔离并回退到 abstract。
 - Deterministic packing 在既有 char cap 下优先保留 title、abstract、Results、Discussion、Conclusion、Correction、Limitations 与 Counterevidence；无结构全文采用 balanced head/tail。
+- Repository PDF 进入 Reader 前需要通过 20 MB 与 PDF signature gates；`pypdf>=6,<7` 提取 page-addressable markers，并把 truncation、OCR unavailable、encrypted 或 malformed 状态写成显式 gap。
 - Reader 输出 claim、locator、研究上下文、方向、量级、限制和 integrity status。
 - 身份错配、畸形输出或单个 reader 失败被隔离，并写入 coverage gap。
 
@@ -85,6 +86,7 @@ Harness 的权限、预算、事件与恢复边界见 [HARNESS.md](HARNESS.md)�
 - SQLite `ResearchMemory` 持久化 cross-chat conversation turns、checkpoint、admitted evidence、answer versions 与 revocation；OA 全文不写入 memory 数据库。
 - app_v4 继续使用原有 register、login、chat history、attachments 与 SSE `content/stop/[DONE]` 协议。
 - 启动前安装 `requirements-app-v4.txt`，设置非空 `SECRET_KEY`，并将 `FROGENT_CODEX_EXECUTABLE` 指向可用 Codex executable。默认不设置墙钟 timeout。
+- `pypdf>=6,<7` 是默认 app dependency；repository PDF provenance 保留 repository、host、landing page、version 与 license。
 - subagent-native live probe 已通过真实 Europe PMC/OA、Reader、Screener、evidence admission、Synthesizer、SSE、history 与 SQLite checkpoint。独立部署时仍可由 bundled Codex adapter 提供同一组 roles。
 
 ## 52-case performance loop
@@ -131,17 +133,26 @@ Fresh direct-subagent effect evaluation 未使用 nested CLI、API key 或固定
 
 该 panel 的证据结论是：随机人体证据尚未建立 GLP-1 receptor agonists 能减缓 Parkinson disease progression。较小的 exenatide/lixisenatide phase-2 motor signals 仍可能来自持续 symptomatic effects 或 exploratory signals；NLY01 为 null，较大的 96-week exenatide phase 3 为 null 且必须携带 unresolved EOC。即使降低 integrity-qualified phase 3 的权重，NLY01 与 unresolved positive trials 仍使 progression slowing 处于 unproven。GI intolerance 与 weight loss 反复出现，当前证据不支持 individualized benefit-risk claim。
 
-Throughput latency 本轮未计时，状态为 `not_measured`；synthetic synchronization 只证明 concurrent pipeline behavior。剩余直接能力缺口是 institutional-repository discovery：PMID 39919773 存在可用的 UCL repository PDF，Europe PMC metadata 未提供 full text，当前 runtime 未自动发现该 PDF。
+Throughput latency 本轮未计时，状态为 `not_measured`；synthetic synchronization 只证明 concurrent pipeline behavior。Reader Block 1 当时的直接能力缺口是 institutional-repository discovery：PMID 39919773 存在可用的 UCL repository PDF，Europe PMC metadata 未提供 full text，当时的 runtime 未自动发现该 PDF。下述 Repository PDF Reader block 已关闭该缺口。
+
+## Repository PDF Reader effect
+
+OpenAlex repository discovery 已接在 Europe PMC/BioC 之后。Runtime 只使用 exact repository locations，过滤 PubMed 与 publisher locations，并在 `ArtifactRef` 中保留 repository、host、landing page、version 与 license。PDF 下载和解析默认没有固定墙钟 timeout，同时受 20 MB 与 signature gates 约束。
+
+真实 PMID 39919773 canary 在显式 `FROGENT` User-Agent 下完成 full metadata→UCL repository PDF→`pypdf`：总耗时 6.101 秒，下载 469065 bytes，解析 11 pages、58886 chars 与 11 个 page markers，在 60k cap 下没有 truncation。
+
+两个 direct subagents 独立接受了 source-grounded design、effect、safety 与 limitations extraction。Primary effect 为 0.92（95% CI -1.56 to 3.39，p=.47）；Agent 同时保留 narrative 与 Table 4 的 serious-event discrepancy，以及 unresolved integrity notice。
+
+当前 PDF 路径仍会 flatten tables/figures，OCR 不可用。Section-aware PDF packing 延后到真实 failure 出现后再决定，避免为未观察到的失败提前增加复杂度。
 
 ## 最新验证
 
-- Focused research + runtime：`44/44 PASS`。
-- Full `scripts/check.py`：`185/185 PASS`。
-- Main 独立运行 focused `research_workflow 13/13 PASS` 与 saved live-provider replay；plugin validator、sanitizer `982/0/0`、architecture、diff 与 hygiene 均 PASS。
+- Focused research + runtime：`48/48 PASS`。
+- Full app venv：`189/189 PASS`。
+- Plugin validator、sanitizer、diff 与 hygiene 均 PASS。
 
 ## 下一步
 
-1. 扩展 real-provider coverage，先补充 institutional-repository discovery，使 Europe PMC 无全文 metadata 时仍能发现可核验的 repository copy。
-2. 随后测量 multi-paper Reader latency/throughput，并继续观察 evidence recall、引用、counterevidence、失败恢复与成本。
-3. 保留 low-value generic-word noise 观察项；它进入 support IDs 或影响答案时再升级修复优先级。
-4. 药物设计模型、RDKit、结构分析、对接与 PLIP workflows 继续 deferred。
+1. 在小型 mixed JATS/BioC/repository/abstract panel 上端到端测量 multi-paper Reader latency、throughput 与 failures。
+2. 依据真实失败决定 OCR 或 section-aware PDF packing 的优先级。
+3. 完成该性能块后进入 tool/workflow capability work；依赖未接入药物设计模型的完整 workflow 继续 deferred。

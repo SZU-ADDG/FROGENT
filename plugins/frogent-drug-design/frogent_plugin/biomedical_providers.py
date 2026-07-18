@@ -175,7 +175,8 @@ class OpenAlexProvider:
     @classmethod
     def from_env(cls, transport: HttpTransport | None = None):
         key = os.getenv("OPENALEX_API_KEY", "")
-        return (cls(key, transport), None) if key else (None, "OpenAlex skipped: OPENALEX_API_KEY is unset")
+        return ((cls(key, transport), None) if key else
+                (None, "OpenAlex author/institution expansion skipped: OPENALEX_API_KEY is unset"))
 
     def expand_work(self, doi: str) -> Mapping[str, object]:
         raw = self.transport.get(self.BASE + "/works/https://doi.org/" + doi, {"api_key": self.api_key})
