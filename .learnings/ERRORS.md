@@ -3346,7 +3346,7 @@ Keep validation output in the terminal. When a persistent log is genuinely requi
 
 **Logged**: 2026-07-19T04:07:24+08:00
 **Priority**: high
-**Status**: pending
+**Status**: resolved
 **Area**: tool-use
 
 ### Summary
@@ -3369,5 +3369,115 @@ Treat real provider execution as the next tool-use capability block: establish a
 ### Metadata
 - Reproducible: yes
 - Related Files: plugins/frogent-drug-design/frogent_plugin/catalog.py, plugins/frogent-drug-design/frogent_plugin/molecular_routing.py
+
+### Resolution
+- **Resolved**: 2026-07-19T11:16:49+08:00
+- **Commit/PR**: pending ADMET-AI execution block
+- **Notes**: The project-local app-v4 venv now contains ADMET-AI 2.0.1. Exact-bound real predictions completed for caffeine, caffeine versus theobromine, and sodium acetate full versus parent scopes; the in-process adapter replaces the unavailable port-9004 path for this workflow.
+
+---
+
+## [ERR-20260719-056] admet_ai_install_proxy_timeout
+
+**Logged**: 2026-07-19T04:36:23+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: config
+
+### Summary
+The first project-venv ADMET-AI installation attempt stopped during dependency metadata retrieval after a proxy TLS handshake timeout.
+
+### Error
+```
+ProxyError: Cannot connect to proxy; TLS handshake operation timed out
+```
+
+### Context
+- Command used the existing project-contained app-v4 venv, `--no-cache-dir`, and a project-contained `TMPDIR`.
+- `pip show admet-ai` reported the package absent after the attempt.
+- The venv remained 199 MiB and none of admet-ai, chemprop, torch, lightning, pandas, scipy, or scikit-learn appeared in its installed package list.
+
+### Suggested Fix
+Retry once from the same contained path. If the proxy fails again, preserve the typed optional-provider implementation and report live model execution as blocked by dependency retrieval.
+
+### Metadata
+- Reproducible: unknown
+- Related Files: plugins/frogent-drug-design/requirements-app-v4.txt
+- See Also: ERR-20260719-055
+
+### Resolution
+- **Resolved**: 2026-07-19T11:12:36+08:00
+- **Commit/PR**: pending ADMET-AI execution block
+- **Notes**: A contained quiet-mode retry completed successfully; ADMET-AI 2.0.1 is installed in the project-local app-v4 venv.
+
+---
+
+## [ERR-20260719-057] matplotlib_cache_outside_project_not_prevented
+
+**Logged**: 2026-07-19T11:12:36+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: filesystem-safety
+
+### Summary
+The first ADMET-AI import was run without a project-contained `MPLCONFIGDIR`, and Matplotlib reported that it was building its font cache.
+
+### Error
+```
+Matplotlib is building the font cache; this may take a moment.
+```
+
+### Context
+- ADMET-AI 2.0.1 imports plotting dependencies as part of its package import path.
+- The command disabled Python bytecode but did not override Matplotlib's default cache directory.
+- A cache may therefore have been written outside `/Users/dongxu/projects/FROGENT`.
+- Main will not inspect, modify, or delete any project-external cache created by that import.
+
+### Suggested Fix
+Set `MPLCONFIGDIR` to the plugin-contained `.runtime/app-v4/matplotlib` directory for every subsequent ADMET-AI import, test, and live canary.
+
+### Metadata
+- Reproducible: only on a fresh Matplotlib cache
+- Related Files: plugins/frogent-drug-design/requirements-app-v4.txt
+- See Also: ERR-20260719-054
+
+### Resolution
+- **Resolved**: 2026-07-19T11:12:36+08:00
+- **Commit/PR**: pending ADMET-AI execution block
+- **Notes**: Subsequent commands use a project-contained `MPLCONFIGDIR`; no project-external cleanup will be attempted.
+
+---
+
+## [ERR-20260719-058] sanitizer_invoked_from_wrong_workdir
+
+**Logged**: 2026-07-19T11:16:49+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The first post-install sanitizer command used the repository-root script path relative to the plugin working directory, so Python could not find the file.
+
+### Error
+```
+can't open file 'plugins/frogent-drug-design/scripts/sanitize_imported_sources.py': No such file or directory
+```
+
+### Context
+- Plugin validation completed successfully before the missing-path error.
+- The sanitizer script lives at the project root, while the command ran from `plugins/frogent-drug-design`.
+- No project files were changed by the failed read/execute attempt.
+
+### Suggested Fix
+Run the sanitizer from `/Users/dongxu/projects/FROGENT`, or use its verified absolute project-contained path.
+
+### Metadata
+- Reproducible: yes
+- Related Files: scripts/sanitize_imported_sources.py
+
+### Resolution
+- **Resolved**: 2026-07-19T11:16:49+08:00
+- **Commit/PR**: pending ADMET-AI execution block
+- **Notes**: The follow-up validation uses the repository-root working directory and the same project-local Python environment.
 
 ---

@@ -245,14 +245,22 @@ Official no-key PubChem PUG REST resolver 可按 exact selected full/parent InCh
 
 Sodium acetate exact lookup 同时返回 incomplete CID 31372 与 titled complete CID 517045；两者 structural fingerprints 一致，runtime 因恰有一个带 title 的完整记录而选择 CID 517045。结构冲突、多个完整 records 或 ambiguity fail closed；name lookup 保持 strict single-record。Fresh evidence 包含 L-lactic acid→CID 107689 ready ADMET plan、错误 theobromine label 的 caffeine structure 被校正/拒绝、caffeine CID 2519 vs theobromine CID 5429 distinct symmetric comparison，以及 sodium acetate full→CID 517045/parent acetate→CID 175 的独立 scopes 与 zero gaps。Bounded live metadata panel 的 aspirin/caffeine/theobromine/L-lactic acid/sodium acetate/choline PubChem→RDKit agreement 为 6/6。
 
-PubChem resolver 当前是 direct runtime helper，尚未自动注入 generic Planner/factory。Catalog ADMET port 9004 没有 listener，routing 已验证，prediction execution/effect=`not_measured`。Docking/retrosynthesis/SAR providers 未执行；Literature Skill ordering 属于 workflow layer。Pose artifact/interaction set、target/pocket external validation 仍待接入，charged-species exact mass 可能受 electron-mass convention 影响；完整 model-dependent workflows 继续 deferred。
+PubChem block 验收时 catalog ADMET port 9004 没有 listener；下述 in-process ADMET-AI block 已关闭 prediction execution gap。PubChem resolver 仍是 direct helper，尚未自动注入 Planner/factory。Docking/retrosynthesis/SAR、Literature Skill ordering、pose/interaction artifacts 与 target/pocket validation 保持 pending；charged-species exact mass 仍可能受 electron-mass convention 影响。
+
+### ADMET-AI execution effect
+
+Exact-bound `admet.predict`/`admet.compare` 现通过 lazy reusable in-process ADMET-AI 2.0.1 执行。Direct workflows 接受 SMILES 或 PubChem-resolved names；provider gap 保留本地 RDKit plan，identity blockers 阻止 model calls。Results 携带 role order、full/parent scope、canonical isomeric SMILES、InChIKey、removed fragments、provider/model version 与 candidate-minus-baseline deltas。
+
+Real canaries：caffeine full AMES/hERG/DILI=`0.110573/0.047541/0.932074`；caffeine candidate vs theobromine baseline deltas=`-0.054096/+0.028841/-0.022584`；sodium acetate full=`0.081154/0.004473/0.427690`，acetate parent=`0.048887/0.005175/0.520490`，证明 full/parent scope sensitivity。Cold caffeine call 13.181s，comparison/model-load process 4.179s，同一 process warm salt calls 各约 0.146s。
+
+两次 fresh direct-subagent interpretation 均 PASS：缺少 endpoint direction、calibration、applicability、uncertainty、exposure 与 experiments 时，不作 compound selection 或 safety claim；full/parent results 不可互换。Outputs 是 computational point predictions，`experimental_evidence=false`，calibrated per-prediction uncertainty unavailable，不支持 aggregate score/effect claim。该 workflow 当前仍是 direct runtime helper，app-v4 Planner/tool-event integration pending；完整 model-dependent workflows 继续 deferred。
 
 ### Verification
 
-App-v4 venv full suite 214/214、focused molecular identity 26/26 均 PASS；`prepare-molecule` Skill validator 与 official plugin validator PASS，sanitizer 982/0/0、diff PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
+App-v4 venv post-install full suite 224/224 PASS；`prepare-molecule`、`evaluate-candidate` Skill validators 与 official plugin validator PASS，sanitizer 982/0/0、diff PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
 
 ### 下一性能块
 
-1. 为 exact molecular bindings 接通一个项目授权的 ADMET provider，执行 `admet.predict`/`admet.compare` 并测量 prediction effect 与 failure recovery。
-2. PubChem helper 自动注入 generic Planner/factory 前，先固定 name/structure conflict 与 provider-failure behavior。
+1. 将 PubChem + ADMET direct helpers 接入 app-v4 Planner 与 typed tool events，验证 blocker、provider gap、result 与 resume behavior。
+2. Decision use 前补齐 endpoint direction、calibration、applicability、uncertainty、exposure 与实验验证语义。
 3. Docking provenance、PDF/registry 测量项继续保留，依赖未接入模型的完整 drug-design tasks 继续 deferred。

@@ -882,3 +882,30 @@ For exact structural lookup, inspect all records before selection. Accept a sing
 - Last-Seen: 2026-07-19
 
 ---
+
+## [LRN-20260719-013] best_practice
+
+**Logged**: 2026-07-19T11:16:49+08:00
+**Priority**: high
+**Status**: validated
+**Area**: tool-use
+
+### Summary
+Molecular model results must retain the exact full or parent structure binding because structure scope changes the prediction.
+
+### Details
+ADMET-AI 2.0.1 produced distinct values for sodium acetate as the full salt `CC(=O)[O-].[Na+]` and the selected acetate parent `CC(=O)[O-]`. The two calls used different InChIKeys and yielded different AMES, hERG, and DILI predictions. Replacing one scope with the other after execution would detach the result from its actual model input and could change a downstream decision.
+
+### Suggested Action
+Persist role, scope, canonical isomeric SMILES, InChIKey, removed fragments, provider/model version, endpoint values, and uncertainty limitations together. Comparisons must preserve candidate/baseline order, and full-versus-parent results must never be treated as interchangeable evidence.
+
+### Metadata
+- Source: real_tool_validation
+- Related Files: plugins/frogent-drug-design/frogent_plugin/admet_execution.py, plugins/frogent-drug-design/frogent_plugin/admet_workflow.py
+- Tags: admet, molecular-identity, salts, parent-selection, tool-binding
+- Pattern-Key: tool-use.bind_prediction_to_exact_structure_scope
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
