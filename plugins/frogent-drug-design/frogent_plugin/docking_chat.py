@@ -96,13 +96,24 @@ def _workflow_events(workflow, identity_gaps):
     values.append(StreamEvent("tool.completed", {"capability_id": "target.standardize",
         "status": "verified" if target else "blocked",
         "target_identifier": target.identifier if target else "",
-        "provider": target.provider if target else ""}, "docking"))
+        "chains": list(target.chains) if target else [],
+        "structure_artifact_id": target.structure_artifact.id if target else "",
+        "metadata_url": target.metadata_url if target else "",
+        "coordinate_url": target.coordinate_url if target else "",
+        "provider": target.provider if target else "",
+        "provider_version": target.provider_version if target else ""}, "docking"))
     pocket = workflow.pocket
     values.append(StreamEvent("tool.completed", {"capability_id": "pocket.prepare",
         "status": "verified" if pocket else "blocked", "pocket_id": pocket.pocket_id if pocket else "",
         "target_identifier": pocket.target_identifier if pocket else "",
         "chain": pocket.chain if pocket else "", "provider": pocket.provider if pocket else "",
-        "provider_version": pocket.provider_version if pocket else ""}, "docking"))
+        "provider_version": pocket.provider_version if pocket else "",
+        "source_kind": pocket.source_kind if pocket else "",
+        "target_artifact_id": pocket.target_artifact_id if pocket else "",
+        "pocket_artifact_id": pocket.artifact.id if pocket else "",
+        "residues": list(pocket.residues) if pocket else [],
+        "reference_ligand": pocket.reference_ligand if pocket else "",
+        "box": (_box_payload(pocket.box) if pocket and pocket.box else {})}, "docking"))
     docking = workflow.docking
     values.append(StreamEvent("tool.completed", {"capability_id": "docking.generate-conformation",
         "status": docking.status, "score_direction": (docking.docking_input.config.score_direction
@@ -140,6 +151,11 @@ def _interaction_payload(item):
             "distance": item.distance, "angle": item.angle}
 
 
+def _box_payload(item):
+    return {"center": list(item.center), "size": list(item.size), "units": item.units,
+            "method": item.method, "margin": item.margin}
+
+
 def _preparation_payload(item):
     return {"tool": item.tool, "version": item.version, "operation": item.operation,
             "source_artifact_ids": [value.id for value in item.source_artifacts],
@@ -163,10 +179,17 @@ def _answer(binding, workflow, identity_gaps):
         f"InChIKey={binding.inchikey}"]
     if workflow.target:
         lines.append(f"target: {workflow.target.kind}:{workflow.target.identifier}; "
+                     f"chains={','.join(workflow.target.chains)}; "
+                     f"artifact={workflow.target.structure_artifact.id}; "
                      f"provider={workflow.target.provider}")
     if workflow.pocket:
         lines.append(f"pocket: {workflow.pocket.pocket_id}; chain={workflow.pocket.chain}; "
-                     f"numbering={workflow.pocket.numbering_scheme}; artifact={workflow.pocket.artifact.id}")
+                     f"numbering={workflow.pocket.numbering_scheme}; "
+                     f"source={workflow.pocket.source_kind}; artifact={workflow.pocket.artifact.id}")
+        if workflow.pocket.box:
+            box = workflow.pocket.box
+            lines.append(f"pocket box: center={box.center}; size={box.size}; units={box.units}; "
+                         f"method={box.method}; margin={box.margin}")
     for pose in workflow.docking.poses:
         lines.append(f"pose {pose.pose_id}: rank={pose.rank}; score={pose.score:.12g}; "
                      f"artifact={pose.artifact.id}")

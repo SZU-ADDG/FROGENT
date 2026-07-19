@@ -250,16 +250,27 @@ Real exposed official 1IEP redocking canary 使用 Meeko-prepared ligand/recepto
 
 PLIP 以 `--nohydro --maxthreads 1` 分析显式选定的 pose 1，报告 12 个 hydrophobic interactions、MET318/ASP381 H-bonds、TYR253 pi-stack，未报告 salt bridge。相对 reference，7 个 hydrophobic residues 全部保留，MET318/ASP381 H-bonds 与 TYR253 pi-stack 保留；ASP381 salt bridge 丢失；新增 VAL256、ALA269、GLU286、LEU370 四个 hydrophobic residues。
 
-这是一项 exposed single-target redocking diagnostic，只支持 exact-bound local tool execution、pose provenance 与 interaction comparison。它不支持 broad docking effectiveness、binding affinity、mechanism、experimental effect、applicability-domain 或 cross-target calibration claim。Generic verified target identity/pocket providers 与 automated artifact acquisition 仍待接线；local Meeko/Vina/PLIP execution 已可通过 injectable exact-bound adapters 使用。Pose selection 继续由用户或 upstream workflow 显式决定。
+这是一项 exposed single-target redocking diagnostic，只支持 exact-bound local tool execution、pose provenance 与 interaction comparison。它不支持 broad docking effectiveness、binding affinity、mechanism、experimental effect、applicability-domain 或 cross-target calibration claim。下述 RCSB block 已接通 explicit-PDB target/pocket acquisition；local Meeko/Vina/PLIP execution 继续通过 injectable exact-bound adapters 使用。Pose selection 由用户或 upstream workflow 显式决定。
+
+## RCSB target identity and verified pocket effect
+
+No-key RCSB target provider 接受显式 4-character PDB ID，验证 entry metadata、polymer `auth_asym_ids` 与下载的 legacy PDB coordinates，并把 structure 保存为 project-contained artifact，附 typed metadata 与 coordinate provenance。Verified pocket provider 接受 exact auth-numbered residues 或 exact reference-ligand identity，从 target coordinates 以显式 margin 确定性计算 angstrom box，并绑定 target artifact lineage。
+
+- App-v4 factory 已为明确 docking request 提供 RCSB target/pocket providers；prepared Vina center/size 必须与 verified pocket geometry 完全一致。Exact target/pocket identity 因此可以到达 Vina boundary，无需模型生成 coordinates。
+- Reused pocket manifest 只作为 declaration。Runtime 会重新解析当前 target artifact、重选 exact atoms、检查 alternate locations、重算 geometry，并拒绝 schema、source、numbering、center、size、method、margin 或 lineage tampering。Artifact round-trip 保留 residue/reference-ligand lineage。
+- Real bounded 1IEP canary 下载的 PDB artifact 为 434,565 bytes，验证 auth chains A/B。Official archive identities 为 STI:A:201 与 STI:B:202；另一个 prepared complex 中的 STI:A:999 被正确拒绝，同时返回 STI:A:201 candidate。
+- Exact STI:A:201 pocket 的 center 为 `(15.190, 53.903, 16.917)` Å，size 为 `(18.664, 26.739, 23.526)` Å，margin=5.0 Å；Main independent artifact revalidation PASS。
+
+当前 provider 只支持 legacy PDB，mmCIF compatibility 与 UniProt/name-to-PDB mapping 仍 pending。Ambiguous multi-model 或 alternate-location records fail closed。New targets 仍需 dynamic Meeko preparation/executable deployment，把新获取的 target 与 exact selected molecule 转为 Vina-ready artifacts；pose selection 保持 explicit policy。这一 exposed 1IEP case 不支持 general docking effectiveness 或 affinity claim。
 
 ## 最新验证
 
-- Main focused docking + architecture：`24/24 PASS`；full suite：`250/250 PASS`。
-- Official plugin validator 与四个相关 Skill validators PASS。
-- Sanitizer `982/0/0`；diff PASS。
+- Main focused target/docking + architecture：`35/35 PASS`；full suite：`261/261 PASS`。
+- Official plugin validator，以及 `discover-target`、`prepare-molecule`、`evaluate-candidate`、`optimize-small-molecule` validators PASS。
+- Sanitizer `982/0/0`；real artifact revalidation、diff 与 hygiene PASS。
 
 ## 下一步
 
-1. 接入 generic verified target identity/pocket providers 与 automated artifact acquisition，再把 local exact-bound adapters 扩展到小型多 target/pocket panel。
-2. 保持 explicit pose-selection policy，并对 interaction artifacts、failure recovery 与 cross-target limits 做 evidence-bound 验证。
-3. 依赖未接入模型的完整 drug-design tasks 继续 deferred。
+1. 对 newly acquired RCSB target 与 exact selected molecule 执行 dynamic Meeko preparation，生成 Vina-ready artifacts。
+2. 全程保留 lossless normalization、target/pocket lineage 与 explicit pose-selection policy。
+3. 随后扩展 mmCIF compatibility；依赖未接入模型的完整 drug-design tasks 继续 deferred。

@@ -6,8 +6,7 @@ from dataclasses import dataclass
 from .contracts import ArtifactRef
 from .docking_preparation import PreparationProvenance
 from .molecular_binding import MolecularInputBinding
-
-
+from .pocket_geometry import PocketGeometry
 @dataclass(frozen=True, slots=True)
 class TargetRequest:
     kind: str
@@ -28,12 +27,18 @@ class VerifiedTargetIdentity:
     provider: str
     provider_version: str
     requested_value: str
+    metadata_url: str = ""
+    coordinate_url: str = ""
 
     def __post_init__(self) -> None:
         if self.kind not in {"pdb", "uniprot"} or not self.identifier.strip():
             raise ValueError("verified target identity is invalid")
         _texts(self.chains, "target chains")
         _texts((self.provider, self.provider_version, self.requested_value), "target provenance")
+        if bool(self.metadata_url) != bool(self.coordinate_url):
+            raise ValueError("target remote provenance must be complete")
+        if self.metadata_url: _texts((self.metadata_url, self.coordinate_url),
+                                    "target remote provenance")
 
 
 @dataclass(frozen=True, slots=True)
@@ -48,12 +53,19 @@ class PocketRequest:
 
     def __post_init__(self) -> None:
         _texts((self.pocket_id, self.chain, self.numbering_scheme), "pocket request")
-        if self.source_kind not in {"residues", "artifact"}:
+        if self.source_kind not in {"residues", "artifact", "reference_ligand"}:
             raise ValueError("pocket source kind is invalid")
-        if self.source_kind == "residues" and (not self.residues or self.artifact):
+        if self.source_kind == "residues" and (not self.residues or self.artifact
+                                                or self.reference_ligand):
             raise ValueError("residue pocket requires only explicit residues")
-        if self.source_kind == "artifact" and (self.artifact is None or self.residues):
+        if self.source_kind == "artifact" and (self.artifact is None or self.residues
+                                                or self.reference_ligand):
             raise ValueError("artifact pocket requires only an explicit artifact")
+        if self.source_kind == "reference_ligand" and (not self.reference_ligand
+                or self.residues or self.artifact):
+            raise ValueError("reference-ligand pocket requires one explicit ligand identity")
+        if self.reference_ligand:
+            _texts((self.reference_ligand,), "reference ligand")
         _unique(self.residues, "pocket residues")
 
 
@@ -68,13 +80,20 @@ class PocketBinding:
     artifact: ArtifactRef
     provider: str
     provider_version: str
+    target_artifact_id: str = ""
+    reference_ligand: str = ""
+    box: PocketGeometry | None = None
 
     def __post_init__(self) -> None:
         _texts((self.pocket_id, self.target_identifier, self.chain, self.numbering_scheme,
                 self.provider, self.provider_version), "pocket binding")
-        if self.source_kind not in {"residues", "artifact"}:
+        if self.source_kind not in {"residues", "artifact", "reference_ligand"}:
             raise ValueError("pocket binding source kind is invalid")
         _unique(self.residues, "pocket binding residues")
+        if self.source_kind == "reference_ligand" and not self.reference_ligand:
+            raise ValueError("reference-ligand pocket binding is missing its identity")
+        if self.reference_ligand:
+            _texts((self.reference_ligand,), "reference ligand binding")
 
 
 @dataclass(frozen=True, slots=True)

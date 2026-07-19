@@ -277,14 +277,24 @@ Meeko provenance 要求恰好三步：lossless receptor normalization、ligand p
 
 PLIP `--nohydro --maxthreads 1` 对 pose 1 报告 12 hydrophobic、MET318/ASP381 H-bonds、TYR253 pi-stack 与 no salt bridge。Reference comparison 保留全部 7 个 hydrophobic residues、MET318/ASP381 H-bonds 与 TYR253 pi-stack；ASP381 salt bridge 丢失；新增 VAL256、ALA269、GLU286、LEU370 hydrophobic contacts。
 
-这项 single exposed redocking diagnostic 只支持 exact-bound local execution 与 interaction diagnostics，不支持 broad docking effectiveness、binding affinity、mechanism、experimental effect、applicability-domain 或 cross-target calibration claim。Generic verified target identity/pocket providers 与 automated artifact acquisition 仍 pending；local Meeko/Vina/PLIP 已可通过 injectable exact-bound adapters 使用。Pose selection 保持 explicit user/upstream workflow policy。
+这项 single exposed redocking diagnostic 只支持 exact-bound local execution 与 interaction diagnostics，不支持 broad docking effectiveness、binding affinity、mechanism、experimental effect、applicability-domain 或 cross-target calibration claim。下述 RCSB block 已接通 explicit-PDB target/pocket acquisition；local Meeko/Vina/PLIP 继续通过 injectable exact-bound adapters 使用。Pose selection 保持 explicit user/upstream workflow policy。
+
+### RCSB target identity and verified pocket effect
+
+No-key RCSB target provider 接受 explicit 4-character PDB ID，验证 entry metadata、polymer `auth_asym_ids` 与下载的 legacy PDB coordinates，并保存带 typed metadata/coordinate provenance 的 project-contained artifact。Verified pocket provider 接受 exact auth-numbered residues 或 exact reference-ligand identity，从 bound target coordinates 与 explicit margin 确定性计算 angstrom box。App-v4 factory 已为 explicit docking requests 提供两类 provider；Vina center/size 必须与 verified pocket geometry 完全一致。Agent 现在可把 exact target/pocket identity 送到 Vina boundary，无需 model-invented coordinates。
+
+Main review P0 将 reused pocket manifests 限定为 declarations。Runtime 重新解析 current target artifact、重选 exact atoms、检查 alternate locations、重算 geometry，并对 schema/source/numbering/center/size/method/margin/lineage tampering fail closed；artifact round-trip 保留 residue/reference-ligand lineage。
+
+Real bounded 1IEP canary 的 PDB artifact 为 434,565 bytes，auth chains A/B 均验证通过。Official archive identities 为 STI:A:201 与 STI:B:202；另一个 prepared complex 的 STI:A:999 被正确拒绝，同时返回 STI:A:201 candidate。Exact STI:A:201 pocket center=`15.190,53.903,16.917 Å`，size=`18.664,26.739,23.526 Å`，margin=`5.0 Å`；Main independent artifact revalidation PASS。
+
+当前边界包括 legacy PDB only、mmCIF pending、UniProt/name-to-PDB mapping pending；ambiguous multi-model/alternate locations fail closed。New targets 仍需 dynamic Meeko preparation/executable deployment，pose selection 保持 explicit policy。单个 exposed 1IEP case 不支持 general docking effectiveness 或 affinity claim。
 
 ### Verification
 
-Main focused docking + architecture `24/24 PASS`，full suite `250/250 PASS`；official plugin validator、四个相关 Skill validators、sanitizer `982/0/0` 与 diff check PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
+Main focused target/docking + architecture `35/35 PASS`，full suite `261/261 PASS`；official plugin validator、`discover-target`、`prepare-molecule`、`evaluate-candidate`、`optimize-small-molecule` validators、sanitizer `982/0/0`、real artifact revalidation、diff 与 hygiene PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
 
 ### 下一性能块
 
-1. 接入 generic verified target identity/pocket providers 与 automated artifact acquisition，再将 local exact-bound adapters 扩展到小型多 target/pocket panel。
-2. 保持 explicit pose-selection policy，继续验证 interaction artifacts、failure recovery 与 cross-target limits。
-3. 依赖未接入模型的完整 drug-design tasks 继续 deferred。
+1. 从 newly acquired RCSB target 与 exact selected molecule 执行 dynamic Meeko preparation，生成 Vina-ready artifacts。
+2. 全程保留 lossless normalization、target/pocket lineage 与 explicit pose-selection policy。
+3. 随后扩展 mmCIF compatibility；依赖未接入模型的完整 drug-design tasks 继续 deferred。

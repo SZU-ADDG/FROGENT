@@ -67,10 +67,10 @@ def _plan(value, message):
 
 
 def _pocket(value, message, target):
-    kind = _choice(value, "pocket_kind", {"none", "residues", "artifact"})
+    kind = _choice(value, "pocket_kind", {"none", "residues", "reference_ligand", "artifact"})
     fields = ("pocket_id", "pocket_chain", "numbering_scheme", "pocket_artifact_id",
               "pocket_artifact_name", "pocket_artifact_media_type", "pocket_artifact_uri",
-              "pocket_text")
+              "pocket_text", "reference_ligand")
     texts = {key: _text(value, key, empty=True) for key in fields}
     residues = value.get("residue_ids")
     if not isinstance(residues, list) or any(not isinstance(item, str) or not item.strip()
@@ -97,8 +97,12 @@ def _pocket(value, message, target):
         raise ValueError("residue pocket cannot contain artifact fields")
     if kind == "residues" and (not residues or any(item not in evidence for item in residues)):
         raise ValueError("pocket residues must be exact user-text spans")
+    if kind == "reference_ligand" and (residues or not texts["reference_ligand"]
+            or texts["reference_ligand"] not in evidence):
+        raise ValueError("reference ligand must be an exact user-text span")
     return PocketRequest(texts["pocket_id"], texts["pocket_chain"],
-        texts["numbering_scheme"], kind, tuple(residues), artifact)
+        texts["numbering_scheme"], kind, tuple(residues), artifact,
+        texts["reference_ligand"])
 
 
 def _target_format(target):
@@ -144,6 +148,8 @@ _CONTRACT = (
     "Extract only explicit target-pocket docking requests. Copy molecule, target, pocket, chain, "
     "residues/artifact and selected pose IDs as exact case-sensitive spans from the message. "
     "Use PDB or UniProt only for explicit accessions; protein names are unverified name_candidate. "
-    "Never invent a pocket, chain, residue, artifact, molecular scope, structure, or pose. Use none "
+    "A reference ligand must include exact component, chain, and auth residue identity such as "
+    "STI:A:999. Never invent a pocket, chain, residue, ligand, artifact, molecular scope, structure, "
+    "or pose. Use none "
     "for a missing pocket. Request interactions only when explicit; pose selection may stay empty."
 )

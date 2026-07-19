@@ -4085,3 +4085,69 @@ Anchor append patches to the final entry's unique resolution text and verify the
 - **Notes**: Removed the misplaced block and appended ERR-075 and ERR-076 after ERR-074.
 
 ---
+
+## [ERR-20260719-077] invalid_failed_pubchem_test_fixture
+
+**Logged**: 2026-07-19T14:54:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: testing
+
+### Summary
+An RCSB app integration test initially constructed a failed PubChem resolution without the required typed coverage gap.
+
+### Error
+```
+The fake fixture violated the PubChemResolution failure contract before the RCSB behavior could be tested.
+```
+
+### Context
+- The runtime contract correctly rejected the invalid fixture.
+- The fixture was replaced with a typed coverage gap; no production behavior was weakened.
+
+### Suggested Fix
+Construct negative provider fixtures through the same typed failure contract used by runtime providers, including a precise coverage gap.
+
+### Metadata
+- Reproducible: yes with an empty failed PubChemResolution fixture
+- Related Files: plugins/frogent-drug-design/tests/test_rcsb_target.py
+
+### Resolution
+- **Resolved**: 2026-07-19T14:54:00+08:00
+- **Commit/PR**: pending current capability checkpoint
+- **Notes**: The test now uses a contract-valid typed coverage gap and the focused RCSB suite passes.
+
+---
+
+## [ERR-20260719-078] sanitizer_mode_flag_omitted
+
+**Logged**: 2026-07-19T15:02:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The first independent sanitizer invocation omitted its required `--check` or `--apply` mode.
+
+### Error
+```
+sanitize_imported_sources.py: error: one of the arguments --check --apply is required
+```
+
+### Context
+- The argument parser exited before scanning or writing files.
+- The intended acceptance operation is read-only validation.
+
+### Suggested Fix
+Invoke the sanitizer with `--check` for acceptance and reserve `--apply` for an explicitly reviewed sanitization change.
+
+### Metadata
+- Reproducible: yes by omitting the required mode
+- Related Files: scripts/sanitize_imported_sources.py
+
+### Resolution
+- **Resolved**: 2026-07-19T15:02:00+08:00
+- **Commit/PR**: pending current capability checkpoint
+- **Notes**: Re-ran the same project sanitizer with `--check`.
+
+---

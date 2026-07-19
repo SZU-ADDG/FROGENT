@@ -30,6 +30,8 @@ from .pubchem_identity import PubChemIdentityResolver
 from .research_screening import HybridScreener
 from .research_service import ResearchService
 from .research_workflow import ResearchController
+from .rcsb_pocket import RCSBPocketProvider
+from .rcsb_target import RCSBTargetProvider
 
 
 @dataclass(frozen=True, slots=True)
@@ -128,7 +130,7 @@ class OAFallbackResolver:
 
 def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=None,
                            target_provider=None, pocket_provider=None, docking_provider=None,
-                           interaction_provider=None) -> ResearchService:
+                           interaction_provider=None, rcsb_transport=None) -> ResearchService:
     root = config.plugin_root.resolve()
     client_args = {"timeout": config.codex_timeout, "executable": config.codex_executable}
     if runner is not None:
@@ -167,6 +169,8 @@ def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=
     molecular = MolecularChatHandler(CodexMolecularPlanner(client), PubChemIdentityResolver(),
                                      ADMETAIAdapter(matplotlib_cache=root / ".runtime" / "app-v4" /
                                                     "matplotlib"))
+    target_provider = target_provider or RCSBTargetProvider(root, transport=rcsb_transport)
+    pocket_provider = pocket_provider or RCSBPocketProvider(root)
     docking = DockingChatHandler(CodexDockingPlanner(client), PubChemIdentityResolver(),
         target_provider=target_provider, pocket_provider=pocket_provider,
         docking_provider=docking_provider, interaction_provider=interaction_provider)

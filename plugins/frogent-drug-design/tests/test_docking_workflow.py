@@ -24,6 +24,7 @@ from frogent_plugin.docking_types import (  # noqa: E402
 from frogent_plugin.molecular_binding import MolecularInputBinding  # noqa: E402
 from frogent_plugin.molecular_identity import MolecularIdentity  # noqa: E402
 from frogent_plugin.pubchem_identity import PubChemResolution  # noqa: E402
+from frogent_plugin.pocket_geometry import PocketGeometry  # noqa: E402
 from frogent_plugin.research_service import ResearchService  # noqa: E402
 from frogent_plugin.vina_plip_adapters import (  # noqa: E402
     PLIPInteractionAdapter, VinaDockingAdapter,
@@ -113,7 +114,8 @@ def planner_value(**updates):
         "target_kind": "pdb", "target_value": "1ABC", "target_chain": "A",
         "target_text": "1ABC chain A", "pocket_id": "site-1", "pocket_kind": "residues",
         "pocket_chain": "A", "numbering_scheme": "pdb_author",
-        "residue_ids": ["ASP25", "GLY27"], "pocket_artifact_id": "",
+        "residue_ids": ["ASP25", "GLY27"], "reference_ligand": "",
+        "pocket_artifact_id": "",
         "pocket_artifact_name": "", "pocket_artifact_media_type": "",
         "pocket_artifact_uri": "", "pocket_text": "site-1 ASP25 GLY27",
         "selected_pose_id": "pose-2"}
@@ -336,6 +338,27 @@ class LocalToolAdapterTests(unittest.TestCase):
                 adapter.dock(_docking_input(adapter))
             self.assertEqual(runner.calls, [])
 
+    def test_vina_prepared_box_must_equal_verified_pocket_geometry(self):
+        from frogent_plugin.docking_types import DockingInput
+        with tempfile.TemporaryDirectory(dir=ROOT / "tests") as raw:
+            root = Path(raw)
+            executable = _executable(root, "vina")
+            receptor = _local_artifact(root, "receptor.pdbqt")
+            ligand = _local_artifact(root, "ligand.pdbqt")
+            prepared = VinaPreparedInput(receptor, ligand, root, "run", (1.0, 2.0, 3.0),
+                (20.0, 20.0, 20.0), MOLECULE.inchikey, TARGET.structure_artifact.id,
+                POCKET.artifact.id)
+            runner = ToolRunner("vina")
+            adapter = VinaDockingAdapter(root, executable,
+                BoundVinaPreparer(prepared, MOLECULE.inchikey, "1ABC", "site-1"),
+                version="1.2.7", runner=runner)
+            pocket = replace(POCKET, box=PocketGeometry((1.0, 2.0, 3.0),
+                             (18.0, 18.0, 18.0), "angstrom", "verified_residue_box", 5.0))
+            with self.assertRaisesRegex(ValueError, "verified pocket geometry"):
+                adapter.dock(DockingInput(MOLECULE, TARGET, pocket, adapter.default_config,
+                                          adapter.provider_id, adapter.provider_version))
+            self.assertEqual(runner.calls, [])
+
 
 class DockingChatTests(unittest.TestCase):
     def handler(self, value=None, *, plip=None, docking=None):
@@ -379,6 +402,18 @@ class DockingChatTests(unittest.TestCase):
         self.assertFalse(client.calls[0][3]["additionalProperties"])
         with self.assertRaisesRegex(ValueError, "exact user-text span"):
             CodexDockingPlanner(StructuredClient(planner_value(target_value="2XYZ"))).plan(MESSAGE)
+
+    def test_native_plan_binds_exact_reference_ligand_identity(self):
+        message = "Dock CCO to 1ABC chain A using pocket-site STI:A:999"
+        value = planner_value(operation="dock", pocket_id="pocket-site",
+            pocket_kind="reference_ligand", residue_ids=[], reference_ligand="STI:A:999",
+            pocket_text="pocket-site STI:A:999", selected_pose_id="")
+        plan = CodexDockingPlanner(StructuredClient(value)).plan(message)
+        self.assertEqual(plan.pocket.reference_ligand, "STI:A:999")
+        self.assertEqual(plan.pocket.source_kind, "reference_ligand")
+        with self.assertRaisesRegex(ValueError, "exact user-text span"):
+            CodexDockingPlanner(StructuredClient({**value,
+                "reference_ligand": "ATP:A:999"})).plan(message)
 
     def test_chat_answer_and_events_preserve_evidence_boundaries(self):
         result = self.handler().run(MESSAGE, ExecutionContext("u", "c", "j", ROOT.resolve()))

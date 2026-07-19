@@ -91,8 +91,13 @@ def _pocket(target, request, provider, gaps):
                     request.numbering_scheme, request.source_kind)
         actual = (pocket.pocket_id, pocket.target_identifier, pocket.chain,
                   pocket.numbering_scheme, pocket.source_kind)
-        if actual != expected or pocket.residues != request.residues:
+        lineage_mismatch = request.source_kind != "artifact" and (
+            pocket.residues != request.residues
+            or pocket.reference_ligand != request.reference_ligand)
+        if actual != expected or lineage_mismatch:
             raise ValueError("verified pocket does not match the requested target/pocket lineage")
+        if pocket.target_artifact_id and pocket.target_artifact_id != target.structure_artifact.id:
+            raise ValueError("verified pocket target artifact identity does not match")
         if request.artifact and pocket.artifact.id != request.artifact.id:
             raise ValueError("verified pocket artifact identity does not match")
         return pocket

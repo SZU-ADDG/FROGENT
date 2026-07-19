@@ -1044,3 +1044,57 @@ When a preparation parser flags a structure, inspect the exact artifact and appl
 - Last-Seen: 2026-07-19
 
 ---
+
+## [LRN-20260719-019] best_practice
+
+**Logged**: 2026-07-19T14:54:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: tool-use
+
+### Summary
+Target, ligand, residue, and pocket numbering must remain bound to the exact structure artifact; prepared complexes must never silently remap archive PDB identities.
+
+### Details
+The official RCSB 1IEP artifact contains STI:A:201 and STI:B:202, while a separately prepared PLIP complex used STI:A:999. Exact RCSB pocket resolution correctly rejected STI:A:999 and exposed STI:A:201 as an available candidate. Automatic remapping would have hidden an artifact-bound identity change and could direct docking to the wrong coordinates.
+
+### Suggested Action
+Verify entry, auth chain, residue or ligand identity, coordinate artifact, and derived pocket box as one lineage. When numbering differs between archive, normalized receptor, and prepared complex, require an explicit mapping artifact or user selection and preserve both identities.
+
+### Metadata
+- Source: real_tool_validation
+- Related Files: plugins/frogent-drug-design/.runtime/app-v4/targets-canary-rcsb-1iep-implementation/1IEP/1IEP.pdb
+- Tags: rcsb, pdb, pocket, ligand-identity, artifact-lineage
+- Pattern-Key: tool-use.bind_structure_numbering_to_artifact
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-020] best_practice
+
+**Logged**: 2026-07-19T15:04:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: tool-use
+
+### Summary
+Derived structural manifests must be revalidated against their current source coordinates before reuse; matching identity fields alone cannot establish verified geometry.
+
+### Details
+The first RCSB pocket artifact path checked target, pocket, chain, and artifact IDs while accepting stored center and size directly. A manifest with correct IDs and modified geometry could therefore reach the Vina boundary. The accepted fix reconstructs the exact residue or reference-ligand selection, reparses the current target artifact, rechecks alternate locations, recomputes the box from coordinates, and requires exact equality across center, size, units, method, and margin.
+
+### Suggested Action
+Treat manifests as typed declarations and caches. Recompute safety-critical derived values from the bound source artifact whenever reuse is cheap, and reject source, numbering, identity, geometry, or method drift before the downstream tool runs.
+
+### Metadata
+- Source: code_review_and_behavior_test
+- Related Files: plugins/frogent-drug-design/frogent_plugin/rcsb_pocket.py, plugins/frogent-drug-design/tests/test_rcsb_target.py
+- Tags: pocket, geometry, artifact-reuse, vina, fail-closed
+- Pattern-Key: tool-use.revalidate_derived_manifest_from_source
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---

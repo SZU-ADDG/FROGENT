@@ -44,6 +44,9 @@ class VinaDockingAdapter:
                 or prepared.target_artifact_id != value.target.structure_artifact.id
                 or prepared.pocket_artifact_id != value.pocket.artifact.id):
             raise ValueError("prepared Vina artifacts do not match docking lineage")
+        if value.pocket.box and (prepared.center != value.pocket.box.center
+                                 or prepared.size != value.pocket.box.size):
+            raise ValueError("prepared Vina box does not match verified pocket geometry")
         receptor = contained_file(self.root, prepared.receptor)
         ligand = contained_file(self.root, prepared.ligand)
         output_dir = contained_directory(self.root, prepared.output_directory)
