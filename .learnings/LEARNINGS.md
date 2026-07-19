@@ -1002,7 +1002,7 @@ For docking canaries, preserve receptor frame, ligand atom order or an independe
 A docking canary should compare the selected pose's interaction fingerprint with the reference complex in addition to reporting score and RMSD.
 
 ### Details
-For the official 1iep redocking example, the selected Vina pose preserved both reference hydrogen-bond residues MET318 and ASP381, the TYR253 pi stack, and all seven unique reference hydrophobic-contact residues. It lost the reference ASP381 salt bridge and added four hydrophobic-contact residues. This comparison exposes a chemically relevant difference that the favorable -13.2 score and 0.9007 Å fixed-frame RMSD do not show by themselves.
+For the official 1iep redocking example, the selected Vina pose preserved both reference hydrogen-bond residues MET318 and ASP381, the TYR253 pi stack, and all seven unique reference hydrophobic-contact residues. It lost the reference ASP381 salt bridge and added four hydrophobic-contact residues. The later pH-aware run supplied the exact selected ligand microstate plus a PDB2PQR/PROPKA receptor state: rank-1 Vina changed only from -12.975 to -12.974 kcal/mol, while PLIP recovered the MET318 and ASP381 hydrogen bonds that the prior dynamic post-H complex missed. This comparison shows that a nearly unchanged point score can conceal an interaction-class change caused by state preparation.
 
 ### Suggested Action
 Persist reference and predicted interaction types, residue identity, chain, geometry, shared/lost/added sets, and the exact selected pose. Use the fingerprint as a diagnostic for pose selection and workflow repair; treat it as a single-case computational result until calibrated against broader structures and experiments.
@@ -1012,7 +1012,7 @@ Persist reference and predicted interaction types, residue identity, chain, geom
 - Related Files: plugins/frogent-drug-design/.runtime/tools/canaries/1iep/run/plip/1iep_pose1_complex_report.xml
 - Tags: docking, plip, interaction-fingerprint, pose-selection, evidence
 - Pattern-Key: tool-use.compare_pose_interactions_to_reference
-- Recurrence-Count: 1
+- Recurrence-Count: 2
 - First-Seen: 2026-07-19
 - Last-Seen: 2026-07-19
 
@@ -1147,6 +1147,276 @@ Parse and validate every retained receptor ATOM serial, reject malformed or dupl
 - Related Files: plugins/frogent-drug-design/frogent_plugin/dynamic_plip.py, plugins/frogent-drug-design/tests/test_docking_workflow.py
 - Tags: plip, pdb, atom-serial, complex-assembly, fail-closed
 - Pattern-Key: tool-use.allocate_pdb_serials_from_retained_maximum
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-023] best_practice
+
+**Logged**: 2026-07-19T16:35:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: dependency-isolation
+
+### Summary
+Project-local scientific tools with incompatible chemistry-library bounds should run in versioned isolated environments and cross the runtime boundary through typed, versioned artifacts.
+
+### Details
+Dimorphite-DL 2.0.2 declares `rdkit<2026`, while the accepted app-v4 molecular identity and docking runtime uses RDKit 2026.3.3. A direct installation would downgrade the core runtime and could silently change canonical identity, stereochemistry, conformer generation, and existing acceptance results.
+
+### Suggested Action
+Install Dimorphite-DL and PDB2PQR/PROPKA under separate `.runtime/tools/<tool>/<version>/venv` paths. Invoke them through contained adapters that bind executable path, version, inputs, settings, outputs, and selected microstate or residue-state lineage; never allow tool installation to replace the app runtime's accepted RDKit.
+
+### Metadata
+- Source: dependency_dry_run
+- Related Files: plugins/frogent-drug-design/.runtime/tools, plugins/frogent-drug-design/frogent_plugin/docking_conformer.py
+- Tags: rdkit, protonation, dependency-isolation, provenance, reproducibility
+- Pattern-Key: dependency-isolation.versioned_scientific_tool_env
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-024] best_practice
+
+**Logged**: 2026-07-19T17:32:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: tool-use
+
+### Summary
+Real docking panels should count chemically meaningful fail-closed decisions as Agent-quality evidence instead of relaxing receptor policies to manufacture executable cases.
+
+### Details
+Official RCSB inspection of 3PTB, 1M17, 4DFR, and 1HSG found distinct blockers: a structurally involved calcium, binding-site alternate locations, ambiguous ligand and chain identities with additional components, and a biologically necessary two-chain receptor. Forcing all four through the current one-chain preparation path would discard chemically relevant state or identity information and could produce plausible-looking scores with invalid inputs.
+
+### Suggested Action
+Keep exact target, chain, ligand, component, alternate-location, and multichain gates intact. Report each official case as executable, blocked with a precise reason, or deferred pending a named capability. Use executable cases to measure tool effects and blocked cases to measure the Agent's ability to avoid chemically unsound execution.
+
+### Metadata
+- Source: official_rcsb_multi_case_audit
+- Related Files: plugins/frogent-drug-design/frogent_plugin/dynamic_receptor.py, plugins/frogent-drug-design/frogent_plugin/rcsb_target.py, plugins/frogent-drug-design/frogent_plugin/rcsb_pocket.py
+- Tags: docking, rcsb, receptor-policy, altloc, metal, multichain, fail-closed
+- Pattern-Key: tool-use.accept_safe_blockers_as_agent_quality
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-025] best_practice
+
+**Logged**: 2026-07-19T18:06:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: tool-use
+
+### Summary
+Raw subprocess stdout and stderr must stay outside Agent-facing SSE, answers, coverage gaps, and persistent conversation memory.
+
+### Details
+The pH-aware docking path initially interpolated Dimorphite, PDB2PQR, Meeko, Vina, and PLIP stderr into exceptions. Higher orchestration layers convert exception text into coverage gaps and user-visible events, so an executable can accidentally inject verbose internals, untrusted text, local paths, or sensitive diagnostics into long-lived memory.
+
+### Suggested Action
+Expose a bounded failure contract containing the tool stage, provider identity, exit code, and a non-sensitive reason category. Summarize successful warning counts. Store detailed diagnostics only in explicitly contained artifacts when they are required for debugging, and test with sentinel stderr that the sentinel never appears in answers, events, or persisted gaps.
+
+### Metadata
+- Source: code_review
+- Related Files: plugins/frogent-drug-design/frogent_plugin/docking_microstates.py, plugins/frogent-drug-design/frogent_plugin/receptor_states.py, plugins/frogent-drug-design/frogent_plugin/dynamic_vina.py, plugins/frogent-drug-design/frogent_plugin/vina_plip_adapters.py
+- Tags: subprocess, stderr, sse, memory, privacy, failure-recovery
+- Pattern-Key: tool-use.keep_raw_subprocess_output_out_of_agent_memory
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-026] best_practice
+
+**Logged**: 2026-07-19T18:24:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: molecular-identity
+
+### Summary
+Microstate parent identity requires a heavy-atom graph invariant designed for protonation and tautomer changes; an InChIKey block is not a safe substitute.
+
+### Details
+The real 1IEP Dimorphite panel produced legal protonation candidates whose InChIKey connectivity block differed from the selected source. A parent gate built from that block rejected valid chemistry. A useful microstate invariant must tolerate changes in hydrogen count, formal charge, aromatic/kekule representation, and tautomeric bond order while retaining the same heavy-atom elements and adjacency.
+
+### Suggested Action
+Build a canonical heavy-atom element/isotope and adjacency signature, map atom-bound stereochemistry through that graph, and keep fragment count separate. Test legal protomer/tautomer changes along with constitutional-isomer, element-substitution, adjacency, fragment, and swapped-stereocenter negatives before a real docking run.
+
+### Metadata
+- Source: real_tool_canary
+- Related Files: plugins/frogent-drug-design/frogent_plugin/docking_microstates.py, plugins/frogent-drug-design/tests/test_docking_states.py
+- Tags: rdkit, dimorphite, microstate, protonation, tautomer, identity
+- Pattern-Key: molecular-identity.use_heavy_graph_for_microstate_parent
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-027] best_practice
+
+**Logged**: 2026-07-19T18:34:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: docking-preparation
+
+### Summary
+Receptor preparation should distinguish a verified terminal heavy-atom completion from arbitrary structural drift.
+
+### Details
+PDB2PQR 3.7.1 added one OXT atom to the missing terminus of 1IEP chain A at GLN498 while preserving the 2229 source heavy atoms. A universal no-addition rule blocked a chemically standard repair. A universal allow-additions rule would accept unsafe topology changes.
+
+### Suggested Action
+Allow only OXT on the exact terminal polymer residue when the source has the required backbone atoms and lacks OXT. Record its identity and coordinates in typed state provenance, require exact agreement in prepared PDB and PQR, include the prepared bytes in state identity, and keep all other heavy-atom changes fail closed.
+
+### Metadata
+- Source: real_tool_canary
+- Related Files: plugins/frogent-drug-design/frogent_plugin/receptor_states.py, plugins/frogent-drug-design/frogent_plugin/receptor_state_validation.py, plugins/frogent-drug-design/frogent_plugin/dynamic_vina.py
+- Tags: pdb2pqr, receptor, terminal, oxt, heavy-atom, provenance
+- Pattern-Key: docking-preparation.allow_only_verified_terminal_oxt_completion
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-028] best_practice
+
+**Logged**: 2026-07-19T18:43:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: tool-use
+
+### Summary
+Scientific CLI provenance must be based on the output location observed from the installed version, including sidecar logs that carry structured results.
+
+### Details
+PDB2PQR 3.7.1 generated receptor.log containing the PROPKA pKa table and applied-pH trace. A fake boundary that assumes stdout or a .propka suffix can pass tests while losing the real residue-state evidence.
+
+### Suggested Action
+For each installed scientific executable, run one bounded real probe, identify every result-bearing output, derive expected sidecar paths from controlled inputs, enforce containment/text/size gates, and parse a compact typed summary. Keep verbose raw diagnostics in the run directory and exclude them from Agent answers and persistent memory.
+
+### Metadata
+- Source: real_tool_canary
+- Related Files: plugins/frogent-drug-design/frogent_plugin/receptor_states.py, plugins/frogent-drug-design/frogent_plugin/receptor_state_validation.py
+- Tags: pdb2pqr, propka, sidecar, pka, provenance, output-location
+- Pattern-Key: tool-use.verify_real_scientific_cli_output_locations
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-029] best_practice
+
+**Logged**: 2026-07-19T19:17:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: docking-preparation
+
+### Summary
+Normal PDB2PQR preparation can intentionally change side-chain heavy-atom coordinates, so receptor-state validation must preserve these changes as bounded typed lineage.
+
+### Details
+The preserved 1IEP normal-mode run changed 18 of 2229 source heavy-atom coordinates, with a maximum displacement of 2.378571 angstrom. The changes covered documented hydrogen-network operations: HIS/ASN/GLN side-chain flips and a THR side-chain adjustment during debumping/optimization. Disabling optimization would remove interaction-relevant chemistry, while a universal exact-coordinate rule rejects the real tool output.
+
+### Suggested Action
+Keep source heavy-atom identities and backbone coordinates exact, allow only bounded side-chain coordinate changes from the selected project-contained PDB2PQR execution, and record source/prepared coordinates, displacement, reason, count, and maximum displacement. Bind the complete move tuple into immutable receptor-state identity and expose the bounded summary in Vina and PLIP events. Continue to reject missing identities, backbone movement, arbitrary additions, excessive movement, and artifact drift.
+
+### Metadata
+- Source: real_tool_canary
+- Related Files: plugins/frogent-drug-design/frogent_plugin/receptor_state_validation.py, plugins/frogent-drug-design/frogent_plugin/docking_state_types.py, plugins/frogent-drug-design/frogent_plugin/docking_chat_render.py
+- Tags: pdb2pqr, receptor, debump, hydrogen-bond, sidechain, provenance
+- Pattern-Key: docking-preparation.bind_bounded_pdb2pqr_sidechain_moves
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-030] best_practice
+
+**Logged**: 2026-07-19T19:34:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: docking-preparation
+
+### Summary
+PQR radius validation must distinguish force-field hydrogen records from heavy atoms and must bind the full prepared hydrogen state across PDB and PQR artifacts.
+
+### Details
+The real 1IEP PARSE output contained 2230 heavy atoms with positive radii and 2182 hydrogens. Of the hydrogens, 1603 had radius zero and 579 had positive radius; no radius was negative. A universal positive-radius rule rejected valid force-field output. Heavy-only identity validation would also leave the interaction-relevant hydrogen state underchecked.
+
+### Suggested Action
+Require finite nonnegative radius for every PQR atom and strictly positive radius for heavy atoms. Permit zero radius only for hydrogens. Require finite charge for every atom and exact one-to-one prepared-PDB/PQR identity and coordinate agreement for both heavy atoms and hydrogens. Bind both artifacts into immutable state identity and expose only bounded atom-count summaries to the Agent.
+
+### Metadata
+- Source: real_tool_canary
+- Related Files: plugins/frogent-drug-design/frogent_plugin/receptor_state_validation.py, plugins/frogent-drug-design/frogent_plugin/receptor_states.py
+- Tags: pqr, parse, hydrogen, radius, charge, identity, provenance
+- Pattern-Key: docking-preparation.validate_forcefield_hydrogen_state_across_pdb_pqr
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-031] best_practice
+
+**Logged**: 2026-07-19T19:45:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: docking-preparation
+
+### Summary
+PROPKA pKa identity must preserve the predicted group, including N-terminal and C-terminal pseudo-groups, alongside the underlying polymer residue identity.
+
+### Details
+The real 1IEP summary contains regular residue groups together with N+ at the first residue and C- at the terminal residue. A key based only on chain and auth residue number conflates terminal pseudo-groups with their underlying residues and can create false conflicts or erase which chemical group the pKa describes.
+
+### Suggested Action
+Use an exact pKa key containing group name, chain, and auth number. Map regular groups to one verified source residue, bind N+ only to the first source residue and C- only to the terminal source residue, and fail closed when insertion codes make the mapping ambiguous. Preserve the group and mapped source/prepared residue identity in the typed state while keeping raw PROPKA text out of Agent output.
+
+### Metadata
+- Source: real_tool_canary
+- Related Files: plugins/frogent-drug-design/frogent_plugin/receptor_states.py, plugins/frogent-drug-design/frogent_plugin/docking_state_types.py
+- Tags: propka, pka, terminus, residue-identity, provenance
+- Pattern-Key: docking-preparation.preserve_propka_group_identity
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-032] best_practice
+
+**Logged**: 2026-07-19T19:58:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: tool-use
+
+### Summary
+When a scientific CLI emits multiple analytical tables, the adapter must define one authoritative result artifact instead of merging every textual stream.
+
+### Details
+PDB2PQR emitted intermediate pKa-related tables on stdout while its run-local receptor.log contained the formal PROPKA SUMMARY OF THIS PREDICTION. The same group identities can have different values across intermediate and final tables. Merging stdout, stderr, and the final log created false exact-key conflicts.
+
+### Suggested Action
+When the unique expected run-local PROPKA log exists, parse only its validated final summary. Use stdout/stderr only as an injectable fallback when the expected log is absent and no ambiguous sidecar exists. Reject malformed, multiple, unexpected, or conflicting artifacts, and keep raw streams outside Agent output and memory.
+
+### Metadata
+- Source: real_tool_canary
+- Related Files: plugins/frogent-drug-design/frogent_plugin/receptor_states.py
+- Tags: pdb2pqr, propka, stdout, sidecar, precedence, provenance
+- Pattern-Key: tool-use.bind_one_authoritative_scientific_result_artifact
 - Recurrence-Count: 1
 - First-Seen: 2026-07-19
 - Last-Seen: 2026-07-19

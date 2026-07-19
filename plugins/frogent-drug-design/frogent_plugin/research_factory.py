@@ -22,11 +22,15 @@ from .molecular_chat import MolecularChatHandler
 from .molecular_chat_plan import CodexMolecularPlanner
 from .docking_chat import DockingChatHandler
 from .docking_chat_plan import CodexDockingPlanner
+from .docking_env import (dynamic_plip_from_env, dynamic_vina_from_env,
+                          ligand_states_from_env, receptor_states_from_env)
+from .docking_microstates import DimorphiteConfig, DimorphiteMicrostateProvider
 from .docking_local import PLIPConfig
 from .docking_types import DockingConfig
 from .dynamic_receptor import ReceptorComponentPolicy
 from .dynamic_vina import DynamicVinaConfig, DynamicVinaInputPreparer
 from .dynamic_plip import DynamicPLIPConfig, DynamicPLIPInputPreparer
+from .receptor_states import PDB2PQRConfig, PDB2PQRReceptorStateProvider
 from .vina_plip_adapters import PLIPInteractionAdapter, VinaDockingAdapter
 from .pdf_text import PypdfTextExtractor
 from .pubchem_identity import PubChemIdentityResolver
@@ -52,6 +56,8 @@ class RuntimeConfig:
     max_memory_prompt_chars: int = 8000
     dynamic_vina: DynamicVinaConfig | None = None
     dynamic_plip: DynamicPLIPConfig | None = None
+    ligand_states: DimorphiteConfig | None = None
+    receptor_states: PDB2PQRConfig | None = None
 
     @classmethod
     def from_env(cls, plugin_root: Path):
@@ -69,7 +75,8 @@ class RuntimeConfig:
                    int(os.getenv("FROGENT_MAX_READER_DOCUMENTS", "6")),
                    int(os.getenv("FROGENT_MAX_MEMORY_HITS", "8")),
                    int(os.getenv("FROGENT_MAX_MEMORY_PROMPT_CHARS", "8000")),
-                   _dynamic_vina_from_env(plugin_root), _dynamic_plip_from_env(plugin_root))
+                   dynamic_vina_from_env(plugin_root), dynamic_plip_from_env(plugin_root),
+                   ligand_states_from_env(plugin_root), receptor_states_from_env(plugin_root))
 
 
 def _optional_timeout(raw: str) -> float | None:
@@ -191,9 +198,14 @@ def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=
         interaction_provider = PLIPInteractionAdapter(root, config.dynamic_plip.executable,
             preparer, version=config.dynamic_plip.version,
             config=config.dynamic_plip.plip_config, runner=plip_runner)
+    microstates = (DimorphiteMicrostateProvider(root, config.ligand_states)
+                   if config.ligand_states else None)
+    receptor_states = (PDB2PQRReceptorStateProvider(root, config.receptor_states)
+                       if config.receptor_states else None)
     docking = DockingChatHandler(CodexDockingPlanner(client), PubChemIdentityResolver(),
         target_provider=target_provider, pocket_provider=pocket_provider,
-        docking_provider=docking_provider, interaction_provider=interaction_provider)
+        docking_provider=docking_provider, interaction_provider=interaction_provider,
+        microstate_provider=microstates, receptor_state_provider=receptor_states)
     return ResearchService(planner, controller, store, root, memory_store=memory_store,
                            memory_answerer=CodexMemoryAnswerer(client, config.max_memory_prompt_chars),
                            max_memory_hits=config.max_memory_hits,
@@ -215,33 +227,3 @@ def build_local_docking_adapters(config: RuntimeConfig, *, vina_executable: Path
                                   version=plip_version, config=plip_config,
                                   runner=plip_runner)
     return vina, plip
-
-
-def _dynamic_vina_from_env(root: Path) -> DynamicVinaConfig | None:
-    names = ("FROGENT_VINA_EXECUTABLE", "FROGENT_MEEKO_LIGAND_EXECUTABLE",
-             "FROGENT_MEEKO_RECEPTOR_EXECUTABLE")
-    values = tuple(os.getenv(name, "").strip() for name in names)
-    if not any(values):
-        return None
-    if not all(values):
-        raise ValueError("dynamic docking requires all Vina and Meeko executable paths")
-    paths = tuple(Path(value) if Path(value).is_absolute() else root / value for value in values)
-    components = tuple(item.strip() for item in os.getenv(
-        "FROGENT_DOCKING_REMOVABLE_COMPONENTS", "").split(",") if item.strip())
-    return DynamicVinaConfig(paths[0], paths[1], paths[2],
-        root / ".runtime/app-v4/docking-runs",
-        os.getenv("FROGENT_VINA_VERSION", "1.2.7"),
-        os.getenv("FROGENT_MEEKO_VERSION", "0.7.1"),
-        component_policy=ReceptorComponentPolicy(removable_components=components))
-
-
-def _dynamic_plip_from_env(root: Path) -> DynamicPLIPConfig | None:
-    value = os.getenv("FROGENT_PLIP_EXECUTABLE", "").strip()
-    if not value:
-        return None
-    executable = Path(value) if Path(value).is_absolute() else root / value
-    components = tuple(item.strip() for item in os.getenv(
-        "FROGENT_DOCKING_REMOVABLE_COMPONENTS", "").split(",") if item.strip())
-    return DynamicPLIPConfig(executable, root / ".runtime/app-v4/plip-runs",
-        os.getenv("FROGENT_PLIP_VERSION", "3.0.0"),
-        component_policy=ReceptorComponentPolicy(removable_components=components))

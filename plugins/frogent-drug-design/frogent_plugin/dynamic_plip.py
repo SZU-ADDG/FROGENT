@@ -11,7 +11,8 @@ from .docking_local import PLIPConfig, PLIPPreparedInput, contained_file
 from .docking_pose_complex import PoseLigandBuilder, RDKitPoseLigandBuilder
 from .docking_preparation import PreparationProvenance
 from .docking_types import DockingInput, DockingPose, PocketRequest
-from .dynamic_receptor import ReceptorComponentPolicy, select_receptor
+from .docking_state_runtime import selected_receptor
+from .dynamic_receptor import ReceptorComponentPolicy
 from .rcsb_target import _make_contained_directory
 from .rcsb_pocket import RCSBPocketProvider
 
@@ -53,9 +54,8 @@ class DynamicPLIPInputPreparer:
         if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{7,63}", run_id):
             raise ValueError("dynamic PLIP run identity is invalid")
         run_dir = _new_directory(self.root, self.config.run_root / run_id)
-        receptor, decisions, dropped = select_receptor(
-            self.root, value, self.config.component_policy)
-        receptor_lines = receptor.decode("ascii").splitlines()
+        receptor = selected_receptor(self.root, value, self.config.component_policy)
+        receptor_lines = receptor.pdb.decode("ascii").splitlines()
         serial_start = _ligand_serial_start(receptor_lines)
         pose_path = contained_file(self.root, pose.artifact)
         ligand = self.builder.build(pose_path, value.molecule, pose_rank=pose.rank,
@@ -70,7 +70,7 @@ class DynamicPLIPInputPreparer:
         complex_ref = ArtifactRef(f"{run_id}-complex", complex_path.name,
                                   "chemical/x-pdb", str(complex_path))
         provenance = (_provenance(value, pose, complex_ref, ligand, self.builder,
-                                  decisions, dropped),)
+                                  receptor.details, receptor.dropped_records),)
         identity = f"{self.config.ligand_residue_name}:{self.config.ligand_chain}:" \
                    f"{self.config.ligand_residue_number}"
         return PLIPPreparedInput(complex_ref, output, run_id, pose.artifact.id,
@@ -133,14 +133,19 @@ def _provenance(value, pose, complex_ref, ligand, builder, decisions, dropped):
     details = (f"pose_id={pose.pose_id}", f"pose_rank={pose.rank}",
         f"molecule_inchikey={value.molecule.inchikey}",
         f"pocket_artifact_id={value.pocket.artifact.id}",
+        f"ligand_state_id={value.ligand_state.state_id if value.ligand_state else ''}",
+        f"receptor_state_id={value.receptor_state.state_id if value.receptor_state else ''}",
+        f"receptor_ph={value.receptor_state.ph if value.receptor_state else ''}",
         f"ligand_heavy_atoms={ligand.heavy_atom_count}", *decisions)
     version = getattr(builder, "version", "")
     tool = getattr(builder, "tool", "")
     if not isinstance(version, str) or not version.strip() or not isinstance(tool, str) \
             or not tool.strip():
         raise ValueError("pose reconstruction tool provenance is unavailable")
+    state_sources = (() if value.receptor_state is None else
+                     (value.receptor_state.artifact, value.receptor_state.charge_artifact))
     return PreparationProvenance(tool, version,
-        (value.target.structure_artifact, value.pocket.artifact, pose.artifact),
+        (value.target.structure_artifact, value.pocket.artifact, pose.artifact, *state_sources),
         (complex_ref,), ("assemble-selected-pose-complex",), "dynamic_plip_complex",
         dropped == 0, dropped_record_count=dropped, details=details)
 

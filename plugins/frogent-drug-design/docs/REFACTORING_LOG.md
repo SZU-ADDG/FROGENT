@@ -311,12 +311,28 @@ PLIP 3.0.0 exit 0、1.539s，报告 12 interactions：hydrophobic LEU248/TYR253/
 
 Historical pre-H successful run 保留 37 heavy/0 H 与相同 12-interaction fingerprint；当前 effect evidence 只使用 post-H。初始 chloride-policy failure directory 保留并证明 fail-closed behavior。Explicit pose hydrogens 未恢复 reference H-bonds，protonation/tautomer/pH applicability 仍 unresolved。该 single exposed case 不支持 general docking quality、affinity、mechanism 或 automated pose-selection validity。
 
+### pH-aware docking state effect
+
+Ligand state 通过 Dimorphite-DL 2.0.2 bounded protomer enumeration 与 app RDKit 2026.3.3 tautomer enumeration/validation 建立。首轮返回 state ID/SMILES/charge/pH，用户下一条 current message 必须 exact-select；runtime 不自动选择 dominant microstate。Comparability arm 选择 `microstate-ae11f4051b56b99d`，保留 prior STI monocation、InChIKey `KTUFNOKKBVMGRW-UHFFFAOYSA-O`、charge +1。共 24 candidates，3 条 nonfatal warnings 只暴露 count。
+
+Receptor state 要求 current-message explicit pH。Project-local PDB2PQR 3.7.1/PROPKA 3.5.1 在同一 isolated venv 中以 PARSE pH 7.4、normal debump/H-bond optimization 运行；prepared PDB/PQR 做全原子 identity/coordinate/finite charge-radius 验证，unique final PROPKA sidecar 是 authoritative pKa source。
+
+Accepted state `receptor-1IEP-A-ph7.4-84c0d788fc7d548d` 用时 0.772s，heavy atoms 2229→2230，新增 exact GLN:A:498 OXT `(-14.513,52.826,26.921)`；2,182 H 中 1,603 为 zero-radius。18 个 bounded typed side-chain moves 的 max=2.378571 Å；完整 move/added-atom/H/state-artifact lineage 进入 Vina/PLIP，Agent 只展示 deterministic top 16 move summary。Meeko 使用 exact PQR charges，仅 exact terminal GLN498 O/OXT name/coordinate permutation 可 typed-normalize，其余 drift fail closed。
+
+Final P0 要求至少一个 exact pKa-bearing `ReceptorResidueState`；empty/rename-only parsing 在 Meeko/Vina 前 fail closed。Agent-visible `DockingStateLineage` 提供 total group count 与最多 16 个 nearest-to-pH groups，按 `abs(pKa-pH)`、residue ID 排序；Vina/PLIP events 与 deterministic answer 保留 exact group/source/prepared residue/pKa，raw PROPKA streams/log 隐藏。Accepted state 有 98 groups，包括 N+:A:225=7.83、GLU:A:286=5.49、TYR:A:353=9.55、C-:A:498=3.43。
+
+Real Vina v6 对同一 selected ligand/receptor state/pocket 运行 12.820s，9 poses 的 scores=`[-12.974,-10.824,-9.945,-9.615,-9.528,-9.478,-9.337,-9.242,-9.194]`。Rank 1 只为 cross-run comparability 预声明，resolved pose ID=`ph-aware-1iep-vina-final-v6-20260719-pose-1`。Real PLIP v7 对该 exact pose 与同一 receptor-state/PDB/PQR lineage 运行 1.399s，得到 hydrophobic LEU248/TYR253/ALA269/LYS271/VAL299/ILE313/THR315/LEU370/ASP381、MET318/ASP381 H-bonds、TYR253 pi-stack，共 12 interactions。
+
+相对 corrected reference，hydrophobic shared=6/7，MET318/ASP381 H-bonds 与 TYR253 pi-stack 恢复；缺 PHE382 hydrophobic 与 ASP381 salt，新增 ALA269/VAL299/LEU370。相对 prior non-pH post-H run，rank-1 score -12.975→-12.974 基本不变，同时两条 H-bonds 恢复；该 single exposed case 只说明 state preparation 可改变 interaction classification。
+
+Agent 正确拒绝 3PTB（binding-site Ca/metal-cofactor policy）、1M17（binding-site altloc）、4DFR（chain/MTX、chloride disposition、altloc ambiguity）与 1HSG（multichain site）。这些 cases 仍需 explicit metal/cofactor、altloc、multichain policy。Microstate dominance、pKa accuracy、score calibration、affinity、mechanism、experimental correlation、general docking effectiveness 均未建立，single 1IEP 不可外推。
+
 ### Verification
 
-Implementation focused `42/42 PASS`、Main full `scripts/check.py` `276/276 PASS`；official plugin validator、`discover-target`、`prepare-molecule`、`evaluate-candidate`、`optimize-small-molecule` validators、sanitizer `982/0/0`、diff 与 hygiene PASS。Main 独立重解析 post-H complex/report，确认 37+3 ligand atoms、coordinate max delta 0.0、serial disjointness 与上述 comparisons。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
+Focused `63/63 PASS`、Main full `scripts/check.py` `295/295 PASS`；official plugin validator、`prepare-molecule`、`evaluate-candidate`、`optimize-small-molecule` validators、sanitizer `982/0/0`、diff/architecture/hygiene PASS。Main 独立重解析 artifacts，确认 nine scores、exact PLIP residues、selected/prepared/PQR counts、OXT、moves 与 pKa lineage。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
 
 ### 下一性能块
 
-1. 下一性能块聚焦 protonation/tautomer/pH-aware preparation 与 multi-case target/pocket validation。
-2. 继续扩展 residue-only/multichain policy、cofactor/metal parameterization 与 mmCIF compatibility。
-3. Cross-target calibration 建立前不作 general docking quality 或 affinity claim；依赖未接入模型的完整 drug-design tasks 继续 deferred。
+1. 下一 capability block 实现 explicit metal/cofactor disposition 与 explicit altloc/multichain selections。
+2. 随后运行真实 multi-case executable docking/PLIP panel，并保留 pH/protonation 与 mmCIF limits。
+3. Model/score calibration 建立前不作 general docking quality 或 affinity claim；依赖未接入模型的完整 drug-design tasks 继续 deferred。

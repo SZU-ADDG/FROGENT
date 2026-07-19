@@ -25,6 +25,11 @@ class DockingChatPlan:
     selected_pose_id: str
     selected_pose_rank: int | None
     pose_selection_text: str
+    selected_microstate_id: str = ""
+    selected_microstate_smiles: str = ""
+    microstate_selection_text: str = ""
+    receptor_ph: float | None = None
+    receptor_state_text: str = ""
 
 
 class CodexDockingPlanner:
@@ -62,8 +67,43 @@ def _plan(value, message):
     _target_format(target)
     pocket = _pocket(value, message, target)
     pose, rank, pose_text = _pose_selection(value, message, operation)
+    state = _state_selection(value, message)
     return DockingChatPlan(operation, molecule_kind, molecule_value, scope, selected,
-                           target, pocket, pose, rank, pose_text)
+                           target, pocket, pose, rank, pose_text, *state)
+
+
+def _state_selection(value, message):
+    state_id = _text(value, "selected_microstate_id", empty=True)
+    smiles = _text(value, "selected_microstate_smiles", empty=True)
+    ligand_text = _text(value, "microstate_selection_text", empty=True)
+    if state_id and smiles:
+        raise ValueError("select exactly one ligand microstate ID or SMILES")
+    if state_id or smiles:
+        selected = state_id or smiles
+        if not ligand_text or ligand_text not in message or selected not in ligand_text:
+            raise ValueError("ligand microstate requires exact current-message evidence")
+    elif ligand_text:
+        raise ValueError("unused ligand microstate evidence must be empty")
+    ph = value.get("receptor_ph")
+    receptor_text = _text(value, "receptor_state_text", empty=True)
+    if isinstance(ph, bool) or not isinstance(ph, (int, float)) or not -1 <= ph <= 14:
+        raise ValueError("receptor pH selection is invalid")
+    if ph == -1:
+        if receptor_text:
+            raise ValueError("unused receptor state evidence must be empty")
+        return state_id, smiles, ligand_text, None, ""
+    if not receptor_text or receptor_text not in message or not _ph_evidence(receptor_text, ph):
+        raise ValueError("receptor pH requires exact current-message evidence")
+    return state_id, smiles, ligand_text, float(ph), receptor_text
+
+
+def _ph_evidence(text, expected):
+    number = r"(?:\d+(?:\.\d+)?)"
+    patterns = (rf"(?:pH|酸碱度|酸度)\s*[:=为]?\s*({number})",
+                rf"({number})\s*(?:pH|酸碱度|酸度)")
+    values = [float(item) for pattern in patterns
+              for item in re.findall(pattern, text, re.IGNORECASE)]
+    return any(item == float(expected) for item in values)
 
 
 def _pose_selection(value, message, operation):
@@ -177,4 +217,7 @@ _CONTRACT = (
     "or pose. Use none for a missing pocket. For interaction analysis copy exactly one current-"
     "message pose ID or explicit pose-rank policy and its complete evidence span. Keep both pose "
     "fields empty for docking-only requests; never infer a best-scoring pose."
+    " Copy an explicit ligand microstate ID or exact microstate SMILES and receptor pH only from "
+    "their current-message evidence spans. Use empty microstate fields and receptor_ph=-1 when "
+    "the user has not selected them; never infer a biological protonation or tautomer state."
 )

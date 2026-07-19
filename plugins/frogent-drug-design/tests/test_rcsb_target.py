@@ -119,6 +119,18 @@ class RCSBTargetPocketTests(unittest.TestCase):
             self.assertEqual(manifest["target_artifact_id"], "rcsb-pdb-1IEP")
             self.assertEqual(manifest["method"], "verified_reference_ligand_bounding_box")
 
+    def test_reference_ligand_multichain_contact_blocks_one_chain_pocket(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / "tests") as raw:
+            root = Path(raw)
+            coordinates = _pdb().decode().replace("END\n", _atom(
+                "ATOM", 6, "CA", "GLY", "B", 10, 10.5, 20.5, 30.5) + "\nEND\n").encode()
+            target = RCSBTargetProvider(root, transport=FakeTransport(
+                coordinates=coordinates)).resolve(TargetRequest("pdb", "1IEP", "A"))
+            with self.assertRaisesRegex(ValueError, "multiple polymer chains"):
+                RCSBPocketProvider(root).resolve(target, PocketRequest(
+                    "sti-site", "A", "pdb_auth", "reference_ligand",
+                    reference_ligand="STI:A:999"))
+
     def test_pocket_manifest_round_trip_revalidates_coordinates_and_source_lineage(self):
         with tempfile.TemporaryDirectory(dir=ROOT / "tests") as raw:
             root = Path(raw)

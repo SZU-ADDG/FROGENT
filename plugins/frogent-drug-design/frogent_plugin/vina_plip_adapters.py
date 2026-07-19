@@ -13,6 +13,7 @@ from .docking_types import (
     DockingBatch, DockingConfig, DockingInput, DockingPose, InteractionBatch,
     InteractionEvidence,
 )
+from .docking_state_lineage import state_lineage
 
 
 class VinaDockingAdapter:
@@ -56,13 +57,13 @@ class VinaDockingAdapter:
         argv = _vina_argv(self.executable, receptor, ligand, output, prepared, value.config)
         result = self.runner.run(argv, output_dir)
         if result.returncode:
-            raise RuntimeError(f"Vina exited {result.returncode}: {result.stderr.strip()}")
+            raise RuntimeError(f"Vina exited {result.returncode}")
         poses = _vina_poses(self.root, output, prepared.run_id, value.config.pose_count)
         return DockingBatch(value.molecule.canonical_isomeric_smiles, value.molecule.inchikey,
             value.target.identifier, value.pocket.pocket_id, self.provider_id,
             self.provider_version, value.config.score_name, value.config.score_direction, poses,
             (prepared.receptor, prepared.ligand, value.pocket.artifact), argv,
-            prepared.preparation_provenance)
+            prepared.preparation_provenance, state_lineage(value))
 
 
 class PLIPInteractionAdapter:
@@ -99,7 +100,7 @@ class PLIPInteractionAdapter:
                 *(() if self.config.add_polar_hydrogens else ("--nohydro",)))
         result = self.runner.run(argv, output_dir)
         if result.returncode:
-            raise RuntimeError(f"PLIP exited {result.returncode}: {result.stderr.strip()}")
+            raise RuntimeError(f"PLIP exited {result.returncode}")
         reports = tuple(sorted(output_dir.glob("*_report.xml")))
         if len(reports) != 1:
             raise ValueError("PLIP must produce exactly one XML report")
@@ -108,7 +109,7 @@ class PLIPInteractionAdapter:
         return InteractionBatch(pose.pose_id, pose.artifact.id, value.molecule.inchikey,
             value.target.identifier, self.provider_id, self.provider_version, interactions,
             prepared.complex_artifact.id, argv, prepared.ligand_residue_identity,
-            prepared.preparation_provenance)
+            prepared.preparation_provenance, state_lineage(value))
 
 
 def _vina_argv(executable, receptor, ligand, output, prepared, config):

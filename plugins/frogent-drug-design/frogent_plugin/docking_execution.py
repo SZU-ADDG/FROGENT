@@ -8,6 +8,9 @@ from .docking_types import (
     VerifiedTargetIdentity,
 )
 from .molecular_binding import MolecularInputBinding
+from .docking_state_lineage import state_lineage
+from .docking_state_types import LigandMicrostate, ReceptorStateBinding
+from .docking_state_runtime import prepare_receptor_state
 
 
 class TargetIdentityProvider(Protocol):
@@ -31,7 +34,11 @@ def run_docking_workflow(molecule: MolecularInputBinding, target_request: Target
                          pocket_provider=None, docking_provider=None, interaction_provider=None,
                          config: DockingConfig | None = None, want_interactions: bool = False,
                          selected_pose_id: str = "",
-                         selected_pose_rank: int | None = None) -> DockingWorkflowResult:
+                         selected_pose_rank: int | None = None,
+                         ligand_state: LigandMicrostate | None = None,
+                         receptor_state: ReceptorStateBinding | None = None,
+                         receptor_state_provider=None,
+                         receptor_ph: float | None = None) -> DockingWorkflowResult:
     gaps = []
     target = _target(target_request, target_provider, gaps)
     if target is None:
@@ -39,10 +46,19 @@ def run_docking_workflow(molecule: MolecularInputBinding, target_request: Target
     pocket = _pocket(target, pocket_request, pocket_provider, gaps)
     if pocket is None:
         return _blocked(target, None, gaps)
+    if receptor_state_provider is not None:
+        receptor_state = prepare_receptor_state(target, pocket, receptor_state_provider,
+                                                receptor_ph, gaps)
+        if receptor_state is None:
+            return _blocked(target, pocket, gaps)
+    elif receptor_ph is not None:
+        gaps.append("receptor pH was selected but its preparation provider is unavailable")
+        return _blocked(target, pocket, gaps)
     selected_config = config or getattr(docking_provider, "default_config", DockingConfig())
     value = DockingInput(molecule, target, pocket, selected_config,
                          str(getattr(docking_provider, "provider_id", "")),
-                         str(getattr(docking_provider, "provider_version", "")))
+                         str(getattr(docking_provider, "provider_version", "")),
+                         ligand_state, receptor_state)
     docking = _dock(value, docking_provider)
     gaps.extend(docking.coverage_gaps)
     interaction = _interactions(value, docking, interaction_provider, want_interactions,
@@ -111,15 +127,22 @@ def _dock(value, provider):
     warning = ("Docking scores are computational ranking signals; score calibration, "
                "applicability domain, binding affinity, experimental correlation, and "
                "experimental evidence are not established.",)
+    if value.ligand_state or value.receptor_state:
+        warning += ("Enumerated protomers, tautomers, and PDB2PQR/PROPKA states are "
+                    "computational candidates; dominant biological microstate, affinity, "
+                    "mechanism, and experimental effect are not established.",)
+    lineage = state_lineage(value)
     if not value.molecule.selection_confirmed:
         return DockingExecution("blocked", value, warnings=warning,
-            coverage_gaps=("molecular structure selection is not confirmed",))
+            coverage_gaps=("molecular structure selection is not confirmed",),
+            state_lineage=lineage)
     if provider is None:
         return DockingExecution("blocked", value, warnings=warning,
-            coverage_gaps=("docking provider is unavailable",))
+            coverage_gaps=("docking provider is unavailable",), state_lineage=lineage)
     if not value.provider.strip() or not value.provider_version.strip():
         return DockingExecution("failed", value, warnings=warning,
-            coverage_gaps=("docking provider identity/version is unavailable",))
+            coverage_gaps=("docking provider identity/version is unavailable",),
+            state_lineage=lineage)
     try:
         batch = provider.dock(value)
         _validate_batch(value, batch)
@@ -127,10 +150,12 @@ def _dock(value, provider):
                                 batch.provider_version, warning,
                                 input_artifacts=batch.input_artifacts,
                                 command_argv=batch.command_argv,
-                                preparation_provenance=batch.preparation_provenance)
+                                preparation_provenance=batch.preparation_provenance,
+                                state_lineage=batch.state_lineage)
     except Exception as exc:
         return DockingExecution("failed", value, warnings=warning,
-            coverage_gaps=(f"docking failed: {type(exc).__name__}: {exc}",))
+            coverage_gaps=(f"docking failed: {type(exc).__name__}: {exc}",),
+            state_lineage=lineage)
 
 
 def _validate_batch(value, batch):
@@ -145,6 +170,8 @@ def _validate_batch(value, batch):
               batch.provider, batch.provider_version)
     if actual != expected:
         raise ValueError("docking output identity or score semantics do not match the input")
+    if batch.state_lineage != state_lineage(value):
+        raise ValueError("docking output state lineage does not match the input")
     if not batch.poses or len(batch.poses) > value.config.pose_count:
         raise ValueError("docking output pose count is invalid")
     if tuple(pose.rank for pose in batch.poses) != tuple(range(1, len(batch.poses) + 1)):
@@ -156,41 +183,49 @@ def _validate_batch(value, batch):
 def _interactions(value, docking, provider, wanted, pose_id, pose_rank):
     if not wanted:
         return None
+    lineage = state_lineage(value)
     if docking.status != "completed":
         return InteractionExecution("blocked", coverage_gaps=(
-            "interaction analysis requires completed docking",))
+            "interaction analysis requires completed docking",), state_lineage=lineage)
     if bool(pose_id) == bool(pose_rank):
         return InteractionExecution("blocked", coverage_gaps=(
-            "interaction analysis requires exactly one explicit pose ID or pose rank",))
+            "interaction analysis requires exactly one explicit pose ID or pose rank",),
+            state_lineage=lineage)
     pose = (next((item for item in docking.poses if item.pose_id == pose_id), None)
             if pose_id else next((item for item in docking.poses
                                   if item.rank == pose_rank), None))
     if pose is None:
         return InteractionExecution("blocked", pose_id, requested_pose_rank=pose_rank,
-            coverage_gaps=("selected pose is absent from the docking result",))
+            coverage_gaps=("selected pose is absent from the docking result",),
+            state_lineage=lineage)
     if provider is None:
         return InteractionExecution("blocked", pose.pose_id, pose.rank, pose_rank,
             coverage_gaps=(
-            "PLIP interaction provider is unavailable",))
+            "PLIP interaction provider is unavailable",), state_lineage=lineage)
     provider_id = str(getattr(provider, "provider_id", ""))
     provider_version = str(getattr(provider, "provider_version", ""))
     if not provider_id.strip() or not provider_version.strip():
         return InteractionExecution("failed", pose.pose_id, pose.rank, pose_rank, coverage_gaps=(
-            "PLIP provider identity/version is unavailable",))
+            "PLIP provider identity/version is unavailable",), state_lineage=lineage)
     try:
         batch = provider.analyze(value, pose)
         _validate_interactions(value, pose, batch, provider_id, provider_version)
         warning = ("Pose interactions are computational observations for the selected artifact; "
                    "a binding mechanism is not established.",)
+        if value.ligand_state or value.receptor_state:
+            warning += ("The selected ligand/receptor pH states are computational candidates; "
+                        "biological dominance and experimental effect are not established.",)
         return InteractionExecution("completed", pose.pose_id, pose.rank, pose_rank,
                                     batch.interactions, batch.provider, batch.provider_version, warning,
                                     complex_artifact_id=batch.complex_artifact_id,
                                     command_argv=batch.command_argv,
                                     ligand_residue_identity=batch.ligand_residue_identity,
-                                    preparation_provenance=batch.preparation_provenance)
+                                    preparation_provenance=batch.preparation_provenance,
+                                    state_lineage=batch.state_lineage)
     except Exception as exc:
         return InteractionExecution("failed", pose.pose_id, pose.rank, pose_rank, coverage_gaps=(
-            f"PLIP interaction analysis failed: {type(exc).__name__}: {exc}",))
+            f"PLIP interaction analysis failed: {type(exc).__name__}: {exc}",),
+            state_lineage=lineage)
 
 
 def _validate_interactions(value, pose, batch, provider_id, provider_version):
@@ -202,6 +237,8 @@ def _validate_interactions(value, pose, batch, provider_id, provider_version):
                 value.target.identifier, provider_id, provider_version)
     if actual != expected:
         raise ValueError("interaction evidence is not bound to the selected pose")
+    if batch.state_lineage != state_lineage(value):
+        raise ValueError("interaction output state lineage does not match the selected pose")
     if any(item.protein_chain != value.pocket.chain for item in batch.interactions):
         raise ValueError("interaction chain does not match the verified pocket")
 

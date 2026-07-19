@@ -101,6 +101,9 @@ def docking_planner_schema() -> dict[str, object]:
                            "enum": ["unspecified", "full", "parent_candidate"]},
         "selected_structure_smiles": {"type": "string"},
         "molecule_selection_text": {"type": "string"},
+        "selected_microstate_id": {"type": "string"},
+        "selected_microstate_smiles": {"type": "string"},
+        "microstate_selection_text": {"type": "string"},
         "target_kind": {"type": "string", "enum": ["pdb", "uniprot", "name_candidate"]},
         "target_value": STRING,
         "target_chain": {"type": "string"},
@@ -120,4 +123,6 @@ def docking_planner_schema() -> dict[str, object]:
         "selected_pose_id": {"type": "string"},
         "selected_pose_rank": {"type": "integer", "minimum": 0},
         "pose_selection_text": {"type": "string"},
+        "receptor_ph": {"type": "number", "minimum": -1, "maximum": 14},
+        "receptor_state_text": {"type": "string"},
     })

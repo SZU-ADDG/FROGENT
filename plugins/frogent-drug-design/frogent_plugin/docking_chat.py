@@ -5,7 +5,12 @@ from dataclasses import dataclass
 
 from .contracts import ExecutionContext, StreamEvent
 from .docking_chat_plan import CodexDockingPlanner, DockingChatPlan
+from .docking_chat_render import answer as _answer
+from .docking_chat_render import plan_payload as _plan_payload
+from .docking_chat_render import workflow_events as _workflow_events
 from .docking_execution import run_docking_workflow
+from .docking_microstates import (MicrostateSelectionRequired, binding_for_microstate,
+                                  select_microstate)
 from .docking_types import DockingWorkflowResult
 from .molecular_routing import prepare_molecular_request
 from .pubchem_identity import PubChemIdentityResolver
@@ -29,10 +34,13 @@ class DockingChatResult:
 class DockingChatHandler:
     def __init__(self, planner: CodexDockingPlanner, resolver: PubChemIdentityResolver,
                  *, target_provider=None, pocket_provider=None, docking_provider=None,
-                 interaction_provider=None) -> None:
+                 interaction_provider=None, microstate_provider=None,
+                 receptor_state_provider=None) -> None:
         self.planner, self.resolver = planner, resolver
         self.target_provider, self.pocket_provider = target_provider, pocket_provider
         self.docking_provider, self.interaction_provider = docking_provider, interaction_provider
+        self.microstate_provider = microstate_provider
+        self.receptor_state_provider = receptor_state_provider
 
     def run(self, message: str, context: ExecutionContext) -> DockingChatResult:
         events = [StreamEvent("tool.started", {"capability_id": "molecular.plan"}, "docking")]
@@ -40,6 +48,9 @@ class DockingChatHandler:
             plan = self.planner.plan(message)
             events.append(StreamEvent("tool.completed", _plan_payload(plan), "docking"))
             binding, identity_gaps = self._molecule(plan)
+            binding, ligand_state = self._ligand_state(plan, binding, message, events)
+        except MicrostateSelectionRequired as exc:
+            return _selection_required(events, plan, binding, exc.states)
         except Exception as exc:
             return _safe_failure(events, "planning_or_identity", exc)
         events.append(StreamEvent("tool.completed", {"capability_id": "pubchem.identity",
@@ -53,7 +64,9 @@ class DockingChatHandler:
             docking_provider=self.docking_provider, interaction_provider=self.interaction_provider,
             config=None, want_interactions=plan.operation == "dock_and_interactions",
             selected_pose_id=plan.selected_pose_id,
-            selected_pose_rank=plan.selected_pose_rank)
+            selected_pose_rank=plan.selected_pose_rank, ligand_state=ligand_state,
+            receptor_state_provider=self.receptor_state_provider,
+            receptor_ph=plan.receptor_ph)
         events.extend(_workflow_events(workflow, identity_gaps))
         answer = _answer(binding, workflow, identity_gaps)
         events.append(StreamEvent("message.delta", {"content": answer}, "docking"))
@@ -84,139 +97,34 @@ class DockingChatHandler:
             gaps.extend(resolution.coverage_gaps)
         return binding, tuple(gaps)
 
+    def _ligand_state(self, plan, binding, message, events):
+        selected = plan.selected_microstate_id or plan.selected_microstate_smiles
+        if self.microstate_provider is None:
+            if selected:
+                raise ValueError("ligand microstate provider is unavailable")
+            return binding, None
+        events.append(StreamEvent("tool.started", {"capability_id": "ligand.microstates"},
+                                  "docking"))
+        states = self.microstate_provider.enumerate(binding)
+        if not selected:
+            raise MicrostateSelectionRequired(states)
+        state = select_microstate(states, state_id=plan.selected_microstate_id,
+            selected_smiles=plan.selected_microstate_smiles,
+            evidence=plan.microstate_selection_text, message=message)
+        events.append(StreamEvent("tool.completed", {"capability_id": "ligand.microstates",
+            "status": "selected", "state_id": state.state_id,
+            "canonical_isomeric_smiles": state.canonical_isomeric_smiles,
+            "inchikey": state.inchikey, "formal_charge": state.formal_charge,
+            "ph_min": state.ph_min, "ph_max": state.ph_max,
+            "precision": state.precision, "source_artifact_id": state.source_artifact.id},
+            "docking"))
+        return binding_for_microstate(binding, state), state
+
 
 def is_clear_docking_intent(message: str) -> bool:
     text = message.casefold()
     return (any(item in text for item in _ACTIONS)
             and not any(item in text for item in _RESEARCH))
-
-
-def _workflow_events(workflow, identity_gaps):
-    values = []
-    target = workflow.target
-    values.append(StreamEvent("tool.completed", {"capability_id": "target.standardize",
-        "status": "verified" if target else "blocked",
-        "target_identifier": target.identifier if target else "",
-        "chains": list(target.chains) if target else [],
-        "structure_artifact_id": target.structure_artifact.id if target else "",
-        "metadata_url": target.metadata_url if target else "",
-        "coordinate_url": target.coordinate_url if target else "",
-        "provider": target.provider if target else "",
-        "provider_version": target.provider_version if target else ""}, "docking"))
-    pocket = workflow.pocket
-    values.append(StreamEvent("tool.completed", {"capability_id": "pocket.prepare",
-        "status": "verified" if pocket else "blocked", "pocket_id": pocket.pocket_id if pocket else "",
-        "target_identifier": pocket.target_identifier if pocket else "",
-        "chain": pocket.chain if pocket else "", "provider": pocket.provider if pocket else "",
-        "provider_version": pocket.provider_version if pocket else "",
-        "source_kind": pocket.source_kind if pocket else "",
-        "target_artifact_id": pocket.target_artifact_id if pocket else "",
-        "pocket_artifact_id": pocket.artifact.id if pocket else "",
-        "residues": list(pocket.residues) if pocket else [],
-        "reference_ligand": pocket.reference_ligand if pocket else "",
-        "box": (_box_payload(pocket.box) if pocket and pocket.box else {})}, "docking"))
-    docking = workflow.docking
-    values.append(StreamEvent("tool.completed", {"capability_id": "docking.generate-conformation",
-        "status": docking.status, "score_direction": (docking.docking_input.config.score_direction
-        if docking.docking_input else ""), "poses": [{"pose_id": pose.pose_id, "rank": pose.rank,
-        "score": pose.score, "artifact_id": pose.artifact.id} for pose in docking.poses],
-        "provider": docking.provider, "provider_version": docking.provider_version,
-        "input_artifact_ids": [item.id for item in docking.input_artifacts],
-        "command_argv": list(docking.command_argv),
-        "preparation_provenance": [_preparation_payload(item)
-                                   for item in docking.preparation_provenance],
-        "config": ({"pose_count": docking.docking_input.config.pose_count,
-                    "exhaustiveness": docking.docking_input.config.exhaustiveness,
-                    "cpu": docking.docking_input.config.cpu,
-                    "seed": docking.docking_input.config.seed,
-                    "energy_range": docking.docking_input.config.energy_range}
-                   if docking.docking_input else {}),
-        "warnings": list(docking.warnings), "coverage_gaps": list((*identity_gaps,
-        *docking.coverage_gaps))}, "docking"))
-    if workflow.interaction:
-        item = workflow.interaction
-        values.append(StreamEvent("tool.completed", {"capability_id": "sar.analyze",
-            "status": item.status, "pose_id": item.pose_id,
-            "resolved_pose_rank": item.pose_rank,
-            "requested_pose_rank": item.requested_pose_rank,
-            "provider": item.provider, "provider_version": item.provider_version,
-            "complex_artifact_id": item.complex_artifact_id,
-            "ligand_residue_identity": item.ligand_residue_identity,
-            "command_argv": list(item.command_argv),
-            "preparation_provenance": [_preparation_payload(value)
-                                       for value in item.preparation_provenance],
-            "interactions": [_interaction_payload(value) for value in item.interactions],
-            "warnings": list(item.warnings), "coverage_gaps": list(item.coverage_gaps)}, "docking"))
-    return values
-
-
-def _interaction_payload(item):
-    return {"interaction_type": item.interaction_type, "protein_chain": item.protein_chain,
-            "protein_residue": item.protein_residue, "ligand_feature": item.ligand_feature,
-            "distance": item.distance, "angle": item.angle}
-
-
-def _box_payload(item):
-    return {"center": list(item.center), "size": list(item.size), "units": item.units,
-            "method": item.method, "margin": item.margin}
-
-
-def _preparation_payload(item):
-    return {"tool": item.tool, "version": item.version, "operation": item.operation,
-            "source_artifact_ids": [value.id for value in item.source_artifacts],
-            "output_artifact_ids": [value.id for value in item.output_artifacts],
-            "command_argv": list(item.command_argv), "lossless": item.lossless,
-            "moved_record_count": item.moved_record_count,
-            "dropped_record_count": item.dropped_record_count,
-            "details": list(item.details)}
-
-
-def _plan_payload(plan):
-    return {"capability_id": "molecular.plan", "status": "completed",
-            "operation": plan.operation, "molecule": plan.molecule_value,
-            "target_kind": plan.target.kind, "target_value": plan.target.value,
-            "pocket_id": plan.pocket.pocket_id if plan.pocket else "",
-            "selected_pose_id": plan.selected_pose_id,
-            "selected_pose_rank": plan.selected_pose_rank,
-            "pose_selection_text": plan.pose_selection_text}
-
-
-def _answer(binding, workflow, identity_gaps):
-    lines = [f"Docking execution status: {workflow.docking.status}",
-        f"molecule: scope={binding.scope}; SMILES={binding.canonical_isomeric_smiles}; "
-        f"InChIKey={binding.inchikey}"]
-    if workflow.target:
-        lines.append(f"target: {workflow.target.kind}:{workflow.target.identifier}; "
-                     f"chains={','.join(workflow.target.chains)}; "
-                     f"artifact={workflow.target.structure_artifact.id}; "
-                     f"provider={workflow.target.provider}")
-    if workflow.pocket:
-        lines.append(f"pocket: {workflow.pocket.pocket_id}; chain={workflow.pocket.chain}; "
-                     f"numbering={workflow.pocket.numbering_scheme}; "
-                     f"source={workflow.pocket.source_kind}; artifact={workflow.pocket.artifact.id}")
-        if workflow.pocket.box:
-            box = workflow.pocket.box
-            lines.append(f"pocket box: center={box.center}; size={box.size}; units={box.units}; "
-                         f"method={box.method}; margin={box.margin}")
-    for pose in workflow.docking.poses:
-        lines.append(f"pose {pose.pose_id}: rank={pose.rank}; score={pose.score:.12g}; "
-                     f"artifact={pose.artifact.id}")
-    if workflow.interaction:
-        lines.append(f"interaction status: {workflow.interaction.status}; "
-                     f"requested_rank={workflow.interaction.requested_pose_rank or 'none'}; "
-                     f"resolved_rank={workflow.interaction.pose_rank or 'none'}; "
-                     f"resolved_pose={workflow.interaction.pose_id or 'none'}")
-        for item in workflow.interaction.interactions:
-            lines.append(f"interaction: {item.interaction_type}; {item.protein_chain}:"
-                         f"{item.protein_residue}; ligand={item.ligand_feature}")
-    lines.extend("Warning: " + item for item in workflow.docking.warnings)
-    if workflow.interaction:
-        lines.extend("Warning: " + item for item in workflow.interaction.warnings)
-    lines.extend("Coverage gap: " + item for item in dict.fromkeys(
-        (*identity_gaps, *workflow.coverage_gaps)))
-    lines.append("Computational docking evidence only; experimental_evidence=false. No binding "
-                 "affinity, validated mechanism, or automatic pose-selection claim is inferred.")
-    return "\n".join(lines)
 
 
 def _safe_failure(events, stage, exc):
@@ -227,3 +135,27 @@ def _safe_failure(events, stage, exc):
                                "coverage_gaps": [gap]}, "docking"),
                    StreamEvent("done", {"status": "failed"}, "docking")))
     return DockingChatResult(answer, tuple(events))
+
+
+def _selection_required(events, plan, binding, states):
+    candidates = [{"state_id": item.state_id,
+        "canonical_isomeric_smiles": item.canonical_isomeric_smiles,
+        "formal_charge": item.formal_charge, "ph_min": item.ph_min,
+        "ph_max": item.ph_max, "protomer_id": item.protomer_id,
+        "source_artifact_id": item.source_artifact.id} for item in states]
+    payload = {"capability_id": "ligand.microstates", "status": "selection_required",
+        "candidates": candidates, "warnings": list(dict.fromkeys(
+            warning for item in states for warning in item.warnings))}
+    lines = ["Ligand microstate selection is required before docking.",
+        f"parent: scope={binding.scope}; SMILES={binding.canonical_isomeric_smiles}; "
+        f"InChIKey={binding.inchikey}",
+        "Choose one exact state_id or canonical isomeric SMILES:"]
+    lines.extend(f"- {item.state_id} | {item.canonical_isomeric_smiles} | "
+                 f"charge={item.formal_charge} | pH={item.ph_min:g}-{item.ph_max:g}"
+                 for item in states)
+    answer = "\n".join(lines)
+    events.extend((StreamEvent("tool.completed", payload, "docking"),
+                   StreamEvent("message.delta", {"content": answer}, "docking"),
+                   StreamEvent("done", {"status": "blocked",
+                               "reason": "microstate_selection_required"}, "docking")))
+    return DockingChatResult(answer, tuple(events), plan)

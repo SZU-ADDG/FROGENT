@@ -21,6 +21,10 @@ from frogent_plugin.docking_types import (  # noqa: E402
     DockingBatch, DockingConfig, DockingPose, InteractionBatch, InteractionEvidence,
     PocketBinding, PocketRequest, TargetRequest, VerifiedTargetIdentity,
 )
+from frogent_plugin.docking_state_lineage import state_lineage  # noqa: E402
+from frogent_plugin.docking_state_types import (  # noqa: E402
+    LigandMicrostate, ReceptorStateSettings,
+)
 from frogent_plugin.molecular_binding import MolecularInputBinding  # noqa: E402
 from frogent_plugin.molecular_identity import MolecularIdentity  # noqa: E402
 from frogent_plugin.pubchem_identity import PubChemResolution  # noqa: E402
@@ -111,6 +115,8 @@ def planner_value(**updates):
     value = {"operation": "dock_and_interactions", "molecule_kind": "smiles",
         "molecule_value": "CCO", "molecule_scope": "unspecified",
         "selected_structure_smiles": "", "molecule_selection_text": "",
+        "selected_microstate_id": "", "selected_microstate_smiles": "",
+        "microstate_selection_text": "",
         "target_kind": "pdb", "target_value": "1ABC", "target_chain": "A",
         "target_text": "1ABC chain A", "pocket_id": "site-1", "pocket_kind": "residues",
         "pocket_chain": "A", "numbering_scheme": "pdb_author",
@@ -119,7 +125,8 @@ def planner_value(**updates):
         "pocket_artifact_name": "", "pocket_artifact_media_type": "",
         "pocket_artifact_uri": "", "pocket_text": "site-1 ASP25 GLY27",
         "selected_pose_id": "pose-2", "selected_pose_rank": 0,
-        "pose_selection_text": "pose-2"}
+        "pose_selection_text": "pose-2", "receptor_ph": -1,
+        "receptor_state_text": ""}
     value.update(updates)
     return value
 
@@ -426,6 +433,91 @@ class DockingChatTests(unittest.TestCase):
         ):
             with self.subTest(mutation=mutation), self.assertRaisesRegex(ValueError, expected):
                 CodexDockingPlanner(StructuredClient({**value, **mutation})).plan(message)
+
+    def test_native_plan_requires_exact_ligand_state_and_receptor_ph_evidence(self):
+        message = (MESSAGE + "; select microstate-abc and receptor pH 7.4")
+        value = planner_value(selected_microstate_id="microstate-abc",
+            microstate_selection_text="select microstate-abc", receptor_ph=7.4,
+            receptor_state_text="receptor pH 7.4")
+        plan = CodexDockingPlanner(StructuredClient(value)).plan(message)
+        self.assertEqual((plan.selected_microstate_id, plan.receptor_ph),
+                         ("microstate-abc", 7.4))
+        for mutation in ({"microstate_selection_text": ""},
+                         {"receptor_state_text": ""},
+                         {"selected_microstate_smiles": "CCO"}):
+            with self.assertRaises(ValueError):
+                CodexDockingPlanner(StructuredClient({**value, **mutation})).plan(message)
+        for literal, expected in (("pH 7", 7.0), ("pH 7.0", 7.0),
+                                  ("酸碱度 7.40", 7.4)):
+            current = MESSAGE + "; receptor " + literal
+            planned = planner_value(receptor_ph=expected, receptor_state_text=literal)
+            self.assertEqual(CodexDockingPlanner(StructuredClient(planned)).plan(
+                current).receptor_ph, expected)
+        with self.assertRaisesRegex(ValueError, "current-message evidence"):
+            CodexDockingPlanner(StructuredClient(planner_value(
+                receptor_ph=7.4, receptor_state_text="dose 7.4"))).plan(MESSAGE + "; dose 7.4")
+
+    def test_microstate_selection_response_is_actionable_and_second_turn_executes_once(self):
+        state = LigandMicrostate("microstate-abc", "protomer-1", "CC[OH2+]",
+            "STATE-KEY", 1, "SOURCE", 7.0, 7.8, 0.5, "dimorphite-dl", "2.0.2",
+            "fake-tautomer", "1", MOLECULE.inchikey, artifact("state-manifest"))
+        class States:
+            def __init__(self): self.calls = 0
+            def enumerate(self, binding): self.calls += 1; return (state,)
+        class StateDock(DockProvider):
+            def dock(self, value):
+                batch = super().dock(value)
+                return replace(batch, state_lineage=state_lineage(value))
+        states, dock = States(), StateDock()
+        first = DockingChatHandler(CodexDockingPlanner(StructuredClient(planner_value(
+            operation="dock", selected_pose_id="", pose_selection_text=""))), Resolver(),
+            target_provider=TargetProvider(), pocket_provider=PocketProvider(),
+            docking_provider=dock, microstate_provider=states).run(
+                MESSAGE, ExecutionContext("u", "c", "first", ROOT.resolve()))
+        self.assertIn("microstate-abc | CC[OH2+] | charge=1 | pH=7-7.8", first.answer)
+        self.assertIn(f"scope=full; SMILES=CCO; InChIKey={MOLECULE.inchikey}", first.answer)
+        self.assertEqual(dock.calls, [])
+        second_message = MESSAGE + "; select microstate-abc"
+        second_plan = planner_value(operation="dock", selected_pose_id="",
+            pose_selection_text="", selected_microstate_id="microstate-abc",
+            microstate_selection_text="select microstate-abc")
+        second = DockingChatHandler(CodexDockingPlanner(StructuredClient(second_plan)), Resolver(),
+            target_provider=TargetProvider(), pocket_provider=PocketProvider(),
+            docking_provider=dock, microstate_provider=states).run(
+                second_message, ExecutionContext("u", "c", "second", ROOT.resolve()))
+        self.assertEqual(second.workflow.docking.status, "completed")
+        self.assertEqual(len(dock.calls), 1)
+        self.assertEqual(second.workflow.docking.state_lineage.ligand_state_id,
+                         "microstate-abc")
+        wrong = DockingChatHandler(CodexDockingPlanner(StructuredClient(second_plan)), Resolver(),
+            target_provider=TargetProvider(), pocket_provider=PocketProvider(),
+            docking_provider=DockProvider(), microstate_provider=states).run(
+                second_message, ExecutionContext("u", "c", "wrong", ROOT.resolve()))
+        self.assertEqual(wrong.workflow.docking.status, "failed")
+        self.assertIn("state lineage", wrong.workflow.coverage_gaps[-1])
+
+    def test_receptor_configured_ph_mismatch_is_zero_tool_call(self):
+        class ReceptorProvider:
+            config = type("Config", (), {"settings": ReceptorStateSettings(7.4)})()
+            def __init__(self): self.calls = 0
+            def prepare(self, target, pocket): self.calls += 1; raise AssertionError("called")
+        receptor, dock = ReceptorProvider(), DockProvider()
+        result = run_docking_workflow(MOLECULE, TargetRequest("pdb", "1ABC", "A"),
+            POCKET_REQUEST, target_provider=TargetProvider(), pocket_provider=PocketProvider(),
+            docking_provider=dock, receptor_state_provider=receptor, receptor_ph=6.5)
+        self.assertEqual((receptor.calls, dock.calls), (0, []))
+        self.assertIn("configured receptor state pH", result.coverage_gaps[-1])
+
+    def test_state_tool_failure_does_not_surface_raw_stderr(self):
+        class FailingStates:
+            def enumerate(self, binding): raise RuntimeError("Dimorphite exited 7")
+        handler = DockingChatHandler(CodexDockingPlanner(StructuredClient(planner_value())),
+            Resolver(), target_provider=TargetProvider(), pocket_provider=PocketProvider(),
+            docking_provider=DockProvider(), microstate_provider=FailingStates())
+        result = handler.run(MESSAGE, ExecutionContext("u", "c", "j", ROOT.resolve()))
+        serialized = result.answer + json.dumps([item.payload for item in result.events])
+        self.assertIn("Dimorphite exited 7", serialized)
+        self.assertNotIn("SECRET_SENTINEL", serialized)
 
     def test_native_plan_binds_exact_reference_ligand_identity(self):
         message = "Dock CCO to 1ABC chain A using pocket-site STI:A:999"

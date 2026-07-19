@@ -14,7 +14,9 @@ from .docking_local import (CommandRunner, SubprocessCommandRunner, VinaPrepared
                             contained_executable, contained_file)
 from .docking_preparation import PreparationProvenance
 from .docking_types import DockingConfig, DockingInput
-from .dynamic_receptor import ReceptorComponentPolicy, select_receptor
+from .docking_state_runtime import selected_receptor
+from .dynamic_receptor import ReceptorComponentPolicy
+from .dynamic_receptor_pdbqt import repair_and_validate_receptor
 from .rcsb_target import _make_contained_directory
 
 
@@ -68,24 +70,26 @@ class DynamicVinaInputPreparer:
                 value.molecule.canonical_isomeric_smiles, value.molecule.inchikey):
             raise ValueError("generated conformer identity does not match the selected molecule")
         sdf = _write(run_dir / "ligand.sdf", conformer.sdf)
-        receptor, decisions, dropped = select_receptor(
-            self.root, value, self.config.component_policy)
-        receptor_pdb = _write(run_dir / "receptor-selected.pdb", receptor)
+        receptor = selected_receptor(self.root, value, self.config.component_policy)
+        receptor_pdb = _write(run_dir / "receptor-selected.pdb", receptor.pdb)
         ligand_pdbqt = run_dir / "ligand.pdbqt"
         receptor_pdbqt = run_dir / "receptor.pdbqt"
         ligand_argv = (str(self.ligand_tool), "-i", str(sdf), "-o", str(ligand_pdbqt))
-        receptor_argv = (str(self.receptor_tool), "--read_pdb", str(receptor_pdb),
-                         "-o", str(run_dir / "receptor"), "-p", str(receptor_pdbqt))
+        receptor_argv = _receptor_argv(self.receptor_tool, receptor_pdb,
+                                       receptor.pqr, run_dir, receptor_pdbqt)
         _run(self.runner, ligand_argv, run_dir, "Meeko ligand")
         _validate_ligand(ligand_pdbqt, value, self.conformer)
         _run(self.runner, receptor_argv, run_dir, "Meeko receptor")
-        _validate_receptor(receptor_pdbqt, receptor_pdb, value.pocket.chain)
+        receptor_repairs = repair_and_validate_receptor(
+            receptor_pdbqt, receptor_pdb, value.pocket.chain)
         refs = _refs(run_id, identity, sdf, receptor_pdb, ligand_pdbqt, receptor_pdbqt)
         provenance = _provenance(self.config, refs, ligand_argv, receptor_argv,
-                                 conformer.heavy_atom_count, decisions, dropped,
+                                 conformer.heavy_atom_count,
+                                 (*receptor.details, *receptor_repairs),
+                                 receptor.dropped_records,
                                  getattr(self.conformer, "version", "unknown"),
                                  self.conformer.settings,
-                                 value.target.structure_artifact)
+                                 value.target.structure_artifact, value.receptor_state)
         box = value.pocket.box
         return VinaPreparedInput(refs[4], refs[3], run_dir, run_id, box.center, box.size,
             value.molecule.inchikey, value.target.structure_artifact.id,
@@ -107,13 +111,24 @@ def _validate_input(value):
         raise ValueError("dynamic receptor preparation requires an exact reference ligand pocket")
 
 
+def _receptor_argv(tool, pdb, pqr, run_dir, output):
+    if pqr is not None:
+        return (str(tool), "--read_pqr", str(pqr), "--charge_model", "read",
+                "-o", str(run_dir / "receptor"), "-p", str(output))
+    return (str(tool), "--read_pdb", str(pdb),
+            "-o", str(run_dir / "receptor"), "-p", str(output))
+
+
 def _identity_artifact(run_dir, run_id, value):
     payload = {"schema_version": "dynamic-vina-input-v1", "run_id": run_id,
         "molecule_scope": value.molecule.scope, "smiles": value.molecule.canonical_isomeric_smiles,
         "inchikey": value.molecule.inchikey, "removed_fragments": list(value.molecule.removed_fragments),
         "target": value.target.identifier, "target_artifact_id": value.target.structure_artifact.id,
         "pocket": value.pocket.pocket_id, "pocket_artifact_id": value.pocket.artifact.id,
-        "center": list(value.pocket.box.center), "size": list(value.pocket.box.size)}
+        "center": list(value.pocket.box.center), "size": list(value.pocket.box.size),
+        "ligand_state_id": value.ligand_state.state_id if value.ligand_state else "",
+        "receptor_state_id": value.receptor_state.state_id if value.receptor_state else "",
+        "receptor_ph": value.receptor_state.ph if value.receptor_state else None}
     return _write(run_dir / "input-identity.json",
                   (json.dumps(payload, sort_keys=True, separators=(",", ":")) + "\n").encode())
 
@@ -121,7 +136,7 @@ def _identity_artifact(run_dir, run_id, value):
 def _run(runner, argv, cwd, label):
     result = runner.run(argv, cwd)
     if result.returncode:
-        raise RuntimeError(f"{label} preparation exited {result.returncode}: {result.stderr.strip()}")
+        raise RuntimeError(f"{label} preparation exited {result.returncode}")
 
 
 def _validate_ligand(path, value, conformer):
@@ -134,42 +149,6 @@ def _validate_ligand(path, value, conformer):
             value.molecule.canonical_isomeric_smiles, value.molecule.inchikey):
         raise ValueError("Meeko ligand output identity mismatch")
     _finite_pdbqt(text)
-
-
-def _validate_receptor(path, source_path, chain):
-    text = _output(path, "receptor PDBQT").decode("ascii")
-    atoms = [line for line in text.splitlines() if line.startswith("ATOM")]
-    if not atoms or any(len(line) < 54 or line[21].strip() != chain for line in atoms):
-        raise ValueError("Meeko receptor output chain is missing or mismatched")
-    _finite_pdbqt(text)
-    source = _output(source_path, "selected receptor PDB").decode("ascii")
-    source_atoms = _heavy_atom_map(source, chain)
-    prepared_atoms = _heavy_atom_map(text, chain)
-    if source_atoms != prepared_atoms:
-        raise ValueError("Meeko receptor output did not preserve selected polymer heavy atoms")
-
-
-def _heavy_atom_map(text, chain):
-    values = {}
-    for line in text.splitlines():
-        if not line.startswith("ATOM") or _is_hydrogen(line):
-            continue
-        if len(line) < 54 or line[21].strip() != chain:
-            raise ValueError("prepared receptor atom identity is malformed")
-        identity = (line[17:20].strip(), line[22:26].strip(), line[26].strip(),
-                    line[12:16].strip())
-        if identity in values:
-            raise ValueError("prepared receptor heavy atom identity is duplicated")
-        values[identity] = tuple(float(line[start:end])
-                                 for start, end in ((30, 38), (38, 46), (46, 54)))
-    if not values:
-        raise ValueError("prepared receptor contains no polymer heavy atoms")
-    return values
-
-
-def _is_hydrogen(line):
-    element = line[76:78].strip().upper() if len(line) >= 78 else ""
-    return element == "H" or line[12:16].strip().upper().startswith("H")
 
 
 def _output(path, label):
@@ -195,7 +174,7 @@ def _finite_pdbqt(text):
 
 
 def _provenance(config, refs, ligand_argv, receptor_argv, atoms, decisions, dropped, rdkit,
-                settings, target_artifact):
+                settings, target_artifact, receptor_state):
     identity, sdf, receptor_pdb, ligand_pdbqt, receptor_pdbqt = refs
     return (
         PreparationProvenance("rdkit", rdkit, (identity,), (sdf,),
@@ -208,7 +187,9 @@ def _provenance(config, refs, ligand_argv, receptor_argv, atoms, decisions, drop
             details=decisions),
         PreparationProvenance("meeko-ligand", config.meeko_version, (sdf,), (ligand_pdbqt,),
             ligand_argv, "meeko_ligand_preparation", True),
-        PreparationProvenance("meeko-receptor", config.meeko_version, (receptor_pdb,),
+        PreparationProvenance("meeko-receptor", config.meeko_version,
+            ((receptor_pdb, receptor_state.charge_artifact) if receptor_state else
+             (receptor_pdb,)),
             (receptor_pdbqt,), receptor_argv, "meeko_receptor_preparation", True))
 
 

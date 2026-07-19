@@ -5,6 +5,8 @@ from dataclasses import dataclass
 
 from .contracts import ArtifactRef
 from .docking_preparation import PreparationProvenance
+from .docking_state_lineage import DockingStateLineage, validate_input_states
+from .docking_state_types import LigandMicrostate, ReceptorStateBinding
 from .molecular_binding import MolecularInputBinding
 from .pocket_geometry import PocketGeometry
 @dataclass(frozen=True, slots=True)
@@ -12,7 +14,6 @@ class TargetRequest:
     kind: str
     value: str
     chain: str = ""
-
     def __post_init__(self) -> None:
         if self.kind not in {"pdb", "uniprot", "name_candidate"} or not self.value.strip():
             raise ValueError("target request is invalid")
@@ -27,7 +28,6 @@ class VerifiedTargetIdentity:
     requested_value: str
     metadata_url: str = ""
     coordinate_url: str = ""
-
     def __post_init__(self) -> None:
         if self.kind not in {"pdb", "uniprot"} or not self.identifier.strip():
             raise ValueError("verified target identity is invalid")
@@ -46,7 +46,6 @@ class PocketRequest:
     residues: tuple[str, ...] = ()
     artifact: ArtifactRef | None = None
     reference_ligand: str = ""
-
     def __post_init__(self) -> None:
         _texts((self.pocket_id, self.chain, self.numbering_scheme), "pocket request")
         if self.source_kind not in {"residues", "artifact", "reference_ligand"}:
@@ -77,7 +76,6 @@ class PocketBinding:
     target_artifact_id: str = ""
     reference_ligand: str = ""
     box: PocketGeometry | None = None
-
     def __post_init__(self) -> None:
         _texts((self.pocket_id, self.target_identifier, self.chain, self.numbering_scheme,
                 self.provider, self.provider_version), "pocket binding")
@@ -123,6 +121,11 @@ class DockingInput:
     config: DockingConfig
     provider: str = ""
     provider_version: str = ""
+    ligand_state: LigandMicrostate | None = None
+    receptor_state: ReceptorStateBinding | None = None
+
+    def __post_init__(self) -> None:
+        validate_input_states(self)
 @dataclass(frozen=True, slots=True)
 class DockingPose:
     pose_id: str
@@ -150,6 +153,7 @@ class DockingBatch:
     input_artifacts: tuple[ArtifactRef, ...] = ()
     command_argv: tuple[str, ...] = ()
     preparation_provenance: tuple[PreparationProvenance, ...] = ()
+    state_lineage: DockingStateLineage = DockingStateLineage()
 
     def __post_init__(self) -> None:
         _texts((self.molecule_smiles, self.molecule_inchikey, self.target_identifier,
@@ -169,6 +173,7 @@ class DockingExecution:
     input_artifacts: tuple[ArtifactRef, ...] = ()
     command_argv: tuple[str, ...] = ()
     preparation_provenance: tuple[PreparationProvenance, ...] = ()
+    state_lineage: DockingStateLineage = DockingStateLineage()
 
     def __post_init__(self) -> None:
         if self.status not in {"completed", "blocked", "failed"}:
@@ -203,6 +208,7 @@ class InteractionBatch:
     command_argv: tuple[str, ...] = ()
     ligand_residue_identity: str = ""
     preparation_provenance: tuple[PreparationProvenance, ...] = ()
+    state_lineage: DockingStateLineage = DockingStateLineage()
 
 
 @dataclass(frozen=True, slots=True)
@@ -220,6 +226,7 @@ class InteractionExecution:
     command_argv: tuple[str, ...] = ()
     ligand_residue_identity: str = ""
     preparation_provenance: tuple[PreparationProvenance, ...] = ()
+    state_lineage: DockingStateLineage = DockingStateLineage()
 
     def __post_init__(self) -> None:
         if self.status not in {"completed", "blocked", "failed"}:

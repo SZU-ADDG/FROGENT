@@ -4418,3 +4418,245 @@ Implementation ran `compileall`, which may have updated files inside the pre-exi
 Use `PYTHONDONTWRITEBYTECODE=1` for validation in the shared worktree and avoid compile/compileall hygiene probes.
 
 ---
+
+## [ERR-20260719-088] main_runtime_venv_wrong_cwd
+
+**Logged**: 2026-07-19T16:32:14+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: environment-discovery
+
+### Summary
+Main probed `.runtime/app-v4/venv` from the repository root even though that runtime is plugin-contained. Three read-only executable checks failed with `no such file or directory`; no project artifact was modified.
+
+### Suggested Fix
+Run plugin runtime probes with `workdir=plugins/frogent-drug-design`, or use the verified absolute plugin-contained executable path.
+
+---
+
+## [ERR-20260719-089] protonation_scout_safety_filter
+
+**Logged**: 2026-07-19T16:38:00+08:00
+**Priority**: low
+**Status**: contained
+**Area**: agent-coordination
+
+### Summary
+A read-only technical scout returned a useful interim tool recommendation, then its final response was blocked by the platform safety filter. No project file or external system was modified by the scout.
+
+### Suggested Fix
+Use the already delivered bounded tool/version/panel facts, verify technical details from official primary sources, and keep subsequent agent prompts narrowly scoped to software integration and validation.
+
+---
+
+## [ERR-20260719-090] main_expected_empty_rg_exit
+
+**Logged**: 2026-07-19T17:05:37+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+Main used bare `rg` to confirm that no microstate/protomer/tautomer/PDB2PQR implementation existed; the expected zero-match result returned exit code 1 and was reported as a command failure.
+
+### Suggested Fix
+For absence checks, capture `rg` output with explicit zero-match handling or use a conditional that distinguishes expected absence from execution failure.
+
+---
+
+## [ERR-20260719-091] main_thread_message_template_backtick
+
+**Logged**: 2026-07-19T17:09:50+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: agent-coordination
+**Recurrence-Count**: 2
+**Last-Seen**: 2026-07-19T18:39:00+08:00
+
+### Summary
+Main embedded Markdown backticks inside a JavaScript template string for a thread message, causing a syntax error before the message tool was called. The error recurred once during the OXT review. In both occurrences no instruction was sent and no project file was modified; the corrected messages used ordinary strings and succeeded.
+
+### Suggested Fix
+Construct long thread prompts from ordinary quoted lines or remove nested backticks before invoking the thread tool.
+
+---
+
+## [ERR-20260719-092] rcsb_panel_awk_reserved_name
+
+**Logged**: 2026-07-19T17:38:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+A read-only RCSB panel proximity probe used `close` as an AWK array name, which conflicts with the AWK built-in and caused a syntax error. No file, cache, runtime artifact, or remote state was modified.
+
+### Suggested Fix
+Avoid AWK built-in names for variables and arrays; the corrected probe used `nearres` and completed successfully.
+
+---
+
+## [ERR-20260719-093] microstate_inchikey_connectivity_false_rejection
+
+**Logged**: 2026-07-19T18:24:00+08:00
+**Priority**: medium
+**Status**: contained
+**Area**: molecular-identity
+
+### Summary
+The first real 1IEP microstate enumeration used the first InChIKey block as a protonation-invariant parent connectivity key and rejected a legal protonation candidate before conformer generation or Vina.
+
+### Suggested Fix
+Bind microstates with a hydrogen- and bond-order-tolerant heavy-atom element/adjacency graph plus stable atom-mapped stereochemistry. Preserve exact negatives for fragment, element, adjacency, and stereochemical drift. Keep the failed scoped diagnostic run as evidence and rerun the canary only after focused identity regressions pass.
+
+---
+
+## [ERR-20260719-094] receptor_state_terminal_oxt_false_rejection
+
+**Logged**: 2026-07-19T18:34:00+08:00
+**Priority**: medium
+**Status**: contained
+**Area**: docking-preparation
+
+### Summary
+The first real 1IEP PDB2PQR run completed its source chain terminus by adding OXT to GLN:A:498, and the initial zero-addition heavy-atom gate rejected the prepared receptor before Meeko or Vina.
+
+### Suggested Fix
+Permit only an exact, provenance-bound OXT addition on the selected chain's verified terminal polymer residue. Preserve all source heavy atoms and coordinates, bind the added atom through prepared PDB and PQR revalidation, and reject internal OXT or every other addition, deletion, movement, or duplicate.
+
+---
+
+## [ERR-20260719-095] propka_output_location_not_bound
+
+**Logged**: 2026-07-19T18:43:00+08:00
+**Priority**: medium
+**Status**: contained
+**Area**: docking-preparation
+
+### Summary
+The real PDB2PQR run wrote the PROPKA residue pKa summary to run-local receptor.log, while the initial adapter inspected stdout, stderr, and files ending in .propka. This could produce an empty typed residue-state list despite successful pKa calculation.
+
+### Suggested Fix
+Bind and text-validate the exact run-local log derived from the configured PQR basename, parse only bounded residue and pKa fields, keep the raw log out of SSE and memory, and add output-location regressions before accepting the real receptor state.
+
+---
+
+## [ERR-20260719-096] receptor_state_exact_coordinate_false_rejection
+
+**Logged**: 2026-07-19T19:17:00+08:00
+**Priority**: medium
+**Status**: contained
+**Area**: docking-preparation
+
+### Summary
+The corrected real 1IEP PDB2PQR run passed terminal-OXT identity checks but the exact source-coordinate gate rejected 18 intentional normal-mode side-chain coordinate changes before Meeko or Vina.
+
+### Suggested Fix
+Represent bounded side-chain coordinate changes as typed immutable preparation lineage while preserving exact source identities and backbone coordinates. Keep normal debumping and hydrogen-bond optimization enabled, bind all accepted changes into state identity and PQR agreement, and reject unbounded or unexplained drift.
+
+---
+
+## [ERR-20260719-097] pqr_zero_radius_hydrogen_false_rejection
+
+**Logged**: 2026-07-19T19:34:00+08:00
+**Priority**: medium
+**Status**: contained
+**Area**: docking-preparation
+
+### Summary
+The real receptor-state run passed heavy-atom move validation and then stopped before Meeko because the initial PQR gate rejected zero-radius PARSE hydrogen records.
+
+### Suggested Fix
+Allow finite zero radius only for hydrogens, keep heavy-atom radius strictly positive, and verify every prepared-PDB/PQR hydrogen identity and coordinate before accepting the receptor state. Preserve the failed run directory and rerun in a new contained directory after focused regressions pass.
+
+---
+
+## [ERR-20260719-098] propka_terminal_group_identity_collision
+
+**Logged**: 2026-07-19T19:45:00+08:00
+**Priority**: medium
+**Status**: contained
+**Area**: docking-preparation
+
+### Summary
+The second corrected receptor run passed heavy-atom and PQR validation, then stopped before Meeko because pKa records keyed only by chain and residue number conflated terminal N+/C- groups with underlying polymer residues.
+
+### Suggested Fix
+Preserve the exact PROPKA group name in the typed key, verify terminal groups against source polymer order, retain regular residue identity checks, and reject ambiguous insertion-code mappings. Preserve the failed run and continue in a new contained directory after focused tests pass.
+
+---
+
+## [ERR-20260719-099] propka_intermediate_and_final_table_merge_conflict
+
+**Logged**: 2026-07-19T19:58:00+08:00
+**Priority**: medium
+**Status**: contained
+**Area**: docking-preparation
+
+### Summary
+The third corrected receptor run passed structural and PQR gates, then stopped before Meeko because the adapter merged intermediate stdout pKa tables with the authoritative run-local PROPKA summary and detected conflicting values.
+
+### Suggested Fix
+Prefer the unique validated run-local final summary whenever present, use stdout/stderr only when that artifact is absent, and preserve strict ambiguity and malformed-output rejection. Continue in a new contained directory after the precedence rule has focused regressions.
+
+---
+
+## [ERR-20260719-100] main_validation_nonexistent_root_docs_path
+
+**Logged**: 2026-07-19T20:20:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+A read-only validator-location search included a nonexistent repository-root `docs/` path and returned an `rg` path error. The first append patch also used an inexact context line and failed verification. No project file, runtime artifact, cache, or remote state was modified by either failure.
+
+### Suggested Fix
+Search `plugins/frogent-drug-design/docs/` for FROGENT documentation and inspect the exact file tail before appending self-improvement entries.
+
+---
+
+## [ERR-20260719-101] meeko_terminal_oxygen_name_permutation
+
+**Logged**: 2026-07-19T20:21:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: docking-preparation
+
+### Summary
+Meeko receptor preparation preserved the terminal GLN:A:498 oxygen coordinates and atom types but exchanged the `O` and `OXT` names, so the first exact heavy-atom identity check stopped before Vina.
+
+### Suggested Fix
+Permit only an exact same-terminal-residue `O`/`OXT` coordinate swap with identical Meeko charge/type, record the normalization in typed preparation provenance, and reject every broader atom-name or coordinate change.
+
+---
+
+## [ERR-20260719-102] plip_canary_incomplete_target_provenance
+
+**Logged**: 2026-07-19T20:22:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The first pH-aware PLIP assembly used a hand-built canary target object without the accepted RCSB metadata and coordinate URLs. The lineage gate correctly rejected it after Vina had completed; the saved Vina pose remained valid and no PLIP report was produced in that run directory.
+
+### Suggested Fix
+Construct effect canaries from the accepted typed RCSB target identity and pocket artifact. When a downstream lineage fixture is incomplete, preserve the failed directory and reuse the already verified pose only after rebuilding exact upstream provenance; do not rerun an expensive upstream tool unnecessarily.
+
+---
+
+## [ERR-20260719-103] implementation_duplicated_plugin_path_prefix
+
+**Logged**: 2026-07-19T20:45:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+Implementation ran a read-only `rg` command from the plugin directory while repeating the plugin path prefix. The lookup exited before tests started and changed no project file, runtime artifact, cache, or remote state.
+
+### Suggested Fix
+Resolve validation paths relative to the selected working directory once, then run the focused and full checks from that same directory.
+
+---

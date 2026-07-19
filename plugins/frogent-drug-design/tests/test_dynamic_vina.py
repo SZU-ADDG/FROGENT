@@ -18,6 +18,7 @@ from frogent_plugin.docking_types import (  # noqa: E402
     VerifiedTargetIdentity,
 )
 from frogent_plugin.dynamic_receptor import ReceptorComponentPolicy  # noqa: E402
+from frogent_plugin.dynamic_receptor_pdbqt import repair_and_validate_receptor  # noqa: E402
 from frogent_plugin.dynamic_vina import DynamicVinaConfig, DynamicVinaInputPreparer  # noqa: E402
 from frogent_plugin.molecular_binding import MolecularInputBinding  # noqa: E402
 from frogent_plugin.pocket_geometry import PocketGeometry  # noqa: E402
@@ -69,6 +70,26 @@ class FakeRunner:
 
 
 class DynamicVinaTests(unittest.TestCase):
+    def test_meeko_terminal_oxygen_permutation_is_exactly_normalized(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / "tests") as raw:
+            root = Path(raw)
+            source = root / "prepared.pdb"
+            output = root / "receptor.pdbqt"
+            source.write_text("\n".join((
+                _atom("ATOM", 1, "N", "GLN", "A", 498, 0, 0, 0),
+                _atom("ATOM", 2, "O", "GLN", "A", 498, 1, 0, 0),
+                _atom("ATOM", 3, "OXT", "GLN", "A", 498, 2, 0, 0), "END")) + "\n")
+            output.write_text("\n".join((
+                _pdbqt_atom(1, "N", 0, 0, 0, "N"),
+                _pdbqt_atom(2, "O", 2, 0, 0, "OA"),
+                _pdbqt_atom(3, "OXT", 1, 0, 0, "OA"))) + "\n")
+            details = repair_and_validate_receptor(output, source, "A")
+            self.assertEqual(details,
+                ("normalized:meeko_terminal_O_OXT_name_permutation=A:GLN498",))
+            lines = output.read_text().splitlines()
+            coordinates = {line[12:16].strip(): float(line[30:38]) for line in lines}
+            self.assertEqual((coordinates["O"], coordinates["OXT"]), (1.0, 2.0))
+
     def test_dynamic_preparation_preserves_identity_components_box_and_command_lineage(self):
         with tempfile.TemporaryDirectory(dir=ROOT / "tests") as raw:
             root = Path(raw)
@@ -119,7 +140,7 @@ class DynamicVinaTests(unittest.TestCase):
             ("ligand-identity", {}, FakeConformer(), FakeRunner(malformed="identity"),
              "identity"),
             ("malformed-receptor", {}, FakeConformer(), FakeRunner(malformed="receptor"),
-             "chain is missing"),
+             "identity is malformed"),
             ("dropped-heavy-atom", {}, FakeConformer(), FakeRunner(malformed="dropped-heavy"),
              "preserve selected polymer heavy atoms"),
         )
@@ -312,6 +333,11 @@ def _receptor_pdbqt(malformed=""):
         atoms.append(_atom("ATOM", 2, "CA", "GLY", chain, 1, 1, 0, 0))
     atoms.append(_atom("ATOM", 3, "H", "GLY", chain, 1, 0, 1, 0))
     return "\n".join(atoms) + "\n"
+
+
+def _pdbqt_atom(serial, atom, x, y, z, atom_type):
+    base = _atom("ATOM", serial, atom, "GLN", "A", 498, x, y, z)
+    return base[:68] + f"{-0.55:>8.3f} {atom_type}"
 
 
 def _option(argv, name):

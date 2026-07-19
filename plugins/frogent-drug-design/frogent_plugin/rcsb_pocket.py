@@ -40,6 +40,8 @@ class RCSBPocketProvider:
             raise ValueError("RCSB pocket requires auth-numbered residues or ligand identity")
         atoms = self._selected_atoms(structure, request)
         _unambiguous(atoms)
+        if request.source_kind == "reference_ligand":
+            _single_chain_site(structure, atoms, request.chain)
         box = _box(atoms, self.margin, request.source_kind)
         artifact = self._manifest(target, request, box)
         return PocketBinding(request.pocket_id, target.identifier, request.chain,
@@ -126,6 +128,15 @@ def _unambiguous(atoms: tuple[PDBAtom, ...]) -> None:
         locations.setdefault(key, set()).add(atom.alternate_location)
     if any(len(values) > 1 or values not in ({""}, {"A"}) for values in locations.values()):
         raise ValueError("selected pocket atoms contain ambiguous alternate locations")
+
+
+def _single_chain_site(structure, ligand, selected_chain):
+    chains = {atom.chain for atom in structure.atoms if atom.record == "ATOM"
+        and not atom.atom_name.upper().startswith("H") and any(
+            sum((left - right) ** 2 for left, right in zip(atom.xyz, ligand_atom.xyz)) <= 25
+            for ligand_atom in ligand)}
+    if chains - {selected_chain}:
+        raise ValueError("reference-ligand pocket contacts multiple polymer chains")
 
 
 def _manifest_payload(target, request, box):
