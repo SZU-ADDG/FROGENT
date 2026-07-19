@@ -30,7 +30,8 @@ def run_docking_workflow(molecule: MolecularInputBinding, target_request: Target
                          pocket_request: PocketRequest | None, *, target_provider=None,
                          pocket_provider=None, docking_provider=None, interaction_provider=None,
                          config: DockingConfig | None = None, want_interactions: bool = False,
-                         selected_pose_id: str = "") -> DockingWorkflowResult:
+                         selected_pose_id: str = "",
+                         selected_pose_rank: int | None = None) -> DockingWorkflowResult:
     gaps = []
     target = _target(target_request, target_provider, gaps)
     if target is None:
@@ -45,7 +46,7 @@ def run_docking_workflow(molecule: MolecularInputBinding, target_request: Target
     docking = _dock(value, docking_provider)
     gaps.extend(docking.coverage_gaps)
     interaction = _interactions(value, docking, interaction_provider, want_interactions,
-                                selected_pose_id)
+                                selected_pose_id, selected_pose_rank)
     if interaction:
         gaps.extend(interaction.coverage_gaps)
     return DockingWorkflowResult(target, pocket, docking, interaction,
@@ -152,39 +153,43 @@ def _validate_batch(value, batch):
         raise ValueError("docking pose IDs must be unique")
 
 
-def _interactions(value, docking, provider, wanted, pose_id):
+def _interactions(value, docking, provider, wanted, pose_id, pose_rank):
     if not wanted:
         return None
     if docking.status != "completed":
         return InteractionExecution("blocked", coverage_gaps=(
             "interaction analysis requires completed docking",))
-    if not pose_id:
+    if bool(pose_id) == bool(pose_rank):
         return InteractionExecution("blocked", coverage_gaps=(
-            "interaction analysis requires an explicit upstream pose selection",))
-    pose = next((item for item in docking.poses if item.pose_id == pose_id), None)
+            "interaction analysis requires exactly one explicit pose ID or pose rank",))
+    pose = (next((item for item in docking.poses if item.pose_id == pose_id), None)
+            if pose_id else next((item for item in docking.poses
+                                  if item.rank == pose_rank), None))
     if pose is None:
-        return InteractionExecution("blocked", pose_id, coverage_gaps=(
-            "selected pose ID is absent from the docking result",))
+        return InteractionExecution("blocked", pose_id, requested_pose_rank=pose_rank,
+            coverage_gaps=("selected pose is absent from the docking result",))
     if provider is None:
-        return InteractionExecution("blocked", pose_id, coverage_gaps=(
+        return InteractionExecution("blocked", pose.pose_id, pose.rank, pose_rank,
+            coverage_gaps=(
             "PLIP interaction provider is unavailable",))
     provider_id = str(getattr(provider, "provider_id", ""))
     provider_version = str(getattr(provider, "provider_version", ""))
     if not provider_id.strip() or not provider_version.strip():
-        return InteractionExecution("failed", pose_id, coverage_gaps=(
+        return InteractionExecution("failed", pose.pose_id, pose.rank, pose_rank, coverage_gaps=(
             "PLIP provider identity/version is unavailable",))
     try:
         batch = provider.analyze(value, pose)
         _validate_interactions(value, pose, batch, provider_id, provider_version)
         warning = ("Pose interactions are computational observations for the selected artifact; "
                    "a binding mechanism is not established.",)
-        return InteractionExecution("completed", pose_id, batch.interactions, batch.provider,
-                                    batch.provider_version, warning,
+        return InteractionExecution("completed", pose.pose_id, pose.rank, pose_rank,
+                                    batch.interactions, batch.provider, batch.provider_version, warning,
                                     complex_artifact_id=batch.complex_artifact_id,
                                     command_argv=batch.command_argv,
-                                    ligand_residue_identity=batch.ligand_residue_identity)
+                                    ligand_residue_identity=batch.ligand_residue_identity,
+                                    preparation_provenance=batch.preparation_provenance)
     except Exception as exc:
-        return InteractionExecution("failed", pose_id, coverage_gaps=(
+        return InteractionExecution("failed", pose.pose_id, pose.rank, pose_rank, coverage_gaps=(
             f"PLIP interaction analysis failed: {type(exc).__name__}: {exc}",))
 
 

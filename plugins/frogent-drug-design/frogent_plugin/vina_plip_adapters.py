@@ -82,7 +82,13 @@ class PLIPInteractionAdapter:
     def analyze(self, value: DockingInput, pose: DockingPose) -> InteractionBatch:
         prepared = self.preparer.prepare(value, pose)
         if (prepared.source_pose_artifact_id != pose.artifact.id
-                or prepared.target_artifact_id != value.target.structure_artifact.id):
+                or prepared.target_artifact_id != value.target.structure_artifact.id
+                or (prepared.molecule_inchikey and
+                    prepared.molecule_inchikey != value.molecule.inchikey)
+                or (prepared.pocket_artifact_id and
+                    prepared.pocket_artifact_id != value.pocket.artifact.id)
+                or (prepared.resolved_pose_id and prepared.resolved_pose_id != pose.pose_id)
+                or (prepared.resolved_pose_rank and prepared.resolved_pose_rank != pose.rank)):
             raise ValueError("prepared PLIP complex does not match selected pose lineage")
         complex_path = contained_file(self.root, prepared.complex_artifact)
         output_dir = contained_directory(self.root, prepared.output_directory)
@@ -101,7 +107,8 @@ class PLIPInteractionAdapter:
         interactions = _plip_interactions(self.root, report, prepared.ligand_residue_identity)
         return InteractionBatch(pose.pose_id, pose.artifact.id, value.molecule.inchikey,
             value.target.identifier, self.provider_id, self.provider_version, interactions,
-            prepared.complex_artifact.id, argv, prepared.ligand_residue_identity)
+            prepared.complex_artifact.id, argv, prepared.ligand_residue_identity,
+            prepared.preparation_provenance)
 
 
 def _vina_argv(executable, receptor, ligand, output, prepared, config):

@@ -23,6 +23,8 @@ class DockingChatPlan:
     target: TargetRequest
     pocket: PocketRequest | None
     selected_pose_id: str
+    selected_pose_rank: int | None
+    pose_selection_text: str
 
 
 class CodexDockingPlanner:
@@ -59,11 +61,33 @@ def _plan(value, message):
         raise ValueError("target chain must be present in exact target evidence")
     _target_format(target)
     pocket = _pocket(value, message, target)
-    pose = _text(value, "selected_pose_id", empty=True)
-    if pose and pose not in message:
-        raise ValueError("selected pose ID must be an exact user-text span")
+    pose, rank, pose_text = _pose_selection(value, message, operation)
     return DockingChatPlan(operation, molecule_kind, molecule_value, scope, selected,
-                           target, pocket, pose)
+                           target, pocket, pose, rank, pose_text)
+
+
+def _pose_selection(value, message, operation):
+    pose = _text(value, "selected_pose_id", empty=True)
+    rank = value.get("selected_pose_rank")
+    evidence = _text(value, "pose_selection_text", empty=True)
+    if isinstance(rank, bool) or not isinstance(rank, int) or rank < 0:
+        raise ValueError("selected pose rank must be a non-negative integer")
+    if operation == "dock":
+        if pose or rank or evidence:
+            raise ValueError("pose selection is only valid for interaction analysis")
+        return "", None, ""
+    if bool(pose) == bool(rank):
+        raise ValueError("interaction analysis requires exactly one pose ID or pose rank")
+    if not evidence or evidence not in message:
+        raise ValueError("pose selection requires an exact current-message evidence span")
+    if pose:
+        if pose not in evidence:
+            raise ValueError("selected pose ID must occur in exact pose evidence")
+        return pose, None, evidence
+    pattern = rf"(?:pose\s+rank|rank|姿势排名|构象排名)\s*[:#-]?\s*{rank}(?!\d)"
+    if not re.search(pattern, evidence, re.IGNORECASE):
+        raise ValueError("selected pose rank must occur in exact pose evidence")
+    return "", rank, evidence
 
 
 def _pocket(value, message, target):
@@ -150,6 +174,7 @@ _CONTRACT = (
     "Use PDB or UniProt only for explicit accessions; protein names are unverified name_candidate. "
     "A reference ligand must include exact component, chain, and auth residue identity such as "
     "STI:A:999. Never invent a pocket, chain, residue, ligand, artifact, molecular scope, structure, "
-    "or pose. Use none "
-    "for a missing pocket. Request interactions only when explicit; pose selection may stay empty."
+    "or pose. Use none for a missing pocket. For interaction analysis copy exactly one current-"
+    "message pose ID or explicit pose-rank policy and its complete evidence span. Keep both pose "
+    "fields empty for docking-only requests; never infer a best-scoring pose."
 )

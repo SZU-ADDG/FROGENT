@@ -4151,3 +4151,270 @@ Invoke the sanitizer with `--check` for acceptance and reserve `--apply` for an 
 - **Notes**: Re-ran the same project sanitizer with `--check`.
 
 ---
+
+## [ERR-20260719-079] runtime_canary_review_temp_files_created_and_deleted
+
+**Logged**: 2026-07-19T15:38:30+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: validation safety
+
+### Summary
+A Main acceptance command created two temporary sorted comparison files inside an existing runtime canary directory and then deleted those two review-only files.
+
+### Error
+```
+Created and removed .main-review-selected.tmp and .main-review-pdbqt.tmp under the accepted dynamic 1IEP canary directory.
+```
+
+### Context
+- The files were generated solely from read-only projections of `receptor-selected.pdb` and `receptor.pdbqt`.
+- No formal canary artifact, source file, cache, output, result, or external path was modified.
+- Creating and deleting review scratch files inside shared `.runtime` still violated the preservation and deletion-safety boundary.
+
+### Suggested Fix
+Perform runtime artifact comparisons through pipes and standard output, or write a deliberately retained acceptance asset only after its scope and ownership are explicit. Never create or clean review scratch files inside an existing canary directory.
+
+### Metadata
+- Reproducible: yes with the rejected review command pattern
+- Related Files: plugins/frogent-drug-design/.runtime/tools/canaries/1iep/dynamic-implementation/dynamic-rcsb-1iep-20260719
+
+### Resolution
+- **Resolved**: 2026-07-19T15:38:30+08:00
+- **Commit/PR**: pending current capability checkpoint
+- **Notes**: Stopped the scratch-file pattern immediately; subsequent artifact review is restricted to read-only streams and existing files.
+
+---
+
+## [ERR-20260719-080] pdbqt_coordinate_columns_misparsed_in_review
+
+**Logged**: 2026-07-19T15:48:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: scientific validation
+
+### Summary
+The first independent fixed-frame RMSD review parsed whitespace-split PDBQT coordinates from fields 6 through 8 instead of fields 5 through 7, incorporating occupancy and producing an impossible 56.803 Å value.
+
+### Error
+```
+dynamic_heavy_atoms=37 reference_heavy_atoms=37
+mcs_atoms=37 fixed_frame_rmsd=56.803249 A
+```
+
+### Context
+- The source PDBQT row layout is `ATOM serial atom residue residue_number x y z ...` after whitespace splitting.
+- The full 37-heavy-atom mapping and source files were otherwise correct.
+- This was a read-only acceptance calculation and did not modify runtime artifacts.
+
+### Suggested Fix
+Parse PDBQT coordinates from the formal fixed columns or explicitly validated whitespace fields, then sanity-check the coordinate range before accepting any geometry metric.
+
+### Metadata
+- Reproducible: yes with the rejected field slice
+- Related Files: plugins/frogent-drug-design/.runtime/tools/canaries/1iep/dynamic-implementation/dynamic-rcsb-1iep-20260719/dynamic-rcsb-1iep-20260719-pose-1.pdbqt
+
+### Resolution
+- **Resolved**: 2026-07-19T15:48:00+08:00
+- **Commit/PR**: pending current capability checkpoint
+- **Notes**: Reparsed x/y/z from fields 5 through 7; the same 37-heavy-atom fixed-frame comparison is 1.142008 Å.
+
+---
+
+## [ERR-20260719-081] plugin_workdir_venv_path_duplicated
+
+**Logged**: 2026-07-19T15:53:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+A real receptor-preservation validation was launched from the plugin working directory while retaining the project-root-prefixed Python path, so the executable path was duplicated and not found.
+
+### Error
+```
+zsh:1: no such file or directory: plugins/frogent-drug-design/.runtime/app-v4/venv/bin/python
+```
+
+### Context
+- The command failed before importing project code or modifying files.
+- The current working directory was already `plugins/frogent-drug-design`.
+
+### Suggested Fix
+Choose command paths relative to the declared working directory and print or verify the working directory before running scoped acceptance commands.
+
+### Metadata
+- Reproducible: yes from the plugin working directory with the duplicated prefix
+- Related Files: plugins/frogent-drug-design/.runtime/app-v4/venv/bin/python
+
+### Resolution
+- **Resolved**: 2026-07-19T15:53:00+08:00
+- **Commit/PR**: pending current capability checkpoint
+- **Notes**: Re-ran with `.runtime/app-v4/venv/bin/python`; existing 1IEP receptor PDBQT identity and coordinate preservation passed.
+
+---
+
+## [ERR-20260719-082] full_check_script_invoked_without_python
+
+**Logged**: 2026-07-19T15:55:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+Implementation attempted to execute `scripts/check.py` directly even though the file does not have an executable mode, producing a permission error before the test suite started.
+
+### Error
+```
+permission denied: scripts/check.py
+```
+
+### Context
+- No project file was modified by the failed invocation.
+- The validation entrypoint is a Python script and is expected to run through the selected interpreter.
+
+### Suggested Fix
+Invoke the suite as `python3 scripts/check.py` or with the project app-venv interpreter; do not infer executable mode from the file extension.
+
+### Metadata
+- Reproducible: yes by invoking the non-executable script directly
+- Related Files: plugins/frogent-drug-design/scripts/check.py
+
+### Resolution
+- **Resolved**: 2026-07-19T15:55:00+08:00
+- **Commit/PR**: pending current capability checkpoint
+- **Notes**: Implementation reran with `python3 scripts/check.py`; the full suite passed 268/268.
+
+---
+
+## [ERR-20260719-083] zsh_unmatched_optional_report_glob
+
+**Logged**: 2026-07-19T16:03:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+A read-only PLIP report inventory embedded an optional wildcard directly in a zsh loop; zsh rejected the unmatched glob before the intended files were inspected.
+
+### Error
+```
+zsh:1: no matches found: plugins/frogent-drug-design/.runtime/tools/canaries/1iep/run/reference/*report.xml
+```
+
+### Context
+- The failed command performed no writes.
+- The reference reports are stored one directory deeper than the wildcard assumed.
+
+### Suggested Fix
+Use `find` or `rg --files` to inventory optional files before iterating, especially under zsh where unmatched globs are errors.
+
+### Metadata
+- Reproducible: yes with the rejected wildcard
+- Related Files: plugins/frogent-drug-design/.runtime/tools/canaries/1iep/run/reference
+
+### Resolution
+- **Resolved**: 2026-07-19T16:03:00+08:00
+- **Commit/PR**: pending current capability checkpoint
+- **Notes**: Replaced the wildcard with a read-only `find -name '*report.xml'` inventory and obtained all saved report paths.
+
+---
+
+## [ERR-20260719-084] dynamic_plip_canary_missing_explicit_chloride_policy
+
+**Logged**: 2026-07-19T16:31:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tool-use
+
+### Summary
+The first dynamic PLIP canary preparation stopped before PLIP because its receptor component policy did not include the four exact chloride identities already required by the accepted 1IEP dynamic Vina run.
+
+### Error
+```text
+unapproved receptor HETATM components: CL:A:1, CL:A:2, CL:A:4, CL:A:5
+```
+
+### Context
+- The fail-closed component gate behaved correctly.
+- PLIP was not executed and no accepted canary artifact was overwritten.
+- The exclusive run directory was created before receptor selection and remains preserved under the project deletion-safety rules.
+
+### Suggested Fix
+Construct the canary `ReceptorComponentPolicy` from the exact accepted removable component identities, create a separately named run, and execute PLIP once only after receptor selection succeeds.
+
+### Metadata
+- Reproducible: yes when the dynamic PLIP config omits the exact 1IEP chloride identities
+- Related Files: plugins/frogent-drug-design/frogent_plugin/dynamic_plip.py, plugins/frogent-drug-design/.runtime/tools/canaries/1iep/dynamic-plip-implementation
+
+### Resolution
+- **Resolved**: 2026-07-19T16:34:00+08:00
+- **Commit/PR**: pending current capability checkpoint
+- **Notes**: A separately named accepted run used the four exact chloride identities, assembled the dynamic pose complex, and completed the only PLIP execution. The first empty failed directory remains preserved.
+
+---
+
+## [ERR-20260719-085] dynamic_plip_effect_ran_before_hydrogen_preservation_fix
+
+**Logged**: 2026-07-19T16:38:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+The first successful dynamic PLIP report was produced before the pose assembler was updated to preserve explicit Vina hydrogen-parent records, so its fingerprint does not measure the final executable behavior.
+
+### Error
+```text
+accepted pre-fix complex: 37 ligand heavy atoms, 0 explicit ligand hydrogens
+current assembler contract: 37 ligand heavy atoms plus 3 exact H-PARENT hydrogens
+```
+
+### Context
+- The pre-fix PLIP execution completed and its report remains valid for the pre-fix assembler only.
+- Hydrogen preservation can change hydrogen-bond detection and therefore the interaction fingerprint.
+- All existing run directories and reports remain preserved.
+
+### Suggested Fix
+Validate hydrogen serial/name bounds, run one separately named post-fix PLIP correction on the same exact pose/target/pocket, and designate only that post-fix result as current effect evidence.
+
+### Metadata
+- Reproducible: yes by comparing the pre-fix complex to the current pose reconstruction output
+- Related Files: plugins/frogent-drug-design/frogent_plugin/docking_pose_complex.py, plugins/frogent-drug-design/.runtime/tools/canaries/1iep/dynamic-plip-implementation
+
+### Resolution
+- **Resolved**: 2026-07-19T16:45:00+08:00
+- **Commit/PR**: pending current capability checkpoint
+- **Notes**: A separately named post-H run preserved 37 heavy atoms plus 3 exact pose hydrogens, completed PLIP in 1.539 seconds, and produced the same 12-interaction fingerprint as the historical pre-H run. Only the post-H report is current effect evidence.
+
+---
+
+## [ERR-20260719-086] implementation_sanitizer_old_path
+
+**Logged**: 2026-07-19T16:46:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+Implementation invoked a stale plugin-local sanitizer path; the command failed before any write. The repository-root sanitizer entrypoint then passed 982/0/0.
+
+### Suggested Fix
+Run `scripts/sanitize_imported_sources.py --check` from the repository root.
+
+---
+
+## [ERR-20260719-087] implementation_compileall_touched_shared_pycache
+
+**Logged**: 2026-07-19T16:47:00+08:00
+**Priority**: medium
+**Status**: contained
+**Area**: workspace-hygiene
+
+### Summary
+Implementation ran `compileall`, which may have updated files inside the pre-existing shared `frogent_plugin/__pycache__`. The cache was preserved and no cleanup or reconstruction was attempted.
+
+### Suggested Fix
+Use `PYTHONDONTWRITEBYTECODE=1` for validation in the shared worktree and avoid compile/compileall hygiene probes.
+
+---

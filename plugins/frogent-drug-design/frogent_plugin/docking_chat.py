@@ -52,7 +52,8 @@ class DockingChatHandler:
             target_provider=self.target_provider, pocket_provider=self.pocket_provider,
             docking_provider=self.docking_provider, interaction_provider=self.interaction_provider,
             config=None, want_interactions=plan.operation == "dock_and_interactions",
-            selected_pose_id=plan.selected_pose_id)
+            selected_pose_id=plan.selected_pose_id,
+            selected_pose_rank=plan.selected_pose_rank)
         events.extend(_workflow_events(workflow, identity_gaps))
         answer = _answer(binding, workflow, identity_gaps)
         events.append(StreamEvent("message.delta", {"content": answer}, "docking"))
@@ -136,10 +137,14 @@ def _workflow_events(workflow, identity_gaps):
         item = workflow.interaction
         values.append(StreamEvent("tool.completed", {"capability_id": "sar.analyze",
             "status": item.status, "pose_id": item.pose_id,
+            "resolved_pose_rank": item.pose_rank,
+            "requested_pose_rank": item.requested_pose_rank,
             "provider": item.provider, "provider_version": item.provider_version,
             "complex_artifact_id": item.complex_artifact_id,
             "ligand_residue_identity": item.ligand_residue_identity,
             "command_argv": list(item.command_argv),
+            "preparation_provenance": [_preparation_payload(value)
+                                       for value in item.preparation_provenance],
             "interactions": [_interaction_payload(value) for value in item.interactions],
             "warnings": list(item.warnings), "coverage_gaps": list(item.coverage_gaps)}, "docking"))
     return values
@@ -162,7 +167,8 @@ def _preparation_payload(item):
             "output_artifact_ids": [value.id for value in item.output_artifacts],
             "command_argv": list(item.command_argv), "lossless": item.lossless,
             "moved_record_count": item.moved_record_count,
-            "dropped_record_count": item.dropped_record_count}
+            "dropped_record_count": item.dropped_record_count,
+            "details": list(item.details)}
 
 
 def _plan_payload(plan):
@@ -170,7 +176,9 @@ def _plan_payload(plan):
             "operation": plan.operation, "molecule": plan.molecule_value,
             "target_kind": plan.target.kind, "target_value": plan.target.value,
             "pocket_id": plan.pocket.pocket_id if plan.pocket else "",
-            "selected_pose_id": plan.selected_pose_id}
+            "selected_pose_id": plan.selected_pose_id,
+            "selected_pose_rank": plan.selected_pose_rank,
+            "pose_selection_text": plan.pose_selection_text}
 
 
 def _answer(binding, workflow, identity_gaps):
@@ -195,7 +203,9 @@ def _answer(binding, workflow, identity_gaps):
                      f"artifact={pose.artifact.id}")
     if workflow.interaction:
         lines.append(f"interaction status: {workflow.interaction.status}; "
-                     f"selected_pose={workflow.interaction.pose_id or 'none'}")
+                     f"requested_rank={workflow.interaction.requested_pose_rank or 'none'}; "
+                     f"resolved_rank={workflow.interaction.pose_rank or 'none'}; "
+                     f"resolved_pose={workflow.interaction.pose_id or 'none'}")
         for item in workflow.interaction.interactions:
             lines.append(f"interaction: {item.interaction_type}; {item.protein_chain}:"
                          f"{item.protein_residue}; ligand={item.ligand_feature}")

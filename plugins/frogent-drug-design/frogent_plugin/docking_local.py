@@ -122,6 +122,11 @@ class PLIPPreparedInput:
     source_pose_artifact_id: str
     target_artifact_id: str
     ligand_residue_identity: str
+    molecule_inchikey: str = ""
+    pocket_artifact_id: str = ""
+    resolved_pose_id: str = ""
+    resolved_pose_rank: int = 0
+    preparation_provenance: tuple[PreparationProvenance, ...] = ()
 
     def __post_init__(self) -> None:
         if (not self.run_id.strip() or not self.output_directory.is_absolute()
@@ -129,6 +134,8 @@ class PLIPPreparedInput:
             raise ValueError("prepared PLIP output identity is invalid")
         if not self.ligand_residue_identity.strip():
             raise ValueError("prepared PLIP ligand residue identity is invalid")
+        if self.resolved_pose_rank < 0 or isinstance(self.resolved_pose_rank, bool):
+            raise ValueError("prepared PLIP pose rank is invalid")
 
 
 class PLIPInputPreparer(Protocol):

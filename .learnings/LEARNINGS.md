@@ -1098,3 +1098,57 @@ Treat manifests as typed declarations and caches. Recompute safety-critical deri
 - Last-Seen: 2026-07-19
 
 ---
+
+## [LRN-20260719-021] best_practice
+
+**Logged**: 2026-07-19T15:58:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: tool-use
+
+### Summary
+Dynamic docking preparation must attest the actual conformer settings and verify selected receptor heavy-atom conservation after the external preparation tool.
+
+### Details
+The initial dynamic Vina path preserved every selected polymer ATOM record before Meeko, yet its post-Meeko check only required nonempty same-chain finite coordinates and its RDKit provenance hard-coded default settings. Main review showed that an injected conformer could therefore be mislabeled and a malformed Meeko output could silently lose a heavy atom. The accepted contract exposes method, seed, iteration limit, and thread count from the builder itself; it compares every selected polymer heavy-atom residue/name/coordinate against the receptor PDBQT while allowing hydrogen additions and ordering changes. The saved 1IEP output passes with 2229 source heavy atoms, zero missing or extra heavy atoms, and zero coordinate drift.
+
+### Suggested Action
+For every structure-preparation adapter, derive provenance from the executing object and enforce invariant conservation across its input and output artifacts. Keep transformations such as added hydrogens explicit, and stop before scoring whenever an atom identity, coordinate, configuration, or alternate-location policy is not attested.
+
+### Metadata
+- Source: code_review_real_tool_validation
+- Related Files: plugins/frogent-drug-design/frogent_plugin/docking_conformer.py, plugins/frogent-drug-design/frogent_plugin/dynamic_vina.py, plugins/frogent-drug-design/tests/test_dynamic_vina.py
+- Tags: docking, rdkit, meeko, provenance, atom-conservation, fail-closed
+- Pattern-Key: tool-use.attest_preparation_settings_and_atom_conservation
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-022] best_practice
+
+**Logged**: 2026-07-19T16:18:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: tool-use
+
+### Summary
+Ligand atom serials in an assembled protein-ligand PDB must be allocated above the maximum retained receptor serial, with explicit duplicate and bounds checks.
+
+### Details
+The first dynamic PLIP complex assembler used retained receptor atom count plus one as the ligand serial start. A selected chain can retain high or noncontiguous source serials, so count-based allocation can collide with an existing receptor atom even when the total number of records looks correct. That collision corrupts atom identity and CONECT lineage before PLIP analysis.
+
+### Suggested Action
+Parse and validate every retained receptor ATOM serial, reject malformed or duplicate values, allocate the ligand from `max(serial) + 1`, and prove disjoint serial sets with a high/noncontiguous-chain regression before writing the complex.
+
+### Metadata
+- Source: code_review
+- Related Files: plugins/frogent-drug-design/frogent_plugin/dynamic_plip.py, plugins/frogent-drug-design/tests/test_docking_workflow.py
+- Tags: plip, pdb, atom-serial, complex-assembly, fail-closed
+- Pattern-Key: tool-use.allocate_pdb_serials_from_retained_maximum
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---

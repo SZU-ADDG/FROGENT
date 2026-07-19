@@ -61,7 +61,7 @@ class Planner:
     def __init__(self, pocket): self.pocket = pocket
     def plan(self, message):
         return DockingChatPlan("dock", "smiles", "CCO", None, "",
-                               TargetRequest("pdb", "1IEP", "A"), self.pocket, "")
+                               TargetRequest("pdb", "1IEP", "A"), self.pocket, "", None, "")
 
 
 class Normalizer:

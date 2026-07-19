@@ -16,8 +16,6 @@ class TargetRequest:
     def __post_init__(self) -> None:
         if self.kind not in {"pdb", "uniprot", "name_candidate"} or not self.value.strip():
             raise ValueError("target request is invalid")
-
-
 @dataclass(frozen=True, slots=True)
 class VerifiedTargetIdentity:
     kind: str
@@ -39,8 +37,6 @@ class VerifiedTargetIdentity:
             raise ValueError("target remote provenance must be complete")
         if self.metadata_url: _texts((self.metadata_url, self.coordinate_url),
                                     "target remote provenance")
-
-
 @dataclass(frozen=True, slots=True)
 class PocketRequest:
     pocket_id: str
@@ -67,8 +63,6 @@ class PocketRequest:
         if self.reference_ligand:
             _texts((self.reference_ligand,), "reference ligand")
         _unique(self.residues, "pocket residues")
-
-
 @dataclass(frozen=True, slots=True)
 class PocketBinding:
     pocket_id: str
@@ -94,8 +88,6 @@ class PocketBinding:
             raise ValueError("reference-ligand pocket binding is missing its identity")
         if self.reference_ligand:
             _texts((self.reference_ligand,), "reference ligand binding")
-
-
 @dataclass(frozen=True, slots=True)
 class DockingConfig:
     pose_count: int = 3
@@ -123,8 +115,6 @@ class DockingConfig:
                 or not math.isfinite(self.energy_range) or self.energy_range <= 0:
             raise ValueError("docking energy range must be positive and finite")
         _texts((self.score_name,), "docking score name")
-
-
 @dataclass(frozen=True, slots=True)
 class DockingInput:
     molecule: MolecularInputBinding
@@ -133,8 +123,6 @@ class DockingInput:
     config: DockingConfig
     provider: str = ""
     provider_version: str = ""
-
-
 @dataclass(frozen=True, slots=True)
 class DockingPose:
     pose_id: str
@@ -148,8 +136,6 @@ class DockingPose:
         if isinstance(self.score, bool) or not isinstance(self.score, (int, float)) \
                 or not math.isfinite(self.score):
             raise ValueError("docking pose score must be finite")
-
-
 @dataclass(frozen=True, slots=True)
 class DockingBatch:
     molecule_smiles: str
@@ -171,8 +157,6 @@ class DockingBatch:
                "docking batch")
         if self.score_direction not in {"lower_is_better", "higher_is_better"}:
             raise ValueError("docking batch score direction is invalid")
-
-
 @dataclass(frozen=True, slots=True)
 class DockingExecution:
     status: str
@@ -189,8 +173,6 @@ class DockingExecution:
     def __post_init__(self) -> None:
         if self.status not in {"completed", "blocked", "failed"}:
             raise ValueError("docking execution status is invalid")
-
-
 @dataclass(frozen=True, slots=True)
 class InteractionEvidence:
     interaction_type: str
@@ -220,12 +202,15 @@ class InteractionBatch:
     complex_artifact_id: str = ""
     command_argv: tuple[str, ...] = ()
     ligand_residue_identity: str = ""
+    preparation_provenance: tuple[PreparationProvenance, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
 class InteractionExecution:
     status: str
     pose_id: str = ""
+    pose_rank: int = 0
+    requested_pose_rank: int | None = None
     interactions: tuple[InteractionEvidence, ...] = ()
     provider: str = ""
     provider_version: str = ""
@@ -234,10 +219,16 @@ class InteractionExecution:
     complex_artifact_id: str = ""
     command_argv: tuple[str, ...] = ()
     ligand_residue_identity: str = ""
+    preparation_provenance: tuple[PreparationProvenance, ...] = ()
 
     def __post_init__(self) -> None:
         if self.status not in {"completed", "blocked", "failed"}:
             raise ValueError("interaction execution status is invalid")
+        if isinstance(self.pose_rank, bool) or self.pose_rank < 0:
+            raise ValueError("interaction pose rank is invalid")
+        if (self.requested_pose_rank is not None and
+                (isinstance(self.requested_pose_rank, bool) or self.requested_pose_rank <= 0)):
+            raise ValueError("requested pose rank is invalid")
 
 
 @dataclass(frozen=True, slots=True)

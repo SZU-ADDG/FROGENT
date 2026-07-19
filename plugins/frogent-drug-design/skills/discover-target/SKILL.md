@@ -35,3 +35,4 @@ Return a compact table with the standardized target, identifiers, supporting evi
 - Ask for clarification when two standardized targets remain equally plausible.
 - Block docking when the target accession is unknown, ambiguous, mismatched, or the requested chain is absent.
 - Build a pocket only from explicit auth-numbered residues, an exact reference ligand such as `STI:A:999`, or an already verified pocket artifact. Preserve target-artifact lineage and derive the Å box from verified coordinates with the configured margin; never invent coordinates or choose among multiple ligands.
+- Before receptor preparation, choose one explicit auth chain and declare water, reference-ligand, and other HETATM handling. Preserve all selected polymer atoms; block unknown cofactors, metals, malformed records, and interrupted residues until an exact policy or lossless repair is supplied.

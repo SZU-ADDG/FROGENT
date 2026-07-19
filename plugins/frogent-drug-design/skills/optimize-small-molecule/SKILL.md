@@ -17,7 +17,7 @@ Run a traceable lead-optimization loop while preserving the baseline.
 
 1. Use `$prepare-molecule` on the baseline and resolve every identity or stereochemistry blocker.
 2. Verify the target accession/chain and bind an explicit residue or artifact pocket before calling `docking.generate-conformation`. Preserve every pose ID, artifact, score, and direction.
-3. Require the user or upstream workflow to select a pose, then inspect that exact artifact with `sar.analyze`. Treat PLIP interactions as computational evidence and preserve local failures without discarding the docking poses.
+3. Require one explicit current-message pose ID or pose rank, resolve rank to the generated ID/artifact from that docking run, then inspect that exact artifact with `sar.analyze`. Treat PLIP interactions as computational evidence and preserve local failures without discarding the docking poses.
 4. Select a fragment for replacement only when the interaction evidence supports it.
 5. Prepare the retained scaffold with `fragment.reconstruct`.
 6. Generate a bounded analogue set with `ligand.generate-from-fragments`.

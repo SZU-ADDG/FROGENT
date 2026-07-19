@@ -261,16 +261,46 @@ No-key RCSB target provider 接受显式 4-character PDB ID，验证 entry metad
 - Real bounded 1IEP canary 下载的 PDB artifact 为 434,565 bytes，验证 auth chains A/B。Official archive identities 为 STI:A:201 与 STI:B:202；另一个 prepared complex 中的 STI:A:999 被正确拒绝，同时返回 STI:A:201 candidate。
 - Exact STI:A:201 pocket 的 center 为 `(15.190, 53.903, 16.917)` Å，size 为 `(18.664, 26.739, 23.526)` Å，margin=5.0 Å；Main independent artifact revalidation PASS。
 
-当前 provider 只支持 legacy PDB，mmCIF compatibility 与 UniProt/name-to-PDB mapping 仍 pending。Ambiguous multi-model 或 alternate-location records fail closed。New targets 仍需 dynamic Meeko preparation/executable deployment，把新获取的 target 与 exact selected molecule 转为 Vina-ready artifacts；pose selection 保持 explicit policy。这一 exposed 1IEP case 不支持 general docking effectiveness 或 affinity claim。
+当前 provider 只支持 legacy PDB，mmCIF compatibility 与 UniProt/name-to-PDB mapping 仍 pending。Ambiguous multi-model 或 alternate-location records fail closed。下述 dynamic block 已接通 newly acquired target 与 exact selected molecule 的 Vina-ready preparation；pose selection 保持 explicit policy。这一 exposed 1IEP case 不支持 general docking effectiveness 或 affinity claim。
+
+## Dynamic RCSB → RDKit → Meeko → Vina effect
+
+Normal `mode=docking` 现在可以使用 explicit RCSB PDB ID、auth chain、exact reference-ligand pocket 与 exact selected molecular binding，动态生成可执行的 Vina inputs。Ligand chain 将 selected canonical isomeric SMILES/InChIKey/scope 绑定到 deterministic RDKit ETKDG conformer（typed method、seed、`max_iterations`、threads），依次生成 SDF 与 project-local Meeko ligand PDBQT。Receptor chain 从 current RCSB artifact 选择一个 exact auth chain，应用 explicit component policy，生成 selected receptor PDB 与 project-local Meeko receptor PDBQT，再绑定 exact verified pocket box 进入 Vina。
+
+- Runtime defaults 为 9 poses、exhaustiveness 8、cpu 4、seed 20260719、energy range 10.0，score contract 为 `vina_affinity_kcal_per_mol` / `lower_is_better`；没有 default wall-clock timeout。
+- Disconnected identity、conformer/stereo drift、unapproved HETATM/cofactor/metal、wrong chain/reference ligand、interrupted residue、selected polymer altloc、missing/extra/duplicate/coordinate-moved receptor heavy atom，以及 path/config/tool failure 都会在 Vina 前 fail closed。Safe partial result 保留 molecule、target 与 pocket lineage。
+- Factory 只在 project-contained Vina executable、Meeko ligand preparation executable 与 Meeko receptor preparation executable 三条路径全部配置时启用；缺少任一路径时 docking 保持 safely blocked。
+- P0 review 已把 actual conformer settings、exact receptor heavy-atom preservation、deterministic factory config 与 polymer-altloc blocking 纳入 runtime contract。
+
+Real exposed 1IEP dynamic canary 使用 exact cationic ligand InChIKey `KTUFNOKKBVMGRW-UHFFFAOYSA-O`（37 heavy atoms）与 verified STI:A:201 pocket：center `(15.190, 53.903, 16.917)` Å，size `(18.664, 26.739, 23.526)` Å。A-chain 的 2,229 个 polymer heavy atoms 经 Meeko 后保持 zero missing、extra 与 coordinate drift；component policy 移除 exact STI 37 atoms、99 A-chain waters 与 approved 4 chloride atoms，并排除 B chain。
+
+Preparation 约 2.698s，Vina 约 8.280s，wall 10.991s；9 个 scores 为 `[-12.975, -10.030, -9.966, -9.646, -9.362, -9.341, -9.246, -9.101, -9.081]`。Main independent 37-heavy-atom mapping 得到 dynamic pose 1 对 official crystal-derived ligand 的 fixed-frame RMSD 1.142008 Å，对 earlier accepted Vina pose 1 的 RMSD 1.418959 Å。这只是一项 exposed single-case redocking signal，不支持 general docking quality、affinity 或 cross-target claim。
+
+## Dynamic selected-pose PLIP effect
+
+Normal `mode=docking` 已支持 exact target/pocket/molecule → dynamic Vina → current-message explicit pose ID 或 rank → resolved generated pose ID/artifact → project-contained PLIP。Interaction analysis 必须且只能指定一个 pose ID/rank；runtime 不自动选择 lowest-score 或“best” pose。
+
+- Dynamic assembler 重新验证 molecule scope/SMILES/InChIKey、target/pocket geometry/artifacts 与 pose rank/ID/artifact；解析 `SMILES`、`SMILES IDX`、`H PARENT`，生成带 bond records 的 LIG:Z:1 complex。Receptor atom serials 原样保留，ligand serials 从 retained receptor maximum serial + 1 开始。
+- Factory 要求显式 project-contained `FROGENT_PLIP_EXECUTABLE` 与 version；default timeout 保持 `None`。PLIP 缺失或失败时，已完成 docking 作为 safe partial 保留。
+- Typed events/SSE 包含 requested rank、resolved rank/pose ID、complex artifact、preparation provenance、command 与 interactions。
+
+当前 accepted post-H 1IEP evidence 使用 pose `dynamic-rcsb-1iep-20260719-pose-1` / rank 1、molecule InChIKey `KTUFNOKKBVMGRW-UHFFFAOYSA-O`、target 1IEP、pocket `rcsb-pocket-sti-a-201` 与 ligand LIG:Z:1。Complex 包含 2,229 receptor `ATOM` records、37 ligand heavy atoms 与 3 exact `H PARENT` pose hydrogens；40 个 ligand coordinates 与 Vina pose 完全一致，max delta=0.0。Serial sets unique/disjoint：receptor max=2229，ligand=2230..2269。
+
+PLIP 3.0.0 exit 0、1.539s，得到 12 interactions：hydrophobic LEU248/TYR253/VAL256/ALA269/LYS271/VAL299/ILE313/THR315/LEU370/ASP381、ASP381 salt bridge、TYR253 pi stack。
+
+- 对 corrected reference：共享 hydrophobic LEU248/TYR253/LYS271/ILE313/THR315/ASP381、ASP381 salt 与 TYR253 pi；丢失 hydrophobic PHE382 与 MET318/ASP381 H-bonds；新增 hydrophobic VAL256/ALA269/VAL299/LEU370。
+- 对 earlier accepted Vina pose 1：共享 unique hydrophobic LEU248/TYR253/VAL256/ALA269/LYS271/ILE313/THR315/LEU370/ASP381 与 TYR253 pi；丢失 GLU286/PHE382 hydrophobic 与 MET318/ASP381 H-bonds；新增 VAL299 hydrophobic 与 ASP381 salt。
+
+Historical pre-H successful run 保留 37 heavy/0 H 与同一 12-interaction fingerprint；只有 post-H run 作为当前 effect evidence。初始 chloride-policy failure directory 继续保留，并证明 component policy 会 fail closed。Explicit pose hydrogens 未恢复 reference H-bonds；protonation/tautomer/pH applicability 仍 unresolved。一个 exposed 1IEP case 不支持 general docking quality、affinity、mechanism 或 automated pose-selection validity。
 
 ## 最新验证
 
-- Main focused target/docking + architecture：`35/35 PASS`；full suite：`261/261 PASS`。
+- Implementation focused：`42/42 PASS`；Main full `scripts/check.py`：`276/276 PASS`。
 - Official plugin validator，以及 `discover-target`、`prepare-molecule`、`evaluate-candidate`、`optimize-small-molecule` validators PASS。
-- Sanitizer `982/0/0`；real artifact revalidation、diff 与 hygiene PASS。
+- Sanitizer `982/0/0`；diff 与 hygiene PASS。Main 独立重解析 post-H complex/report，确认 37+3 ligand atoms、coordinate max delta 0.0、serial disjointness 与上述 interaction comparisons。
 
 ## 下一步
 
-1. 对 newly acquired RCSB target 与 exact selected molecule 执行 dynamic Meeko preparation，生成 Vina-ready artifacts。
-2. 全程保留 lossless normalization、target/pocket lineage 与 explicit pose-selection policy。
-3. 随后扩展 mmCIF compatibility；依赖未接入模型的完整 drug-design tasks 继续 deferred。
+1. 下一性能块聚焦 protonation/tautomer/pH-aware preparation 与 multi-case target/pocket validation。
+2. 继续扩展 residue-only/multichain policy、cofactor/metal parameterization 与 mmCIF compatibility。
+3. 建立 cross-target calibration 前不作 general docking quality 或 affinity claim；依赖未接入模型的完整 drug-design tasks 继续 deferred。

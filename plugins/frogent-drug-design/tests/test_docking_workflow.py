@@ -118,7 +118,8 @@ def planner_value(**updates):
         "pocket_artifact_id": "",
         "pocket_artifact_name": "", "pocket_artifact_media_type": "",
         "pocket_artifact_uri": "", "pocket_text": "site-1 ASP25 GLY27",
-        "selected_pose_id": "pose-2"}
+        "selected_pose_id": "pose-2", "selected_pose_rank": 0,
+        "pose_selection_text": "pose-2"}
     value.update(updates)
     return value
 
@@ -143,6 +144,13 @@ class DockingWorkflowTests(unittest.TestCase):
         self.assertEqual(result.docking.docking_input.config.score_direction, "lower_is_better")
         self.assertEqual(plip.calls[0][1].pose_id, "pose-2")
         self.assertEqual(result.interaction.interactions[0].protein_residue, "ASP25")
+        ranked = run_docking_workflow(MOLECULE, TargetRequest("pdb", "1ABC", "A"),
+            POCKET_REQUEST, target_provider=TargetProvider(), pocket_provider=PocketProvider(),
+            docking_provider=DockProvider(), interaction_provider=PLIPProvider(),
+            want_interactions=True, selected_pose_rank=1)
+        self.assertEqual((ranked.interaction.requested_pose_rank,
+                          ranked.interaction.pose_rank, ranked.interaction.pose_id),
+                         (1, 1, "pose-1"))
 
     def test_missing_or_unverified_target_and_pocket_are_zero_call(self):
         dock = DockProvider()
@@ -210,7 +218,7 @@ class DockingWorkflowTests(unittest.TestCase):
             docking_provider=DockProvider(), interaction_provider=plip, want_interactions=True)
         self.assertEqual(result.interaction.status, "blocked")
         self.assertEqual(plip.calls, [])
-        self.assertIn("explicit upstream pose selection", result.coverage_gaps[-1])
+        self.assertIn("exactly one explicit pose", result.coverage_gaps[-1])
 
     def test_malformed_provider_output_is_local_failure(self):
         class BadDock(DockProvider):
@@ -403,11 +411,28 @@ class DockingChatTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "exact user-text span"):
             CodexDockingPlanner(StructuredClient(planner_value(target_value="2XYZ"))).plan(MESSAGE)
 
+    def test_native_plan_requires_one_exact_pose_id_or_rank_evidence(self):
+        message = ("Dock CCO to 1ABC chain A using site-1 ASP25 GLY27; "
+                   "select pose rank 1 for PLIP")
+        value = planner_value(selected_pose_id="", selected_pose_rank=1,
+                              pose_selection_text="select pose rank 1 for PLIP")
+        plan = CodexDockingPlanner(StructuredClient(value)).plan(message)
+        self.assertEqual((plan.selected_pose_rank, plan.selected_pose_id), (1, ""))
+        for mutation, expected in (
+            ({"selected_pose_rank": 0, "pose_selection_text": ""}, "exactly one"),
+            ({"selected_pose_id": "pose-2", "selected_pose_rank": 1}, "exactly one"),
+            ({"pose_selection_text": ""}, "current-message evidence"),
+            ({"pose_selection_text": "select pose rank 2 for PLIP"}, "current-message evidence"),
+        ):
+            with self.subTest(mutation=mutation), self.assertRaisesRegex(ValueError, expected):
+                CodexDockingPlanner(StructuredClient({**value, **mutation})).plan(message)
+
     def test_native_plan_binds_exact_reference_ligand_identity(self):
         message = "Dock CCO to 1ABC chain A using pocket-site STI:A:999"
         value = planner_value(operation="dock", pocket_id="pocket-site",
             pocket_kind="reference_ligand", residue_ids=[], reference_ligand="STI:A:999",
-            pocket_text="pocket-site STI:A:999", selected_pose_id="")
+            pocket_text="pocket-site STI:A:999", selected_pose_id="",
+            selected_pose_rank=0, pose_selection_text="")
         plan = CodexDockingPlanner(StructuredClient(value)).plan(message)
         self.assertEqual(plan.pocket.reference_ligand, "STI:A:999")
         self.assertEqual(plan.pocket.source_kind, "reference_ligand")
@@ -425,6 +450,20 @@ class DockingChatTests(unittest.TestCase):
         self.assertIn("pocket.prepare", capabilities)
         self.assertIn("docking.generate-conformation", capabilities)
         self.assertIn("sar.analyze", capabilities)
+
+    def test_chat_rank_policy_reports_requested_and_resolved_dynamic_pose(self):
+        message = ("Dock CCO to 1ABC chain A using site-1 ASP25 GLY27; "
+                   "select pose rank 1 for PLIP")
+        plan = planner_value(selected_pose_id="", selected_pose_rank=1,
+                             pose_selection_text="select pose rank 1 for PLIP")
+        result = self.handler(plan).run(message,
+            ExecutionContext("u", "c", "j", ROOT.resolve()))
+        event = next(item for item in result.events
+                     if item.payload.get("capability_id") == "sar.analyze")
+        self.assertEqual((event.payload["requested_pose_rank"],
+                          event.payload["resolved_pose_rank"], event.payload["pose_id"]),
+                         (1, 1, "pose-1"))
+        self.assertIn("requested_rank=1; resolved_rank=1; resolved_pose=pose-1", result.answer)
 
     def test_english_chinese_routing_and_research_protection(self):
         self.assertTrue(is_clear_docking_intent("Run docking for ligand CCO at PDB 1ABC"))

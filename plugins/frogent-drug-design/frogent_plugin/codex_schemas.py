@@ -118,4 +118,6 @@ def docking_planner_schema() -> dict[str, object]:
         "pocket_artifact_uri": {"type": "string"},
         "pocket_text": {"type": "string"},
         "selected_pose_id": {"type": "string"},
+        "selected_pose_rank": {"type": "integer", "minimum": 0},
+        "pose_selection_text": {"type": "string"},
     })

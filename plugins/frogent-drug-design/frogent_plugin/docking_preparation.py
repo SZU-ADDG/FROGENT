@@ -16,6 +16,7 @@ class PreparationProvenance:
     lossless: bool
     moved_record_count: int = 0
     dropped_record_count: int = 0
+    details: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         values = (self.tool, self.version, self.operation, *self.command_argv)
@@ -31,3 +32,5 @@ class PreparationProvenance:
             raise ValueError("preparation record counts must be non-negative integers")
         if self.lossless and self.dropped_record_count:
             raise ValueError("lossless preparation cannot drop records")
+        if any(not isinstance(value, str) or not value.strip() for value in self.details):
+            raise ValueError("preparation details must be non-empty strings")
