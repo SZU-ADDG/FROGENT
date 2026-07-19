@@ -245,7 +245,7 @@ Official no-key PubChem PUG REST resolver 可按 exact selected full/parent InCh
 
 Sodium acetate exact lookup 同时返回 incomplete CID 31372 与 titled complete CID 517045；两者 structural fingerprints 一致，runtime 因恰有一个带 title 的完整记录而选择 CID 517045。结构冲突、多个完整 records 或 ambiguity fail closed；name lookup 保持 strict single-record。Fresh evidence 包含 L-lactic acid→CID 107689 ready ADMET plan、错误 theobromine label 的 caffeine structure 被校正/拒绝、caffeine CID 2519 vs theobromine CID 5429 distinct symmetric comparison，以及 sodium acetate full→CID 517045/parent acetate→CID 175 的独立 scopes 与 zero gaps。Bounded live metadata panel 的 aspirin/caffeine/theobromine/L-lactic acid/sodium acetate/choline PubChem→RDKit agreement 为 6/6。
 
-PubChem block 验收时 catalog ADMET port 9004 没有 listener；下述 in-process ADMET-AI block 已关闭 prediction execution gap。PubChem resolver 仍是 direct helper，尚未自动注入 Planner/factory。Docking/retrosynthesis/SAR、Literature Skill ordering、pose/interaction artifacts 与 target/pocket validation 保持 pending；charged-species exact mass 仍可能受 electron-mass convention 影响。
+PubChem block 验收时 catalog ADMET port 9004 没有 listener；下述 in-process ADMET-AI block 已关闭 prediction execution gap。PubChem resolver 仍是 direct helper，尚未自动注入 Planner/factory。下述 project-local Vina/Meeko/PLIP block 已关闭 local docking 与 pose-interaction execution gap；retrosynthesis/SAR、Literature Skill ordering、generic target/pocket validation 与 automated artifact acquisition 保持 pending；charged-species exact mass 仍可能受 electron-mass convention 影响。
 
 ### ADMET-AI execution effect
 
@@ -267,12 +267,24 @@ Main 真实 Flask `/api/chat` canary 使用 direct collaboration subagent planne
 
 回答声明 computational point prediction 与 `experimental_evidence=false`，并披露 calibrated per-prediction uncertainty、model applicability domain、cross-endpoint score comparability 均未建立；不作安全、暴露量、总体分数或候选选择结论。
 
+### Project-local Vina / Meeko / PLIP effect
+
+此前 Vina/PLIP unavailable、效果 `not_measured` 的边界已经关闭。Project-contained runtime 现有 official AutoDock Vina 1.2.7 executable `.runtime/tools/vina/1.2.7/vina`；app-v4 venv 现有 PLIP 3.0.0、OpenBabel 3.2.1、Meeko 0.7.1、Gemmi 0.7.5 与 lxml 6.1.1。该能力不需要 API key，也未使用 global、Homebrew 或 Docker installation。`requirements-app-v4` 声明 Python dependencies；official Vina binary 保持为独立 project-contained executable。
+
+Agent 已可执行 typed verified target/pocket → exact `MolecularInputBinding` → Vina poses → explicit selected-pose PLIP chain。Stable pose IDs/ranks/artifacts、score direction、executable/version/argv、input artifacts、preparation provenance 与 safe partial failures 全部保留。App-v4 只把明确的 English/Chinese docking 或 PLIP action 路由到该能力，literature/ambiguous requests 继续 research；chat 继承 `provider.default_config`。Canary 固定 `pose_count=9`、`exhaustiveness=8`、`cpu=4`、`seed=20260719`、`energy_range=10`，score 为 `vina_affinity_kcal_per_mol` / `lower_is_better`。
+
+Meeko provenance 要求恰好三步：lossless receptor normalization、ligand preparation、receptor preparation；accepted canary 为 `moved=1`、`dropped=0`，dropped/interrupted records 会 fail closed。Real exposed official 1IEP canary 的 9 个 scores 为 `-13.199, -11.240, -11.119, -10.634, -9.655, -8.954, -8.826, -8.428, -8.141`。Pose 1 的 37-heavy-atom fixed-frame RMSD 为 0.9007 Å（相对 official input/crystal-derived ligand）与 0.0535 Å（相对 official Vina pose 1）。
+
+PLIP `--nohydro --maxthreads 1` 对 pose 1 报告 12 hydrophobic、MET318/ASP381 H-bonds、TYR253 pi-stack 与 no salt bridge。Reference comparison 保留全部 7 个 hydrophobic residues、MET318/ASP381 H-bonds 与 TYR253 pi-stack；ASP381 salt bridge 丢失；新增 VAL256、ALA269、GLU286、LEU370 hydrophobic contacts。
+
+这项 single exposed redocking diagnostic 只支持 exact-bound local execution 与 interaction diagnostics，不支持 broad docking effectiveness、binding affinity、mechanism、experimental effect、applicability-domain 或 cross-target calibration claim。Generic verified target identity/pocket providers 与 automated artifact acquisition 仍 pending；local Meeko/Vina/PLIP 已可通过 injectable exact-bound adapters 使用。Pose selection 保持 explicit user/upstream workflow policy。
+
 ### Verification
 
-Full `scripts/check.py` 234/234 PASS；`prepare-molecule`、`evaluate-candidate` Skill validators 与 official plugin validator PASS，sanitizer 982/0/0、diff PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
+Main focused docking + architecture `24/24 PASS`，full suite `250/250 PASS`；official plugin validator、四个相关 Skill validators、sanitizer `982/0/0` 与 diff check PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
 
 ### 下一性能块
 
-1. 下一 capability block 转向 evidence-bound docking/target-pocket/PLIP tool workflow。
-2. 先验证 target/pocket identity 与 interaction artifact provenance，再执行并解释 docking/PLIP 工具。
-3. 当前 docking 尚未完成；PDF/registry 测量项与依赖未接入模型的完整 drug-design tasks 继续 deferred。
+1. 接入 generic verified target identity/pocket providers 与 automated artifact acquisition，再将 local exact-bound adapters 扩展到小型多 target/pocket panel。
+2. 保持 explicit pose-selection policy，继续验证 interaction artifacts、failure recovery 与 cross-target limits。
+3. 依赖未接入模型的完整 drug-design tasks 继续 deferred。

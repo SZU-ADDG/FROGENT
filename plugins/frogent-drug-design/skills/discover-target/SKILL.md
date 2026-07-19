@@ -18,7 +18,7 @@ Build a traceable target shortlist before starting structure-based design.
 1. Normalize the disease term and record unresolved ambiguity.
 2. Use `target.discover` for a focused target-and-ligand result.
 3. Use `target.list-by-disease` when the request needs a broader shortlist.
-4. Resolve every retained target with `target.standardize`.
+4. Resolve every retained target with `target.standardize`. For structural work, bind the exact PDB or UniProt accession, chain set, structure artifact, provider, and version. A name or model-memory association remains a candidate until this identity agrees with the requested accession.
 5. Use `drug.list-by-target` to collect known ligands for the finalists.
 6. Use `protein.download` only when a downstream structural workflow needs a file.
 7. Rank targets using the available association evidence, ligand evidence, structure availability, and user constraints.
@@ -33,3 +33,4 @@ Return a compact table with the standardized target, identifiers, supporting evi
 - Do not infer a disease-target or target-ligand relationship that a tool did not return.
 - Treat an empty tool result as missing evidence.
 - Ask for clarification when two standardized targets remain equally plausible.
+- Block docking when the target accession is unknown, ambiguous, mismatched, or the requested chain is absent.

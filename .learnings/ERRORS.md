@@ -3549,3 +3549,539 @@ Use the complete bundled validator path and rerun both modified Skills.
 - **Notes**: The corrected path was used and both Skill validators passed.
 
 ---
+
+## [ERR-20260719-061] vina_github_release_download_stalled
+
+**Logged**: 2026-07-19T13:28:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tool-use
+
+### Summary
+The official AutoDock Vina 1.2.7 macOS ARM64 release download received zero bytes for more than 70 seconds and was interrupted.
+
+### Error
+```
+curl progress remained at 0 bytes through 00:01:10; process exited 130 after Ctrl-C
+```
+
+### Context
+- The GitHub release API and metadata requests succeeded, while the release asset CDN transfer stalled.
+- The intended path was project-contained under `plugins/frogent-drug-design/.runtime/tools/vina/1.2.7/vina`.
+- A follow-up `stat` confirmed that curl left no partial file at the target path.
+- The official `vina` Python package version 1.2.7 is available as an alternative project-venv installation path.
+
+### Suggested Fix
+Use `gh release download` for the official macOS ARM64 asset when the browser/CDN curl path stalls, then verify the executable with a real docking canary.
+
+### Metadata
+- Reproducible: unknown
+- Related Files: plugins/frogent-drug-design/.runtime/tools
+
+### Resolution
+- **Resolved**: 2026-07-19T13:29:00+08:00
+- **Commit/PR**: runtime installation, ignored by Git
+- **Notes**: `gh release download` installed the official macOS ARM64 executable; no partial curl asset remained.
+
+---
+
+## [ERR-20260719-062] vina_pypi_build_missing_boost
+
+**Logged**: 2026-07-19T13:31:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tool-use
+
+### Summary
+Installing `vina==1.2.7` from PyPI selected the source distribution and failed because Boost headers were unavailable to the isolated build environment.
+
+### Error
+```
+ValueError: Boost library location was not found!
+Directories searched: conda env, /usr/local/include and /usr/include.
+```
+
+### Context
+- Installation targeted the project-contained app-v4 venv and project-contained pip cache.
+- The failure occurred while determining Vina wheel build requirements, before PLIP/OpenBabel installation began.
+- No global dependency installation was attempted.
+
+### Suggested Fix
+Use the official precompiled AutoDock Vina macOS ARM64 release asset through the authenticated GitHub release API, then install PLIP/OpenBabel separately from available wheels.
+
+### Metadata
+- Reproducible: yes on this Python 3.13 environment
+- Related Files: plugins/frogent-drug-design/.runtime/tools
+
+### Resolution
+- **Resolved**: 2026-07-19T13:33:00+08:00
+- **Commit/PR**: runtime installation, ignored by Git
+- **Notes**: `gh release download` installed the official 1.2.7 macOS ARM64 executable under `.runtime/tools/vina/1.2.7/vina`; the binary reports `AutoDock Vina v1.2.7`.
+
+---
+
+## [ERR-20260719-063] plip_isolated_build_recompiled_old_openbabel
+
+**Logged**: 2026-07-19T13:35:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tool-use
+
+### Summary
+PLIP 3.0.0's isolated wheel build attempted to compile OpenBabel 3.1.1.1 even though an OpenBabel 3.2.1 macOS ARM64 wheel was selected by pip.
+
+### Error
+```
+Error: SWIG failed. Is Open Babel installed?
+Unable to find 'openbabel/babelconfig.h'
+```
+
+### Context
+- The direct OpenBabel 3.2.1 and lxml dependencies both had compatible CPython 3.13 macOS wheels.
+- PLIP's custom build step downloaded the older OpenBabel source inside the isolated build environment and failed before installation.
+- The app-v4 venv and pip cache remained project-contained; no global package was changed.
+
+### Suggested Fix
+Install the compatible OpenBabel and lxml wheels first, verify the OpenBabel Python binding, then install PLIP with build isolation disabled so it reuses the project-venv binding.
+
+### Metadata
+- Reproducible: yes on PLIP 3.0.0 with isolated build
+- Related Files: plugins/frogent-drug-design/.runtime/app-v4/venv
+
+### Resolution
+- **Resolved**: 2026-07-19T13:39:00+08:00
+- **Commit/PR**: runtime installation, ignored by Git
+- **Notes**: Installed OpenBabel 3.2.1 and lxml 6.1.1 wheels first, then installed PLIP 3.0.0 with build isolation disabled. Import and CLI help verification passed.
+
+---
+
+## [ERR-20260719-064] unquoted_github_api_query_globbed_by_zsh
+
+**Logged**: 2026-07-19T13:40:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tool-use
+
+### Summary
+The first GitHub contents API request left a URL containing `?ref=develop` unquoted, so zsh treated it as a glob.
+
+### Error
+```
+zsh:1: no matches found: https://api.github.com/.../basic_docking?ref=develop
+```
+
+### Context
+- The request was read-only and no file was written.
+- Quoting the URL returned the official AutoDock Vina example inventory successfully.
+
+### Suggested Fix
+Quote every shell URL containing query delimiters such as `?` or `&`.
+
+### Metadata
+- Reproducible: yes in zsh with nomatch enabled
+- Related Files: none
+
+### Resolution
+- **Resolved**: 2026-07-19T13:40:00+08:00
+- **Commit/PR**: not applicable
+- **Notes**: Retried with a single-quoted URL; API lookup passed.
+
+---
+
+## [ERR-20260719-065] vina_example_raw_download_timed_out
+
+**Logged**: 2026-07-19T13:48:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tool-use
+
+### Summary
+Direct raw GitHub downloads of the official AutoDock Vina 1iep example files timed out before producing usable artifacts.
+
+### Error
+```
+curl transfer timed out while fetching raw example receptor and ligand assets
+```
+
+### Context
+- The intended destination was project-contained under `plugins/frogent-drug-design/.runtime/tools/canaries/1iep`.
+- No incomplete canary input remained at the destination after the failed transfers.
+- The files were needed only for a bounded official Vina-to-PLIP execution canary.
+
+### Suggested Fix
+Use a project-contained shallow clone of the official AutoDock Vina repository when several related official example assets are required and raw file transfers are unreliable.
+
+### Metadata
+- Reproducible: unknown
+- Related Files: plugins/frogent-drug-design/.runtime/tools/source/AutoDock-Vina
+
+### Resolution
+- **Resolved**: 2026-07-19T13:51:00+08:00
+- **Commit/PR**: runtime installation, ignored by Git
+- **Notes**: A shallow `develop` clone under `.runtime/tools/source/AutoDock-Vina` supplied the official 1iep receptor and ligand inputs; the subsequent Vina and PLIP canary completed successfully.
+
+---
+
+## [ERR-20260719-066] plip_module_has_no_version_attribute
+
+**Logged**: 2026-07-19T14:18:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tool-use
+
+### Summary
+The PLIP package does not expose `plip.__version__`, so a combined post-install version probe ended with `AttributeError` after the OpenBabel check had passed.
+
+### Error
+```
+AttributeError: module 'plip' has no attribute '__version__'
+```
+
+### Context
+- The PLIP CLI and real interaction canary had already completed successfully.
+- The failure affected only the metadata probe and did not change any runtime or canary artifact.
+
+### Suggested Fix
+Read installed Python package versions through `importlib.metadata.version()` when a package does not document a module-level version attribute.
+
+### Metadata
+- Reproducible: yes with PLIP 3.0.0
+- Related Files: plugins/frogent-drug-design/.runtime/app-v4/venv
+
+### Resolution
+- **Resolved**: 2026-07-19T14:19:00+08:00
+- **Commit/PR**: not applicable
+- **Notes**: Switched the version probe to `importlib.metadata.version("plip")`.
+
+---
+
+## [ERR-20260719-067] openbabel_distribution_name_mismatch
+
+**Logged**: 2026-07-19T14:20:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tool-use
+
+### Summary
+The package metadata probe used `openbabel-wheel`, while the installed distribution registers its metadata as `openbabel`.
+
+### Error
+```
+importlib.metadata.PackageNotFoundError: No package metadata was found for openbabel-wheel
+```
+
+### Context
+- The OpenBabel module had already reported version 3.2.1 and completed the real pose conversion.
+- The error affected only the optional distribution metadata check.
+
+### Suggested Fix
+Confirm the installed distribution key with `pip show` or use the module's documented `openbabel.__version__` attribute.
+
+### Metadata
+- Reproducible: yes in the project app-v4 venv
+- Related Files: plugins/frogent-drug-design/.runtime/app-v4/venv
+
+### Resolution
+- **Resolved**: 2026-07-19T14:21:00+08:00
+- **Commit/PR**: not applicable
+- **Notes**: Retained the already successful `openbabel.__version__` result and stopped probing the incorrect distribution key.
+
+---
+
+## [ERR-20260719-068] openbabel_wheel_lacks_obrms_cli
+
+**Logged**: 2026-07-19T14:24:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tool-use
+
+### Summary
+The installed OpenBabel wheel provides `obabel` but does not install an `obrms` executable in the project venv.
+
+### Error
+```
+zsh: no such file or directory: .runtime/app-v4/venv/bin/obrms
+```
+
+### Context
+- `obabel` successfully converted the selected Vina pose to SDF before the RMSD command failed.
+- The missing optional CLI did not affect Vina execution or PLIP interaction detection.
+
+### Suggested Fix
+Use the identical PDBQT atom order in the fixed receptor coordinate frame for this official redocking canary, while retaining OpenBabel for format conversion.
+
+### Metadata
+- Reproducible: yes with the current OpenBabel 3.2.1 wheel
+- Related Files: plugins/frogent-drug-design/.runtime/tools/canaries/1iep/run/1iep_pose1.sdf
+
+### Resolution
+- **Resolved**: 2026-07-19T14:25:00+08:00
+- **Commit/PR**: not applicable
+- **Notes**: Used a verified direct 37-heavy-atom PDBQT comparison after RDKit rejected the official SDF valence representation.
+
+---
+
+## [ERR-20260719-069] vina_canary_source_path_misstated
+
+**Logged**: 2026-07-19T14:27:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tool-use
+
+### Summary
+The first adapter handoff named a stale `example/autodock_scripts` source directory, while the cloned official 1iep assets are under `example/basic_docking`.
+
+### Error
+```
+OSError: Bad input file .../example/autodock_scripts/solution/1iep_ligand.sdf
+```
+
+### Context
+- The completed Vina and PLIP canary outputs were valid and remained under `.runtime/tools/canaries/1iep/run`.
+- Only the source provenance path in the handoff and the first RMSD probe was wrong.
+
+### Suggested Fix
+Resolve and list every source artifact path from the cloned repository immediately before handing it to another task or using it in a follow-up measurement.
+
+### Metadata
+- Reproducible: yes for the stale path
+- Related Files: plugins/frogent-drug-design/.runtime/tools/source/AutoDock-Vina/example/basic_docking
+
+### Resolution
+- **Resolved**: 2026-07-19T14:28:00+08:00
+- **Commit/PR**: not applicable
+- **Notes**: Sent the corrected `example/basic_docking/solution` paths to Implementation before its real adapter canary and reran the measurement with the verified path.
+
+---
+
+## [ERR-20260719-070] rdkit_reference_ligand_sanitize_failed
+
+**Logged**: 2026-07-19T14:29:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tool-use
+
+### Summary
+RDKit rejected the official 1iep ligand SDF during sanitization because an explicitly represented nitrogen exceeded RDKit's default valence model.
+
+### Error
+```
+Explicit valence for atom # 37 N, 4, is greater than permitted
+failed to parse reference or pose
+```
+
+### Context
+- The ligand is the official AutoDock Vina basic-docking example structure.
+- The failure occurred only in the optional pose RMSD measurement after Vina and PLIP had completed.
+
+### Suggested Fix
+Compare the official input and docked PDBQT coordinates directly after verifying identical heavy-atom order in the fixed receptor frame.
+
+### Metadata
+- Reproducible: yes with the official 1iep solution SDF and current RDKit
+- Related Files: plugins/frogent-drug-design/.runtime/tools/source/AutoDock-Vina/example/basic_docking/solution/1iep_ligand.sdf
+
+### Resolution
+- **Resolved**: 2026-07-19T14:30:00+08:00
+- **Commit/PR**: not applicable
+- **Notes**: The direct 37-heavy-atom PDBQT calculation yielded 0.9007 Å versus the official input and 0.0535 Å versus the official Vina solution pose.
+
+---
+
+## [ERR-20260719-071] reference_complex_pdb_columns_shifted
+
+**Logged**: 2026-07-19T14:36:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tool-use
+
+### Summary
+The first reference-complex assembly inserted an extra atom-name space, shifting the fixed-width PDB residue, chain, residue-number, and coordinate columns.
+
+### Error
+```
+PLIP parsed the intended STI:A:999 ligand as ST:Z:0 and reported no interactions.
+```
+
+### Context
+- The source ligand coordinates were valid; only the generated PDB line formatting was malformed.
+- The malformed reference report was retained as a failed diagnostic artifact and was not used for the interaction comparison.
+
+### Suggested Fix
+Generate PDB records with explicit fixed-width fields and verify columns 13-16, 18-20, 22, 23-26, and 31-54 before running interaction analysis.
+
+### Metadata
+- Reproducible: yes with the first generated reference complex
+- Related Files: plugins/frogent-drug-design/.runtime/tools/canaries/1iep/run/reference/1iep_reference_complex.pdb
+
+### Resolution
+- **Resolved**: 2026-07-19T14:37:00+08:00
+- **Commit/PR**: not applicable
+- **Notes**: A corrected fixed-width complex parsed as STI:A:999 and produced the expected reference interaction fingerprint.
+
+---
+
+## [ERR-20260719-072] meeko_wheel_omitted_gemmi_dependency
+
+**Logged**: 2026-07-19T14:43:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tool-use
+
+### Summary
+The Meeko 0.7.1 wheel installed without declaring Gemmi, but both ligand and receptor preparation CLIs import Gemmi during startup.
+
+### Error
+```
+ModuleNotFoundError: No module named 'gemmi'
+```
+
+### Context
+- Installation was confined to the project app-v4 venv with the project-local pip cache.
+- No preparation output was created before the import failure.
+
+### Suggested Fix
+Install a compatible Gemmi wheel in the same project venv, then rerun both CLI help probes and a bounded official example preparation.
+
+### Metadata
+- Reproducible: yes with Meeko 0.7.1 wheel metadata
+- Related Files: plugins/frogent-drug-design/.runtime/app-v4/venv
+
+### Resolution
+- **Resolved**: 2026-07-19T14:44:00+08:00
+- **Commit/PR**: runtime installation, ignored by Git
+- **Notes**: Installed Gemmi into the same project venv and repeated the preparation probes.
+
+---
+
+## [ERR-20260719-073] meeko_verification_probe_unterminated_string
+
+**Logged**: 2026-07-19T14:46:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tool-use
+
+### Summary
+The post-preparation metadata probe contained a literal newline inside an f-string and failed with a syntax error.
+
+### Error
+```
+SyntaxError: unterminated f-string literal
+```
+
+### Context
+- Meeko had already processed one ligand and written one valid PDBQT with zero skipped or errored molecules.
+- Only the read-only version and file-size probe failed.
+
+### Suggested Fix
+Keep each diagnostic print on a separate syntactically complete line and rerun the probe without repeating the successful preparation.
+
+### Metadata
+- Reproducible: yes for the malformed inline probe
+- Related Files: plugins/frogent-drug-design/.runtime/tools/canaries/1iep/run/meeko/1iep_ligand.pdbqt
+
+### Resolution
+- **Resolved**: 2026-07-19T14:47:00+08:00
+- **Commit/PR**: not applicable
+- **Notes**: Reran only the corrected read-only verification probe.
+
+---
+
+## [ERR-20260719-074] meeko_receptor_interrupted_residue
+
+**Logged**: 2026-07-19T14:49:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tool-use
+
+### Summary
+Meeko receptor preparation rejected the official 1iep receptor because residue A:438 is interrupted in the input PDB.
+
+### Error
+```
+ValueError: interrupted residues in PDB: {'A:438'}
+```
+
+### Context
+- The input was the official hydrogenated receptor from the AutoDock Vina basic-docking example.
+- Meeko failed before writing the requested receptor or box artifacts.
+
+### Suggested Fix
+Preserve all atoms and move the misplaced A:438 HB2 record from the file header back into the contiguous A:438 residue block, then record the normalization in receptor lineage.
+
+### Metadata
+- Reproducible: yes with official 1iep_receptorH.pdb
+- Related Files: plugins/frogent-drug-design/.runtime/tools/source/AutoDock-Vina/example/basic_docking/data/1iep_receptorH.pdb
+
+### Resolution
+- **Resolved**: 2026-07-19T14:50:00+08:00
+- **Commit/PR**: runtime installation, ignored by Git
+- **Notes**: Neither `--allow_bad_res` nor `--delete_residues A:438` acts before Meeko's interrupted-residue parser. Reordered the single misplaced HB2 record without deleting any atom; receptor PDBQT and box artifacts were then written successfully.
+
+---
+
+## [ERR-20260719-075] plip_cli_has_no_version_flag
+
+**Logged**: 2026-07-19T14:15:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tool-use
+
+### Summary
+The PLIP 3.0.0 command-line interface does not expose a standalone `--version` flag.
+
+### Error
+```
+PLIP: error: one of the arguments -f/--file -i/--input is required
+```
+
+### Context
+- The read-only acceptance probe attempted `plip --version` after the real PLIP canary had already completed successfully.
+- No project artifact or runtime file was written by the failed probe.
+
+### Suggested Fix
+Read the installed distribution version through `importlib.metadata.version("plip")` and use the CLI only with an explicit input artifact.
+
+### Metadata
+- Reproducible: yes with PLIP 3.0.0
+- Related Files: plugins/frogent-drug-design/.runtime/app-v4/venv/bin/plip
+
+### Resolution
+- **Resolved**: 2026-07-19T14:16:00+08:00
+- **Commit/PR**: not applicable
+- **Notes**: The installed distribution metadata reports PLIP 3.0.0; the real `--nohydro --maxthreads 1` analysis remains valid.
+
+---
+
+## [ERR-20260719-076] learning_patch_used_nonunique_separator
+
+**Logged**: 2026-07-19T14:17:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: documentation
+
+### Summary
+An `apply_patch` append used the first generic Markdown separator as context and inserted ERR-075 near the top of the chronological error log.
+
+### Error
+```
+ERR-20260719-075 appeared before ERR-20260719-052 instead of after ERR-20260719-074.
+```
+
+### Context
+- Only `.learnings/ERRORS.md` was affected.
+- The entry content was valid; its position violated the chronological log convention.
+
+### Suggested Fix
+Anchor append patches to the final entry's unique resolution text and verify the resulting line order with `rg` plus `tail`.
+
+### Metadata
+- Reproducible: yes with a non-unique `---` patch anchor
+- Related Files: .learnings/ERRORS.md
+
+### Resolution
+- **Resolved**: 2026-07-19T14:18:00+08:00
+- **Commit/PR**: pending current capability checkpoint
+- **Notes**: Removed the misplaced block and appended ERR-075 and ERR-076 after ERR-074.
+
+---

@@ -936,3 +936,111 @@ Require role-specific exact evidence for every scope or structure selection; kee
 - Last-Seen: 2026-07-19
 
 ---
+
+## [LRN-20260719-015] correction
+
+**Logged**: 2026-07-19T13:25:34+08:00
+**Priority**: high
+**Status**: validated
+**Area**: tool-use
+
+### Summary
+When a required scientific tool is absent locally and the user permits project-contained installation, provision it and measure a real execution path instead of leaving the capability at `not_measured`.
+
+### Details
+The docking/interaction workflow initially treated missing Vina and PLIP executables or modules as a stable deployment boundary. The user clarified that these tools should be downloaded and installed inside the FROGENT project. A typed injectable adapter remains useful for testing and portability, while the capability block must also include a real project-local executable, a bounded real canary, and measured tool behavior whenever installation is feasible.
+
+### Suggested Action
+Install scientific runtimes under the project-contained `.runtime/tools` hierarchy with project-contained caches. Bind exact executable/module versions in runtime configuration, run a small target-pocket-ligand Vina-to-PLIP canary, and retain identity, pose, score, applicability, and experimental-evidence boundaries.
+
+### Metadata
+- Source: user_feedback
+- Related Files: plugins/frogent-drug-design/frogent_plugin/docking_execution.py, plugins/frogent-drug-design/frogent_plugin/research_factory.py
+- Tags: docking, vina, plip, project-local-tools, real-canary
+- Pattern-Key: tool-use.provision_missing_runtime_when_authorized
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-016] best_practice
+
+**Logged**: 2026-07-19T14:33:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: tool-use
+
+### Summary
+Redocking pose accuracy should use fixed receptor coordinates and an exact ligand atom mapping; a generic molecular superposition can report a misleading RMSD.
+
+### Details
+The first OpenBabel alignment of the official 1iep SDF and the selected Vina pose reported 6.72 Å because it performed a separate molecular alignment with uncertain atom mapping. Direct comparison of the identical 37-heavy-atom PDBQT order in the fixed receptor coordinate frame gave 0.9007 Å for the new pose versus the official input and 0.0535 Å versus the official Vina solution pose. The latter values agree with the actual redocking geometry and provide a meaningful single-case pose signal.
+
+### Suggested Action
+For docking canaries, preserve receptor frame, ligand atom order or an independently verified graph mapping, heavy-atom count, reference provenance, and RMSD method. Report score and pose RMSD separately; neither value alone establishes experimental affinity or broad applicability.
+
+### Metadata
+- Source: real_tool_validation
+- Related Files: plugins/frogent-drug-design/.runtime/tools/canaries/1iep/run/1iep_ligand_vina_out.pdbqt
+- Tags: docking, vina, pose-rmsd, atom-mapping, fixed-frame
+- Pattern-Key: tool-use.measure_redocking_in_verified_reference_frame
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-017] best_practice
+
+**Logged**: 2026-07-19T14:38:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: tool-use
+
+### Summary
+A docking canary should compare the selected pose's interaction fingerprint with the reference complex in addition to reporting score and RMSD.
+
+### Details
+For the official 1iep redocking example, the selected Vina pose preserved both reference hydrogen-bond residues MET318 and ASP381, the TYR253 pi stack, and all seven unique reference hydrophobic-contact residues. It lost the reference ASP381 salt bridge and added four hydrophobic-contact residues. This comparison exposes a chemically relevant difference that the favorable -13.2 score and 0.9007 Å fixed-frame RMSD do not show by themselves.
+
+### Suggested Action
+Persist reference and predicted interaction types, residue identity, chain, geometry, shared/lost/added sets, and the exact selected pose. Use the fingerprint as a diagnostic for pose selection and workflow repair; treat it as a single-case computational result until calibrated against broader structures and experiments.
+
+### Metadata
+- Source: real_tool_validation
+- Related Files: plugins/frogent-drug-design/.runtime/tools/canaries/1iep/run/plip/1iep_pose1_complex_report.xml
+- Tags: docking, plip, interaction-fingerprint, pose-selection, evidence
+- Pattern-Key: tool-use.compare_pose_interactions_to_reference
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-018] best_practice
+
+**Logged**: 2026-07-19T14:53:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: tool-use
+
+### Summary
+Receptor preparation must preserve explicit structure-normalization lineage and prefer lossless record repair over silently deleting a flagged residue.
+
+### Details
+The official 1iep receptor placed one SER A:438 HB2 atom record near the file header while the rest of A:438 appeared in sequence. Meeko rejected this as an interrupted residue before its bad-residue or deletion policies could run. Moving that exact record into the contiguous A:438 block preserved every atom and allowed Meeko 0.7.1 to produce receptor PDBQT and a Vina box. Deleting A:438 would have changed the structure unnecessarily.
+
+### Suggested Action
+When a preparation parser flags a structure, inspect the exact artifact and apply the smallest lossless correction. Persist original artifact identity, normalized artifact identity, changed records, preparation tool/version, and any remaining chemical assumptions before docking.
+
+### Metadata
+- Source: real_tool_validation
+- Related Files: plugins/frogent-drug-design/.runtime/tools/canaries/1iep/run/meeko/1iep_receptorH_ordered.pdb
+- Tags: receptor-preparation, meeko, pdb, provenance, lossless-normalization
+- Pattern-Key: tool-use.preserve_receptor_normalization_lineage
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---

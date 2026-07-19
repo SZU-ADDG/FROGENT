@@ -90,3 +90,30 @@ def molecular_planner_schema() -> dict[str, object]:
         "baseline_structure_smiles": {"type": "string"},
         "baseline_selection_text": {"type": "string"},
     })
+
+
+def docking_planner_schema() -> dict[str, object]:
+    return _object({
+        "operation": {"type": "string", "enum": ["dock", "dock_and_interactions"]},
+        "molecule_kind": {"type": "string", "enum": ["name", "smiles"]},
+        "molecule_value": STRING,
+        "molecule_scope": {"type": "string",
+                           "enum": ["unspecified", "full", "parent_candidate"]},
+        "selected_structure_smiles": {"type": "string"},
+        "molecule_selection_text": {"type": "string"},
+        "target_kind": {"type": "string", "enum": ["pdb", "uniprot", "name_candidate"]},
+        "target_value": STRING,
+        "target_chain": {"type": "string"},
+        "target_text": STRING,
+        "pocket_id": {"type": "string"},
+        "pocket_kind": {"type": "string", "enum": ["none", "residues", "artifact"]},
+        "pocket_chain": {"type": "string"},
+        "numbering_scheme": {"type": "string"},
+        "residue_ids": _array(STRING),
+        "pocket_artifact_id": {"type": "string"},
+        "pocket_artifact_name": {"type": "string"},
+        "pocket_artifact_media_type": {"type": "string"},
+        "pocket_artifact_uri": {"type": "string"},
+        "pocket_text": {"type": "string"},
+        "selected_pose_id": {"type": "string"},
+    })

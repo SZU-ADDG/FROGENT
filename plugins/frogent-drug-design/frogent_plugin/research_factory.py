@@ -20,6 +20,11 @@ from .memory_answer import CodexMemoryAnswerer
 from .admet_ai_adapter import ADMETAIAdapter
 from .molecular_chat import MolecularChatHandler
 from .molecular_chat_plan import CodexMolecularPlanner
+from .docking_chat import DockingChatHandler
+from .docking_chat_plan import CodexDockingPlanner
+from .docking_local import PLIPConfig
+from .docking_types import DockingConfig
+from .vina_plip_adapters import PLIPInteractionAdapter, VinaDockingAdapter
 from .pdf_text import PypdfTextExtractor
 from .pubchem_identity import PubChemIdentityResolver
 from .research_screening import HybridScreener
@@ -121,7 +126,9 @@ class OAFallbackResolver:
         return self.failures.pop(record_id, "")
 
 
-def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=None) -> ResearchService:
+def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=None,
+                           target_provider=None, pocket_provider=None, docking_provider=None,
+                           interaction_provider=None) -> ResearchService:
     root = config.plugin_root.resolve()
     client_args = {"timeout": config.codex_timeout, "executable": config.codex_executable}
     if runner is not None:
@@ -160,8 +167,27 @@ def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=
     molecular = MolecularChatHandler(CodexMolecularPlanner(client), PubChemIdentityResolver(),
                                      ADMETAIAdapter(matplotlib_cache=root / ".runtime" / "app-v4" /
                                                     "matplotlib"))
+    docking = DockingChatHandler(CodexDockingPlanner(client), PubChemIdentityResolver(),
+        target_provider=target_provider, pocket_provider=pocket_provider,
+        docking_provider=docking_provider, interaction_provider=interaction_provider)
     return ResearchService(planner, controller, store, root, memory_store=memory_store,
                            memory_answerer=CodexMemoryAnswerer(client, config.max_memory_prompt_chars),
                            max_memory_hits=config.max_memory_hits,
                            max_memory_prompt_chars=config.max_memory_prompt_chars,
-                           molecular_handler=molecular)
+                           molecular_handler=molecular, docking_handler=docking)
+
+
+def build_local_docking_adapters(config: RuntimeConfig, *, vina_executable: Path,
+                                 plip_executable: Path, vina_preparer, plip_preparer,
+                                 vina_version: str, plip_version: str,
+                                 vina_config: DockingConfig | None = None,
+                                 plip_config: PLIPConfig | None = None,
+                                 vina_runner=None, plip_runner=None):
+    """Construct contained real-tool adapters after exact prepared inputs are bound."""
+    root = config.plugin_root.resolve(strict=True)
+    vina = VinaDockingAdapter(root, vina_executable, vina_preparer, version=vina_version,
+                              config=vina_config, runner=vina_runner)
+    plip = PLIPInteractionAdapter(root, plip_executable, plip_preparer,
+                                  version=plip_version, config=plip_config,
+                                  runner=plip_runner)
+    return vina, plip
