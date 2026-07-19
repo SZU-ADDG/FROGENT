@@ -253,14 +253,26 @@ Exact-bound `admet.predict`/`admet.compare` 现通过 lazy reusable in-process A
 
 Real canaries：caffeine full AMES/hERG/DILI=`0.110573/0.047541/0.932074`；caffeine candidate vs theobromine baseline deltas=`-0.054096/+0.028841/-0.022584`；sodium acetate full=`0.081154/0.004473/0.427690`，acetate parent=`0.048887/0.005175/0.520490`，证明 full/parent scope sensitivity。Cold caffeine call 13.181s，comparison/model-load process 4.179s，同一 process warm salt calls 各约 0.146s。
 
-两次 fresh direct-subagent interpretation 均 PASS：缺少 endpoint direction、calibration、applicability、uncertainty、exposure 与 experiments 时，不作 compound selection 或 safety claim；full/parent results 不可互换。Outputs 是 computational point predictions，`experimental_evidence=false`，calibrated per-prediction uncertainty unavailable，不支持 aggregate score/effect claim。该 workflow 当前仍是 direct runtime helper，app-v4 Planner/tool-event integration pending；完整 model-dependent workflows 继续 deferred。
+两次 fresh direct-subagent interpretation 均 PASS：缺少 endpoint direction、calibration、applicability、uncertainty、exposure 与 experiments 时，不作 compound selection 或 safety claim；full/parent results 不可互换。Outputs 是 computational point predictions，`experimental_evidence=false`，calibrated per-prediction uncertainty unavailable，不支持 aggregate score/effect claim。该 block 验收时仍是 direct helper；下述 app-v4 molecular chat block 已关闭 Planner/tool-event integration gap。
+
+### App-v4 molecular chat effect
+
+App-v4 复用现有 payload/SSE contract 并支持 `mode=molecular`。`mode=auto` 只路由明确 ADMET action；中文运行/执行/预测/计算/估算/比较/对比/评估可触发，文献/论文/检索/搜索继续 research，含糊请求保持保守。Native planner 严格 typed，candidate/baseline name 或 SMILES 必须逐字来自当前消息；每个 arm 的 full/parent scope 都需独立 exact selection span。跨 arm、单臂授权另一臂或非法 fragment 均 fail closed。
+
+Endpoint IDs 由 runtime 按用户消息中的 allowlisted appearance order 选择；未显式给出时固定 `DEFAULT_ADMET_PROPERTIES`，模型不能选择 subset。Execution 保持 PubChem→RDKit→lazy reusable ADMET-AI，以及 candidate→baseline role、scope、canonical isomeric SMILES、InChIKey、removed fragments、endpoint values/deltas 的 exact binding。Blocked/same-identity requests 不调用 ADMET。
+
+SSE typed events 与 SQLite cross-chat memory 已接通。History ingest/exchange persistence failure 保留一次 execution 与 completed/partial answer，追加 recoverable `memory_persistence` error，不重复 model call。
+
+Main 真实 Flask `/api/chat` canary 使用 direct collaboration subagent planner，无 nested CLI/API key。中文 caffeine-vs-theobromine AMES/hERG/DILI 请求得到 HTTP 200、SSE `name=molecular`、elapsed 11.633s 与 user/assistant 两轮 memory。CID 为 2519/5429，InChIKey 为 RYYVLZVUVIJVGH-UHFFFAOYSA-N / YAPQBXQYLJRXSA-UHFFFAOYSA-N；caffeine values=`0.11057253181934357/0.04754055291414261/0.932073712348938`，theobromine=`0.16466861963272095/0.018699243664741516/0.9546573758125305`，candidate-minus-baseline deltas=`-0.05409608781337738/+0.028841309249401093/-0.02258366346359253`。Events 覆盖 plan/identity/`admet.compare`/message/done。
+
+回答声明 computational point prediction 与 `experimental_evidence=false`，并披露 calibrated per-prediction uncertainty、model applicability domain、cross-endpoint score comparability 均未建立；不作安全、暴露量、总体分数或候选选择结论。
 
 ### Verification
 
-App-v4 venv post-install full suite 224/224 PASS；`prepare-molecule`、`evaluate-candidate` Skill validators 与 official plugin validator PASS，sanitizer 982/0/0、diff PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
+Full `scripts/check.py` 234/234 PASS；`prepare-molecule`、`evaluate-candidate` Skill validators 与 official plugin validator PASS，sanitizer 982/0/0、diff PASS。Subagent-native live app probe 已贯通真实 Europe PMC exact-PMID retrieval、OA fullTextXML、Reader、Screener、working-memory admission、evidence-bound synthesis、app_v4 SSE、history 与 SQLite checkpoint。准入证据 `ev-42113543` 可解析到 PMID 42113543、PMCID PMC13162140 与 DOI 10.1001/jamaneurol.2026.1112；Reader 保留了 MDSGene ascertainment counterevidence。执行后的 audit serializer 误读 `StreamEvent.source`，因此 typed-event 精确 payload 未保存；Agent 主流程结果不受影响。
 
 ### 下一性能块
 
-1. 将 PubChem + ADMET direct helpers 接入 app-v4 Planner 与 typed tool events，验证 blocker、provider gap、result 与 resume behavior。
-2. Decision use 前补齐 endpoint direction、calibration、applicability、uncertainty、exposure 与实验验证语义。
-3. Docking provenance、PDF/registry 测量项继续保留，依赖未接入模型的完整 drug-design tasks 继续 deferred。
+1. 下一 capability block 转向 evidence-bound docking/target-pocket/PLIP tool workflow。
+2. 先验证 target/pocket identity 与 interaction artifact provenance，再执行并解释 docking/PLIP 工具。
+3. 当前 docking 尚未完成；PDF/registry 测量项与依赖未接入模型的完整 drug-design tasks 继续 deferred。

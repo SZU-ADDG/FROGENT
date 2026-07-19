@@ -49,6 +49,12 @@ def run_admet_name_workflow(name: str, intent: str, resolver: PubChemIdentityRes
                 verified.coverage_gaps)
 
 
+def run_prepared_admet(intake: MolecularIntakeResult, predictor: ADMETPredictor,
+                       requested_properties=DEFAULT_ADMET_PROPERTIES, *,
+                       coverage_gaps: tuple[str, ...] = ()) -> ADMETWorkflowResult:
+    return _run(intake, predictor, requested_properties, None, coverage_gaps)
+
+
 def _run(intake, predictor, properties, verification, gaps):
     steps = tuple(item for item in intake.tool_plan.steps
                   if item.capability_id in {"admet.predict", "admet.compare"})

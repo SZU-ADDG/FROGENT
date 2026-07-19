@@ -115,7 +115,8 @@ def execute_admet_step(step: MolecularToolStep, predictor: ADMETPredictor,
             predictor.model_name, predictor.model_version, properties,
             step.tool_input.role_order, bindings, arms, deltas, False,
             ("ADMET-AI values are model predictions, separate from experimental evidence",
-             "this adapter exposes no calibrated per-prediction uncertainty; interpretation is endpoint-specific"), ())
+             "this adapter exposes no calibrated per-prediction uncertainty; interpretation is endpoint-specific",
+             "model applicability domain and cross-endpoint score comparability are not established"), ())
     except Exception as exc:
         message = f"ADMET prediction failed: {type(exc).__name__}: {exc}"
         return _failure(step, predictor, properties, "failed", message)

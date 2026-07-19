@@ -17,7 +17,11 @@ from .research_expansion import ExpansionPolicy, ResearchExpander
 from .research_memory import SQLiteResearchStore
 from .repository_fulltext import OpenAlexRepositoryLocator, OpenAlexRepositoryResolver
 from .memory_answer import CodexMemoryAnswerer
+from .admet_ai_adapter import ADMETAIAdapter
+from .molecular_chat import MolecularChatHandler
+from .molecular_chat_plan import CodexMolecularPlanner
 from .pdf_text import PypdfTextExtractor
+from .pubchem_identity import PubChemIdentityResolver
 from .research_screening import HybridScreener
 from .research_service import ResearchService
 from .research_workflow import ResearchController
@@ -153,7 +157,11 @@ def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=
     planner = CodexPlanner(client, tuple(routes), config.max_queries, config.max_results_per_query)
     store = SQLiteResearchStore(config.memory_path, root)
     memory_store = ConversationMemoryStore(config.memory_path, root)
+    molecular = MolecularChatHandler(CodexMolecularPlanner(client), PubChemIdentityResolver(),
+                                     ADMETAIAdapter(matplotlib_cache=root / ".runtime" / "app-v4" /
+                                                    "matplotlib"))
     return ResearchService(planner, controller, store, root, memory_store=memory_store,
                            memory_answerer=CodexMemoryAnswerer(client, config.max_memory_prompt_chars),
                            max_memory_hits=config.max_memory_hits,
-                           max_memory_prompt_chars=config.max_memory_prompt_chars)
+                           max_memory_prompt_chars=config.max_memory_prompt_chars,
+                           molecular_handler=molecular)

@@ -21,6 +21,7 @@ Produce a fair comparison from a consistent evaluation setup.
 3. Score small molecules with `docking.score` under identical parameters.
 4. Score peptides with `peptide.docking-score` under identical parameters.
 5. Use the FROGENT ADMET executor for a ready `admet.predict` or `admet.compare` step. Keep the exact bound structures and candidate-then-baseline roles, report each requested endpoint value and candidate-minus-baseline delta, and retain missing or failed endpoints.
+   For app chat requests, return the bound scope, canonical isomeric SMILES, and InChIKey for every arm. A failed identity check or model call returns these safe partial inputs and coverage gaps without a synthetic score.
 6. Interpret endpoint values within their model-specific task definitions and uncertainty. Do not combine endpoint directions into an unsupported total score.
 7. Apply user thresholds after collecting results, keeping failed calls visible.
 8. Rank only candidates with comparable evidence and explain every tie-breaker.

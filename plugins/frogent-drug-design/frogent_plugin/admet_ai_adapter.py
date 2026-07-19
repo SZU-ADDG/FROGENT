@@ -2,7 +2,9 @@
 
 import importlib
 import importlib.metadata
+import os
 from collections.abc import Mapping
+from pathlib import Path
 
 from .admet_execution import ADMETBatchPrediction
 
@@ -11,10 +13,12 @@ class ADMETAIAdapter:
     provider_id = "admet-ai"
     model_name = "ADMETModel"
 
-    def __init__(self, model_factory=None, *, model_version: str = "") -> None:
+    def __init__(self, model_factory=None, *, model_version: str = "",
+                 matplotlib_cache: Path | None = None) -> None:
         self._factory = model_factory
         self._model = None
         self._version = model_version
+        self._matplotlib_cache = matplotlib_cache
 
     @property
     def model_version(self) -> str:
@@ -32,6 +36,8 @@ class ADMETAIAdapter:
         if self._model is not None:
             return self._model
         if self._factory is None:
+            if self._matplotlib_cache is not None:
+                os.environ.setdefault("MPLCONFIGDIR", str(self._matplotlib_cache))
             module = importlib.import_module("admet_ai")
             self._factory = getattr(module, "ADMETModel")
             self._version = _package_version(module)

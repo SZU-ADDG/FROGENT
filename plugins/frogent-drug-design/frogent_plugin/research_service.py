@@ -12,9 +12,9 @@ from .contracts import ExecutionContext, StreamEvent
 from .conversation_memory import ConversationMemoryStore, ConversationTurn
 from .cross_chat_memory import CrossChatMemory, MemoryResponse
 from .memory_answer import CodexMemoryAnswerer
+from .molecular_chat import MolecularChatResult, is_clear_admet_intent
 from .research_memory import ResearchMemory, SQLiteResearchStore
 from .research_types import ResearchRequest
-
 
 class Planner(Protocol):
     def plan(self, question: str, as_of: date, context: ExecutionContext, history=()) -> ResearchRequest: ...
@@ -25,16 +25,22 @@ class Controller(Protocol):
             revoked_record_ids: tuple[str, ...] = ()): ...
 
 
+class MolecularHandler(Protocol):
+    def run(self, message: str, context: ExecutionContext) -> MolecularChatResult: ...
+
+
 class ResearchService:
     """Convert app_v4 chat payloads to typed runs and legacy SSE frames."""
 
     def __init__(self, planner: Planner, controller: Controller, store: SQLiteResearchStore,
                  workspace: Path, clock=date.today, *, memory_store: ConversationMemoryStore | None = None,
                  memory_answerer: CodexMemoryAnswerer | None = None, max_memory_hits: int = 8,
-                 max_memory_prompt_chars: int = 8000) -> None:
+                 max_memory_prompt_chars: int = 8000,
+                 molecular_handler: MolecularHandler | None = None) -> None:
         self.planner, self.controller, self.store = planner, controller, store
         self.workspace, self.clock = workspace.resolve(), clock
         self.memory_store, self.memory_answerer = memory_store, memory_answerer
+        self.molecular_handler = molecular_handler
         if max_memory_hits <= 0 or max_memory_prompt_chars <= 0:
             raise ValueError("memory bounds must be positive")
         self.max_memory_hits, self.max_memory_prompt_chars = max_memory_hits, max_memory_prompt_chars
@@ -50,9 +56,21 @@ class ResearchService:
     def stream_payload(self, user_id: str, payload: Mapping[str, object], *, history=()):
         try:
             message, chat_id, files, mode = _payload(payload)
-            self._ingest_history(user_id, chat_id, message, history)
-            if mode == "memory" or (mode == "auto" and _memory_intent(message)):
+            memory_route = mode == "memory" or (mode == "auto" and _memory_intent(message))
+            molecular_route = (mode == "molecular" or (mode == "auto" and not memory_route and
+                               self.molecular_handler and is_clear_admet_intent(message)))
+            persistence_errors = []
+            try:
+                self._ingest_history(user_id, chat_id, message, history)
+            except Exception as exc:
+                if not molecular_route:
+                    raise
+                persistence_errors.append(exc)
+            if memory_route:
                 yield from self._memory_stream(user_id, chat_id, message, history)
+                return
+            if molecular_route:
+                yield from self._molecular_stream(user_id, chat_id, message, history, persistence_errors)
                 return
             context = ExecutionContext(user_id, chat_id, "research-" + uuid4().hex, self.workspace)
             saved = self.store.load(user_id, chat_id)
@@ -78,6 +96,22 @@ class ResearchService:
             chat_id = str(payload.get("chat_id") or "")
             self.typed_events[(user_id, chat_id)] = (event,)
             yield _frame({"error": str(exc), "error_type": type(exc).__name__, "name": "research"})
+        yield "data: [DONE]\n\n"
+
+    def _molecular_stream(self, user_id: str, chat_id: str, message: str, history, persistence_errors=()):
+        if self.molecular_handler is None:
+            raise RuntimeError("molecular chat is not configured")
+        context = ExecutionContext(user_id, chat_id, "molecular-" + uuid4().hex, self.workspace)
+        result = self.molecular_handler.run(message, context)
+        errors = list(persistence_errors)
+        try:
+            self._persist_exchange(user_id, chat_id, message, result.answer, len(tuple(history)))
+        except Exception as exc:
+            errors.append(exc)
+        answer, events = _molecular_persistence(result.answer, result.events, errors)
+        self.typed_events[(user_id, chat_id)] = events
+        yield _frame({"content": answer, "name": "molecular"})
+        yield _frame({"stop": True, "name": "molecular"})
         yield "data: [DONE]\n\n"
 
     def _memory_stream(self, user_id: str, chat_id: str, message: str, history):
@@ -167,8 +201,8 @@ def _payload(value: Mapping[str, object]) -> tuple[str, str, list[object], str]:
         raise ValueError("chat_id must be non-empty text")
     if not isinstance(files, list):
         raise ValueError("files must be a list")
-    if mode not in {"auto", "research", "memory"}:
-        raise ValueError("mode must be auto, research, or memory")
+    if mode not in {"auto", "research", "memory", "molecular"}:
+        raise ValueError("mode must be auto, research, memory, or molecular")
     return message.strip(), chat_id.strip(), files, mode
 
 
@@ -180,6 +214,22 @@ def _evidence_summary(item) -> dict[str, object]:
 
 def _frame(value: Mapping[str, object]) -> str:
     return "data: " + json.dumps(value, ensure_ascii=False) + "\n\n"
+
+
+def _molecular_persistence(answer, events, errors):
+    if not errors:
+        return answer, events
+    messages = tuple(dict.fromkeys(f"conversation memory persistence failed: "
+        f"{type(item).__name__}: {item}" for item in errors))
+    values = list(events)
+    done = values.pop() if values and values[-1].kind == "done" else None
+    values.extend(StreamEvent("error", {"stage": "memory_persistence",
+        "error_type": type(item).__name__, "message": str(item), "recoverable": True},
+        "molecular") for item in errors)
+    if done:
+        values.append(done)
+    updated = answer + "\n" + "\n".join("Coverage gap: " + item for item in messages)
+    return updated, tuple(values)
 
 
 def _conversation(previous, message: str, answer: str) -> tuple[Mapping[str, object], ...]:

@@ -72,3 +72,21 @@ def memory_answer_schema(memory_ids: tuple[str, ...] = ()) -> dict[str, object]:
     supporting = _array(memory_id, maximum=None if memory_ids else 0)
     return _object({"answer": STRING, "supporting_memory_ids": supporting,
                     "abstain": {"type": "boolean"}})
+
+
+def molecular_planner_schema() -> dict[str, object]:
+    return _object({
+        "operation": {"type": "string", "enum": ["predict", "compare"]},
+        "candidate_kind": {"type": "string", "enum": ["name", "smiles"]},
+        "candidate_value": STRING,
+        "baseline_kind": {"type": "string", "enum": ["none", "name", "smiles"]},
+        "baseline_value": {"type": "string"},
+        "candidate_scope": {"type": "string",
+                            "enum": ["unspecified", "full", "parent_candidate"]},
+        "candidate_structure_smiles": {"type": "string"},
+        "candidate_selection_text": {"type": "string"},
+        "baseline_scope": {"type": "string",
+                           "enum": ["unspecified", "full", "parent_candidate"]},
+        "baseline_structure_smiles": {"type": "string"},
+        "baseline_selection_text": {"type": "string"},
+    })

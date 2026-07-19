@@ -214,16 +214,37 @@ Caffeine candidate vs theobromine baseline 的 candidate-minus-baseline deltas �
 
 Cold caffeine call 为 13.181s；comparison/model-load process 为 4.179s；同一 process 内 warm salt calls 各约 0.146s。两次 fresh direct-subagent interpretation 均 PASS，并明确要求：缺少 endpoint direction、calibration、applicability、uncertainty、exposure 与实验验证时，Agent 不能据此选择 compound 或作 safety claim。
 
-这些输出属于 computational point predictions，`experimental_evidence=false`。Calibrated per-prediction uncertainty 当前不可用，不支持 aggregate score 或 effect claim。ADMET workflow 仍是 direct runtime helper；app-v4 Planner 与 tool-event integration 尚待接入。依赖完整 drug-design/model runtime 的 workflows 继续 deferred。
+这些输出属于 computational point predictions，`experimental_evidence=false`。Calibrated per-prediction uncertainty 当前不可用，不支持 aggregate score 或 effect claim。ADMET execution block 验收时仍是 direct runtime helper；下述 app-v4 molecular chat block 已关闭 Planner/tool-event integration gap。依赖完整 drug-design/model runtime 的 workflows 继续 deferred。
+
+## App-v4 molecular chat effect
+
+App-v4 通过既有 payload 与 SSE contract 接受 `mode=molecular`。`mode=auto` 只把明确 ADMET action 路由到 molecular；中文“运行、执行、预测、计算、估算、比较、对比、评估”等 action 可识别，中文“文献、论文、检索、搜索”请求继续进入 research，含糊提及保持保守。
+
+- Native molecular planner 使用严格 typed schema；candidate/baseline name 或 SMILES 必须逐字来自当前用户消息。
+- Full/parent scope 的每个 arm 都必须有独立 exact selection span。跨 arm 授权、只授权一臂却应用到另一臂、非法 fragment selection 均 fail closed。
+- Endpoint selection 由 runtime 决定：消息显式包含 allowlisted endpoint IDs 时按出现顺序执行；缺少显式 ID 时使用固定 `DEFAULT_ADMET_PROPERTIES`。模型不能自行选择 endpoint subset。
+- Execution 保持 PubChem verified identity→RDKit exact binding→lazy reusable ADMET-AI predict/compare；candidate→baseline role order、scope、canonical isomeric SMILES、InChIKey、removed fragments、endpoint values 与 deltas 始终绑定。
+
+SSE typed events 与 SQLite cross-chat memory 已接通。History ingest 或 exchange persistence 失败时，runtime 保留一次 molecular execution 与 completed/partial answer，追加 recoverable `memory_persistence` error，不重复模型调用。Blocked 或 same-identity request 不调用 ADMET。
+
+Main 的真实 Flask `/api/chat` canary 使用 direct collaboration subagent 作为 planner，无 nested CLI 或 OpenAI API key。中文请求比较 caffeine 与 theobromine 的 AMES、hERG、DILI，candidate=caffeine、baseline=theobromine；HTTP 200，SSE `name=molecular`，elapsed=11.633s，SQLite 写入 user/assistant 两轮。
+
+| Role | PubChem CID | InChIKey | AMES | hERG | DILI |
+| --- | ---: | --- | ---: | ---: | ---: |
+| Candidate caffeine | 2519 | RYYVLZVUVIJVGH-UHFFFAOYSA-N | 0.11057253181934357 | 0.04754055291414261 | 0.932073712348938 |
+| Baseline theobromine | 5429 | YAPQBXQYLJRXSA-UHFFFAOYSA-N | 0.16466861963272095 | 0.018699243664741516 | 0.9546573758125305 |
+| Candidate-minus-baseline delta | — | — | -0.05409608781337738 | +0.028841309249401093 | -0.02258366346359253 |
+
+Typed events 覆盖 plan、identity、`admet.compare`、message、done。回答保持 computational point prediction、`experimental_evidence=false`、calibrated per-prediction uncertainty unavailable、model applicability domain 未建立、cross-endpoint score comparability 未建立等边界，不作安全、暴露量、总体分数或候选选择结论。
 
 ## 最新验证
 
-- App-v4 venv post-install full suite：`224/224 PASS`。
+- Full `scripts/check.py`：`234/234 PASS`。
 - `prepare-molecule`、`evaluate-candidate` Skill validators 与 official plugin validator PASS。
 - Sanitizer `982/0/0`；diff PASS。
 
 ## 下一步
 
-1. 将 PubChem + ADMET direct helpers 接入 app-v4 Planner 与 typed tool events，验证 blocker、provider gap、result 与 resume behavior。
-2. 在任何 decision use 前补齐 endpoint direction、calibration、applicability、uncertainty、exposure 与实验验证语义。
-3. Docking provenance、PDF/registry 测量项继续保留，依赖未接入模型的完整 drug-design tasks 继续 deferred。
+1. 下一 capability block 转向 evidence-bound docking/target-pocket/PLIP tool workflow。
+2. 先验证 target/pocket identity 与 interaction artifact provenance，再执行并解释 docking/PLIP 工具。
+3. 当前 docking 尚未完成；PDF/registry 测量项与依赖未接入模型的完整 drug-design tasks 继续 deferred。

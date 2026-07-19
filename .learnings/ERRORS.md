@@ -3481,3 +3481,71 @@ Run the sanitizer from `/Users/dongxu/projects/FROGENT`, or use its verified abs
 - **Notes**: The follow-up validation uses the repository-root working directory and the same project-local Python environment.
 
 ---
+
+## [ERR-20260719-059] molecular_memory_recovery_exceeded_module_gate
+
+**Logged**: 2026-07-19T12:05:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: backend
+
+### Summary
+The first focused validation after adding recoverable molecular memory persistence exceeded the 260-line runtime module limit.
+
+### Error
+```
+AssertionError: 264 not less than or equal to 260 : research_service.py
+```
+
+### Context
+- The new behavior tests for role-bound scope, deterministic endpoints, and memory failure recovery passed.
+- The failure is limited to the existing architecture size gate.
+- Tests ran with bytecode disabled and project-contained cache variables.
+
+### Suggested Fix
+Move or compact the small molecular persistence formatting helper while preserving the successful response and typed recoverable error behavior, then rerun focused architecture and full validation.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/research_service.py
+
+### Resolution
+- **Resolved**: 2026-07-19T12:07:00+08:00
+- **Commit/PR**: pending app-v4 molecular tool integration
+- **Notes**: The helper was compacted without changing behavior; research_service.py is 260 lines and the focused 18-test behavior plus architecture suite passes.
+
+---
+
+## [ERR-20260719-060] skill_validator_path_omitted_system_segment
+
+**Logged**: 2026-07-19T12:18:34+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The first final Skill validation command omitted the `.system` segment from the bundled `skill-creator` path.
+
+### Error
+```
+can't open file '/Users/dongxu/.codex/skills/skill-creator/scripts/quick_validate.py': No such file or directory
+```
+
+### Context
+- The failure occurred before either Skill validator started.
+- No project files were changed by the failed command.
+- A read-only path lookup located the validator under `/Users/dongxu/.codex/skills/.system/skill-creator/scripts/quick_validate.py`.
+
+### Suggested Fix
+Use the complete bundled validator path and rerun both modified Skills.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/skills/prepare-molecule/SKILL.md, plugins/frogent-drug-design/skills/evaluate-candidate/SKILL.md
+
+### Resolution
+- **Resolved**: 2026-07-19T12:18:34+08:00
+- **Commit/PR**: pending app-v4 molecular tool integration
+- **Notes**: The corrected path was used and both Skill validators passed.
+
+---

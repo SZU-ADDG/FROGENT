@@ -909,3 +909,30 @@ Persist role, scope, canonical isomeric SMILES, InChIKey, removed fragments, pro
 - Last-Seen: 2026-07-19
 
 ---
+
+## [LRN-20260719-014] best_practice
+
+**Logged**: 2026-07-19T12:00:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: tool-use
+
+### Summary
+Natural-language tool execution must bind every authorization to the exact role and user span, use deterministic runtime defaults, and keep auxiliary persistence off the response-critical path.
+
+### Details
+The first app-v4 molecular integration validated `full` and `parent` language against the entire message. In a candidate-versus-baseline request, wording that authorized only the candidate could therefore be reused for the baseline. The same integration forced the model to choose at least one ADMET endpoint even when the user named none, making a generic request nondeterministic. Cross-chat memory writes also occurred before streaming the completed molecular answer, so a locked database could hide a valid tool result. These patterns generalize to docking, retrosynthesis, SAR, and other multi-arm tools.
+
+### Suggested Action
+Require role-specific exact evidence for every scope or structure selection; keep candidate and baseline permissions independent. Derive omitted endpoint/tool defaults deterministically in runtime and let the model select only explicitly grounded options. Stream the primary typed tool result even when memory or audit persistence fails, and surface persistence failure as a recoverable local gap.
+
+### Metadata
+- Source: independent_code_review
+- Related Files: plugins/frogent-drug-design/frogent_plugin/molecular_chat_plan.py, plugins/frogent-drug-design/frogent_plugin/research_service.py
+- Tags: natural-language-planning, role-binding, deterministic-defaults, failure-recovery
+- Pattern-Key: tool-use.bind_authority_and_preserve_primary_result
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
