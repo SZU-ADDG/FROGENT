@@ -1,10 +1,12 @@
 import hashlib
+import io
 import importlib.util
 import os
 import sys
 import tempfile
 import types
 import unittest
+from contextlib import redirect_stdout
 from datetime import datetime
 from pathlib import Path
 from unittest.mock import patch
@@ -161,13 +163,16 @@ class AppV4LauncherTests(unittest.TestCase):
             self.assertIs(sys.modules.get("models"), prior_models)
             app.config.update(TESTING=True)
             client = app.test_client()
-            self.assertTrue(client.post("/api/register", json={"username": "alice",
-                "password": "pw", "email": "a@example.test"}).get_json()["success"])
-            self.assertTrue(client.post("/api/login", json={"username": "alice",
-                "password": "pw"}).get_json()["success"])
-            response = client.post("/api/chat", json={"chat_id": "chat-1",
-                "message": "Assess LRRK2", "files": [{"filename": "paper.txt",
-                "path": str(upload), "is_molecular": False, "format": "txt"}]}, buffered=True)
+            legacy_stdout = io.StringIO()
+            with redirect_stdout(legacy_stdout):
+                self.assertTrue(client.post("/api/register", json={"username": "alice",
+                    "password": "pw", "email": "a@example.test"}).get_json()["success"])
+                self.assertTrue(client.post("/api/login", json={"username": "alice",
+                    "password": "pw"}).get_json()["success"])
+                response = client.post("/api/chat", json={"chat_id": "chat-1",
+                    "message": "Assess LRRK2", "files": [{"filename": "paper.txt",
+                    "path": str(upload), "is_molecular": False, "format": "txt"}]}, buffered=True)
+            self.assertEqual("", legacy_stdout.getvalue())
             body = response.get_data(as_text=True)
             self.assertIn('"content":"source-backed answer"', body)
             self.assertIn('"stop":true', body)

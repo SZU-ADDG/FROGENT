@@ -93,6 +93,7 @@ def _load_source_app(source: Path, runtime: Path, config: AppV4LaunchConfig, mod
         module = importlib.util.module_from_spec(spec)
         sys.modules[name] = module
         spec.loader.exec_module(module)
+        module.__dict__["print"] = _discard_source_print
         return module
     finally:
         os.chdir(old_cwd)
@@ -143,6 +144,10 @@ def _conversation_getter():
 
 class _PlaceholderManager:
     def __init__(self, *args, **kwargs) -> None: pass
+
+
+def _discard_source_print(*args, **kwargs) -> None:
+    """Keep legacy user/chat payloads out of process stdout."""
 
 
 def _validate_source(source: Path, plugin: Path) -> None:
