@@ -19,22 +19,26 @@
   "apps": "./.app.json",
   "interface": {
     "displayName": "FROGENT Biomedical R&D",
-    "shortDescription": "Traceable literature research and drug-design workflows.",
-    "longDescription": "Research biomedical literature, curate evidence, discover targets, design and evaluate molecules, optimize peptides, and plan retrosynthesis with a policy-controlled FROGENT harness.",
+    "shortDescription": "Knowledge-led, tool-calibrated biomedical R&D workflows.",
+    "longDescription": "Research biomedical literature, apply scientific and medicinal-chemistry judgment, prioritize design hypotheses, calibrate them with tools, optimize molecules and peptides, and plan experiments with a policy-controlled FROGENT harness.",
     "developerName": "FROGENT maintainers",
     "category": "Science",
     "capabilities": [
       "MCP",
       "Skills",
       "Drug Design",
+      "Private Scientific Engines",
+      "Qualitative Scientific Judgment",
       "Biomedical Literature",
       "Evidence Synthesis",
+      "Persistent Memory",
       "Agent Harness"
     ],
     "defaultPrompt": [
       "Discover a target and propose candidate ligands.",
       "Research a biomedical question with a traceable evidence review.",
       "Evaluate docking and ADMET evidence for my molecules.",
+      "Use medicinal-chemistry judgment to prioritize what I should synthesize next.",
       "Optimize a peptide against a protein target."
     ],
     "brandColor": "#147D64"

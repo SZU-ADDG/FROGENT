@@ -2,12 +2,14 @@
 
 ## Purpose
 
-Maintain the completed compact local source tree for refactoring while leaving the two remote third-party directories unchanged.
+Maintain the completed compact local source tree for refactoring while leaving every remote source directory unchanged.
 
 ## Current status
 
 - User approval was recorded on 2026-07-15.
 - The code-only copy is complete under `sources/mcp/` and `sources/frogent/`.
+- A separate 2026-07-23 exact allowlist copied the TrioWorkspace control-plane and five engine
+  adapters into `sources/trioworkspace/` for MCP contract integration.
 - Local sanitization is complete; repeat checking reports zero pending changes and zero sensitive residual files.
 - The remote metadata checkpoints match the pre-copy values.
 - Git has not been initialized by this workflow.
@@ -16,6 +18,8 @@ Maintain the completed compact local source tree for refactoring while leaving t
 
 - `/work/pqh/projects/agent/` -> `sources/mcp/`
 - `/work/pqh/projects/Frogent1/` -> `sources/frogent/`
+- `doomx_3nd:/work/doomx/TrioWorkspace/` -> `sources/trioworkspace/` using
+  `trioworkspace-control-plane.files`
 
 Both destinations stay under `/Users/dongxu/projects/FROGENT/`. Source boundaries remain visible and no remote path is moved or modified.
 

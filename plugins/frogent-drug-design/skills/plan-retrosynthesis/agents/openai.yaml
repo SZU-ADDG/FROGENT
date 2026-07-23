@@ -1,4 +1,4 @@
 interface:
   display_name: "Plan Retrosynthesis"
-  short_description: "Plan practical routes for target molecules"
-  default_prompt: "Use $plan-retrosynthesis to plan routes for a target molecule."
+  short_description: "Prioritize expert and tool-generated routes"
+  default_prompt: "Use $plan-retrosynthesis to propose, verify, and prioritize practical route families for this target molecule."

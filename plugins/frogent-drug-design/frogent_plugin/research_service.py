@@ -12,15 +12,13 @@ from .contracts import ExecutionContext, StreamEvent
 from .conversation_memory import ConversationMemoryStore, ConversationTurn
 from .cross_chat_memory import CrossChatMemory, MemoryResponse
 from .memory_answer import CodexMemoryAnswerer
-from .docking_chat import is_clear_docking_intent
-from .molecular_chat import is_clear_admet_intent
 from .research_memory import ResearchMemory, SQLiteResearchStore
 from .research_types import ResearchRequest
+from .service_routing import memory_intent, run_tool_handler, tool_route
 from .tool_streaming import persistence_recovery
 
 class Planner(Protocol):
     def plan(self, question: str, as_of: date, context: ExecutionContext, history=()) -> ResearchRequest: ...
-
 
 class Controller(Protocol):
     def run(self, request: ResearchRequest, context: ExecutionContext, checkpoint=None, *,
@@ -30,21 +28,20 @@ class Controller(Protocol):
 class ToolHandler(Protocol):
     def run(self, message: str, context: ExecutionContext): ...
 
-
 class ResearchService:
     """Convert app_v4 chat payloads to typed runs and legacy SSE frames."""
 
     def __init__(self, planner: Planner, controller: Controller, store: SQLiteResearchStore,
                  workspace: Path, clock=date.today, *, memory_store: ConversationMemoryStore | None = None,
                  memory_answerer: CodexMemoryAnswerer | None = None, max_memory_hits: int = 8,
-                 max_memory_prompt_chars: int = 8000,
+                 max_memory_prompt_chars: int = 8000, design_handler: ToolHandler | None = None,
                  molecular_handler: ToolHandler | None = None,
                  docking_handler: ToolHandler | None = None) -> None:
         self.planner, self.controller, self.store = planner, controller, store
         self.workspace, self.clock = workspace.resolve(), clock
         self.memory_store, self.memory_answerer = memory_store, memory_answerer
-        self.molecular_handler = molecular_handler
-        self.docking_handler = docking_handler
+        self.design_handler, self.molecular_handler, self.docking_handler = (
+            design_handler, molecular_handler, docking_handler)
         if max_memory_hits <= 0 or max_memory_prompt_chars <= 0:
             raise ValueError("memory bounds must be positive")
         self.max_memory_hits, self.max_memory_prompt_chars = max_memory_hits, max_memory_prompt_chars
@@ -60,29 +57,23 @@ class ResearchService:
     def stream_payload(self, user_id: str, payload: Mapping[str, object], *, history=()):
         try:
             message, chat_id, files, mode = _payload(payload)
-            memory_route = mode == "memory" or (mode == "auto" and _memory_intent(message))
-            docking_route = (mode == "docking" or (mode == "auto" and not memory_route and
-                             self.docking_handler and is_clear_docking_intent(message)))
-            molecular_route = (mode == "molecular" or (mode == "auto" and not memory_route and
-                               not docking_route and
-                               self.molecular_handler and is_clear_admet_intent(message)))
+            memory_route = mode == "memory" or (mode == "auto" and memory_intent(message))
+            route = None if memory_route else tool_route(mode, message, self.design_handler,
+                self.molecular_handler, self.docking_handler)
             persistence_errors = []
             try:
                 self._ingest_history(user_id, chat_id, message, history)
             except Exception as exc:
-                if not (molecular_route or docking_route):
+                if route is None:
                     raise
                 persistence_errors.append(exc)
             if memory_route:
                 yield from self._memory_stream(user_id, chat_id, message, history)
                 return
-            if molecular_route:
-                yield from self._tool_stream("molecular", self.molecular_handler, user_id, chat_id,
-                                             message, history, persistence_errors)
-                return
-            if docking_route:
-                yield from self._tool_stream("docking", self.docking_handler, user_id, chat_id,
-                                             message, history, persistence_errors)
+            if route:
+                name, handler = route
+                yield from self._tool_stream(name, handler, user_id, chat_id, message, history,
+                                             persistence_errors)
                 return
             context = ExecutionContext(user_id, chat_id, "research-" + uuid4().hex, self.workspace)
             saved = self.store.load(user_id, chat_id)
@@ -114,7 +105,7 @@ class ResearchService:
         if handler is None:
             raise RuntimeError(f"{name} chat is not configured")
         context = ExecutionContext(user_id, chat_id, name + "-" + uuid4().hex, self.workspace)
-        result = handler.run(message, context)
+        result = run_tool_handler(handler, message, context, history)
         errors = list(persistence_errors)
         try:
             self._persist_exchange(user_id, chat_id, message, result.answer, len(tuple(history)))
@@ -213,8 +204,8 @@ def _payload(value: Mapping[str, object]) -> tuple[str, str, list[object], str]:
         raise ValueError("chat_id must be non-empty text")
     if not isinstance(files, list):
         raise ValueError("files must be a list")
-    if mode not in {"auto", "research", "memory", "molecular", "docking"}:
-        raise ValueError("mode must be auto, research, memory, molecular, or docking")
+    if mode not in {"auto", "research", "memory", "design", "molecular", "docking"}:
+        raise ValueError("mode must be auto, research, memory, design, molecular, or docking")
     return message.strip(), chat_id.strip(), files, mode
 
 
@@ -246,11 +237,3 @@ def _timestamp(value) -> str:
     else:
         raise ValueError("clock must return date or datetime")
     return current.astimezone(timezone.utc).isoformat()
-
-
-def _memory_intent(message: str) -> bool:
-    text = message.casefold()
-    markers = ("what did i", "do you remember", "remember my", "what is my favorite",
-               "my preference", "what did you tell me", "earlier conversation", "previous chat",
-               "across chats", "我之前", "你还记得", "我的偏好", "我说过")
-    return any(marker in text for marker in markers)

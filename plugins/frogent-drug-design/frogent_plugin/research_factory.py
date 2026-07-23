@@ -20,6 +20,9 @@ from .memory_answer import CodexMemoryAnswerer
 from .admet_ai_adapter import ADMETAIAdapter
 from .molecular_chat import MolecularChatHandler
 from .molecular_chat_plan import CodexMolecularPlanner
+from .design_memory import SQLiteDesignStore
+from .design_workflow import QualitativeDesignHandler
+from .qualitative_design import CodexDesignStrategist
 from .docking_chat import DockingChatHandler
 from .docking_chat_plan import CodexDockingPlanner
 from .docking_env import (dynamic_plip_from_env, dynamic_vina_from_env,
@@ -145,7 +148,8 @@ def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=
                            target_provider=None, pocket_provider=None, docking_provider=None,
                            interaction_provider=None, rcsb_transport=None,
                            docking_runner=None, docking_conformer=None,
-                           plip_runner=None, plip_ligand_builder=None) -> ResearchService:
+                           plip_runner=None, plip_ligand_builder=None,
+                           design_calibrator=None) -> ResearchService:
     root = config.plugin_root.resolve()
     client_args = {"timeout": config.codex_timeout, "executable": config.codex_executable}
     if runner is not None:
@@ -184,6 +188,9 @@ def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=
     molecular = MolecularChatHandler(CodexMolecularPlanner(client), PubChemIdentityResolver(),
                                      ADMETAIAdapter(matplotlib_cache=root / ".runtime" / "app-v4" /
                                                     "matplotlib"))
+    design = QualitativeDesignHandler(CodexDesignStrategist(client),
+                                      SQLiteDesignStore(config.memory_path, root),
+                                      design_calibrator)
     target_provider = target_provider or RCSBTargetProvider(root, transport=rcsb_transport)
     pocket_provider = pocket_provider or RCSBPocketProvider(root)
     if docking_provider is None and config.dynamic_vina:
@@ -210,7 +217,8 @@ def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=
                            memory_answerer=CodexMemoryAnswerer(client, config.max_memory_prompt_chars),
                            max_memory_hits=config.max_memory_hits,
                            max_memory_prompt_chars=config.max_memory_prompt_chars,
-                           molecular_handler=molecular, docking_handler=docking)
+                           design_handler=design, molecular_handler=molecular,
+                           docking_handler=docking)
 
 
 def build_local_docking_adapters(config: RuntimeConfig, *, vina_executable: Path,

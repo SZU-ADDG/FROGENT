@@ -10,24 +10,42 @@ FROGENT harness 是围绕模型、Agents、Skills、Apps 和 MCP providers 的�
 
 ```mermaid
 flowchart LR
-    A["Flask /api/chat"] --> B["全局 QwenAssistantManager"]
-    B --> C["GroupChat customized router"]
-    C --> D["@Agent 文本匹配"]
-    D --> E["FnCallAgent LLM/tool loop"]
-    E --> F["MCP 或 PubMed tool"]
-    F --> G["字符串格式化"]
-    G --> H["SSE 与 chat history"]
+    A["Flask /api/chat"] --> B["AppV4ResearchManager"]
+    B --> C["ResearchService typed router"]
+    C --> D["Research evidence workflow"]
+    C --> E["Qualitative design workflow"]
+    C --> F["Molecular ADMET workflow"]
+    C --> G["Docking / PLIP workflow"]
+    C --> M["TrioWorkspace MCP tasks"]
+    D --> H["EvidenceLedger + ResearchMemory"]
+    E --> I["DesignMemory + calibration findings"]
+    F --> J["Exact molecular lineage"]
+    G --> K["Exact target / pocket / pose lineage"]
+    M --> N["Owner-isolated task + verified artifacts"]
+    H --> L["Typed events + SSE"]
+    I --> L
+    J --> L
+    K --> L
+    N --> L
 ```
 
-当前实现已经具备多 Agent、工具调用、最大轮次、最大模型调用次数、SSE 和会话历史。主要架构风险如下：
+当前 runtime 已具备 typed research、design、molecular 与 docking paths，bounded conversation context，
+evidence admission/revocation、project-contained artifacts、persistent research/conversation/design memory、
+typed events、safe partial failures，以及默认无固定墙钟 timeout 的 provider 与模型边界。
 
-- Agent 路由依赖自然语言中的 `@Agent` 正则匹配，规划意图和展示文本耦合。
-- 全局 Assistant、Agent Memory、文件列表和进程内 `user_sessions` 增加并发与跨 job 串扰风险。
-- 完整 chat history 被重新拼接给 Agent，缺少按 job、证据资格和 token 预算控制的 context assembler。
-- PubMed 仅返回标题、摘要和期刊的拼接字符串，缺少稳定标识、检索时间、查询来源和筛选状态。
-- 工具错误、原始结果、Agent 发言和最终答案共用消息结构，错误信息可能被后续轮次当成事实。
-- `max_round=40` 与单 Agent 模型调用上限分散在不同层，缺少统一 job policy、no-progress 检测和能力级预算。
-- SSE 格式化、Agent 事件解析、历史持久化和断开处理交织在 Web route 与 Manager 内。
+TrioWorkspace 通过 project-contained stdio MCP 接入五个私有异步引擎。Harness 先保存 typed
+submission 与 task ID，再轮询 owner-isolated 状态；成功结果只以 byte-size/SHA-256 校验后的
+project-local artifact references 进入后续判断。HMAC secret 在远端一次性 relay 内使用，本地
+runtime、Skills、events 和模型上下文都不接触该凭据。
+
+当前仍需继续收敛的架构点：
+
+- 混合 research + design + molecular/docking 请求需要组合能力计划，当前自动路由仍以单一路径为主。
+- `DesignCalibrator` 已提供 typed production hook，具体 calibration request 只有在适配的 executor
+  已配置并且结构、target、pocket 或 evidence 输入充分时才执行。
+- Quantitative design 已生成 typed optimizer handoff；实际 evolutionary、Bayesian optimization 或 RL
+  executor 仍需稳定 capability 与结果回流接口。
+- Attachment metadata 已进入 app boundary，design 与 molecular reasoning 仍需按 artifact policy 选择内容。
 
 ## 目标组件
 
@@ -36,6 +54,7 @@ flowchart LR
     APP["App adapter"] --> H["FROGENT harness"]
     H --> CTX["Context assembler"]
     H --> PLAN["Planner and router"]
+    H --> JUDGE["Qualitative judgment"]
     H --> SKILL["Skill runner"]
     H --> POLICY["Policy gate"]
     H --> EXEC["Capability executor"]
@@ -55,6 +74,7 @@ flowchart LR
 | Harness controller | Apply transitions and budgets; own the job loop |
 | Context assembler | Load bounded user input, approved evidence IDs, artifact refs, and required history |
 | Planner and router | Emit typed commands with reasons and targets |
+| Qualitative judgment | Classify the decision regime; generate and rank knowledge-led hypotheses before calibration |
 | Skill runner | Activate task procedures without owning provider URLs |
 | Policy gate | Check phase, capability allowlist, limits, consent, and data boundaries |
 | Capability executor | Resolve stable capability IDs and normalize provider results |
@@ -69,12 +89,15 @@ flowchart LR
 2. Enter `intake`; validate the request, files, identity, consent, and job limits.
 3. Assemble a bounded context from user input, approved evidence IDs, artifact references, and the minimum necessary conversation state.
 4. Enter `planning`; activate the relevant Skills and produce a typed `HarnessCommand`.
-5. Apply `HarnessPolicy` and the phase-transition table before delegation or capability execution.
-6. Execute one command. Store large or raw results as artifacts and return a normalized `ToolResult`.
-7. Route literature results through `EvidenceLedger`. Keep excluded and uncertain records outside working memory.
-8. Reconcile admitted evidence after every new screening decision, correction, or retraction.
-9. Enter `evaluation`; measure progress, evidence sufficiency, repeated actions, errors, and remaining budget.
-10. Persist a checkpoint and emit typed events. Continue, request input, complete, fail, or honor cancellation.
+5. Classify the decision as `qualitative`, `quantitative`, or `hybrid`. A discriminator qualifies only when it matches the user's objective, is calibrated for the current domain, and covers the candidate space.
+6. For qualitative or hybrid work, create a typed `HypothesisPortfolio` inside planning. Generate it from world knowledge, medicinal-chemistry experience, mechanistic reasoning, and verified precedent before broad scoring; expose the action as a `judgment` Agent event.
+7. Apply `HarnessPolicy` and the phase-transition table before delegation or capability execution.
+8. Execute one command. Store large or raw results as artifacts and return a normalized `ToolResult`.
+9. Use tools to validate identity, catch hard conflicts, calibrate confidence, and rerank hypotheses. An unavailable or inconclusive tool leaves a knowledge-led hypothesis active; an immutable-constraint violation or hard contradiction can reject it.
+10. Route literature results through `EvidenceLedger`. Keep excluded and uncertain factual records outside working memory while retaining clearly labeled design hypotheses in the decision portfolio.
+11. Reconcile admitted evidence after every new screening decision, correction, or retraction.
+12. Enter `evaluation`; measure progress, hypothesis diversity, decision usefulness, repeated actions, errors, and remaining budget.
+13. Persist a checkpoint and emit typed events. Continue, request input, complete, fail, or honor cancellation.
 
 One loop iteration performs one externally visible decision. This keeps traces replayable and avoids recursive Agent-to-Agent execution.
 
@@ -89,27 +112,30 @@ One loop iteration performs one externally visible decision. This keeps traces r
 | Artifact store | Files and raw provider payloads | Referenced on demand |
 | Evidence ledger | Raw records and all screening events | Queried for audit or screening |
 | Working memory | Qualified evidence excerpts and task facts | Directly available to planner |
+| Design memory | User-grounded constraints, full hypothesis portfolio, calibration findings, rank revisions, answer versions | Available to design resume and recalibration |
 | Synthesis | Claims linked to evidence and counterevidence IDs | Available after validation |
 
 Local memory is scoped by `user_id`, `conversation_id`, and `job_id`. Promotion to longer-lived memory requires an explicit policy and provenance-preserving summary.
 
 ## Stop and recovery policy
 
-The harness stops on a completed acceptance condition, required user input, user cancellation, policy denial, exhausted budget, repeated no-progress actions, unrecoverable provider failure, or evidence insufficiency that cannot be resolved within scope. Every stop carries a reason and final phase.
+The harness stops on a completed acceptance condition, required user input, user cancellation, policy denial, exhausted budget, repeated no-progress actions, an unrecoverable provider failure, or the absence of any actionable hypothesis after hard constraints are applied. Missing prediction coverage alone does not stop qualitative judgment. Every stop carries a reason and final phase.
 
-Checkpoint after each tool result, evidence decision, and synthesis update. A resumed job reloads IDs and state, reconciles evidence eligibility, and rehydrates artifacts through references.
+Checkpoint after each tool result, evidence decision, design revision, and synthesis update. A resumed job reloads IDs and state, reconciles evidence eligibility, rehydrates artifacts through references, and deterministically rerenders saved design findings without regenerating the portfolio.
 
 ## Evaluation surface
 
 Deterministic tests cover transitions, capability allowlists, budgets, memory admission, evidence revocation, and typed events. Scenario evaluations should cover anchor-record recall, near-miss retention, negative evidence, duplicate study families, preprints, corrections, retractions, provider errors, cancellation, and concurrent jobs.
 
-Useful trace metrics include unsupported-claim rate, citation precision, anchor recall, screening agreement, excluded-record reasons, memory admission count, evidence revocations, repeated commands, tool failure rate, and time to an acceptance condition.
+Useful trace metrics include unsupported factual-claim rate, citation precision, anchor recall, screening agreement, hypothesis diversity, recommendation stability after calibration, hard-block accuracy, experiment value, memory admission count, evidence revocations, tool failure rate, and time to an acceptance condition.
 
-## Migration sequence
+定性科学判断的逐层实现矩阵、五案例语义评估及其 claim limits 见
+[QUALITATIVE_JUDGMENT.md](QUALITATIVE_JUDGMENT.md)。
 
-1. Keep `app_v4.py` as a compatibility adapter while moving state and policy into the new harness contracts.
-2. Convert Qwen GroupChat routing output into typed `HarnessCommand` objects.
-3. Resolve MCP calls through `CapabilityRegistry`; remove duplicated URLs from Agent configuration.
-4. Replace the in-process PubMed string tool with a literature provider that emits structured records and raw artifacts.
-5. Insert context assembler, evidence gate, checkpoints, typed events, cancellation, and no-progress evaluation.
-6. Move Web, database, artifact, and provider implementations behind ports after behavior is covered by trace fixtures.
+## Remaining integration sequence
+
+1. Compose mixed literature, qualitative judgment, ADMET and docking requests into one bounded capability plan.
+2. Bind admitted evidence IDs and computational artifact IDs directly to design hypotheses.
+3. Add executable quantitative optimizer capabilities with objective, constraint, applicability-domain and stop-rule lineage.
+4. Add hypothesis supersession/revocation controls for experimental feedback.
+5. Extend semantic scenario evaluations across new molecule, peptide, target and route decisions.

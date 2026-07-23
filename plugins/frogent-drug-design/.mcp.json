@@ -35,6 +35,13 @@
     "smiles-generator": {
       "type": "http",
       "url": "http://127.0.0.1:9006/mcp"
+    },
+    "trio-workspace": {
+      "command": "python3",
+      "args": [
+        "./mcp_servers/trioworkspace_mcp.py"
+      ],
+      "cwd": "."
     }
   }
 }

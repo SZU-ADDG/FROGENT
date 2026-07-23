@@ -4660,3 +4660,303 @@ Implementation ran a read-only `rg` command from the plugin directory while repe
 Resolve validation paths relative to the selected working directory once, then run the focused and full checks from that same directory.
 
 ---
+
+## [ERR-20260722-104] main_py_compile_updated_shared_bytecode_cache
+
+**Logged**: 2026-07-22T00:00:00+08:00
+**Priority**: medium
+**Status**: contained
+**Area**: validation
+
+### Summary
+A Main syntax-check command invoked `python3 -m py_compile` without disabling bytecode and created or updated four `.pyc` files under the existing shared plugin and test `__pycache__` directories. Source files and runtime artifacts were unaffected. The cache entries were preserved to comply with shared-asset and deletion-safety rules.
+
+### Suggested Fix
+Set `PYTHONDONTWRITEBYTECODE=1` for every Python validation command and prefer direct unit-test or AST parsing checks that do not create bytecode. Never clean a shared cache solely to repair this mistake.
+
+---
+
+## [ERR-20260722-105] qualitative_decision_focused_validation_failures
+
+**Logged**: 2026-07-22T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The first focused qualitative-decision run reported two deterministic failures: portfolio-size validation fired before the more specific rank-lineage validation, and inline calibration precedence produced control-flow nesting 4 against the plugin limit of 3. No runtime or external tool call ran.
+
+### Suggested Fix
+Validate hypothesis identity and rank lineage before regime-specific portfolio size. Isolate calibration precedence in one flat helper so the behavior remains explicit and the architecture limit remains satisfied.
+
+---
+
+## [ERR-20260722-106] skill_metadata_inspection_separator_command_failed
+
+**Logged**: 2026-07-22T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+A read-only zsh loop used a decorative separator token while inspecting Skill metadata and exited with `zsh:1: === not found`. No file or runtime state changed.
+
+### Suggested Fix
+Inspect metadata with direct `sed` calls or plain filenames and avoid decorative shell separators.
+
+---
+
+## [ERR-20260722-107] main_full_check_used_stale_venv_path
+
+**Logged**: 2026-07-22T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The first full-check command used the stale repository-root path `.runtime/app-v4/venv/bin/python`. The current project-contained interpreter is under `plugins/frogent-drug-design/.runtime/app-v4/venv/bin/python`, so zsh exited before tests started and changed no project state.
+
+### Suggested Fix
+Resolve the contained interpreter path from the current worktree before validation and run the plugin check script with the verified plugin-local venv.
+
+---
+
+## [ERR-20260722-108] qualitative_public_exports_broke_frozen_eval_identity
+
+**Logged**: 2026-07-22T00:00:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: compatibility
+
+### Summary
+The first full regression reached 280 tests and reported 19 setup errors because adding qualitative-decision symbols to `frogent_plugin/__init__.py` changed the evaluator file digest frozen by historical plan v1-v4 assets. Focused runtime behavior had passed, and the failures occurred before historical cases executed.
+
+### Suggested Fix
+Keep the frozen package initializer byte-identical and import the new qualitative policy through its explicit module path. Add new runtime modules without expanding historical evaluator identities.
+
+---
+
+## [ERR-20260722-109] qualitative_harness_phase_broke_frozen_eval_identity
+
+**Logged**: 2026-07-22T00:00:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: compatibility
+
+### Summary
+After restoring the package initializer, the second full regression again reached 280 tests and reported the same 19 historical setup errors for `frogent_plugin/harness.py`. Adding a judgment phase changed another file frozen by plan v1-v4 evaluator assets.
+
+### Suggested Fix
+Keep the historical harness state machine byte-identical. Implement qualitative judgment as a typed planning layer in a new module and app handler, expose a judgment event, and document its control relationship without changing the frozen evaluator file.
+
+---
+
+## [ERR-20260722-110] sanitizer_check_flag_omitted
+
+**Logged**: 2026-07-22T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The first sanitizer command omitted the required `--check` or `--apply` mode. The script printed usage and performed no scan or file change; the remaining independent validation commands completed.
+
+### Suggested Fix
+Invoke `scripts/sanitize_imported_sources.py --check` for read-only acceptance and reserve `--apply` for an explicitly reviewed sanitization change.
+
+---
+
+## [ERR-20260723-111] qualitative_sar_routing_marker_gap
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The first expanded qualitative-routing regression did not recognize the concise Chinese request `请做SAR并给出骨架跃迁方案` because the object markers covered SAR and scaffold hopping while the action markers omitted `做` and `给出`.
+
+### Suggested Fix
+Keep broad action words bounded by explicit design objects, add the two common Chinese action forms, and retain research-marker protection.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/qualitative_design.py, plugins/frogent-drug-design/tests/test_qualitative_design.py
+
+---
+
+## [ERR-20260723-112] qualitative_audit_nonexistent_sources_path
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+A read-only qualitative-alignment audit included a nonexistent plugin-local `sources` path in one `rg` command. The path lookup returned an error and changed no project state.
+
+### Suggested Fix
+Confirm plugin-local search roots with `rg --files` before combining optional source locations into a scoped audit command.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/
+
+---
+
+## [ERR-20260723-113] zsh_path_array_shadowed_command_lookup
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+A read-only final-hygiene loop used `path` as its iterator name. In zsh, `path` is tied to
+`PATH`, so the loop temporarily replaced command lookup and the later `git`, `rg`, and `find`
+commands returned `command not found`. The earlier JSON and file-existence checks completed;
+no project file was changed by the failed command.
+
+### Suggested Fix
+Reserve `path` and `PATH` in zsh validation scripts. Use a scoped name such as `doc_file`, then
+rerun every skipped check from the beginning.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/docs/, plugins/frogent-drug-design/evals/
+
+---
+
+## [ERR-20260723-114] nonunique_learning_counter_patch
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: self-improvement
+
+### Summary
+A patch intended to increment the qualitative-judgment learning used only the repeated text
+`Recurrence-Count: 2` as context and matched an older evaluation learning. The next read-only diff
+identified the exact unintended line. That old count was restored, and the intended learning was
+updated using its unique `Pattern-Key`.
+
+### Suggested Fix
+When editing structured learning entries with repeated metadata keys, include the entry ID or unique
+`Pattern-Key` in every patch hunk.
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/LEARNINGS.md
+
+---
+
+## [ERR-20260723-115] remote_rsync_merge_filter_resolved_on_sender
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: integration
+
+### Summary
+The first read-only TrioWorkspace rsync dry-run used a `merge` filter rule that the remote sender
+attempted to open as a remote-relative file. The sender returned code 11 because the project-local
+filter file was unavailable there. No destination was created and no remote state changed.
+
+### Suggested Fix
+For a remote sender and a small security-sensitive interface subset, use a local absolute
+`--files-from` allowlist with exact paths. Review the dry-run count and byte total before copying.
+
+### Metadata
+- Reproducible: yes
+- Related Files: copy-plan/trioworkspace-control-plane.files
+
+---
+
+## [ERR-20260723-116] trioworkspace_canary_doubled_mcp_path
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+A read-only TrioWorkspace task-list canary ran from the plugin `mcp_servers` directory while also
+appending `mcp_servers/` to the relay path. The local read failed with `FileNotFoundError` before
+SSH or any remote request was started. No project or remote file changed.
+
+### Suggested Fix
+Derive `plugin_root` as the parent of the current `mcp_servers` directory, then resolve the relay
+once as `plugin_root/mcp_servers/trioworkspace_remote_relay.py`.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/mcp_servers/
+
+---
+
+## [ERR-20260723-117] skill_creator_script_not_executable
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: skills
+
+### Summary
+The first `run-trioworkspace` initialization invoked Skill Creator's `init_skill.py` directly.
+The script lacks an executable bit, so zsh returned permission denied before creating any file.
+
+### Suggested Fix
+Invoke Skill Creator Python entrypoints explicitly with `python3` and keep
+`PYTHONDONTWRITEBYTECODE=1` enabled.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/skills/run-trioworkspace/
+
+---
+
+## [ERR-20260723-118] trio_extension_changed_frozen_eval_identity
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: integration
+
+### Summary
+The first TrioWorkspace catalog integration appended capabilities to `frogent_plugin/catalog.py`
+and added stdio parsing to `frogent_plugin/config.py`. Plan eval v1-v4 intentionally pin those
+files by digest, so the full suite failed closed with 19 identity errors. MCP-specific and
+architecture behavior tests had passed.
+
+### Suggested Fix
+Keep historical evaluator identity modules byte-exact. Place new Trio capability metadata and
+mixed HTTP/stdio manifest parsing in additive modules, then test the combined current inventory
+without changing frozen eval manifests, gold data, or digests.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/catalog.py, plugins/frogent-drug-design/frogent_plugin/config.py
+
+---
+
+## [ERR-20260723-119] remote_stat_format_lost_shell_quoting
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+A final read-only remote metadata check passed the GNU `stat -c` format as a separate SSH
+argument. OpenSSH reconstructed a remote shell command, so the format's pipe characters were
+interpreted as pipelines and `stat` received no operand. No remote metadata was read or changed.
+
+### Suggested Fix
+Pass one explicitly quoted remote command string to SSH when a format contains shell metacharacters,
+then compare the returned checkpoint with the pre-copy values.
+
+### Metadata
+- Reproducible: yes
+- Related Files: sources/trioworkspace/deployment/lan-control-plane/server.py
+
+---

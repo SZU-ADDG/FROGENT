@@ -21,7 +21,12 @@ from frogent_plugin import (  # noqa: E402
     ToolResult,
     build_registry,
     load_app_connectors,
-    load_mcp_servers,
+)
+from frogent_plugin.connector_inventory import load_connector_inventory  # noqa: E402
+from frogent_plugin.trioworkspace_catalog import (  # noqa: E402
+    CURRENT_CAPABILITIES,
+    CURRENT_SERVER_NAMES,
+    build_current_registry,
 )
 
 CONTROL_FLOW_NODES = (ast.For, ast.If, ast.Match, ast.Try, ast.While, ast.With)
@@ -38,17 +43,24 @@ def max_control_flow_nesting(node: ast.AST, depth: int = 0) -> int:
 
 class ArchitectureTests(unittest.TestCase):
     def test_connector_manifests_match_catalog(self) -> None:
-        servers = load_mcp_servers(PLUGIN_ROOT / ".mcp.json")
-        self.assertEqual(9, len(servers))
-        self.assertEqual(SERVER_NAMES, {server.name for server in servers})
+        servers = load_connector_inventory(PLUGIN_ROOT / ".mcp.json")
+        self.assertEqual(10, len(servers))
+        self.assertEqual(CURRENT_SERVER_NAMES, {server.name for server in servers})
+        trio = next(server for server in servers if server.name == "trio-workspace")
+        self.assertEqual("stdio", trio.transport)
+        self.assertEqual("python3", trio.command)
+        self.assertEqual(("./mcp_servers/trioworkspace_mcp.py",), trio.args)
         self.assertEqual((), load_app_connectors(PLUGIN_ROOT / ".app.json"))
 
     def test_capability_catalog_is_unique_and_complete(self) -> None:
         registry = build_registry()
-        tool_pairs = {(item.server, item.tool) for item in CAPABILITIES}
         self.assertEqual(19, len(registry))
-        self.assertEqual(len(CAPABILITIES), len(tool_pairs))
         registry.require_servers(SERVER_NAMES)
+        current = build_current_registry()
+        tool_pairs = {(item.server, item.tool) for item in CURRENT_CAPABILITIES}
+        self.assertEqual(29, len(current))
+        self.assertEqual(len(CURRENT_CAPABILITIES), len(tool_pairs))
+        current.require_servers(CURRENT_SERVER_NAMES)
 
     def test_registry_rejects_duplicate_ids(self) -> None:
         capability = Capability("test.id", "server", "tool", "summary")
@@ -107,7 +119,9 @@ class ArchitectureTests(unittest.TestCase):
             "plan-literature-search",
             "plan-retrosynthesis",
             "prepare-molecule",
+            "prioritize-design-hypotheses",
             "research-biomedical-literature",
+            "run-trioworkspace",
             "screen-literature-evidence",
             "synthesize-biomedical-evidence",
         }
@@ -126,6 +140,32 @@ class ArchitectureTests(unittest.TestCase):
             self.assertIn(f"name: {name}", skill_text)
             self.assertNotIn("TODO", skill_text)
             self.assertIn(f"${name}", prompt_text)
+
+    def test_design_skills_preserve_knowledge_led_semantic_contract(self) -> None:
+        skill_root = PLUGIN_ROOT / "skills"
+        hypothesis_skills = {
+            "design-ligand", "discover-target", "evaluate-candidate", "optimize-peptide",
+            "optimize-small-molecule", "plan-retrosynthesis",
+        }
+        for name in hypothesis_skills:
+            text = (skill_root / name / "SKILL.md").read_text(encoding="utf-8")
+            self.assertIn("$prioritize-design-hypotheses", text, name)
+        core = (skill_root / "prioritize-design-hypotheses" / "SKILL.md").read_text(
+            encoding="utf-8")
+        for phrase in ("qualitative", "quantitative", "hybrid", "world knowledge",
+                       "three to six", "Preserve a useful recommendation",
+                       "Lead with the ranked recommendations", "decisive experiment"):
+            self.assertIn(phrase, core)
+        peptide = (skill_root / "optimize-peptide" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("target-independent branch", peptide)
+        self.assertIn("protein docking is not a prerequisite", peptide)
+        target = (skill_root / "discover-target" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("clearly labeled causal or mechanistic target hypothesis", target)
+        retro = (skill_root / "plan-retrosynthesis" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("reagent classes and condition families as expert route hypotheses", retro)
+        research = (skill_root / "research-biomedical-literature" / "SKILL.md").read_text(
+            encoding="utf-8")
+        self.assertIn("hand the admitted evidence IDs", research)
 
 
 if __name__ == "__main__":

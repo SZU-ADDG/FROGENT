@@ -24,6 +24,7 @@ Record the decision question, intended use, population or biological system, int
 7. Expand through citations, linked trials, verified authors or institutions, and new terminology. Treat author reputation only as retrieval priority.
 8. Use `$synthesize-biomedical-evidence` to build conclusions from admitted evidence with counterevidence, uncertainty, and tool coverage gaps.
 9. Checkpoint completed queries and resume without repeating them. Reconcile memory after corrections, retractions, or changed screening decisions.
+10. When the user asks what molecule, target, route, or experiment to prioritize, hand the admitted evidence IDs and preserved counterevidence to `$prioritize-design-hypotheses`. Keep evidence strength unchanged while the Agent adds an explicitly labeled qualitative decision layer.
 
 ## Keep four evidence layers
 

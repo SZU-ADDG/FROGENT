@@ -5,7 +5,7 @@ description: Evaluate small molecules or peptides against a target with comparab
 
 # Evaluate Candidate
 
-Produce a fair comparison from a consistent evaluation setup.
+Produce a fair measurement comparison and an explicit overall design judgment.
 
 ## Required inputs
 
@@ -23,13 +23,14 @@ Produce a fair comparison from a consistent evaluation setup.
 4. Score peptides with `peptide.docking-score` under identical parameters.
 5. Use the FROGENT ADMET executor for a ready `admet.predict` or `admet.compare` step. Keep the exact bound structures and candidate-then-baseline roles, report each requested endpoint value and candidate-minus-baseline delta, and retain missing or failed endpoints.
    For app chat requests, return the bound scope, canonical isomeric SMILES, and InChIKey for every arm. A failed identity check or model call returns these safe partial inputs and coverage gaps without a synthetic score.
-6. Interpret endpoint values within their model-specific task definitions and uncertainty. Do not combine endpoint directions into an unsupported total score.
-7. Apply user thresholds after collecting results, keeping failed calls visible.
-8. Rank only candidates with comparable evidence and explain every tie-breaker.
+6. Use `$prioritize-design-hypotheses` to decide whether the user supplied a reliable discriminator, a partial proxy, or an underdetermined qualitative objective.
+7. Interpret endpoint values within their model-specific task definitions and uncertainty. Do not combine endpoint directions into an unsupported total score.
+8. Apply user thresholds after collecting results, keeping failed calls visible.
+9. Produce a metric-specific ranking only where evidence is comparable. Produce the overall design priority from the user's biological objective, expert rationale, literature, constraints, computational signals, and experiment value; label the basis for every tie-breaker.
 
 ## Output
 
-Return one table per evaluation group with inputs, scores, properties, threshold outcomes, warnings, and missing values. Add a short decision summary and identify experiments that would reduce the main uncertainty.
+Lead with a short decision summary stating what to advance, hold, or test first. Return one table per evaluation group with inputs, scores, properties, threshold outcomes, knowledge basis, tradeoffs, warnings, and missing values. Identify the experiment that would most efficiently change the decision.
 
 ## Guardrails
 

@@ -33,6 +33,12 @@ SOURCE_CONFIG = {
         "token_env": "MCP_TEST_LLM_API_KEY",
         "credential_uri_env": "MCP_CREDENTIAL_URI",
     },
+    "trioworkspace": {
+        "root": ROOT / "sources" / "trioworkspace",
+        "prefix": "TRIOWORKSPACE",
+        "token_env": "TRIOWORKSPACE_API_KEY",
+        "credential_uri_env": "TRIOWORKSPACE_CREDENTIAL_URI",
+    },
 }
 
 LOCKFILE_IP_EXCLUSIONS = {"uv.lock"}

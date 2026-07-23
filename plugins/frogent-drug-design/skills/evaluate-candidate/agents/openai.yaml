@@ -1,4 +1,4 @@
 interface:
   display_name: "Evaluate Candidate"
-  short_description: "Compare docking and ADMET evidence"
-  default_prompt: "Use $evaluate-candidate to evaluate and compare molecule candidates."
+  short_description: "Combine fair metrics with scientific judgment"
+  default_prompt: "Use $evaluate-candidate to compare candidates and make an explicit knowledge-led, tool-calibrated advancement decision."

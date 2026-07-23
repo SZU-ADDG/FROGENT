@@ -145,3 +145,19 @@
 - [x] 远端关键元数据与复制前一致。
 
 当前本地源码已满足进入版本控制准备与重构整理的安全前置条件；本次任务没有初始化 Git。
+
+## TrioWorkspace MCP 增量（2026-07-23）
+
+- 来源：`doomx_3nd:/work/doomx/TrioWorkspace/`，原始占用约 82G。
+- 精确只读清单：`copy-plan/trioworkspace-control-plane.files`。
+- 本地边界：`sources/trioworkspace/`，与既有两个来源保持隔离。
+- dry-run 与实际复制一致：41 个普通文件、212,252 bytes、符号链接 0。
+- 入选内容只含 control-plane、数据库契约、worker、五个 compute adapters、healthchecks、
+  launch contracts 与 accepted release metadata；69G runtime、模型、环境、任务、数据库、密钥、
+  日志、cache 和结果工件均未复制。
+- 复制前后远端根与 control-plane server 的 inode、大小、mtime、ctime 完全一致；未执行远端写入、
+  安装、启动、停止或任务提交。
+- 脱敏器新增独立 `trioworkspace` source scope，扫描总数由 982 增至 1,023；首次本地处理修改
+  4 个 source snapshot 文件，收敛复扫为 `files_to_change=0`、`residual_files=0`。
+- 新 MCP 通过本地 stdio server 经 SSH 执行一次性 remote relay。HMAC secret 仅由远端 relay
+  内存读取，FROGENT 本地配置、模型上下文和日志均不接触该值。

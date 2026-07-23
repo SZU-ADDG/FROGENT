@@ -21,16 +21,16 @@ Build a traceable target shortlist before starting structure-based design.
 4. Resolve every retained target with `target.standardize`. For the executable RCSB path, require an explicit PDB accession, verify the auth chain in RCSB metadata and the downloaded PDB coordinates, and preserve both official URLs plus the project-contained artifact. UniProt or a protein name remains a candidate until a separately verified exact structure mapping is supplied.
 5. Use `drug.list-by-target` to collect known ligands for the finalists.
 6. Use `protein.download` only when a downstream structural workflow needs a file.
-7. Rank targets using the available association evidence, ligand evidence, structure availability, and user constraints.
+7. Use `$prioritize-design-hypotheses` to rank targets through causal biology, disease relevance, tractability, safety separation, translational precedent, biomarker strategy, and structure or ligand availability. Treat these as explicit scientific judgments calibrated by the retrieved evidence.
 
 ## Output
 
-Return a compact table with the standardized target, identifiers, supporting evidence, known ligands, structure availability, and selection rationale. Separate the recommended target from viable alternatives. State unresolved aliases and missing evidence.
+Lead with the recommended target and the biological thesis. Return a compact table with standardized target, identifiers, supporting evidence, known ligands, structure availability, expected opportunity, tradeoffs, failure mode, decisive experiment, and selection rationale. Keep viable alternatives visible.
 
 ## Guardrails
 
 - Preserve source identifiers exactly.
-- Do not infer a disease-target or target-ligand relationship that a tool did not return.
+- Do not present a disease-target or target-ligand relationship as verified fact unless a source returned it. The Agent may propose a clearly labeled causal or mechanistic target hypothesis from world knowledge and biological reasoning, with the retrieval query or experiment that would test it.
 - Treat an empty tool result as missing evidence.
 - Ask for clarification when two standardized targets remain equally plausible.
 - Block docking when the target accession is unknown, ambiguous, mismatched, or the requested chain is absent.

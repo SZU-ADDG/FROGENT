@@ -1,4 +1,4 @@
 interface:
   display_name: "Discover Target"
-  short_description: "Find disease targets and known ligands"
-  default_prompt: "Use $discover-target to identify a disease target and known ligands."
+  short_description: "Prioritize targets with causal scientific judgment"
+  default_prompt: "Use $discover-target to retrieve target evidence and prioritize a target thesis with viable alternatives."

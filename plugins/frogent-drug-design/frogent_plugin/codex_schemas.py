@@ -92,6 +92,54 @@ def molecular_planner_schema() -> dict[str, object]:
     })
 
 
+def design_strategy_schema() -> dict[str, object]:
+    basis = {"type": "string", "enum": ["world_knowledge",
+        "medicinal_chemistry_judgment", "mechanistic_reasoning", "literature_precedent",
+        "computational_signal", "experimental_evidence"]}
+    hypothesis = _object({
+        "hypothesis_id": STRING,
+        "rank": {"type": "integer", "minimum": 1, "maximum": 6},
+        "recommendation": STRING,
+        "rationale": STRING,
+        "expected_benefits": _array(STRING, minimum=1),
+        "tradeoffs": _array(STRING, minimum=1),
+        "failure_modes": _array(STRING, minimum=1),
+        "knowledge_bases": _array(basis, minimum=1),
+        "calibration_requests": _array(_object({
+            "request_id": STRING,
+            "capability_id": {"type": "string", "enum": [
+                "molecular.identity", "literature.research", "admet.predict", "admet.compare",
+                "docking.score", "sar.analyze", "retrosynthesis.flash",
+                "retrosynthesis.explorer", "peptide.docking-score", "experimental.assay"]},
+            "purpose": STRING,
+            "decision_rule": STRING,
+        }), minimum=1),
+        "decisive_experiment": STRING,
+        "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
+    })
+    constraint = _object({"text": STRING, "source_turn_id": STRING,
+                          "immutable": {"type": "boolean"}})
+    handoff = _object({
+        "applicable": {"type": "boolean"},
+        "objective": {"type": "string"},
+        "constraints": _array(STRING),
+        "search_space": {"type": "string"},
+        "discriminator": {"type": "string"},
+        "optimizer": {"type": "string"},
+        "stopping_rule": {"type": "string"},
+        "residual_qualitative_choices": _array(STRING),
+    })
+    return _object({
+        "objective": STRING,
+        "reliable_discriminator": {"type": "boolean"},
+        "unresolved_qualitative_choices": {"type": "boolean"},
+        "discriminator": {"type": "string"},
+        "constraints": _array(constraint),
+        "optimization_handoff": handoff,
+        "hypotheses": _array(hypothesis, minimum=1, maximum=6),
+    })
+
+
 def docking_planner_schema() -> dict[str, object]:
     return _object({
         "operation": {"type": "string", "enum": ["dock", "dock_and_interactions"]},

@@ -1,5 +1,41 @@
 # Learnings
 
+## [LRN-20260723-001] best_practice
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: integration
+
+### Summary
+Private loopback scientific control planes can be exposed to FROGENT without copying credentials
+or runtime assets by using a local stdio MCP plus a one-shot SSH relay that signs requests remotely.
+
+### Details
+TrioWorkspace stores its HMAC secret and 82G scientific runtime on `doomx_3nd`; its accepted
+control plane listens only on remote loopback. A project-contained MCP server can send a bounded
+relay program and request over SSH stdin. The relay reads the secret, signs one owner-scoped
+request, returns a bounded response, and exits without persisting files. Typed per-engine schemas,
+asynchronous task IDs, and verified artifact downloads preserve the scientific contract. Historical
+eval identity modules should remain byte-exact; additive connector and capability modules extend
+the current runtime without rewriting frozen evaluator digests.
+
+### Suggested Action
+For similar private providers, keep secrets and heavy execution remote, use SSH `BatchMode` with
+forwarding disabled, enforce strict path/body/response bounds, separate mutating submit tools from
+read tools, and verify downloaded artifacts by expected byte size and SHA-256 before admission.
+
+### Metadata
+- Source: implementation
+- Related Files: plugins/frogent-drug-design/mcp_servers/, plugins/frogent-drug-design/frogent_plugin/trioworkspace_catalog.py
+- Tags: mcp, ssh, hmac, private-runtime, artifact-integrity, frozen-eval
+- Pattern-Key: integration.remote_signed_control_plane_via_stdio_mcp
+- Recurrence-Count: 1
+- First-Seen: 2026-07-23
+- Last-Seen: 2026-07-23
+
+---
+
 ## [LRN-20260718-007] correction
 
 **Logged**: 2026-07-18T22:05:00+08:00
@@ -114,7 +150,7 @@ P4 为教育 timeline 增加四位年份范围信号，并为显式比较增加 
 - Related Files: plugins/frogent-drug-design/benchmarks/scoring.py, plugins/frogent-drug-design/benchmarks/data/capability-52.exposed.json
 - Tags: pubmedqa, bioasq, oracle-gap, semantic-adjudication, retrieval
 - Pattern-Key: eval.keep_exact_and_source_grounded_scores
-- Recurrence-Count: 2
+- Recurrence-Count: 3
 - First-Seen: 2026-07-17
 - Last-Seen: 2026-07-17
 
@@ -1420,5 +1456,62 @@ When the unique expected run-local PROPKA log exists, parse only its validated f
 - Recurrence-Count: 1
 - First-Seen: 2026-07-19
 - Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260719-033] correction
+
+**Logged**: 2026-07-19T21:05:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: automation
+
+### Summary
+After the current Goal and Main acceptance are complete, stop cross-session dispatch and pause the recovery automation.
+
+### Details
+The hourly recovery loop must close cleanly at the accepted Goal boundary. A completed Main acceptance does not authorize sending the next capability block to Implementation, Document, or any other task. The associated automation should be paused immediately after acceptance so it cannot reopen work that the user intends to hold.
+
+### Suggested Action
+At Goal completion, verify Main acceptance, leave all permanent tasks idle, send no follow-up prompts, and set `frogent-hourly-recovery` to paused. Resume or dispatch further work only after a new explicit user instruction.
+
+### Metadata
+- Source: user_feedback
+- Related Files: AGENTS.md
+- Tags: automation, goal-boundary, task-lifecycle, delegation
+- Pattern-Key: automation.pause_after_main_acceptance
+- Recurrence-Count: 1
+- First-Seen: 2026-07-19
+- Last-Seen: 2026-07-19
+
+---
+
+## [LRN-20260722-001] correction
+
+**Logged**: 2026-07-22T00:00:00+08:00
+**Priority**: critical
+**Status**: promoted
+**Area**: agent-behavior
+
+### Summary
+FROGENT must use world knowledge and medicinal-chemistry judgment to make prioritized design recommendations before perfect tool or experimental validation exists.
+
+### Details
+Many useful medicinal-chemistry modifications cannot be validated before synthesis and wet experiments. The Agent should still behave like a strong scientific collaborator: propose differentiated hypotheses, rank what to make first, explain the chemical or mechanistic rationale, anticipate tradeoffs, and recommend decisive experiments. Tools serve as calibration, contradiction detection, risk filtering, and ranking support. Excessive disclaimers, blanket abstention, and repeated defensive language reduce usefulness and make technically sound suggestions hard to trust.
+
+The user's follow-up establishes a durable problem split. An objective-aligned reliable discriminator turns the task into quantitative optimization that an algorithm, model, evolutionary method, or reinforcement-learning loop can handle. FROGENT's distinctive value appears when the design choice is qualitative or only partly measurable: it must use experience and scientific intuition to choose what deserves synthesis or testing, then use available tools to sharpen that judgment.
+
+### Suggested Action
+Classify design work as qualitative, quantitative, or hybrid. Lead qualitative and hybrid answers with a prioritized action plan grounded in model knowledge and medicinal-chemistry reasoning. Separate knowledge-driven hypotheses, computational signals, literature evidence, and experimental facts. Attach uncertainty only where it changes ranking or experiment choice, and keep routine caveats compact. When evidence is incomplete, provide the strongest useful recommendation plus its falsification test.
+
+### Metadata
+- Source: user_feedback
+- Related Files: AGENTS.md, plugins/frogent-drug-design/AGENTS.md, plugins/frogent-drug-design/frogent_plugin/decision_policy.py, plugins/frogent-drug-design/skills/prioritize-design-hypotheses/SKILL.md
+- Tags: world-knowledge, medicinal-chemistry, prioritization, tool-calibration, confidence, communication
+- Pattern-Key: agent-behavior.knowledge-led-tool-calibrated-recommendations
+- Recurrence-Count: 3
+- First-Seen: 2026-07-22
+- Last-Seen: 2026-07-23
+- Promoted: AGENTS.md
 
 ---

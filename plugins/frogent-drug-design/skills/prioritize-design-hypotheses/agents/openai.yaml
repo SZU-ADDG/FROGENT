@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prioritize Design Hypotheses"
+  short_description: "Rank qualitative medicinal-design hypotheses"
+  default_prompt: "Use $prioritize-design-hypotheses to propose and prioritize actionable design hypotheses using domain knowledge and calibrated tool evidence."

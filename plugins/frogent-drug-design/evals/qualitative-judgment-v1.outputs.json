@@ -1,0 +1,102 @@
+{
+  "eval_id": "qualitative-judgment-v1",
+  "outputs": [
+    {
+      "case_id": "QJ-01-small-molecule-soft-spot",
+      "response": {
+        "regime": "hybrid, qualitative-led",
+        "ranked_recommendations": [
+          "p-Me to p-CN",
+          "p-Me to p-CF2H",
+          "p-Me to p-F",
+          "p-Me to p-CONH2",
+          "p-Me to p-CH2OH"
+        ],
+        "key_reasoning": "The first three remove or suppress benzylic oxidation with increasing changes in polarity and binding risk. The amide probes the high-polarity boundary. The alcohol is a mechanistic pre-oxidized probe. p-CF3 was deprioritized because added lipophilicity could worsen solubility.",
+        "decisive_experiment": "Parent versus p-CN in same-batch potency, human and mouse microsomal clearance, metabolite identification, solubility, and permeability. Promote if clearance improves about threefold, para-methyl oxidation disappears, potency remains within threefold, and solubility does not decline.",
+        "main_failure_modes": [
+          "solid-state effects can defeat a descriptor-based solubility expectation",
+          "metabolism can shift to another site",
+          "the para-methyl can make a required hydrophobic contact"
+        ]
+      }
+    },
+    {
+      "case_id": "QJ-02-amp-optimization",
+      "response": {
+        "regime": "qualitative, hybrid-ready",
+        "ranked_recommendations": [
+          "all-D and local D-residue stability series",
+          "charge-preserving Lys-to-Arg or D-Arg series",
+          "one- versus two-interfacial-Trp series",
+          "local N-methyl and Aib backbone shielding",
+          "free, C-amidated, and dual-capped terminal series",
+          "one solvent-face i,i+4 lactam follow-up"
+        ],
+        "key_reasoning": "The portfolio separates proteolysis, ionic screening, membrane anchoring, backbone conformation, and terminal charge. It preserves net charge where possible and delays stronger conformational constraint until the helical-face map is informative.",
+        "decisive_experiment": "Use physiological-salt and 50-percent-serum activity normalized by hemolysis, with LC-MS degradation maps, trypsin and serum half-life, and matched low-salt controls.",
+        "main_failure_modes": [
+          "all-D can lose a chiral protein-mediated component",
+          "extra Arg or Trp can raise hemolysis or binding",
+          "N-methylation, Aib, or lactam placement can lock an unproductive conformation"
+        ]
+      }
+    },
+    {
+      "case_id": "QJ-03-tool-calibrated-ranking",
+      "response": {
+        "regime": "hybrid",
+        "ranked_recommendations": [
+          "B first as the developability hypothesis",
+          "C second as the structural mechanism hypothesis",
+          "A third as the series benchmark"
+        ],
+        "key_reasoning": "Biochemical potency establishes the experimental starting tie. B's clearance and hERG results and C's docking and PLIP result remain computational signals. Expert judgment gives developability more weight than one protonation-sensitive interaction.",
+        "decisive_experiment": "Run matched cellular target engagement or functional potency plus intracellular exposure for A, B, and C, alongside microsomal clearance and patch-clamp hERG.",
+        "main_failure_modes": [
+          "C loses the interaction across reasonable protonation states",
+          "B's experimental clearance or hERG reverses the predicted direction",
+          "cellular exposure erases both computational advantages"
+        ]
+      }
+    },
+    {
+      "case_id": "QJ-04-reliable-discriminator",
+      "response": {
+        "regime": "quantitative",
+        "ranked_recommendations": [
+          "lead with bounded batch Bayesian optimization or active learning",
+          "use constrained evolutionary generation when the discrete combinatorial space is very large",
+          "retain explicit exploration slots at the applicability-domain boundary"
+        ],
+        "key_reasoning": "The calibrated, objective-aligned discriminator and machine-checkable constraints provide a quantitative optimization loop. Expert judgment defines the phenotype, hard constraints, exploration fraction, and responses to assay artifacts or domain drift.",
+        "decisive_experiment": "Iterate generate, hard-filter, surrogate-rank, diversity-select, assay, and model-update cycles with noise-aware repeated measurements.",
+        "main_failure_modes": [
+          "surrogate calibration or applicability-domain coverage degrades",
+          "the phenotype ceases to match the project objective",
+          "the remaining budget cannot support an informative batch"
+        ]
+      }
+    },
+    {
+      "case_id": "QJ-05-tool-outage",
+      "response": {
+        "regime": "qualitative",
+        "ranked_recommendations": [
+          "minimal matched-pair blocking of a suspected oxidative soft spot",
+          "lower local lipophilicity on a solvent-exposed vector",
+          "moderately lower basicity of an exposed amine",
+          "constrain or stabilize a flexible metabolic linker",
+          "use deuteration only for a confirmed C-H oxidation probe"
+        ],
+        "key_reasoning": "Tool failure lowers confidence and motivates orthogonal mechanisms in a six-to-eight-compound set. It does not remove medicinal-chemistry hypotheses or synthesis priorities.",
+        "decisive_experiment": "Run same-batch human hepatocyte intrinsic clearance, LC-MS metabolite identification, and the original potency assay across the matched set.",
+        "main_failure_modes": [
+          "the edited group is a required binding contact",
+          "clearance is dominated by extraction, transport, or renal mechanisms",
+          "a modification creates a reactive metabolite or loses potency without clearance benefit"
+        ]
+      }
+    }
+  ]
+}

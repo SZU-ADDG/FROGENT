@@ -5,11 +5,13 @@
 ## 目录职责
 
 - `.codex-plugin/plugin.json`：插件展示与组件入口。
-- `.mcp.json`：九个现有 MCP 端点的唯一配置来源。
+- `.mcp.json`：九个 HTTP MCP 与一个 TrioWorkspace stdio MCP 的唯一配置来源。
 - `.app.json`：应用连接器扩展点；获得真实 connector ID 后再登记。
 - `frogent_plugin/`：无科研依赖的契约、配置、harness、evidence ledger 和能力注册代码。
+- `mcp_servers/`：经 SSH 调用私有 TrioWorkspace control plane 的标准库 stdio MCP；远端密钥不会进入本地进程。
 - `skills/`：面向用户任务的平级工作流。
 - `docs/HARNESS.md`：FROGENT harness、memory 边界和 v4 迁移路径。
+- `docs/QUALITATIVE_JUDGMENT.md`：定性科学判断、工具校准、持久化决策与语义评估。
 - `tests/`：只验证插件边界，不启动数据库、模型或 MCP 服务。
 
 ## 设计规则
@@ -21,6 +23,7 @@
 5. Harness 只保存控制状态与 qualified evidence ID，原始检索结果进入 artifact store 和 evidence ledger。
 6. 文献 Skills 固定记录 `as_of`、查询策略、筛选决定、排除理由、counterevidence 和 memory 准入。
 7. `sources/` 是脱敏后的来源快照，新实现只进入插件目录。
+8. TrioWorkspace 任务异步执行：提交后保存 task ID，轮询 owner-isolated 状态，再把 SHA-256 校验后的工件下载到 `.runtime/trio-workspace/`。
 
 ## 本地边界验证
 
