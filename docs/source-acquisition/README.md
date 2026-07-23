@@ -1,4 +1,4 @@
-# Selective Copy Plan
+# Source Acquisition and Sanitization
 
 ## Purpose
 
@@ -12,14 +12,15 @@ Maintain the completed compact local source tree for refactoring while leaving e
   adapters into `sources/trioworkspace/` for MCP contract integration.
 - Local sanitization is complete; repeat checking reports zero pending changes and zero sensitive residual files.
 - The remote metadata checkpoints match the pre-copy values.
-- Git has not been initialized by this workflow.
+- The imported snapshots remain local and ignored by Git; their acquisition
+  records and sanitization rules are version controlled here.
 
 ## Sources and completed local layout
 
 - `/work/pqh/projects/agent/` -> `sources/mcp/`
 - `/work/pqh/projects/Frogent1/` -> `sources/frogent/`
 - `doomx_3nd:/work/doomx/TrioWorkspace/` -> `sources/trioworkspace/` using
-  `trioworkspace-control-plane.files`
+  `trioworkspace-control-plane.files`.
 
 Both destinations stay under `/Users/dongxu/projects/FROGENT/`. Source boundaries remain visible and no remote path is moved or modified.
 
@@ -47,4 +48,5 @@ The exact rule order is defined in `rsync-code-only.rules`.
 - Apply inside this project only: `python3 scripts/sanitize_imported_sources.py --apply`
 - Populate local values from `.env.example`; never place real values in tracked files.
 
-See `source-inventory.md` for measured sizes, excluded artifact classes, dry-run validation, sanitization evidence, and the completed local tree.
+See `source-inventory.md` for measured sizes, excluded artifact classes, dry-run
+validation, sanitization evidence, and the completed local tree.

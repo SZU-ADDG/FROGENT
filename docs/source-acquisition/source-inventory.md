@@ -121,7 +121,7 @@
 ├── .gitignore
 ├── AGENTS.md
 ├── .learnings/
-├── copy-plan/
+├── docs/source-acquisition/
 │   ├── README.md
 │   ├── rsync-code-only.rules
 │   └── source-inventory.md
@@ -149,7 +149,7 @@
 ## TrioWorkspace MCP 增量（2026-07-23）
 
 - 来源：`doomx_3nd:/work/doomx/TrioWorkspace/`，原始占用约 82G。
-- 精确只读清单：`copy-plan/trioworkspace-control-plane.files`。
+- 精确只读清单：`docs/source-acquisition/trioworkspace-control-plane.files`。
 - 本地边界：`sources/trioworkspace/`，与既有两个来源保持隔离。
 - dry-run 与实际复制一致：41 个普通文件、212,252 bytes、符号链接 0。
 - 入选内容只含 control-plane、数据库契约、worker、五个 compute adapters、healthchecks、

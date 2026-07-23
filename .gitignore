@@ -18,8 +18,9 @@ tmp/
 uploads/
 artifacts/
 
-# Third-party source snapshots stay local
-sources/
+# Third-party source snapshots stay local; their boundary document is tracked.
+sources/*
+!sources/README.md
 
 # Databases, model weights, and generated heavy assets
 *.db

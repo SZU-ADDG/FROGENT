@@ -1,4 +1,4 @@
-# FROGENT code-only selective-copy rules.
+# FROGENT code-only selective-copy rules (historical acquisition policy).
 # First-match wins. Destructive rsync flags are forbidden by AGENTS.md.
 
 # Version-control metadata and editor state.

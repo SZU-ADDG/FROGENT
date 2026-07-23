@@ -35,6 +35,33 @@ jq: error: syntax error, unexpected INVALID_CHARACTER
 
 ---
 
+## [ERR-20260724-120] focused_unittest_used_invalid_package_path
+
+**Logged**: 2026-07-24T05:06:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The first focused repository-cleanup test command used a dotted module path containing the
+hyphenated plugin directory and ran from the project root without adding the plugin root to
+`sys.path`. `test_app_v4_launcher` failed to import `frogent_plugin`; no test body or project
+mutation ran. The corrected combined command then ran from the plugin directory while retaining
+a project-root-relative `.learnings/ERRORS.md` lookup; that read-only `rg` check failed while the
+five focused tests continued and passed.
+
+### Suggested Fix
+Run focused tests from `plugins/frogent-drug-design/` with
+`python -m unittest tests.test_app_v4_launcher tests.test_repository_layout`, or use discovery
+with an explicit start directory. Keep repository-root checks in a separate command with an
+explicit project-root working directory.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/tests/test_app_v4_launcher.py, plugins/frogent-drug-design/tests/test_repository_layout.py
+
+---
+
 ## [ERR-20260719-052] mislabeled_theobromine_smiles_in_forward_eval
 
 **Logged**: 2026-07-19T03:12:00+08:00
