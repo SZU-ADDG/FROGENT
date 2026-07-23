@@ -36,6 +36,43 @@ read tools, and verify downloaded artifacts by expected byte size and SHA-256 be
 
 ---
 
+## [LRN-20260724-001] correction
+
+**Logged**: 2026-07-24T05:24:00+08:00
+**Priority**: critical
+**Status**: promoted
+**Area**: architecture
+
+### Summary
+The repository structure itself must read as an Agent product, with visible runtime and without
+construction-history clutter in the active tree.
+
+### Details
+Small modules and passing tests do not make a clear Agent architecture when the repository is
+wrapped in a single-plugin shell, runtime is hidden under `.runtime`, copied source snapshots sit
+beside the product, and multiple generations of frozen evaluation material dominate navigation.
+The user expects the top-level tree to expose the actual product concepts directly: Agent runtime,
+Skills, MCP integrations, app boundary, evaluation, tests, docs, and visible runtime assets.
+
+### Suggested Action
+Use root-level `agent/`, `skills/`, `mcp/`, `app/`, `evaluation/`, `tests/`, `docs/`, `scripts/`,
+and `runtime/`. Keep only active product and current quality evidence in the main tree. Remove or
+migrate historical snapshots, refactoring logs, obsolete evaluation generations, and compatibility
+wrappers once their live dependency has been replaced. Use Git checkpoints and independent commits
+before broad moves.
+
+### Metadata
+- Source: user_feedback
+- Related Files: README.md, AGENTS.md, plugins/frogent-drug-design/, sources/, .runtime/
+- Tags: agent-architecture, repository-layout, runtime, history, simplification
+- Pattern-Key: architecture.agent_product_visible_at_root
+- Recurrence-Count: 1
+- First-Seen: 2026-07-24
+- Last-Seen: 2026-07-24
+- Promoted: AGENTS.md
+
+---
+
 ## [LRN-20260718-007] correction
 
 **Logged**: 2026-07-18T22:05:00+08:00
