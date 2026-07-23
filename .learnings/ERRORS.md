@@ -35,6 +35,29 @@ jq: error: syntax error, unexpected INVALID_CHARACTER
 
 ---
 
+## [ERR-20260724-121] github_connector_could_not_create_repository_pr
+
+**Logged**: 2026-07-24T05:17:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: version-control
+
+### Summary
+The GitHub connector returned HTTP 404 when creating a draft PR for
+`SZU-ADDG/FROGENT-refactor` after the branch had been pushed successfully. Local `gh auth status`
+confirmed an authenticated repository-scoped session, so the failure was isolated to connector
+repository visibility.
+
+### Suggested Fix
+Use the authenticated `gh pr create` fallback for this repository while keeping the connector as
+the preferred path for repositories visible to the GitHub app.
+
+### Metadata
+- Reproducible: unknown
+- Related Files: .git/config
+
+---
+
 ## [ERR-20260724-120] focused_unittest_used_invalid_package_path
 
 **Logged**: 2026-07-24T05:06:00+08:00
