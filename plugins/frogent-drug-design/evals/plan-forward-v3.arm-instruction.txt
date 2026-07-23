@@ -1,1 +1,0 @@
-Complete the planning task using the supplied common contract, typed receipt, candidate task, Skill snapshot, and shared reference. Use only these envelope contents and return JSON only.

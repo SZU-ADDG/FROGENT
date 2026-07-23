@@ -1,0 +1,1 @@
+"""FROGENT core package."""

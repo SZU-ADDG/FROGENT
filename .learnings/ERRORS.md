@@ -2,6 +2,222 @@
 
 此文件用于记录命令、远端连接及外部工具错误。
 
+## [ERR-20260724-129] identifier_rename_collapsed_trio_roots
+
+**Logged**: 2026-07-24T06:18:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+The mechanical `plugin_root` to `project_root` identifier cleanup collapsed TrioConfig's two
+distinct fields into duplicate names and converted its containment comparison into a self
+comparison. Inspection caught the collision before tests.
+
+### Suggested Fix
+When two legacy fields encode different scopes, define the target data model first. TrioConfig now
+uses one `project_root` because the MCP package is rooted at the project; tests that need a nested
+artifact boundary must pass an explicit temporary project root.
+
+### Metadata
+- Reproducible: yes
+- Related Files: mcp/trioworkspace_client.py, tests/test_trioworkspace_mcp.py
+
+### Resolution
+- **Resolved**: 2026-07-24T06:20:00+08:00
+- **Commit/PR**: pending
+- **Notes**: No remote call, artifact write, or committed configuration used the invalid intermediate model.
+
+---
+
+## [ERR-20260724-128] dot_runtime_rewrite_corrupted_attribute_access
+
+**Logged**: 2026-07-24T06:10:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+The global `.runtime` to `runtime` path rewrite also matched the prefix of Python attribute
+`config.runtime_root`, producing `configruntime_root`. Focused app tests exposed the resulting
+`NameError`; 35 other focused tests passed.
+
+### Suggested Fix
+Search for joined identifier patterns after path rewrites, restore attribute access, and constrain
+future path migration replacements to quoted path fragments or token-aware edits.
+
+### Metadata
+- Reproducible: yes
+- Related Files: agent/app/app_v4_launcher.py
+
+### Resolution
+- **Resolved**: 2026-07-24T06:11:00+08:00
+- **Commit/PR**: pending
+- **Notes**: The focused test caught the issue before commit or app execution.
+
+---
+
+## [ERR-20260724-127] combined_path_patch_used_stale_check_context
+
+**Logged**: 2026-07-24T06:03:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+A combined patch for the active evaluation paths used pre-rewrite context for `scripts/check.py`.
+The earlier mechanical path migration had already changed two lines, so `apply_patch` rejected
+the entire patch without modifying any file.
+
+### Suggested Fix
+Re-read each file after mechanical rewrites and apply smaller, file-scoped patches.
+
+### Metadata
+- Reproducible: yes
+- Related Files: scripts/check.py, scripts/run_research_eval.py, tests/test_eval.py
+
+### Resolution
+- **Resolved**: 2026-07-24T06:04:00+08:00
+- **Commit/PR**: pending
+- **Notes**: No partial patch was applied.
+
+---
+
+## [ERR-20260724-126] package_init_created_with_shell_printf
+
+**Logged**: 2026-07-24T05:55:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+During the bulk package split, eight one-line `__init__.py` files were created with shell
+`printf`. Project instructions require `apply_patch` for ordinary file creation and reserve
+mechanical command rewrites for existing bulk content.
+
+### Suggested Fix
+Create all new source files through `apply_patch`, even when a surrounding directory relocation
+uses `git mv`. Limit bulk scripts to reviewed import/path rewrites across existing files.
+
+### Metadata
+- Reproducible: yes
+- Related Files: agent/*/__init__.py
+
+### Resolution
+- **Resolved**: 2026-07-24T05:56:00+08:00
+- **Commit/PR**: pending
+- **Notes**: The files contain only package docstrings; their content was reviewed immediately.
+
+---
+
+## [ERR-20260724-125] legacy_shell_rmdir_included_removed_docs
+
+**Logged**: 2026-07-24T05:50:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+The legacy shell cleanup attempted to remove a `docs/` directory that Git had already removed
+when its last tracked file was deleted. The guarded command stopped after successfully migrating
+the environment template and removing the shell README and instructions.
+
+### Suggested Fix
+Inspect the remaining empty directory chain immediately before each `rmdir`.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/
+
+### Resolution
+- **Resolved**: 2026-07-24T05:50:30+08:00
+- **Commit/PR**: pending
+- **Notes**: No product file or runtime asset was affected.
+
+---
+
+## [ERR-20260724-124] plan_module_removal_required_staged_rename_force
+
+**Logged**: 2026-07-24T05:47:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+After promoting the Python package from the plugin shell to `agent/`, Git represented the files
+as staged renames. A normal `git rm` rejected removal of the obsolete PLAN evaluator modules
+because their index state differed from `HEAD`.
+
+### Suggested Fix
+For the reviewed, Git-recoverable obsolete module list, use `git rm -f` on the exact paths after
+confirming that the only index change is the intended package relocation.
+
+### Metadata
+- Reproducible: yes
+- Related Files: agent/plan_eval*.py
+
+### Resolution
+- **Resolved**: 2026-07-24T05:48:00+08:00
+- **Commit/PR**: pending
+- **Notes**: Historical eval assets and source-acquisition docs were removed before Git reached this guarded failure.
+
+---
+
+## [ERR-20260724-123] historical_cleanup_included_untracked_copy_plan
+
+**Logged**: 2026-07-24T05:45:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+The first tracked-history cleanup command included `copy-plan` in `git rm`, although that local
+directory had no tracked files. Git rejected the combined pathspec before applying removals.
+
+### Suggested Fix
+Separate tracked Git removals from ignored or untracked source material. Verify each target with
+`git ls-files` before invoking `git rm`; handle local-only directories through the explicit
+reversible source-snapshot retirement step.
+
+### Metadata
+- Reproducible: yes
+- Related Files: copy-plan/, plugins/frogent-drug-design/evals/
+
+### Resolution
+- **Resolved**: 2026-07-24T05:46:00+08:00
+- **Commit/PR**: pending
+- **Notes**: The failed command applied no deletion.
+
+---
+
+## [ERR-20260724-122] runtime_move_missed_root_files
+
+**Logged**: 2026-07-24T05:38:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+The first runtime move enumerated the three large subdirectories but omitted SQLite and JSON
+files stored directly under the plugin runtime root. The guarded `rmdir` failed and stopped the
+command before the repository-level runtime was moved.
+
+### Suggested Fix
+Inventory both directories at depth one, move the remaining root files into an explicit
+`runtime/evaluation/` namespace, then verify file counts and byte totals before removing the
+empty legacy directories.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/, plugins/frogent-drug-design/.runtime/
+
+### Resolution
+- **Resolved**: 2026-07-24T05:39:00+08:00
+- **Commit/PR**: pending
+- **Notes**: No runtime payload was deleted or overwritten; the three large directories had moved successfully.
+
+---
+
 ## [ERR-20260717-030] jq_lpad_filter_quoting
 
 **Logged**: 2026-07-17T19:17:00+08:00
@@ -5008,5 +5224,367 @@ then compare the returned checkpoint with the pre-copy values.
 ### Metadata
 - Reproducible: yes
 - Related Files: sources/trioworkspace/deployment/lan-control-plane/server.py
+
+---
+## [ERR-20260724-130] minified_eval_result_rejected_line_patch
+
+**Logged**: 2026-07-24T06:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The first attempt to update the two path-derived replay identity digests used a
+line-oriented patch against a canonical JSON file stored on one minified line.
+The patch found no complete matching line and made no file changes.
+
+### Suggested Fix
+Inspect canonical JSON formatting before editing. For a two-token identity-only
+change in a minified artifact, use an exact bounded mechanical replacement and
+then verify the canonical digest and full replay.
+
+### Metadata
+- Reproducible: yes
+- Related Files: evaluation/cases/research-eval-v1.result.json
+
+---
+## [ERR-20260724-131] replay_probe_created_python_cache
+
+**Logged**: 2026-07-24T06:02:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: repository hygiene
+
+### Summary
+An inline replay comparison used the project Python without `-B` or
+`PYTHONDONTWRITEBYTECODE=1`. It created three `__pycache__` directories under
+the newly promoted `agent/` tree. The next architecture run detected the
+unexpected top-level cache and failed one of 251 tests.
+
+### Suggested Fix
+Run every repository validation process with bytecode writing disabled. Preserve
+new validation caches by moving them into `runtime/cache/python/`, then rerun
+the complete suite from a cache-free active tree.
+
+### Metadata
+- Reproducible: yes
+- Related Files: agent/__pycache__, agent/core/__pycache__, agent/evaluation/__pycache__
+
+---
+## [ERR-20260724-132] promoted_app_preserved_crlf_whitespace
+
+**Logged**: 2026-07-24T06:04:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: repository hygiene
+
+### Summary
+The first release-level cached diff check found CRLF line endings and trailing
+spaces in seven app-v4 source and frontend files promoted from the retired
+source snapshot. Runtime tests accepted the files, while Git hygiene correctly
+rejected the staged representation.
+
+### Suggested Fix
+Normalize promoted text assets to LF and strip trailing spaces as one bounded
+formatting operation. Re-run cached and unstaged diff checks before committing.
+
+### Metadata
+- Reproducible: yes
+- Related Files: app/app_v4.py, app/models.py, app/assets/3Dmol-min.js, app/assets/app.js, app/assets/marked.min.js, app/assets/styles.css, app/templates/index.html
+
+---
+## [ERR-20260724-133] bsd_grep_null_list_was_not_null_delimited
+
+**Logged**: 2026-07-24T06:12:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: runtime migration
+
+### Summary
+The runtime directory moves completed, then the venv shebang migration used
+`grep -IlZ` as though BSD grep would emit a GNU-style null-delimited file list.
+The downstream `xargs -0` received one newline-containing argument and the
+bounded text replacement did not run.
+
+### Suggested Fix
+Use BSD-compatible newline output for this reviewed venv `bin/` file set, apply
+the same exact old-path replacement one file at a time, and verify every
+console-script shebang plus `pyvenv.cfg` before running tools.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/app/venv/bin, runtime/app/venv/pyvenv.cfg
+
+---
+## [ERR-20260724-134] plip_uses_short_version_flag
+
+**Logged**: 2026-07-24T06:13:00+08:00
+**Priority**: low
+**Status**: superseded
+**Area**: runtime validation
+
+### Summary
+The repaired PLIP console script was probed with `--version`. PLIP 3.0.0 only
+exposes the short `-v` version flag, so argparse returned its expected
+missing-input usage error. The shebang itself executed successfully.
+
+### Suggested Fix
+The help text labels `-v` as a version option, while this PLIP parser evaluates
+the required input group first. Use the repaired console script for `-h` and
+read installed distribution metadata for the version.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/app/venv/bin/plip
+
+---
+
+## [ERR-20260724-135] plip_short_version_still_requires_input
+
+**Logged**: 2026-07-24T06:14:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: runtime validation
+
+### Summary
+The follow-up PLIP probe used the advertised `-v` flag and encountered the same
+required-input parser gate. This corrected the assumption recorded in
+ERR-20260724-134; no docking or interaction analysis was started.
+
+### Suggested Fix
+Verify console-script execution with `plip -h`, then obtain the installed PLIP
+version through Python distribution metadata.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/app/venv/bin/plip
+
+---
+
+## [ERR-20260724-136] imprecise_learning_status_patch
+
+**Logged**: 2026-07-24T06:16:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: documentation
+
+### Summary
+An imprecise patch intended to update ERR-20260724-134 matched the first
+occurrence of the same status line and briefly changed ERR-20260724-129.
+The incorrect learning status was restored immediately; project code and
+runtime assets were unaffected.
+
+### Suggested Fix
+When editing repeated structured records, anchor patches on the unique entry
+identifier together with the field being changed, then inspect both the target
+record and nearby records before continuing.
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+
+---
+
+## [ERR-20260724-137] combined_rename_patch_context_drift
+
+**Logged**: 2026-07-24T06:24:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: refactoring
+
+### Summary
+A combined patch for two module renames and their consumers used an incorrect
+expected call signature in `tests/test_research_workflow.py`. Patch validation
+failed before applying any part of the rename.
+
+### Suggested Fix
+Inspect every rename consumer first, then apply file moves and call-site changes
+as small independently verifiable patches.
+
+### Metadata
+- Reproducible: yes
+- Related Files: agent/core/v4_adapter.py, agent/research/research_v4.py, tests/test_research_workflow.py
+
+---
+
+## [ERR-20260724-138] real_web_test_left_sqlalchemy_engine_open
+
+**Logged**: 2026-07-24T06:31:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The first focused run of the new real-model web test passed all 50 cases, then
+Python reported an unclosed SQLite connection while later architecture code was
+being parsed.
+
+### Suggested Fix
+Remove the scoped SQLAlchemy session and dispose the app engine before the
+temporary runtime directory leaves scope. Re-run with ResourceWarning promoted
+to an error.
+
+### Metadata
+- Reproducible: yes
+- Related Files: tests/test_web_app.py
+
+---
+
+## [ERR-20260724-139] web_template_referenced_missing_script
+
+**Logged**: 2026-07-24T06:38:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: frontend
+
+### Summary
+Repository-wide asset review found that the maintained page referenced
+`assets/app_v1.js`, while the only current application script is
+`app/assets/app.js`. Existing route tests exercised the API without requesting
+the page's script dependency.
+
+### Suggested Fix
+Reference the maintained script by its current filename, remove copied product
+labels from rendered markup, and add a web-surface test that requests the page
+and every declared first-party asset.
+
+### Metadata
+- Reproducible: yes
+- Related Files: app/templates/index.html, app/assets/app.js, tests/test_web_app.py
+
+---
+
+## [ERR-20260724-140] static_asset_test_left_file_responses_open
+
+**Logged**: 2026-07-24T06:47:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The first web-surface asset test passed, while Flask emitted ResourceWarning
+messages because four streamed static-file responses were discarded without
+being closed.
+
+### Suggested Fix
+Retain each test response long enough to assert its status and close it
+explicitly before the temporary app leaves scope.
+
+### Metadata
+- Reproducible: yes
+- Related Files: tests/test_web_app.py
+
+---
+
+## [ERR-20260724-141] conversation_lookup_lacked_user_scope
+
+**Logged**: 2026-07-24T07:04:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: web persistence
+
+### Summary
+Whole-repository review found that persisted chat and attachment queries used
+only a client-supplied conversation ID. Two users choosing the same ID could
+address the same database record even though the in-memory session layer was
+user-scoped.
+
+### Suggested Fix
+Use `(user_id, conversation_id)` for every persisted chat and attachment
+lookup, enforce the pair as the database uniqueness boundary, and retain a
+two-user regression using the same conversation ID.
+
+### Metadata
+- Reproducible: yes
+- Related Files: app/chat.py, app/models.py, tests/test_web_app.py
+
+---
+
+## [ERR-20260724-142] web_file_test_double_lacked_lookup
+
+**Logged**: 2026-07-24T07:11:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The first file-metadata validation regression reached the fake `ChatFiles`
+model before the intended boolean check, because the fake omitted the
+production `get_by_id` API.
+
+### Suggested Fix
+Keep the web model double API-complete for every route exercised by the test,
+then rerun with warnings promoted to errors.
+
+### Metadata
+- Reproducible: yes
+- Related Files: tests/test_web_app.py
+
+---
+
+## [ERR-20260724-143] repository_audit_ran_before_final_restage
+
+**Logged**: 2026-07-24T07:11:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: repository validation
+
+### Summary
+The repository-layout test was run while the Git index still represented an
+earlier refactor checkpoint. The working tree had current module names, while
+`git ls-files` correctly reported the staged old names to the audit.
+
+### Suggested Fix
+Finish reviewing the working tree, stage the complete candidate with
+`git add -A`, then run the tracked-tree audit and full suite against that exact
+index.
+
+### Metadata
+- Reproducible: yes
+- Related Files: scripts/audit_repository.py, agent/core/chat_adapter.py, agent/research/research_adapter.py
+
+---
+
+## [ERR-20260724-144] skill_validator_has_no_help_mode
+
+**Logged**: 2026-07-24T07:18:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The Skill quick validator was invoked with `--help`. Its positional-only
+interface treated that token as a Skill directory and returned
+`SKILL.md not found`.
+
+### Suggested Fix
+Pass each concrete `skills/<name>` directory directly to
+`quick_validate.py`; use source inspection when its invocation contract needs
+confirmation.
+
+### Metadata
+- Reproducible: yes
+- Related Files: skills/
+
+---
+
+## [ERR-20260724-145] image_assets_inherited_executable_mode
+
+**Logged**: 2026-07-24T07:22:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: repository hygiene
+
+### Summary
+Post-commit mode review found that the copied logo and user PNG assets were the
+only tracked files with executable mode.
+
+### Suggested Fix
+Normalize static image assets to mode `100644` and include tracked file-mode
+inspection in large source-layout refactors.
+
+### Metadata
+- Reproducible: yes
+- Related Files: app/assets/logo.png, app/assets/user.png
 
 ---
