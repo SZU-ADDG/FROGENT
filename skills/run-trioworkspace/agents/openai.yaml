@@ -1,0 +1,12 @@
+interface:
+  display_name: "Run TrioWorkspace"
+  short_description: "Run five private Trio scientific engines."
+  default_prompt: "Use $run-trioworkspace to submit and monitor a typed Trio scientific task."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "trio-workspace"
+      description: "Private asynchronous TrioMol2, TrioPep, TrioPROTAC, TrioDNA, and TrioIRES tasks"
+      transport: "stdio"
+policy:
+  allow_implicit_invocation: true

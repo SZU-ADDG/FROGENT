@@ -1,0 +1,4 @@
+interface:
+  display_name: "Research Biomedical Literature"
+  short_description: "Run an evidence-safe biomedical review"
+  default_prompt: "Use $research-biomedical-literature to answer this biomedical question with a traceable evidence review and, when requested, hand admitted evidence into a ranked qualitative decision."

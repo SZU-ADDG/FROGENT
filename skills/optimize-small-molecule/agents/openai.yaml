@@ -1,0 +1,4 @@
+interface:
+  display_name: "Optimize Small Molecule"
+  short_description: "Prioritize medicinal-chemistry lead hypotheses"
+  default_prompt: "Use $optimize-small-molecule to generate and prioritize knowledge-led lead modifications, then calibrate them with available tools."

@@ -2,6 +2,41 @@
 
 此文件用于记录当前能力无法直接满足的功能需求。
 
+## [FEAT-20260723-005] trioworkspace_mcp_integration
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: integration
+
+### Requested Capability
+将 `doomx_3nd:/work/doomx/TrioWorkspace` 作为 FROGENT 的 MCP provider 接入，覆盖
+TrioMol2、TrioPep、TrioPROTAC、TrioDNA 与 TrioIRES 的任务提交、状态读取和结果工件。
+
+### User Context
+TrioWorkspace 已在服务器侧封装五个可执行科学引擎。FROGENT 需要通过统一 tool
+边界调用这些能力，同时保留任务身份、输入契约、异步状态和结果 provenance。
+
+### Complexity Estimate
+complex
+
+### Suggested Implementation
+使用 plugin-contained stdio MCP server，经 SSH 调用远端 loopback-only signed control plane。
+共享密钥只在远端一次性 relay 中读取；五个引擎使用独立 JSON Schema tools，任务查询和
+工件下载继续按 owner 隔离，下载内容限制到项目内 `.runtime`。
+
+### Resolution
+- **Resolved**: 2026-07-23T00:00:00+08:00
+- **Notes**: 已接入 10 个 typed MCP tools、additive capability catalog、异步 owner-scoped
+  task workflow、项目内 artifact checksum gate 与 `$run-trioworkspace` Skill；真实 MCP
+  handshake、signed health 和 owner task-list canary 均通过。
+
+### Metadata
+- Frequency: first_time
+- Related Features: unified_frogent_plugin, agent_tool_use, remote_scientific_runtime
+
+---
+
 ## [FEAT-20260715-004] research_effect_eval_loop
 
 **Logged**: 2026-07-15T23:41:00+08:00

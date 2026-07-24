@@ -1,0 +1,4 @@
+interface:
+  display_name: "Optimize Peptide"
+  short_description: "Prioritize sequence and chemical peptide designs"
+  default_prompt: "Use $optimize-peptide to prioritize sequence, terminal, side-chain, backbone, and conformational modifications through the appropriate target-bound, membrane, phenotypic, or stability branch."

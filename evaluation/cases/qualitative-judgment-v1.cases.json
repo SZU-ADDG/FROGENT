@@ -1,0 +1,68 @@
+{
+  "eval_id": "qualitative-judgment-v1",
+  "as_of": "2026-07-23",
+  "execution_method": "Five isolated collaboration subagents answered one case each from model knowledge. No nested CLI, API key, web search, or external prediction tool was used.",
+  "rubric": {
+    "ranked_actionability": 2,
+    "scientific_specificity_and_diversity": 2,
+    "benefit_tradeoff_and_failure_reasoning": 2,
+    "calibration_or_decisive_experiment": 2,
+    "epistemic_separation_without_defensive_overload": 2
+  },
+  "cases": [
+    {
+      "case_id": "QJ-01-small-molecule-soft-spot",
+      "regime_oracle": "hybrid",
+      "prompt": "A potent kinase lead has a solvent-exposed para-methyl oxidative soft spot, high clearance, and poor solubility. Use medicinal-chemistry judgment to rank the first analogues and define the most informative matched-pair experiment.",
+      "required_behavior": [
+        "rank concrete substituent changes",
+        "balance clearance, potency, and solubility",
+        "identify metabolic-shift and solid-state failure modes",
+        "give a synthesis order and promotion rule"
+      ]
+    },
+    {
+      "case_id": "QJ-02-amp-optimization",
+      "regime_oracle": "qualitative_or_hybrid",
+      "prompt": "Prioritize an antimicrobial-peptide optimization campaign for salt tolerance, serum and trypsin stability, potency, and hemolysis without assuming a single protein target.",
+      "required_behavior": [
+        "avoid requiring protein docking",
+        "cover stereochemistry, side-chain, backbone, termini, and constraint strategies",
+        "use matched mini-series",
+        "rank physiological-condition assays"
+      ]
+    },
+    {
+      "case_id": "QJ-03-tool-calibrated-ranking",
+      "regime_oracle": "hybrid",
+      "prompt": "A, B, and C have similar biochemical potency. B has better predicted clearance and hERG; C has a better docking score and one protonation-sensitive PLIP hydrogen bond. Rank them while separating experimental facts, computational signals, expert judgment, and unknowns.",
+      "required_behavior": [
+        "prioritize B over C over A",
+        "avoid turning docking or ADMET into experimental claims",
+        "state downgrade and hard-block rules",
+        "choose a decisive cellular and exposure experiment"
+      ]
+    },
+    {
+      "case_id": "QJ-04-reliable-discriminator",
+      "regime_oracle": "quantitative",
+      "prompt": "A calibrated surrogate reliably predicts the target cellular phenotype across the current design space, and synthesis plus assay constraints are machine-checkable. Decide whether Agent hypothesis ranking or algorithmic optimization should lead, then specify the handoff.",
+      "required_behavior": [
+        "select quantitative optimization",
+        "define objective, constraints, search strategy, applicability domain, and stop rules",
+        "retain expert judgment for residual scientific choices"
+      ]
+    },
+    {
+      "case_id": "QJ-05-tool-outage",
+      "regime_oracle": "qualitative",
+      "prompt": "ADMET, docking, and literature providers are unavailable. A medicinal chemist still needs the first clearance-oriented analogue set. Give a useful ranked portfolio and explain how the outage changes confidence and experiment design.",
+      "required_behavior": [
+        "preserve useful recommendations",
+        "propose orthogonal matched-pair mechanisms",
+        "lower confidence without repeated disclaimers",
+        "define hard stops and one informative experiment"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design Ligand"
+  short_description: "Prioritize knowledge-led pocket ligand designs"
+  default_prompt: "Use $design-ligand to propose, prioritize, and tool-calibrate ligand designs for this protein pocket."

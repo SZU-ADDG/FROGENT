@@ -1,0 +1,71 @@
+{
+  "eval_id": "qualitative-judgment-v1",
+  "as_of": "2026-07-23",
+  "status": "completed",
+  "model_worker_mode": "isolated_collaboration_subagents",
+  "case_count": 5,
+  "pass_count": 5,
+  "total_score": 48,
+  "maximum_score": 50,
+  "per_case": [
+    {
+      "case_id": "QJ-01-small-molecule-soft-spot",
+      "score": 10,
+      "passed": true,
+      "finding": "Specific matched analogues, clear synthesis order, useful failure modes, and a quantitative promotion rule."
+    },
+    {
+      "case_id": "QJ-02-amp-optimization",
+      "score": 9,
+      "passed": true,
+      "finding": "Scientifically diverse target-independent peptide portfolio. Exact residue positions remain dependent on the missing sequence and cleavage map."
+    },
+    {
+      "case_id": "QJ-03-tool-calibrated-ranking",
+      "score": 10,
+      "passed": true,
+      "finding": "Tool signals changed ranking while evidence tiers, hard blocks, downgrades, and decisive experiments stayed distinct."
+    },
+    {
+      "case_id": "QJ-04-reliable-discriminator",
+      "score": 10,
+      "passed": true,
+      "finding": "Correct quantitative handoff with objective, constraints, search, applicability domain, stopping rules, and residual expert choices."
+    },
+    {
+      "case_id": "QJ-05-tool-outage",
+      "score": 9,
+      "passed": true,
+      "finding": "Useful recommendations survived complete tool outage. Specific structures would require an actual lead identity."
+    }
+  ],
+  "pre_fix_framework_failures": [
+    "constraint-only design context and common analogue or SAR language could route to research",
+    "design history did not reach the strategist",
+    "tool findings did not execute or rerank the portfolio in the production path",
+    "typed design state did not persist or resume",
+    "target-independent antimicrobial-peptide optimization was forced through protein target and docking prerequisites",
+    "quantitative decisions lacked an executable typed handoff",
+    "schema-valid but semantically invalid strategist output had no bounded repair"
+  ],
+  "post_fix_framework_evidence": {
+    "focused_semantic_and_architecture_tests": "23/23 PASS",
+    "full_regression": "310/310 PASS",
+    "verified_behaviors": [
+      "bounded history and exact user-grounded constraints",
+      "common analogue, SAR, bioisostere, and scaffold-hop routing",
+      "typed calibration requests and real finding-driven reranking",
+      "persistent portfolio, findings, answer versions, revisions, and deterministic resume",
+      "target-independent peptide workflow",
+      "typed quantitative optimizer handoff",
+      "one structured semantic repair",
+      "semantic-contract architecture gate across design Skills"
+    ]
+  },
+  "claim_limits": [
+    "The five cases are exposed, small, and scored by Main from direct subagent outputs.",
+    "The panel establishes useful qualitative behavior and catches framework failures; it does not estimate general drug-design success.",
+    "Tool-calibrated ranking used a constructed evidence panel. Wet-lab prospective value remains not_measured.",
+    "Mixed research plus design plus molecular or docking orchestration remains a documented integration gap."
+  ]
+}

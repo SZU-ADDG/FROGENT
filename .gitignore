@@ -11,15 +11,13 @@ __pycache__/
 .ruff_cache/
 
 # Local runtime output
-.runtime/
+runtime/*
+!runtime/README.md
 *.log
 logs/
 tmp/
 uploads/
 artifacts/
-
-# Third-party source snapshots stay local
-sources/
 
 # Databases, model weights, and generated heavy assets
 *.db

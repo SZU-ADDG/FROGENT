@@ -1,4 +1,0 @@
-interface:
-  display_name: "Plan Retrosynthesis"
-  short_description: "Plan practical routes for target molecules"
-  default_prompt: "Use $plan-retrosynthesis to plan routes for a target molecule."

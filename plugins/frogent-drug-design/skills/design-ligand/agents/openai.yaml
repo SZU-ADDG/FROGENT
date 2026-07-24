@@ -1,4 +1,0 @@
-interface:
-  display_name: "Design Ligand"
-  short_description: "Design ligands from protein binding pockets"
-  default_prompt: "Use $design-ligand to design ligands for a protein pocket."

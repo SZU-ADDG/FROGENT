@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FROGENT Agent</title>
+    <link rel="icon" type="image/png" href="/assets/logo.png">
+    <link rel="stylesheet" href="/assets/styles.css">
+    <script defer src="/assets/app.js"></script>
+</head>
+<body>
+    <main id="login-view" class="auth-shell">
+        <section class="auth-card" aria-labelledby="login-title">
+            <div class="brand">
+                <img src="/assets/logo.png" alt="FROGENT logo">
+                <div>
+                    <h1 id="login-title">FROGENT</h1>
+                    <p>Knowledge-led biomedical R&amp;D Agent</p>
+                </div>
+            </div>
+            <form id="login-form">
+                <label>Username <input id="login-username" autocomplete="username" required></label>
+                <label>Password <input id="login-password" type="password" autocomplete="current-password" required></label>
+                <button type="submit">Login</button>
+            </form>
+            <p id="login-status" class="status" role="status"></p>
+            <button id="show-register" class="text-button" type="button">Create an account</button>
+        </section>
+    </main>
+
+    <main id="register-view" class="auth-shell" hidden>
+        <section class="auth-card" aria-labelledby="register-title">
+            <div class="brand">
+                <img src="/assets/logo.png" alt="FROGENT logo">
+                <div>
+                    <h1 id="register-title">Create account</h1>
+                    <p>Keep research sessions and evidence memory isolated.</p>
+                </div>
+            </div>
+            <form id="register-form">
+                <label>Username <input id="register-username" autocomplete="username" minlength="3" required></label>
+                <label>Email <input id="register-email" type="email" autocomplete="email" required></label>
+                <label>Password <input id="register-password" type="password" autocomplete="new-password" minlength="6" required></label>
+                <label>Confirm password <input id="register-confirm" type="password" autocomplete="new-password" minlength="6" required></label>
+                <button type="submit">Register</button>
+            </form>
+            <p id="register-status" class="status" role="status"></p>
+            <button id="show-login" class="text-button" type="button">Back to login</button>
+        </section>
+    </main>
+
+    <main id="chat-view" class="workspace" hidden>
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-head">
+                <div class="brand compact">
+                    <img src="/assets/logo.png" alt="">
+                    <strong>FROGENT</strong>
+                </div>
+                <button id="close-sidebar" class="icon-button" type="button" aria-label="Close history">×</button>
+            </div>
+            <button id="new-chat" class="secondary-button" type="button">+ New conversation</button>
+            <nav id="chat-history" class="history" aria-label="Conversation history"></nav>
+            <div class="account">
+                <img src="/assets/user.png" alt="">
+                <span id="account-name"></span>
+                <button id="logout" class="text-button" type="button">Log out</button>
+            </div>
+        </aside>
+
+        <section class="chat">
+            <header class="chat-head">
+                <button id="open-sidebar" class="icon-button" type="button" aria-label="Open history">☰</button>
+                <div>
+                    <strong>Biomedical research and drug design</strong>
+                    <span>Retrieval · qualitative judgment · scientific tools</span>
+                </div>
+            </header>
+            <div id="messages" class="messages" aria-live="polite"></div>
+            <p id="chat-status" class="chat-status" role="status"></p>
+            <div class="composer">
+                <div id="attachment-status" class="attachment-status"></div>
+                <div class="composer-row">
+                    <input id="file-input" type="file" multiple hidden
+                           accept=".pdf,.docx,.pptx,.txt,.csv,.tsv,.xlsx,.xls,.html,.pdb,.sdf,.mol,.mol2,.fa,.fasta,.cif">
+                    <button id="attach" class="icon-button" type="button" aria-label="Attach files">＋</button>
+                    <textarea id="message-input" rows="1"
+                              placeholder="Ask a research or drug-design question"></textarea>
+                    <button id="send" type="button">Send</button>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

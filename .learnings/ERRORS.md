@@ -2,6 +2,222 @@
 
 此文件用于记录命令、远端连接及外部工具错误。
 
+## [ERR-20260724-129] identifier_rename_collapsed_trio_roots
+
+**Logged**: 2026-07-24T06:18:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+The mechanical `plugin_root` to `project_root` identifier cleanup collapsed TrioConfig's two
+distinct fields into duplicate names and converted its containment comparison into a self
+comparison. Inspection caught the collision before tests.
+
+### Suggested Fix
+When two legacy fields encode different scopes, define the target data model first. TrioConfig now
+uses one `project_root` because the MCP package is rooted at the project; tests that need a nested
+artifact boundary must pass an explicit temporary project root.
+
+### Metadata
+- Reproducible: yes
+- Related Files: mcp/trioworkspace_client.py, tests/test_trioworkspace_mcp.py
+
+### Resolution
+- **Resolved**: 2026-07-24T06:20:00+08:00
+- **Commit/PR**: pending
+- **Notes**: No remote call, artifact write, or committed configuration used the invalid intermediate model.
+
+---
+
+## [ERR-20260724-128] dot_runtime_rewrite_corrupted_attribute_access
+
+**Logged**: 2026-07-24T06:10:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+The global `.runtime` to `runtime` path rewrite also matched the prefix of Python attribute
+`config.runtime_root`, producing `configruntime_root`. Focused app tests exposed the resulting
+`NameError`; 35 other focused tests passed.
+
+### Suggested Fix
+Search for joined identifier patterns after path rewrites, restore attribute access, and constrain
+future path migration replacements to quoted path fragments or token-aware edits.
+
+### Metadata
+- Reproducible: yes
+- Related Files: agent/app/app_v4_launcher.py
+
+### Resolution
+- **Resolved**: 2026-07-24T06:11:00+08:00
+- **Commit/PR**: pending
+- **Notes**: The focused test caught the issue before commit or app execution.
+
+---
+
+## [ERR-20260724-127] combined_path_patch_used_stale_check_context
+
+**Logged**: 2026-07-24T06:03:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+A combined patch for the active evaluation paths used pre-rewrite context for `scripts/check.py`.
+The earlier mechanical path migration had already changed two lines, so `apply_patch` rejected
+the entire patch without modifying any file.
+
+### Suggested Fix
+Re-read each file after mechanical rewrites and apply smaller, file-scoped patches.
+
+### Metadata
+- Reproducible: yes
+- Related Files: scripts/check.py, scripts/run_research_eval.py, tests/test_eval.py
+
+### Resolution
+- **Resolved**: 2026-07-24T06:04:00+08:00
+- **Commit/PR**: pending
+- **Notes**: No partial patch was applied.
+
+---
+
+## [ERR-20260724-126] package_init_created_with_shell_printf
+
+**Logged**: 2026-07-24T05:55:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+During the bulk package split, eight one-line `__init__.py` files were created with shell
+`printf`. Project instructions require `apply_patch` for ordinary file creation and reserve
+mechanical command rewrites for existing bulk content.
+
+### Suggested Fix
+Create all new source files through `apply_patch`, even when a surrounding directory relocation
+uses `git mv`. Limit bulk scripts to reviewed import/path rewrites across existing files.
+
+### Metadata
+- Reproducible: yes
+- Related Files: agent/*/__init__.py
+
+### Resolution
+- **Resolved**: 2026-07-24T05:56:00+08:00
+- **Commit/PR**: pending
+- **Notes**: The files contain only package docstrings; their content was reviewed immediately.
+
+---
+
+## [ERR-20260724-125] legacy_shell_rmdir_included_removed_docs
+
+**Logged**: 2026-07-24T05:50:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+The legacy shell cleanup attempted to remove a `docs/` directory that Git had already removed
+when its last tracked file was deleted. The guarded command stopped after successfully migrating
+the environment template and removing the shell README and instructions.
+
+### Suggested Fix
+Inspect the remaining empty directory chain immediately before each `rmdir`.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/
+
+### Resolution
+- **Resolved**: 2026-07-24T05:50:30+08:00
+- **Commit/PR**: pending
+- **Notes**: No product file or runtime asset was affected.
+
+---
+
+## [ERR-20260724-124] plan_module_removal_required_staged_rename_force
+
+**Logged**: 2026-07-24T05:47:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+After promoting the Python package from the plugin shell to `agent/`, Git represented the files
+as staged renames. A normal `git rm` rejected removal of the obsolete PLAN evaluator modules
+because their index state differed from `HEAD`.
+
+### Suggested Fix
+For the reviewed, Git-recoverable obsolete module list, use `git rm -f` on the exact paths after
+confirming that the only index change is the intended package relocation.
+
+### Metadata
+- Reproducible: yes
+- Related Files: agent/plan_eval*.py
+
+### Resolution
+- **Resolved**: 2026-07-24T05:48:00+08:00
+- **Commit/PR**: pending
+- **Notes**: Historical eval assets and source-acquisition docs were removed before Git reached this guarded failure.
+
+---
+
+## [ERR-20260724-123] historical_cleanup_included_untracked_copy_plan
+
+**Logged**: 2026-07-24T05:45:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+The first tracked-history cleanup command included `copy-plan` in `git rm`, although that local
+directory had no tracked files. Git rejected the combined pathspec before applying removals.
+
+### Suggested Fix
+Separate tracked Git removals from ignored or untracked source material. Verify each target with
+`git ls-files` before invoking `git rm`; handle local-only directories through the explicit
+reversible source-snapshot retirement step.
+
+### Metadata
+- Reproducible: yes
+- Related Files: copy-plan/, plugins/frogent-drug-design/evals/
+
+### Resolution
+- **Resolved**: 2026-07-24T05:46:00+08:00
+- **Commit/PR**: pending
+- **Notes**: The failed command applied no deletion.
+
+---
+
+## [ERR-20260724-122] runtime_move_missed_root_files
+
+**Logged**: 2026-07-24T05:38:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+The first runtime move enumerated the three large subdirectories but omitted SQLite and JSON
+files stored directly under the plugin runtime root. The guarded `rmdir` failed and stopped the
+command before the repository-level runtime was moved.
+
+### Suggested Fix
+Inventory both directories at depth one, move the remaining root files into an explicit
+`runtime/evaluation/` namespace, then verify file counts and byte totals before removing the
+empty legacy directories.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/, plugins/frogent-drug-design/.runtime/
+
+### Resolution
+- **Resolved**: 2026-07-24T05:39:00+08:00
+- **Commit/PR**: pending
+- **Notes**: No runtime payload was deleted or overwritten; the three large directories had moved successfully.
+
+---
+
 ## [ERR-20260717-030] jq_lpad_filter_quoting
 
 **Logged**: 2026-07-17T19:17:00+08:00
@@ -32,6 +248,56 @@ jq: error: syntax error, unexpected INVALID_CHARACTER
 - **Resolved**: 2026-07-17T19:17:20+08:00
 - **Commit/PR**: N/A
 - **Notes**: 移除补零表达式后成功展开 008、009、014 的目标 session turns。
+
+---
+
+## [ERR-20260724-121] github_connector_could_not_create_repository_pr
+
+**Logged**: 2026-07-24T05:17:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: version-control
+
+### Summary
+The GitHub connector returned HTTP 404 when creating a draft PR for
+`SZU-ADDG/FROGENT-refactor` after the branch had been pushed successfully. Local `gh auth status`
+confirmed an authenticated repository-scoped session, so the failure was isolated to connector
+repository visibility.
+
+### Suggested Fix
+Use the authenticated `gh pr create` fallback for this repository while keeping the connector as
+the preferred path for repositories visible to the GitHub app.
+
+### Metadata
+- Reproducible: unknown
+- Related Files: .git/config
+
+---
+
+## [ERR-20260724-120] focused_unittest_used_invalid_package_path
+
+**Logged**: 2026-07-24T05:06:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The first focused repository-cleanup test command used a dotted module path containing the
+hyphenated plugin directory and ran from the project root without adding the plugin root to
+`sys.path`. `test_app_v4_launcher` failed to import `frogent_plugin`; no test body or project
+mutation ran. The corrected combined command then ran from the plugin directory while retaining
+a project-root-relative `.learnings/ERRORS.md` lookup; that read-only `rg` check failed while the
+five focused tests continued and passed.
+
+### Suggested Fix
+Run focused tests from `plugins/frogent-drug-design/` with
+`python -m unittest tests.test_app_v4_launcher tests.test_repository_layout`, or use discovery
+with an explicit start directory. Keep repository-root checks in a separate command with an
+explicit project-root working directory.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/tests/test_app_v4_launcher.py, plugins/frogent-drug-design/tests/test_repository_layout.py
 
 ---
 
@@ -4658,5 +4924,667 @@ Implementation ran a read-only `rg` command from the plugin directory while repe
 
 ### Suggested Fix
 Resolve validation paths relative to the selected working directory once, then run the focused and full checks from that same directory.
+
+---
+
+## [ERR-20260722-104] main_py_compile_updated_shared_bytecode_cache
+
+**Logged**: 2026-07-22T00:00:00+08:00
+**Priority**: medium
+**Status**: contained
+**Area**: validation
+
+### Summary
+A Main syntax-check command invoked `python3 -m py_compile` without disabling bytecode and created or updated four `.pyc` files under the existing shared plugin and test `__pycache__` directories. Source files and runtime artifacts were unaffected. The cache entries were preserved to comply with shared-asset and deletion-safety rules.
+
+### Suggested Fix
+Set `PYTHONDONTWRITEBYTECODE=1` for every Python validation command and prefer direct unit-test or AST parsing checks that do not create bytecode. Never clean a shared cache solely to repair this mistake.
+
+---
+
+## [ERR-20260722-105] qualitative_decision_focused_validation_failures
+
+**Logged**: 2026-07-22T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The first focused qualitative-decision run reported two deterministic failures: portfolio-size validation fired before the more specific rank-lineage validation, and inline calibration precedence produced control-flow nesting 4 against the plugin limit of 3. No runtime or external tool call ran.
+
+### Suggested Fix
+Validate hypothesis identity and rank lineage before regime-specific portfolio size. Isolate calibration precedence in one flat helper so the behavior remains explicit and the architecture limit remains satisfied.
+
+---
+
+## [ERR-20260722-106] skill_metadata_inspection_separator_command_failed
+
+**Logged**: 2026-07-22T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+A read-only zsh loop used a decorative separator token while inspecting Skill metadata and exited with `zsh:1: === not found`. No file or runtime state changed.
+
+### Suggested Fix
+Inspect metadata with direct `sed` calls or plain filenames and avoid decorative shell separators.
+
+---
+
+## [ERR-20260722-107] main_full_check_used_stale_venv_path
+
+**Logged**: 2026-07-22T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The first full-check command used the stale repository-root path `.runtime/app-v4/venv/bin/python`. The current project-contained interpreter is under `plugins/frogent-drug-design/.runtime/app-v4/venv/bin/python`, so zsh exited before tests started and changed no project state.
+
+### Suggested Fix
+Resolve the contained interpreter path from the current worktree before validation and run the plugin check script with the verified plugin-local venv.
+
+---
+
+## [ERR-20260722-108] qualitative_public_exports_broke_frozen_eval_identity
+
+**Logged**: 2026-07-22T00:00:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: compatibility
+
+### Summary
+The first full regression reached 280 tests and reported 19 setup errors because adding qualitative-decision symbols to `frogent_plugin/__init__.py` changed the evaluator file digest frozen by historical plan v1-v4 assets. Focused runtime behavior had passed, and the failures occurred before historical cases executed.
+
+### Suggested Fix
+Keep the frozen package initializer byte-identical and import the new qualitative policy through its explicit module path. Add new runtime modules without expanding historical evaluator identities.
+
+---
+
+## [ERR-20260722-109] qualitative_harness_phase_broke_frozen_eval_identity
+
+**Logged**: 2026-07-22T00:00:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: compatibility
+
+### Summary
+After restoring the package initializer, the second full regression again reached 280 tests and reported the same 19 historical setup errors for `frogent_plugin/harness.py`. Adding a judgment phase changed another file frozen by plan v1-v4 evaluator assets.
+
+### Suggested Fix
+Keep the historical harness state machine byte-identical. Implement qualitative judgment as a typed planning layer in a new module and app handler, expose a judgment event, and document its control relationship without changing the frozen evaluator file.
+
+---
+
+## [ERR-20260722-110] sanitizer_check_flag_omitted
+
+**Logged**: 2026-07-22T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The first sanitizer command omitted the required `--check` or `--apply` mode. The script printed usage and performed no scan or file change; the remaining independent validation commands completed.
+
+### Suggested Fix
+Invoke `scripts/sanitize_imported_sources.py --check` for read-only acceptance and reserve `--apply` for an explicitly reviewed sanitization change.
+
+---
+
+## [ERR-20260723-111] qualitative_sar_routing_marker_gap
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The first expanded qualitative-routing regression did not recognize the concise Chinese request `请做SAR并给出骨架跃迁方案` because the object markers covered SAR and scaffold hopping while the action markers omitted `做` and `给出`.
+
+### Suggested Fix
+Keep broad action words bounded by explicit design objects, add the two common Chinese action forms, and retain research-marker protection.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/qualitative_design.py, plugins/frogent-drug-design/tests/test_qualitative_design.py
+
+---
+
+## [ERR-20260723-112] qualitative_audit_nonexistent_sources_path
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+A read-only qualitative-alignment audit included a nonexistent plugin-local `sources` path in one `rg` command. The path lookup returned an error and changed no project state.
+
+### Suggested Fix
+Confirm plugin-local search roots with `rg --files` before combining optional source locations into a scoped audit command.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/
+
+---
+
+## [ERR-20260723-113] zsh_path_array_shadowed_command_lookup
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+A read-only final-hygiene loop used `path` as its iterator name. In zsh, `path` is tied to
+`PATH`, so the loop temporarily replaced command lookup and the later `git`, `rg`, and `find`
+commands returned `command not found`. The earlier JSON and file-existence checks completed;
+no project file was changed by the failed command.
+
+### Suggested Fix
+Reserve `path` and `PATH` in zsh validation scripts. Use a scoped name such as `doc_file`, then
+rerun every skipped check from the beginning.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/docs/, plugins/frogent-drug-design/evals/
+
+---
+
+## [ERR-20260723-114] nonunique_learning_counter_patch
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: self-improvement
+
+### Summary
+A patch intended to increment the qualitative-judgment learning used only the repeated text
+`Recurrence-Count: 2` as context and matched an older evaluation learning. The next read-only diff
+identified the exact unintended line. That old count was restored, and the intended learning was
+updated using its unique `Pattern-Key`.
+
+### Suggested Fix
+When editing structured learning entries with repeated metadata keys, include the entry ID or unique
+`Pattern-Key` in every patch hunk.
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/LEARNINGS.md
+
+---
+
+## [ERR-20260723-115] remote_rsync_merge_filter_resolved_on_sender
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: integration
+
+### Summary
+The first read-only TrioWorkspace rsync dry-run used a `merge` filter rule that the remote sender
+attempted to open as a remote-relative file. The sender returned code 11 because the project-local
+filter file was unavailable there. No destination was created and no remote state changed.
+
+### Suggested Fix
+For a remote sender and a small security-sensitive interface subset, use a local absolute
+`--files-from` allowlist with exact paths. Review the dry-run count and byte total before copying.
+
+### Metadata
+- Reproducible: yes
+- Related Files: copy-plan/trioworkspace-control-plane.files
+
+---
+
+## [ERR-20260723-116] trioworkspace_canary_doubled_mcp_path
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+A read-only TrioWorkspace task-list canary ran from the plugin `mcp_servers` directory while also
+appending `mcp_servers/` to the relay path. The local read failed with `FileNotFoundError` before
+SSH or any remote request was started. No project or remote file changed.
+
+### Suggested Fix
+Derive `plugin_root` as the parent of the current `mcp_servers` directory, then resolve the relay
+once as `plugin_root/mcp_servers/trioworkspace_remote_relay.py`.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/mcp_servers/
+
+---
+
+## [ERR-20260723-117] skill_creator_script_not_executable
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: skills
+
+### Summary
+The first `run-trioworkspace` initialization invoked Skill Creator's `init_skill.py` directly.
+The script lacks an executable bit, so zsh returned permission denied before creating any file.
+
+### Suggested Fix
+Invoke Skill Creator Python entrypoints explicitly with `python3` and keep
+`PYTHONDONTWRITEBYTECODE=1` enabled.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/skills/run-trioworkspace/
+
+---
+
+## [ERR-20260723-118] trio_extension_changed_frozen_eval_identity
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: integration
+
+### Summary
+The first TrioWorkspace catalog integration appended capabilities to `frogent_plugin/catalog.py`
+and added stdio parsing to `frogent_plugin/config.py`. Plan eval v1-v4 intentionally pin those
+files by digest, so the full suite failed closed with 19 identity errors. MCP-specific and
+architecture behavior tests had passed.
+
+### Suggested Fix
+Keep historical evaluator identity modules byte-exact. Place new Trio capability metadata and
+mixed HTTP/stdio manifest parsing in additive modules, then test the combined current inventory
+without changing frozen eval manifests, gold data, or digests.
+
+### Metadata
+- Reproducible: yes
+- Related Files: plugins/frogent-drug-design/frogent_plugin/catalog.py, plugins/frogent-drug-design/frogent_plugin/config.py
+
+---
+
+## [ERR-20260723-119] remote_stat_format_lost_shell_quoting
+
+**Logged**: 2026-07-23T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+A final read-only remote metadata check passed the GNU `stat -c` format as a separate SSH
+argument. OpenSSH reconstructed a remote shell command, so the format's pipe characters were
+interpreted as pipelines and `stat` received no operand. No remote metadata was read or changed.
+
+### Suggested Fix
+Pass one explicitly quoted remote command string to SSH when a format contains shell metacharacters,
+then compare the returned checkpoint with the pre-copy values.
+
+### Metadata
+- Reproducible: yes
+- Related Files: sources/trioworkspace/deployment/lan-control-plane/server.py
+
+---
+## [ERR-20260724-130] minified_eval_result_rejected_line_patch
+
+**Logged**: 2026-07-24T06:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The first attempt to update the two path-derived replay identity digests used a
+line-oriented patch against a canonical JSON file stored on one minified line.
+The patch found no complete matching line and made no file changes.
+
+### Suggested Fix
+Inspect canonical JSON formatting before editing. For a two-token identity-only
+change in a minified artifact, use an exact bounded mechanical replacement and
+then verify the canonical digest and full replay.
+
+### Metadata
+- Reproducible: yes
+- Related Files: evaluation/cases/research-eval-v1.result.json
+
+---
+## [ERR-20260724-131] replay_probe_created_python_cache
+
+**Logged**: 2026-07-24T06:02:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: repository hygiene
+
+### Summary
+An inline replay comparison used the project Python without `-B` or
+`PYTHONDONTWRITEBYTECODE=1`. It created three `__pycache__` directories under
+the newly promoted `agent/` tree. The next architecture run detected the
+unexpected top-level cache and failed one of 251 tests.
+
+### Suggested Fix
+Run every repository validation process with bytecode writing disabled. Preserve
+new validation caches by moving them into `runtime/cache/python/`, then rerun
+the complete suite from a cache-free active tree.
+
+### Metadata
+- Reproducible: yes
+- Related Files: agent/__pycache__, agent/core/__pycache__, agent/evaluation/__pycache__
+
+---
+## [ERR-20260724-132] promoted_app_preserved_crlf_whitespace
+
+**Logged**: 2026-07-24T06:04:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: repository hygiene
+
+### Summary
+The first release-level cached diff check found CRLF line endings and trailing
+spaces in seven app-v4 source and frontend files promoted from the retired
+source snapshot. Runtime tests accepted the files, while Git hygiene correctly
+rejected the staged representation.
+
+### Suggested Fix
+Normalize promoted text assets to LF and strip trailing spaces as one bounded
+formatting operation. Re-run cached and unstaged diff checks before committing.
+
+### Metadata
+- Reproducible: yes
+- Related Files: app/app_v4.py, app/models.py, app/assets/3Dmol-min.js, app/assets/app.js, app/assets/marked.min.js, app/assets/styles.css, app/templates/index.html
+
+---
+## [ERR-20260724-133] bsd_grep_null_list_was_not_null_delimited
+
+**Logged**: 2026-07-24T06:12:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: runtime migration
+
+### Summary
+The runtime directory moves completed, then the venv shebang migration used
+`grep -IlZ` as though BSD grep would emit a GNU-style null-delimited file list.
+The downstream `xargs -0` received one newline-containing argument and the
+bounded text replacement did not run.
+
+### Suggested Fix
+Use BSD-compatible newline output for this reviewed venv `bin/` file set, apply
+the same exact old-path replacement one file at a time, and verify every
+console-script shebang plus `pyvenv.cfg` before running tools.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/app/venv/bin, runtime/app/venv/pyvenv.cfg
+
+---
+## [ERR-20260724-134] plip_uses_short_version_flag
+
+**Logged**: 2026-07-24T06:13:00+08:00
+**Priority**: low
+**Status**: superseded
+**Area**: runtime validation
+
+### Summary
+The repaired PLIP console script was probed with `--version`. PLIP 3.0.0 only
+exposes the short `-v` version flag, so argparse returned its expected
+missing-input usage error. The shebang itself executed successfully.
+
+### Suggested Fix
+The help text labels `-v` as a version option, while this PLIP parser evaluates
+the required input group first. Use the repaired console script for `-h` and
+read installed distribution metadata for the version.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/app/venv/bin/plip
+
+---
+
+## [ERR-20260724-135] plip_short_version_still_requires_input
+
+**Logged**: 2026-07-24T06:14:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: runtime validation
+
+### Summary
+The follow-up PLIP probe used the advertised `-v` flag and encountered the same
+required-input parser gate. This corrected the assumption recorded in
+ERR-20260724-134; no docking or interaction analysis was started.
+
+### Suggested Fix
+Verify console-script execution with `plip -h`, then obtain the installed PLIP
+version through Python distribution metadata.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/app/venv/bin/plip
+
+---
+
+## [ERR-20260724-136] imprecise_learning_status_patch
+
+**Logged**: 2026-07-24T06:16:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: documentation
+
+### Summary
+An imprecise patch intended to update ERR-20260724-134 matched the first
+occurrence of the same status line and briefly changed ERR-20260724-129.
+The incorrect learning status was restored immediately; project code and
+runtime assets were unaffected.
+
+### Suggested Fix
+When editing repeated structured records, anchor patches on the unique entry
+identifier together with the field being changed, then inspect both the target
+record and nearby records before continuing.
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+
+---
+
+## [ERR-20260724-137] combined_rename_patch_context_drift
+
+**Logged**: 2026-07-24T06:24:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: refactoring
+
+### Summary
+A combined patch for two module renames and their consumers used an incorrect
+expected call signature in `tests/test_research_workflow.py`. Patch validation
+failed before applying any part of the rename.
+
+### Suggested Fix
+Inspect every rename consumer first, then apply file moves and call-site changes
+as small independently verifiable patches.
+
+### Metadata
+- Reproducible: yes
+- Related Files: agent/core/v4_adapter.py, agent/research/research_v4.py, tests/test_research_workflow.py
+
+---
+
+## [ERR-20260724-138] real_web_test_left_sqlalchemy_engine_open
+
+**Logged**: 2026-07-24T06:31:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The first focused run of the new real-model web test passed all 50 cases, then
+Python reported an unclosed SQLite connection while later architecture code was
+being parsed.
+
+### Suggested Fix
+Remove the scoped SQLAlchemy session and dispose the app engine before the
+temporary runtime directory leaves scope. Re-run with ResourceWarning promoted
+to an error.
+
+### Metadata
+- Reproducible: yes
+- Related Files: tests/test_web_app.py
+
+---
+
+## [ERR-20260724-139] web_template_referenced_missing_script
+
+**Logged**: 2026-07-24T06:38:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: frontend
+
+### Summary
+Repository-wide asset review found that the maintained page referenced
+`assets/app_v1.js`, while the only current application script is
+`app/assets/app.js`. Existing route tests exercised the API without requesting
+the page's script dependency.
+
+### Suggested Fix
+Reference the maintained script by its current filename, remove copied product
+labels from rendered markup, and add a web-surface test that requests the page
+and every declared first-party asset.
+
+### Metadata
+- Reproducible: yes
+- Related Files: app/templates/index.html, app/assets/app.js, tests/test_web_app.py
+
+---
+
+## [ERR-20260724-140] static_asset_test_left_file_responses_open
+
+**Logged**: 2026-07-24T06:47:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The first web-surface asset test passed, while Flask emitted ResourceWarning
+messages because four streamed static-file responses were discarded without
+being closed.
+
+### Suggested Fix
+Retain each test response long enough to assert its status and close it
+explicitly before the temporary app leaves scope.
+
+### Metadata
+- Reproducible: yes
+- Related Files: tests/test_web_app.py
+
+---
+
+## [ERR-20260724-141] conversation_lookup_lacked_user_scope
+
+**Logged**: 2026-07-24T07:04:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: web persistence
+
+### Summary
+Whole-repository review found that persisted chat and attachment queries used
+only a client-supplied conversation ID. Two users choosing the same ID could
+address the same database record even though the in-memory session layer was
+user-scoped.
+
+### Suggested Fix
+Use `(user_id, conversation_id)` for every persisted chat and attachment
+lookup, enforce the pair as the database uniqueness boundary, and retain a
+two-user regression using the same conversation ID.
+
+### Metadata
+- Reproducible: yes
+- Related Files: app/chat.py, app/models.py, tests/test_web_app.py
+
+---
+
+## [ERR-20260724-142] web_file_test_double_lacked_lookup
+
+**Logged**: 2026-07-24T07:11:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The first file-metadata validation regression reached the fake `ChatFiles`
+model before the intended boolean check, because the fake omitted the
+production `get_by_id` API.
+
+### Suggested Fix
+Keep the web model double API-complete for every route exercised by the test,
+then rerun with warnings promoted to errors.
+
+### Metadata
+- Reproducible: yes
+- Related Files: tests/test_web_app.py
+
+---
+
+## [ERR-20260724-143] repository_audit_ran_before_final_restage
+
+**Logged**: 2026-07-24T07:11:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: repository validation
+
+### Summary
+The repository-layout test was run while the Git index still represented an
+earlier refactor checkpoint. The working tree had current module names, while
+`git ls-files` correctly reported the staged old names to the audit.
+
+### Suggested Fix
+Finish reviewing the working tree, stage the complete candidate with
+`git add -A`, then run the tracked-tree audit and full suite against that exact
+index.
+
+### Metadata
+- Reproducible: yes
+- Related Files: scripts/audit_repository.py, agent/core/chat_adapter.py, agent/research/research_adapter.py
+
+---
+
+## [ERR-20260724-144] skill_validator_has_no_help_mode
+
+**Logged**: 2026-07-24T07:18:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The Skill quick validator was invoked with `--help`. Its positional-only
+interface treated that token as a Skill directory and returned
+`SKILL.md not found`.
+
+### Suggested Fix
+Pass each concrete `skills/<name>` directory directly to
+`quick_validate.py`; use source inspection when its invocation contract needs
+confirmation.
+
+### Metadata
+- Reproducible: yes
+- Related Files: skills/
+
+---
+
+## [ERR-20260724-145] image_assets_inherited_executable_mode
+
+**Logged**: 2026-07-24T07:22:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: repository hygiene
+
+### Summary
+Post-commit mode review found that the copied logo and user PNG assets were the
+only tracked files with executable mode.
+
+### Suggested Fix
+Normalize static image assets to mode `100644` and include tracked file-mode
+inspection in large source-layout refactors.
+
+### Metadata
+- Reproducible: yes
+- Related Files: app/assets/logo.png, app/assets/user.png
 
 ---

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Evaluate Candidate"
+  short_description: "Combine fair metrics with scientific judgment"
+  default_prompt: "Use $evaluate-candidate to compare candidates and make an explicit knowledge-led, tool-calibrated advancement decision."
