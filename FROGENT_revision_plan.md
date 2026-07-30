@@ -441,6 +441,7 @@ Matched-resource comparison 与关键组件 CPU 消融为 orchestration 主张�
 - Severity：`blocking`
 - Decision：agree
 - Action：核实实际调用、版本和回退；修正论文、prompt、图或部署声明。
+- Current status：MDockPeP2 endpoint、source、三次历史输出和隔离运行条件已核实；两个声明的生产目录中未发现 HADDOCK 或 pepATTRACT 安装。MDockPeP2 prospective rerun 受 Modeller license 限制，相关性能主张使用历史负向审计与 TrioPep/AF3 prospective evidence 限定。
 - Outcome：`revised_in_both`
 - Evidence：G0
 - Planned locations：M-TOOLS、F-1、SI-1
@@ -451,6 +452,7 @@ Matched-resource comparison 与关键组件 CPU 消融为 orchestration 主张�
 - Severity：`blocking`
 - Decision：agree
 - Action：核实 endpoint 和最小 smoke test；将其标记为 live、deferred 或 removed。
+- Current status：两个声明的生产目录中未发现 rDock 安装、endpoint 或 checkpoint，无法执行真实 smoke test；论文中的 rDock 与 RNA–ligand live-capability 声明标记为 `removed_unverified`。
 - Outcome：`revised_in_both`
 - Evidence：G0
 - Planned locations：M-TOOLS、F-1、SI-1
