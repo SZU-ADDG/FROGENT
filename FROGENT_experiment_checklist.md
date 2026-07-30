@@ -87,6 +87,7 @@
 - [x] ESMFold GLP1R–肽正式面板：8 sequences × 3 seeds × 3 recycles，24/24 完成；mean pTM `0.636`、mean pLDDT `64.99`、峰值分配显存 `8314 MiB`。Glucagon receptor-aligned peptide CA RMSD 为 `28.619 Å`，跨 seed 最大差 `0.000002 Å`，稳定复现同一个远离 native 的 pose。
 - [x] ESMFold 三复合物 reference panel：3GBQ、1CKB、1ABO 各 3 seeds，共 9/9 完成；平均 receptor-aligned peptide CA RMSD `6.526 Å`，仅 1/3 complexes 达到 ≤2 Å（分别为 `2.123/1.542/15.914 Å`），跨 seed 最大差 `0.000001 Å`。
 - [x] ESMFold recycle sensitivity：4ZGM、3GBQ、1CKB、1ABO 的 1-vs-3 recycle 对照完成；3 recycles 改善 2/4 cases，平均 native pose RMSD `9.546 → 12.050 Å`，最大 protocol pose shift `16.560 Å`，确认更多 recycles 不保证 pose recovery 单调改善。
+- [x] ESMFold GLP1R ranking sensitivity：8 条肽的 1-vs-3 recycle pTM/pLDDT 排名相关分别为 Spearman ρ `0.738/0.810`，top 候选一致；pose 平均/最大位移 `2.144/3.816 Å`，confidence ranking 仅作有限优先级信号。
 - [ ] MDockPeP2 prospective rerun。🟠 **外部凭据依赖**：19 GiB 隔离 runtime 已复制，Modeller 9.13 license 未进入可执行副本；禁止复制第三方 license credential，prospective 主线由 TrioPep 与 AF3 承担。
 
 ### 首轮证据入口
