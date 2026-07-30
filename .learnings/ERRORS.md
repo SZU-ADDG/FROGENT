@@ -2,6 +2,1355 @@
 
 此文件用于记录命令、远端连接及外部工具错误。
 
+## [ERR-20260730-SEC1] staged_secret_scan_regex_quote_collision
+
+**Logged**: 2026-07-30T23:59:30+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: security
+
+### Summary
+The first staged-text secret scan embedded single-quote character classes inside a zsh
+single-quoted PCRE expression. Shell parsing stopped before the scanner ran.
+
+### Resolution
+The scan was split into quote-safe high-signal patterns for API-key prefixes, private-key headers
+and bearer credentials. No candidate file was reported.
+
+### Suggested Fix
+Keep shell-level secret scan patterns free of nested quote characters, or store complex patterns
+in a reviewed project file.
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md, docs/manuscript/revision-evidence-ledger.md
+
+---
+
+## [ERR-20260730-CLN1] cleanup_test_parent_index_was_too_broad
+
+**Logged**: 2026-07-30T23:55:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: repository hygiene
+
+### Summary
+The first review of the new exact-path cleanup test found `self.target.parents[1]` in teardown.
+For the chosen fixture path this resolved to the shared `runtime/evaluation` root, which was far
+broader than the test-owned directory.
+
+### Resolution
+The code was corrected to `self.target.parent` before the test or cleanup script was executed.
+No deletion command ran with the broad path.
+
+### Suggested Fix
+Resolve teardown roots explicitly from the named fixture directory and print the resolved value
+before any test that removes files. Avoid numeric parent indexing in destructive test cleanup.
+
+### Metadata
+- Reproducible: yes
+- Related Files: tests/test_cleanup_exact_paths.py
+
+---
+
+## [ERR-20260730-RAB1] blind_bundle_text_substring_false_positive
+
+**Logged**: 2026-07-30T23:35:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+The first blind-bundle validation searched the full serialized response text for the substring
+`condition`. Scientific prose legitimately used that word, which caused a false-positive
+`AssertionError`.
+
+### Resolution
+Validation was narrowed to schema keys and metadata fields that could reveal the arm identity.
+The corrected key-level check passed before blind judging started.
+
+### Suggested Fix
+Blinding validators should inspect identity-bearing keys and metadata, with explicit value rules
+where needed. Unrestricted response-prose substring searches should not serve as leakage gates.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/real-agent-ablation/blinding/
+
+---
+
+## [ERR-20260730-RB3] generated_pycache_cleanup_blocked
+
+**Logged**: 2026-07-30T22:40:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: repository hygiene
+
+### Summary
+An exact `rm -f` cleanup of a generated 9 KB `validate_audit.cpython-314.pyc` file was denied by
+the platform safety policy after scope, occupancy, and path checks.
+
+### Context
+- No file was deleted.
+- The cache is inside the project experiment output and is excluded from scientific results.
+- The recent-baseline matrix and validation do not depend on the cache.
+
+### Suggested Fix
+Use the project's reviewed explicit-allowlist cleanup path during final integration, or retain the
+cache with an explicit manifest exclusion if policy continues to deny deletion.
+
+### Metadata
+- Reproducible: unknown
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/recent-baselines/
+
+### Resolution
+- **Resolved**: 2026-07-30T23:57:00+08:00
+- **Commit/PR**: pending final commit
+- **Notes**: Final project-local cache scan found no recent-baseline bytecode. The remaining
+  multitarget cache was removed with the reviewed explicit-allowlist cleanup script after dry-run
+  and process checks.
+
+---
+
+## [ERR-20260730-RB2] jq_regex_escape_in_github_tree_filter
+
+**Logged**: 2026-07-30T22:28:00+08:00
+**Priority**: low
+**Status**: open
+**Area**: evaluation
+
+### Summary
+A Robin GitHub-tree filter used an invalid escaped dot inside a jq string, causing jq compilation
+to fail and the upstream curl process to report a broken output pipe.
+
+### Error
+```text
+jq compile error
+curl: Failure writing output
+```
+
+### Suggested Fix
+Use `startswith` and `endswith` for path filtering when a regular expression is unnecessary.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/recent-baselines/
+
+### Resolution
+- **Resolved**: 2026-07-30T22:28:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: README and pyproject checks were unaffected; path filtering was rewritten without
+  the invalid regex escape.
+
+---
+
+## [ERR-20260730-RB1] baseline_audit_stderr_written_outside_project
+
+**Logged**: 2026-07-30T22:25:00+08:00
+**Priority**: medium
+**Status**: open
+**Area**: evaluation
+
+### Summary
+The recent-baseline audit redirected Prompt-to-Pill compile stderr to
+`/tmp/frogent_p2p_compile_err`, outside the allowed project write boundary.
+
+### Context
+- The file contains compiler error text from a public repository audit.
+- It was left unchanged because project rules prohibit further local operations outside
+  `/Users/dongxu/projects/FROGENT`.
+- Subsequent audit outputs remain inside the assigned experiment directory.
+
+### Suggested Fix
+Resolve and validate the project-contained diagnostics directory before running static checks,
+and write all captured stderr there.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/recent-baselines/
+
+---
+
+## [ERR-20260730-HL5] hle_candidate_count_assertion_scope
+
+**Logged**: 2026-07-30T22:15:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+The HLE range selector asserted the count before applying the preregistered subject allowlist,
+using 59 instead of the 24 eligible candidates after filtering.
+
+### Context
+- Full source-object coverage and range parsing were correct.
+- The failure was limited to an integrity constant in the experiment script.
+- No ineligible case was admitted.
+
+### Suggested Fix
+Name and validate counts at every filter stage: raw text-only subject candidates, allowlisted
+candidates, and the final deterministic sample.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/hle-text-subset/
+
+### Resolution
+- **Resolved**: 2026-07-30T22:15:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: The assertion now checks 24 post-allowlist candidates and the selector was rerun.
+
+---
+
+## [ERR-20260730-HL4] hle_derived_gold_stream_timeout
+
+**Logged**: 2026-07-30T22:00:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+A public HLE-derived Gold JSONL download degraded and timed out after receiving only a partial
+payload, leaving the final JSON line incomplete.
+
+### Error
+```text
+curl exit 28 after 300 seconds; 5.7 MB of 97.9 MB received; final JSON line incomplete
+```
+
+### Context
+- A prior complete stream from the same URL exposed 668 rows and 59 eligible text-only
+  Biology/Medicine candidates.
+- No partial case file was admitted to the experiment.
+- The worker is switching to resumable ranges or an official public data API.
+
+### Suggested Fix
+Use resumable range downloads with size/content validation, or a stable public API. Admit the
+subset only after the complete source artifact and every selected row validate.
+
+### Metadata
+- Reproducible: unknown
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/hle-text-subset/
+
+---
+
+## [ERR-20260730-HL3] python_c_fstring_shell_escape
+
+**Logged**: 2026-07-30T21:42:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+A Python `-c` f-string combined with shell and backslash escaping produced a syntax error during
+a read-only HLE source inventory.
+
+### Error
+```text
+SyntaxError
+```
+
+### Suggested Fix
+Use percent formatting or a checked script/heredoc for nested shell and Python quoting.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/hle-text-subset/
+
+### Resolution
+- **Resolved**: 2026-07-30T21:42:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: The command was rerun without nested f-string escaping.
+
+---
+
+## [ERR-20260730-HL2] unquoted_github_api_query_string
+
+**Logged**: 2026-07-30T21:40:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+An unquoted GitHub API URL containing `?recursive=1` was interpreted as a zsh glob, so the
+read-only request never ran and the downstream parser received no JSON.
+
+### Error
+```text
+zsh: no matches found
+JSONDecodeError
+```
+
+### Suggested Fix
+Quote complete URLs that contain query strings before passing them to a shell command.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/hle-text-subset/
+
+### Resolution
+- **Resolved**: 2026-07-30T21:40:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: The read-only inventory was rerun with the URL quoted.
+
+---
+
+## [ERR-20260730-HLE] official_hle_dataset_access_unavailable
+
+**Logged**: 2026-07-30T21:35:00+08:00
+**Priority**: medium
+**Status**: in_progress
+**Area**: evaluation
+
+### Summary
+The official `cais/hle` dataset requires contact-sharing access, while the current environment
+has no authorized Hugging Face token or cached snapshot; public dataset-server requests also
+timed out.
+
+### Error
+```text
+Official HLE data card requires sign-in and contact sharing; no authorized local token/cache.
+Public Hugging Face and datasets-server requests timed out.
+```
+
+### Context
+- The planned experiment was a deterministic 20-case biology/medicine text-only subset.
+- No third-party mirror was admitted as an official dataset substitute.
+- The worker is retaining access evidence and completing the protocol/preregistration assets.
+
+### Suggested Fix
+Resume the case-level run when an authorized official HLE snapshot is placed inside the project.
+Keep the preregistered selection rule and separate this new run from the manuscript's unknown
+original 20 cases.
+
+### Metadata
+- Reproducible: unknown
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/hle-text-subset/
+
+---
+
+## [ERR-20260730-EP1] zsh_nested_quote_secret_scan
+
+**Logged**: 2026-07-30T20:55:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The evidence-propagation final audit embedded mixed single and double quotes in one zsh regex and
+failed during shell parsing before any scan ran.
+
+### Error
+```text
+zsh:1: parse error near `)'
+```
+
+### Context
+- The failed command combined file inventory, Git status, a secret-pattern scan, and summary checks.
+- The shell stopped before the read-only audit; experiment artifacts were unchanged.
+
+### Suggested Fix
+Split the audit and use a safely quoted expression for the secret-pattern scan.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/evidence-propagation/
+
+### Resolution
+- **Resolved**: 2026-07-30T20:56:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: The audit was split into simple commands and the secret scan used a safely quoted
+  expression.
+
+---
+
+## [ERR-20260730-SR2] europe_pmc_lite_response_omitted_abstracts
+
+**Logged**: 2026-07-30T21:30:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The first complete structured-retrieval run omitted Europe PMC `resultType=core`, so its
+literature arm searched titles and bibliographic fields while the preregistered rubric specified
+titles and abstracts.
+
+### Error
+```text
+Europe PMC lite search results did not contain abstractText.
+```
+
+### Context
+- All 24 provider calls completed and the structured reference/adapter metrics were valid.
+- Literature recall from that attempt was excluded from the final result.
+- Raw responses were replaced by a full rerun with the preregistered title/abstract evidence
+  window.
+
+### Suggested Fix
+Request Europe PMC `resultType=core` whenever title/abstract entity recovery is scored.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/structured-retrieval/run_panel.py
+
+### Resolution
+- **Resolved**: 2026-07-30T21:30:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Added `resultType=core` to both literature task families and restarted the panel.
+
+---
+
+## [ERR-20260730-CNS] consensus_temporary_tsv_exceeded_local_scope
+
+**Logged**: 2026-07-30T00:00:00+08:00
+**Priority**: high
+**Status**: open
+**Area**: evaluation
+
+### Summary
+The first Judge A/B alignment command wrote two intermediate TSV files outside
+the allowed project root.
+
+### Context
+- `/tmp/judge_a.tsv` and `/tmp/judge_b.tsv` contain compact case-level
+  adjudication fields.
+- No credentials, private keys, or remote data were included.
+- The files were left unchanged because local writes and deletion outside
+  `/Users/dongxu/projects/FROGENT/` are outside the authorized boundary.
+
+### Suggested Fix
+Keep all intermediate alignment data under the designated consensus output
+directory and use process substitution only when no persistent intermediate is
+needed.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/semantic-adjudication/consensus/
+
+---
+
+## [ERR-20260730-SR1] structured_retrieval_drugbank_id_regex
+
+**Logged**: 2026-07-30T21:26:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The first structured-retrieval run escaped the DrugBank digit token twice in a raw regex.
+
+### Error
+```text
+ValueError: invalid UniProt DrugBank cross-reference: 'DB15327'
+```
+
+### Context
+- The provider returned a valid five-digit DrugBank identifier.
+- The parser stopped before admitting a protein result.
+- The complete panel was restarted after the parser correction.
+
+### Suggested Fix
+Use the raw regex `r"DB\d{5}"` for UniProt DrugBank identifiers.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/structured-retrieval/run_panel.py
+
+### Resolution
+- **Resolved**: 2026-07-30T21:26:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Corrected the regex and restarted the complete preregistered panel.
+
+---
+
+## [ERR-20260730-A429] parallel_worker_service_rate_limit
+
+**Logged**: 2026-07-30T21:20:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: infra
+
+### Summary
+Several newly dispatched experiment workers exceeded the service concurrency limit and ended
+with HTTP 429 before their assigned experiment was complete.
+
+### Error
+```text
+Agent errored: exceeded retry limit, last status: 429 Too Many Requests
+```
+
+### Context
+- Affected tasks included Luteolin provenance, safety contracts, recent baseline audit,
+  DAVIS screening, and multi-target docking.
+- Completed experiment assets and append-only partial outputs were preserved.
+- The scientific tools and input data did not fail.
+
+### Suggested Fix
+Reduce live worker concurrency and resume failed tasks selectively after active workers finish.
+Never restart completed experiments when a bounded continuation can reuse preserved outputs.
+
+### Metadata
+- Reproducible: unknown
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/
+
+### Resolution
+- **Resolved**: 2026-07-30T23:50:00+08:00
+- **Commit/PR**: pending final commit
+- **Notes**: Concurrency was reduced and failed assignments were resumed selectively. Every affected
+  experiment completed; the 130-output real-agent batch also finished with zero worker failures.
+
+---
+
+## [ERR-20260730-LV1] null_control_entity_applicability
+
+**Logged**: 2026-07-30T20:40:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The first live-evidence scorer required entity-token presence for the deliberate zero-record
+control, making a correct null result fail one inapplicable check.
+
+### Error
+```text
+missing_evidence_control: entity_tokens_present=false with zero retrieved records
+```
+
+### Context
+- The raw Europe PMC result correctly contained zero records.
+- Working memory was empty and uncertainty was correctly graded `insufficient`.
+- Only the task-level mechanical status was affected.
+
+### Suggested Fix
+Treat entity-token presence as applicable only when a task expects records; retain zero-record
+and uncertainty checks for the null control.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/live-evidence/run_panel.py
+
+### Resolution
+- **Resolved**: 2026-07-30T20:41:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: V2 uses the corrected rule and v1 has a separate transparent rescore.
+
+---
+
+## [ERR-20260730-RGX] redocking_pose_regex_double_escape
+
+**Logged**: 2026-07-30T21:12:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The first multi-target redocking attempt used doubled backslashes in three raw
+regular expressions, so all five successful Vina model-1 files were reported as missing.
+
+### Error
+```text
+ValueError: Vina output lacks model 1
+```
+
+### Context
+- Attempt: `multitarget-docking/raw/attempt-01`.
+- All five Vina seed-17 commands exited successfully and their raw outputs were retained.
+- The error occurred during model-1 parsing, before RMSD and predicted-pose PLIP.
+
+### Suggested Fix
+Use one backslash for regex metacharacters inside Python raw strings and validate
+the parser against a retained Vina output before the next append-only attempt.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/multitarget-docking/scripts/run_panel.py
+
+### Resolution
+- **Resolved**: 2026-07-30T21:12:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Corrected the model, score, and SMILES expressions; attempt-01 remains retained.
+
+---
+
+## [ERR-20260730-LUP] zsh_path_loop_variable_overrode_command_path
+
+**Logged**: 2026-07-30T21:14:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+A zsh loop used the reserved special parameter name `path`, replacing command
+lookup paths for the duration of the loop.
+
+### Error
+```text
+zsh: command not found: curl
+zsh: command not found: python
+zsh: command not found: rg
+zsh: command not found: sed
+```
+
+### Context
+- The command was a read-only PubChem cross-reference inventory.
+- No external payload was collected and no experiment output changed.
+
+### Suggested Fix
+Use task-specific loop variables such as `pug_route` in zsh.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/luteolin-comparison/
+
+### Resolution
+- **Resolved**: 2026-07-30T21:14:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Subsequent commands use a task-specific loop variable.
+
+---
+
+## [ERR-20260730-LUT] public_luteolin_structured_source_access
+
+**Logged**: 2026-07-30T21:10:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+DrugBank public search returned HTTP 403 without credentials, and the
+preregistered ChEBI compounds endpoint returned HTTP 400.
+
+### Error
+```text
+DrugBank public search: HTTP 403
+ChEBI public compounds query: HTTP 400
+```
+
+### Context
+- The preflight used public, no-key endpoints for a Luteolin provenance study.
+- No authenticated DrugBank API was available, so DrugBank relation metrics
+  remain `not_measured`.
+- The failed endpoints returned before any source content was admitted.
+
+### Suggested Fix
+Retain the access evidence and use public PubChem and ChEMBL identifiers as a
+clearly labeled structured-reference proxy. Add ChEBI only after validating its
+current public API contract.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/luteolin-comparison/
+
+### Resolution
+- **Resolved**: 2026-07-30T21:10:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: The study records the endpoint failures, excludes unauthenticated
+  DrugBank and ChEBI relations, and continues with PubChem, ChEMBL, and public
+  literature.
+
+---
+
+## [ERR-20260730-149] pdbqt_smiles_prefix_included_mapping_rows
+
+**Logged**: 2026-07-30T20:39:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The initial molecular-property run matched PDBQT `REMARK SMILES IDX` atom-mapping rows with
+the broader `REMARK SMILES ` prefix.
+
+### Error
+```text
+SMILES Parse Error: Failed parsing SMILES 'IDX' for input: 'IDX'
+```
+
+### Context
+- The invalid mapping rows were rejected by RDKit, so the accepted molecular identity and
+  descriptor values remained correct.
+- The parser's raw-row field counted SMILES and mapping lines instead of docking poses.
+- The first generated results were replaced after the parser correction.
+
+### Suggested Fix
+Exclude `REMARK SMILES IDX ` explicitly and count `MODEL ` records as PDBQT poses.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/molecular-properties/run_panel.py
+
+### Resolution
+- **Resolved**: 2026-07-30T20:39:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: The parser now accepts exact molecular SMILES remarks, validates three poses,
+  and the panel is rerun twice from the corrected implementation.
+
+---
+
+## [ERR-20260730-148] zsh_echo_triple_equals_glob
+
+**Logged**: 2026-07-30T16:30:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+An unquoted `===${id}` progress label in zsh was parsed as an equals expansion and
+stopped a read-only RCSB candidate inventory before any download occurred.
+
+### Error
+```text
+zsh:1: ==1IEP not found
+```
+
+### Context
+- The command only queried public RCSB metadata and coordinates.
+- No experiment artifact was created or modified.
+
+### Suggested Fix
+Quote progress labels that begin with repeated equals signs.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/multitarget-docking/
+
+### Resolution
+- **Resolved**: 2026-07-30T16:30:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: The candidate inventory was rerun with a quoted label.
+
+---
+
+## [ERR-20260730-147] zsh_modules_is_read_only_parameter
+
+**Logged**: 2026-07-30T16:19:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The functional evidence timing command used `modules` as a zsh array name, colliding with a
+read-only shell parameter.
+
+### Error
+```text
+zsh: read-only variable: modules
+```
+
+### Context
+- The command stopped before running any tests.
+- No result file was overwritten and no source file changed.
+
+### Suggested Fix
+Use task-specific array names such as `evidence_test_modules`.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/telemetry/
+
+### Resolution
+- **Resolved**: 2026-07-30T16:19:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: The corrected command uses `evidence_test_modules`.
+
+---
+
+## [ERR-20260730-146] architecture_test_observed_parallel_pycache
+
+**Logged**: 2026-07-30T16:17:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The local 73-test evidence telemetry rerun completed all tests but the architecture package-layout
+check observed an `agent/__pycache__` directory in the shared working tree.
+
+### Error
+```text
+AssertionError: Items in the second set but not the first: '__pycache__'
+```
+
+### Context
+- The telemetry command set `PYTHONDONTWRITEBYTECODE=1` and redirected cache locations into its
+  authorized output directory.
+- Other agents were executing in the shared checkout concurrently.
+- The task forbids modifying other agent directories, so the cache directory was preserved.
+- The 63 functional evidence tests can be timed independently; clean local and remote 73-test
+  runs already exist in prior run assets.
+
+### Suggested Fix
+Run repository-structure assertions in a clean Git checkout or artifact snapshot, and keep
+functional performance telemetry separate from workspace-cleanliness assertions.
+
+### Metadata
+- Reproducible: unknown
+- Related Files: tests/test_architecture.py, runtime/evaluation/revision-20260730/nongpu-final/telemetry/
+
+### Resolution
+- **Resolved**: 2026-07-30T23:59:00+08:00
+- **Commit/PR**: pending final commit
+- **Notes**: After all parallel validators stopped, seven exact cache directories were inventoried,
+  dry-run reviewed and removed with `scripts/cleanup_exact_paths.py`. The clean rerun passed
+  259/259 tests, including repository architecture and audit checks.
+
+---
+
+## [ERR-20260730-145] zsh_scalar_test_list_not_word_split
+
+**Logged**: 2026-07-30T16:14:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The corrected dotted `unittest` module list was stored in a zsh scalar, which preserved the
+space-separated list as one argument.
+
+### Error
+```text
+ModuleNotFoundError: No module named 'tests.test_architecture tests'
+```
+
+### Context
+- Shell: zsh.
+- Five evidence and five molecular attempts retained the failure evidence.
+- Source files and prior experiment assets were unchanged.
+
+### Suggested Fix
+Use zsh arrays and pass test modules with `"${modules[@]}"` when invoking `unittest`.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/telemetry/
+- See Also: ERR-20260730-144
+
+### Resolution
+- **Resolved**: 2026-07-30T16:14:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Final reruns use arrays and write to an independent final-reruns set.
+
+---
+
+## [ERR-20260730-144] python313_unittest_multiple_file_paths
+
+**Logged**: 2026-07-30T16:12:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+Python 3.13 `unittest` did not normalize multiple slash-delimited test paths into importable
+module names, so the first local telemetry rerun loaded one failed placeholder test.
+
+### Error
+```text
+ModuleNotFoundError: No module named 'tests/test_architecture'
+ModuleNotFoundError: No module named 'tests/test_admet_execution'
+```
+
+### Context
+- Interpreter: `/Users/dongxu/miniconda3/bin/python` 3.13.11.
+- The same invocation style had worked with the existing remote Python 3.11 runtime.
+- Five evidence and five molecular timing attempts retained the failure evidence; no source
+  or test files changed.
+
+### Suggested Fix
+Use importable dotted module names for multi-module `unittest` runs, such as
+`tests.test_architecture`, and preserve the initial failed timing attempts outside the valid
+sample set.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/telemetry/
+
+### Resolution
+- **Resolved**: 2026-07-30T16:12:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Corrected commands use dotted module names and write to a separate valid-reruns set.
+
+---
+
+## [ERR-20260730-143] self_improvement_skill_path_typo
+
+**Logged**: 2026-07-30T16:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: config
+
+### Summary
+The first skill read misspelled `self-improving-agent` as `self-imoving-agent`.
+
+### Error
+```text
+sed: /Users/dongxu/.codex/skills/self-imoving-agent/SKILL.md: No such file or directory
+```
+
+### Context
+- The failure occurred before experiment execution.
+- No project asset or experiment output was affected.
+
+### Suggested Fix
+Use the exact skill path from the active skills catalog.
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+
+### Resolution
+- **Resolved**: 2026-07-30T16:00:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Reran the read with `/Users/dongxu/.codex/skills/self-improving-agent/SKILL.md`.
+
+---
+
+## [ERR-20260730-142] remote_inventory_mixed_expected_git_and_docker_failures
+
+**Logged**: 2026-07-30T15:18:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: infra
+
+### Summary
+The first remote environment inventory mixed two expected context failures into its aggregate
+exit: direct Docker socket access was denied, and the source-only copy intentionally lacks `.git`.
+
+### Error
+```text
+permission denied while connecting to /var/run/docker.sock
+git rev-parse exited 128 because /work/doomx/FROGENT has no .git directory
+```
+
+### Context
+- Target: `doomx_3nd:/work/doomx/FROGENT`.
+- The project source was copied without Git metadata by design.
+- Docker inventory is read-only and the user already authorized sudo for read-only inspection.
+
+### Suggested Fix
+Keep environment health, Git-copy context, and Docker inventory as separate probes with separate
+exit codes. Use sudo only for the bounded read-only Docker inventory.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-next/remote/
+
+### Resolution
+- **Resolved**: 2026-07-30T15:18:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: The final remote manifest separates the retained Git-context failure, direct Docker
+  denial, successful sudo inventory, and passing CPU tests.
+
+---
+
+## [ERR-20260730-141] live_1iep_reference_ligand_number_changed
+
+**Logged**: 2026-07-30T15:15:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The first live RCSB pocket-resolution run used the historical test-fixture identity `STI:A:999`;
+the current verified 1IEP coordinate artifact identifies the ligand as `STI:A:201`.
+
+### Error
+```text
+ValueError: reference ligand is absent from the verified target; exact candidates: STI:A:201
+```
+
+### Context
+- Provider: RCSB PDB data API plus current PDB coordinate download.
+- Target: 1IEP, auth chain A.
+- The provider failed closed and exposed the exact candidate without auto-remapping.
+
+### Suggested Fix
+Use the exact identity from the verified live artifact and retain the failed historical-identity
+attempt as a regression case for explicit reference-ligand binding.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-next/live-rcsb-stability/
+
+### Resolution
+- **Resolved**: 2026-07-30T15:16:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Updated the live panel to `STI:A:201` and reran exact target/pocket resolution.
+
+---
+
+## [ERR-20260730-140] capability_stats_setup_used_strict_parent_resolution
+
+**Logged**: 2026-07-30T15:08:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The first Capability-52 statistics setup attempted strict path resolution before its output parent
+existed, and a compile check created a local `__pycache__` before cleanup.
+
+### Context
+- Output scope: `runtime/evaluation/revision-20260730/nongpu-next/capability-stats/`.
+- No source file changed.
+- The generated cache was removed with an exact bounded target.
+
+### Suggested Fix
+Create and validate the contained output directory before strict resolution, set
+`PYTHONDONTWRITEBYTECODE=1`, and use deterministic rerun validation in place of a cache-producing
+compile probe.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-next/capability-stats/
+
+### Resolution
+- **Resolved**: 2026-07-30T15:09:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: The final command disables bytecode writes; source-unchanged and deterministic-rerun
+  checks both pass.
+
+---
+
+## [ERR-20260730-139] histamine_smiles_failed_kekulization
+
+**Logged**: 2026-07-30T15:10:43+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The first Dimorphite-DL protonation panel used an invalid aromatic histamine representation,
+causing RDKit kekulization failures and zero returned microstates for all three pH values.
+
+### Error
+```text
+Can't kekulize mol. Unkekulized atoms: 3 5 6
+```
+
+### Context
+- Input: `NCCc1[nH]cn1`.
+- Affected pH values: 5.0, 7.4, and 9.0.
+- The failed outputs remain in the first two panel result files as input-validation evidence.
+
+### Suggested Fix
+Validate every input with RDKit before protonation and use the valid histamine representation
+`NCCc1cnc[nH]1`.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-next/protonation-panel/run_panel.py
+
+### Resolution
+- **Resolved**: 2026-07-30T15:12:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Replaced the invalid aromatic representation and reran the deterministic panel.
+
+---
+
+## [ERR-20260730-138] remote_manifest_grep_pattern_was_misquoted
+
+**Logged**: 2026-07-30T20:34:51+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+The first remote final-manifest freshness check passed the JSON fragment through nested shell
+quotes incorrectly, causing `grep` to interpret part of the pattern as a file name.
+
+### Error
+```text
+grep: true: No such file or directory
+```
+
+### Suggested Fix
+Use `jq -e` for JSON value assertions instead of matching serialized JSON with `grep`.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-local/manifest.json
+
+### Resolution
+- **Resolved**: 2026-07-30T00:00:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Replaced the string check with a typed `jq -e` assertion.
+
+---
+
+## [ERR-20260730-137] zsh_status_is_read_only
+
+**Logged**: 2026-07-30T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: infra
+
+### Summary
+A remote-test wrapper attempted to assign the SSH exit code to `status`, which is a read-only
+special parameter in zsh.
+
+### Error
+```text
+zsh:3: read-only variable: status
+```
+
+### Suggested Fix
+Use a task-specific variable such as `remote_exit_code` for shell return codes.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-local/test-groups/
+- Recurrence-Count: 2
+- Last-Seen: 2026-07-30
+
+### Resolution
+- **Resolved**: 2026-07-30T00:00:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: The wrapper was rerun with `remote_exit_code`.
+
+---
+
+## [ERR-20260730-136] remote_system_python_is_too_old_for_strenum
+
+**Logged**: 2026-07-30T00:00:00+08:00
+**Priority**: medium
+**Status**: pending
+**Area**: infra
+
+### Summary
+The first remote CPU test group could not import the current Agent package because
+`doomx_3nd` exposes Python 3.10.12 and the code uses `enum.StrEnum`, which requires Python 3.11+.
+
+### Error
+```text
+ImportError: cannot import name 'StrEnum' from 'enum' (/usr/lib/python3.10/enum.py)
+```
+
+### Context
+- Target: `doomx_3nd:/work/doomx/FROGENT`.
+- The command used `PYTHONDONTWRITEBYTECODE=1` and did not modify server system Python.
+- Four test modules failed during collection and one loaded test failed at the deferred import;
+  the remaining nine loaded tests passed.
+
+### Suggested Fix
+Use a project-contained Python 3.11+ runtime for remote experiments, then install the declared
+CPU dependencies inside that isolated runtime and rerun the same test groups.
+
+### Metadata
+- Reproducible: yes
+- Related Files: agent/core/evidence.py, tests/test_harness.py, tests/test_retrieval.py
+
+---
+
+## [ERR-20260730-135] pdb2pqr_rejects_incomplete_1iep_backbone
+
+**Logged**: 2026-07-30T00:00:00+08:00
+**Priority**: medium
+**Status**: pending
+**Area**: tests
+
+### Summary
+The first real CPU receptor-preparation case stopped because the bundled 1IEP receptor input lacks
+the backbone and side-chain atoms required to reconstruct SER A438.
+
+### Error
+```text
+Too few atoms present to reconstruct or cap residue SER A 438 in structure.
+Heavy atoms missing from SER A 438: CA C O CB OG N
+```
+
+### Context
+- PDB2PQR 3.7.1 was invoked through its current contained interpreter at pH 7.4.
+- Input: `runtime/tools/source/AutoDock-Vina/example/basic_docking/data/1iep_receptorH.pdb`.
+- Intended output: `runtime/evaluation/revision-20260730/nongpu-local/pdb2pqr-1iep/1iep-ph74.pqr`.
+- The failure occurred before a valid PQR result was produced and is retained as tool/input
+  failure evidence.
+
+### Suggested Fix
+Add a receptor completeness gate before pH preparation. Use an explicitly selected, lineage-bound
+receptor artifact whose unresolved chain gaps are excluded or repaired by a validated upstream
+step, then rerun PDB2PQR/PROPKA.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/tools/source/AutoDock-Vina/example/basic_docking/data/1iep_receptorH.pdb, agent/docking/dynamic_receptor.py, agent/docking/receptor_state_validation.py
+
+---
+
+## [ERR-20260730-134] remote_python_venv_lacks_ensurepip
+
+**Logged**: 2026-07-30T00:00:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: infra
+
+### Summary
+The remote Ubuntu system Python could not create a project virtual environment because the
+`python3.10-venv`/ensurepip component is unavailable.
+
+### Error
+```text
+The virtual environment was not created successfully because ensurepip is not available.
+```
+
+### Context
+- Target: `doomx_3nd:/work/doomx/FROGENT/runtime/revision/venv`.
+- The task requires CPU experiments while keeping dependencies contained inside the copied project.
+- No system package was installed and no system Python state was changed.
+
+### Suggested Fix
+Install required wheels with `python3 -m pip --target
+/work/doomx/FROGENT/runtime/revision/python-packages` and set `PYTHONPATH` for remote jobs.
+
+### Metadata
+- Reproducible: yes
+- Related Files: requirements.txt, runtime/README.md
+
+### Resolution
+- **Resolved**: 2026-07-30T00:00:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Switched to a project-contained target directory without modifying system packages.
+
+---
+
+## [ERR-20260730-133] migrated_tool_venvs_keep_retired_shebangs
+
+**Logged**: 2026-07-30T00:00:00+08:00
+**Priority**: high
+**Status**: pending
+**Area**: infra
+
+### Summary
+The project-local Dimorphite-DL and PDB2PQR/PROPKA launchers retain absolute shebangs that point to
+the retired plugin runtime path.
+
+### Error
+```text
+#!/Users/dongxu/projects/FROGENT/plugins/frogent-drug-design/.runtime/tools/.../venv/bin/python
+```
+
+### Context
+- The current launchers live under `runtime/tools/dimorphite-dl/2.0.2/` and
+  `runtime/tools/pdb2pqr/3.7.1/`.
+- Non-GPU pH-aware ligand and receptor preparation cannot use these entrypoints reliably.
+
+### Suggested Fix
+Rebuild or relocate the contained virtual environments so their generated entrypoints bind to the
+current `runtime/tools/...` paths, then run the pH-state focused tests and one real smoke case.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/tools/dimorphite-dl/2.0.2/venv/bin/dimorphite_dl, runtime/tools/pdb2pqr/3.7.1/venv/bin/pdb2pqr, runtime/tools/pdb2pqr/3.7.1/venv/bin/propka3
+
+---
+
+## [ERR-20260730-132] remote_source_copy_lacks_git_and_rdkit
+
+**Logged**: 2026-07-30T00:00:00+08:00
+**Priority**: medium
+**Status**: pending
+**Area**: infra
+
+### Summary
+The first server-side CPU preflight attempted the Git-aware repository audit on a source-only
+rsync copy, and the server system Python does not provide RDKit.
+
+### Error
+```text
+repository_audit=FAIL error=Command '['git', 'ls-files', '-z']' returned non-zero exit status 128.
+ModuleNotFoundError: No module named 'rdkit'
+```
+
+### Context
+- The safe rsync intentionally excluded `.git` and local runtime payloads.
+- The remote target is `/work/doomx/FROGENT`; source files and the manuscript archive copied
+  successfully without overwriting existing data.
+- Git-independent standard-library jobs can run immediately; molecular CPU jobs require a
+  project-contained remote environment.
+
+### Suggested Fix
+Use file-count/source checks for the source-only copy. Create a contained remote environment under
+`/work/doomx/FROGENT/runtime/` before running RDKit-dependent CPU experiments.
+
+### Metadata
+- Reproducible: yes
+- Related Files: scripts/audit_repository.py, requirements.txt, runtime/README.md
+
+---
+
+## [ERR-20260730-131] collaboration_wait_below_minimum
+
+**Logged**: 2026-07-30T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: infra
+
+### Summary
+The first parallel-agent status wait used a 1,000 ms timeout, below the collaboration tool's
+10,000 ms minimum.
+
+### Error
+```text
+timeout_ms must be at least 10000
+```
+
+### Context
+- Four read-only agents were already running independent manuscript, CPU-experiment, remote
+  preflight, and revision-design inspections.
+- No agent was interrupted and no local or remote state changed.
+
+### Suggested Fix
+Use `wait_agent` with at least 10,000 ms.
+
+### Metadata
+- Reproducible: yes
+- Related Files: FROGENT_experiment_checklist.md
+
+### Resolution
+- **Resolved**: 2026-07-30T00:00:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Subsequent waits use the supported range.
+
+---
+
+## [ERR-20260730-130] macos_realpath_rejects_m_option
+
+**Logged**: 2026-07-30T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: docs
+
+### Summary
+The initial revision-document preflight used GNU `realpath -m`, which is not supported by the
+macOS `realpath` command. The combined read-only check stopped before reading project guidance.
+
+### Error
+```text
+realpath: illegal option -- m
+usage: realpath [-q] [path ...]
+```
+
+### Context
+- The command was validating that the two requested Markdown output paths remain inside the
+  FROGENT project root.
+- No project deliverable was created or modified by the failed command.
+
+### Suggested Fix
+Use macOS-compatible `realpath` only for existing paths and validate prospective output paths by
+checking the already-resolved parent directory plus explicit filenames.
+
+### Metadata
+- Reproducible: yes
+- Related Files: FROGENT_revision_plan.md, FROGENT_experiment_checklist.md
+
+### Resolution
+- **Resolved**: 2026-07-30T00:00:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Continued with parent-directory validation and explicit output filenames.
+
+---
+
 ## [ERR-20260724-129] identifier_rename_collapsed_trio_roots
 
 **Logged**: 2026-07-24T06:18:00+08:00
@@ -5586,5 +6935,178 @@ inspection in large source-layout refactors.
 ### Metadata
 - Reproducible: yes
 - Related Files: app/assets/logo.png, app/assets/user.png
+
+---
+
+## [ERR-20260730-JAD1] judge_a_temporary_outputs_exceeded_local_scope
+
+**Logged**: 2026-07-30T00:00:00+08:00
+**Priority**: high
+**Status**: open
+**Area**: evaluation
+
+### Summary
+Judge A 的只读摘录命令把两个中间文件写到项目目录之外，违反了本地写入范围约束。
+
+### Context
+- `/tmp/frogent_cases_brief.json`：0 bytes，空文件。
+- `/tmp/frogent_results_brief.jsonl`：57,399 bytes，JSON data。
+- 关键词扫描未发现 API key、password、secret、token、authorization 或 bearer 字段。
+- 未删除、移动或改名这两个文件，等待主任务按项目边界与清理规则处理。
+
+### Suggested Fix
+任务开始时先解析并验证唯一允许写入的项目内输出根。诊断摘录、中间缓存和验证文件全部写入该根，shell 命令禁止使用 `/tmp` 或其他项目外目标。
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/semantic-adjudication/judge-a/
+
+---
+
+## [ERR-20260730-JAD2] pubmed_pages_blocked_judge_a_source_check
+
+**Logged**: 2026-07-30T20:42:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+Judge A 通过浏览工具打开四个公开 PubMed 页面时均遇到浏览器检查与 reCAPTCHA，页面正文无法读取。
+
+### Resolution
+保留稳定 PubMed URL 作为公开定位符，正文核验改用无需凭据的 Europe PMC REST API。PubMedQA 主研究证据继续采用本地官方数据副本中的摘要和 `LONG_ANSWER`。
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/semantic-adjudication/judge-a/
+
+---
+
+## [ERR-20260730-MRU1] matched_resource_unittest_class_name_mismatch
+
+**Logged**: 2026-07-30T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+The first focused validation command referenced
+`tests.test_retrieval.RetrievalBehaviorTests`, a class that is absent from the
+current test module. Two preceding workflow tests passed; unittest then stopped
+with an `AttributeError` for the missing class.
+
+### Resolution
+Inspected `tests/test_retrieval.py`, selected the current
+`RetrievalCompositionTests.test_partial_failure_preserves_raw_ledger_and_memory_isolation`
+identifier, and reran the focused validation.
+
+### Suggested Fix
+Resolve unittest class and method names from the current source with `rg` before
+assembling a fully-qualified focused test command.
+
+### Metadata
+- Reproducible: yes
+- Related Files: tests/test_retrieval.py, runtime/evaluation/revision-20260730/nongpu-final/matched-resource/
+
+---
+
+## [ERR-20260730-MRU2] matched_resource_json_tool_multi_input
+
+**Logged**: 2026-07-30T00:00:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+A JSON validation command used `xargs python -m json.tool`, which passed every
+file in one invocation. `json.tool` accepts one input file and rejected the
+remaining paths as unrecognized arguments. A trailing status print made the
+combined output look successful despite that validation failure.
+
+### Resolution
+Replaced the command with a null-delimited shell loop that invokes `json.tool`
+once per file and exits on the first parse failure.
+
+### Suggested Fix
+Use a per-file loop for single-input validators and make success messages
+conditional on the whole loop's zero exit status.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/matched-resource/
+
+---
+
+## [ERR-20260730-150] vina_local_only_rejects_model_wrapped_ligand
+
+**Logged**: 2026-07-30T20:55:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+AutoDock Vina 1.2.7 rejected a single-pose ligand PDBQT carrying
+`MODEL 1` and `ENDMDL` records during `--local_only`.
+
+### Error
+```text
+PDBQT parsing error: Unexpected multi-MODEL tag found in flex residue or ligand PDBQT file.
+Use "vina_split" to split flex residues or ligands in multiple PDBQT files.
+```
+
+### Context
+- The prior multi-pose docking output was correctly split to its first complete model.
+- The project pose reconstructor requires an explicit one-model wrapper for lineage checks.
+- Vina's ligand input parser expects the corresponding single-pose content without the wrapper.
+- The failed command and its outputs remain under the pose/PLIP experiment logs.
+
+### Suggested Fix
+Retain the model-wrapped pose as the analysis artifact and create an exact, unwrapped
+tool-input derivative for Vina `--local_only` and `--score_only`.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/pose-plip/
+
+### Resolution
+- **Resolved**: 2026-07-30T20:58:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: The recovery path preserves both forms and records the failed first attempt.
+
+---
+
+## [ERR-20260730-151] pose_plip_validation_detected_own_bytecode
+
+**Logged**: 2026-07-30T21:06:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+The pose/PLIP validation compiled its entry point and then correctly failed the clean-output
+assertion because `py_compile` had created one `__pycache__` file inside the run directory.
+
+### Error
+```text
+AssertionError
+```
+
+### Context
+- Every scientific result, table, PLIP XML, score, and manifest check passed independently.
+- The sole failed predicate concerned the bytecode generated by the immediately preceding
+  syntax check.
+
+### Suggested Fix
+Run syntax checks with bytecode redirected outside formal experiment output, or use the
+bounded cleanup mode with an exact one-file allowlist and dry-run review.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/pose-plip/
+
+### Resolution
+- **Resolved**: 2026-07-30T21:08:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: Added and used a scoped cleanup mode after dry-run, open-file, path, and reverse checks.
 
 ---

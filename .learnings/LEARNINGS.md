@@ -1,5 +1,209 @@
 # Learnings
 
+## [LRN-20260730-DVS] best_practice
+
+**Logged**: 2026-07-30T21:37:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Resource-matched direct-tool parity and experimental discrimination answer separate questions in
+virtual-screening evaluation.
+
+### Details
+The preregistered DAVIS–ABL1 CPU panel produced exact direct-Vina/FROGENT parity for all ten
+pose-score vectors and zero execution failures. The same scores selected imatinib while DAVIS
+ranked dasatinib first, with Spearman rho 0.115 and p=0.751 across the ten high-affinity
+positives. Exact tool parity therefore validates orchestration and lineage preservation, while
+the weak assay correlation bounds Vina score to an uncalibrated pose/tool signal in this setting.
+A top-positive-only panel also cannot estimate inactive enrichment.
+
+### Suggested Action
+Report tool parity, experimental rank discrimination, and enrichment as separate outcomes.
+Require a calibrated discriminator or a panel containing predefined inactive controls before
+using docking score to drive affinity optimization.
+
+### Metadata
+- Source: real_task_eval
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/davis-screening/
+- Tags: davis, vina, affinity-ranking, direct-tool-parity, calibration
+- Pattern-Key: evaluation.separate_tool_parity_from_discrimination
+- Recurrence-Count: 1
+- First-Seen: 2026-07-30
+- Last-Seen: 2026-07-30
+
+---
+
+## [LRN-20260730-LUT] knowledge_gap
+
+**Logged**: 2026-07-30T21:20:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: eval
+
+### Summary
+The cited Wang et al. Luteolin paper contains direct disease-context PPAR-gamma
+evidence that must be read before setting the cardiac-case claim boundary.
+
+### Details
+The manuscript sentence alone supported a conservative initial assumption that
+the public evidence established candidate status without a direct
+Luteolin-PPAR-gamma mechanism. Europe PMC PMID 36998980 reports the stronger
+preclinical result: direct interaction, reduced PPAR-gamma degradation, and
+loss of the protective effect after PPAR-gamma inhibition or knockdown. The
+study remains preclinical and does not establish human clinical efficacy.
+
+### Suggested Action
+For known-candidate provenance studies, retrieve and read the paper's cited
+anchor source before freezing mechanism-level expected answers. Preserve any
+pre-source preregistration mismatch through a dated protocol amendment.
+
+### Metadata
+- Source: source_verification
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/luteolin-comparison/
+- Tags: luteolin, provenance, preregistration, ppargamma, claim-boundary
+- Pattern-Key: eval.read_cited_anchor_before_mechanism_boundary
+- Recurrence-Count: 1
+- First-Seen: 2026-07-30
+- Last-Seen: 2026-07-30
+
+### Resolution
+- **Resolved**: 2026-07-30T21:20:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: The original preregistration is preserved and the corrected
+  source-grounded expectation is documented in a protocol amendment.
+
+---
+
+## [LRN-20260730-PLP] best_practice
+
+**Logged**: 2026-07-30T21:50:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+PLIP interaction benchmarks must bind the hydrogen-addition policy and map fields by interaction
+type before typed-parser accuracy is interpreted.
+
+### Details
+The B6 CPU panel found byte-equivalent direct and adapter-invoked PLIP XML across 12 complexes,
+while typed parsing accepted 8 cases. The default `--nohydro` path covered four of five benchmark
+interaction classes; PLIP standard hydrogen addition covered all five. Metal-complex and water-
+bridge XML records use interaction-specific fields that the current generic typed schema does not
+fully map, so those cases correctly fail closed.
+
+### Suggested Action
+Record the exact hydrogen policy in every PLIP protocol. Extend typed parsing with explicit
+metal-complex and water-bridge field mappings, then rerun the same direct-tool ceiling before
+using five-class accuracy as an Agent-level metric.
+
+### Metadata
+- Source: real_task_eval
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/plip-parser-baseline/
+- Tags: plip, hydrogen-policy, typed-parser, interaction-schema, evaluation
+- Pattern-Key: docking.plip_bind_hydrogen_and_interaction_schema
+- Recurrence-Count: 1
+- First-Seen: 2026-07-30
+- Last-Seen: 2026-07-30
+
+---
+
+## [LRN-20260730-LV1] best_practice
+
+**Logged**: 2026-07-30T20:41:00+08:00
+**Priority**: medium
+**Status**: validated
+**Area**: backend
+
+### Summary
+Europe PMC phrase queries need a separate exact-identifier recovery wave when an evaluation names
+a specific primary paper.
+
+### Details
+In the eight-task live evidence panel, quoted paper-title queries produced stable five-record sets
+but often ranked recent secondary or citing records ahead of the named primary study. Exact
+`EXT_ID:<PMID>` queries recovered the predefined anchors for all applicable tasks except a
+temporal-version case where the expected historical version was absent from the current provider
+representation. Discovery retrieval and anchor resolution answer distinct questions and should be
+measured separately.
+
+### Suggested Action
+For named-study tasks, keep topical queries for coverage and add exact PMID/DOI resolution before
+screening. Record version-aware provenance or an archived snapshot when a claim depends on a
+preliminary-versus-final distinction.
+
+### Metadata
+- Source: experiment
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/live-evidence/
+- Tags: europe-pmc, retrieval, source-grounding, temporal-provenance
+- Pattern-Key: retrieval.discovery_plus_exact_anchor_resolution
+- Recurrence-Count: 1
+- First-Seen: 2026-07-30
+- Last-Seen: 2026-07-30
+
+---
+
+## [LRN-20260730-002] best_practice
+
+**Logged**: 2026-07-30T20:42:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: tests
+
+### Summary
+Synthetic-accessibility comparisons must bind the exact scorer and direction before declaring
+one molecule favorable.
+
+### Details
+The project-contained RDKit Contrib `SA_Score/sascorer.py` returns values from 1 (easier synthesis)
+to 10 (harder synthesis), so lower values are favorable. The current manuscript benchmark text
+describes a higher SA score as favorable. Some molecular-generation pipelines transform raw SA
+into a higher-is-better reward, which makes the label alone insufficient to infer direction.
+
+### Suggested Action
+Record the scorer implementation, version, raw range, any normalization or sign transform, and
+the favorable direction in every benchmark manifest before recomputing or comparing SA results.
+
+### Metadata
+- Source: experiment
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/molecular-properties/REPORT.md
+- Tags: molecular-generation, synthetic-accessibility, scorer-semantics, benchmark
+- Pattern-Key: evaluation.bind_metric_implementation_and_direction
+- Recurrence-Count: 1
+- First-Seen: 2026-07-30
+- Last-Seen: 2026-07-30
+
+---
+
+## [LRN-20260730-001] correction
+
+**Logged**: 2026-07-30T00:00:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: docs
+
+### Summary
+FROGENT 大修的内部执行窗口为两周，计划应围绕并行完成全部要求组织。
+
+### Details
+用户明确确认全部审稿修订、实验、文稿、界面和回复工作可以在两周内完成。后续计划不应沿用编辑部十二周窗口或以工作量为理由缩减目标。执行设计需要先用 48 小时完成事实核查，再让统计、公平性与消融、生成与构象、evidence reliability、界面、代码、正文和 rebuttal 多条工作流并行推进，并保留最终整合与独立复核。
+
+### Suggested Action
+所有 FROGENT 大修计划统一使用 14 天内部冲刺，设定每日交付物和依赖门槛；完整覆盖全部 atomic reviewer comments。
+
+### Metadata
+- Source: user_feedback
+- Related Files: FROGENT_revision_plan.md, FROGENT_experiment_checklist.md
+- Tags: rebuttal, revision, two-week-sprint, parallel-execution
+- Pattern-Key: revision.complete_all_within_two_weeks
+- Recurrence-Count: 1
+- First-Seen: 2026-07-30
+- Last-Seen: 2026-07-30
+
+---
+
 ## [LRN-20260723-001] best_practice
 
 **Logged**: 2026-07-23T00:00:00+08:00
