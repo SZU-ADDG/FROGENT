@@ -1115,7 +1115,7 @@ Use a task-specific variable such as `remote_exit_code` for shell return codes.
 
 **Logged**: 2026-07-30T00:00:00+08:00
 **Priority**: medium
-**Status**: pending
+**Status**: resolved
 **Area**: infra
 
 ### Summary
@@ -7388,5 +7388,167 @@ recorded, while every remote experiment process remained active.
 ### Resolution
 Run the monitor inside a named detached terminal session and verify both the
 session and its first completed polling event before relying on it.
+
+---
+
+## [ERR-20260731-012] ESMFold staging command omitted the SSH target
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: remote-experiment-staging
+
+### What happened
+The first ESMFold staging command referenced `/work/doomx/...` without an
+`ssh doomx_3nd` prefix. The local read-only `/work` mount rejected directory
+creation, and both child operations exited before copying or installing files.
+
+### Resolution
+Keep the explicit remote host in the staging command, verify the resolved
+target under `/work/doomx/FROGENT/`, and inspect the copied model size before
+any load canary.
+
+---
+
+## [ERR-20260731-013] ESMFold model load requires OpenFold modules
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: peptide-structure
+
+### What happened
+The isolated ESMFold canary loaded the copied `fair-esm` module, then stopped
+while deserializing the production model because `openfold.data` was absent.
+The failure occurred before CUDA allocation or inference.
+
+### Resolution
+Installed a clean fair-esm dependency overlay, synchronized the official
+pinned OpenFold source from the local project runtime, documented the isolated
+compatibility patches, and completed the canary plus all 24 formal cases.
+
+---
+
+## [ERR-20260731-014] OpenFold clone produced an empty Git shell
+
+**Logged**: 2026-07-31
+**Status**: resolved_local_fetch
+**Area**: peptide-structure
+
+### What happened
+The first quiet clone of the pinned OpenFold dependency left an 80 KiB `.git`
+directory with no `HEAD` commit, so dependency installation never started.
+
+### Resolution
+Both explicit server-side clone attempts and a bounded archive probe stalled
+on the server-to-GitHub path. Preserve the incomplete targets, fetch the same
+pinned commit inside the local project runtime, and synchronize that source
+copy into the isolated server run.
+
+---
+
+## [ERR-20260731-015] OpenFold rsync target parent was absent
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: peptide-structure
+
+### What happened
+The first local-to-server OpenFold synchronization named a nested destination
+whose parent directory did not yet exist. Rsync returned code 11 before writing
+the source copy, and the chained dependency install did not run.
+
+### Resolution
+Create the validated isolated parent under the current GPU run, then repeat the
+same bounded package-directory synchronization.
+
+---
+
+## [ERR-20260731-016] OpenFold import requires NVIDIA DLLogger
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: peptide-structure
+
+### What happened
+The pinned OpenFold package and clean dependency overlay loaded until
+`openfold.utils.logger` imported NVIDIA DLLogger. That official runtime module
+was absent from the isolated environment.
+
+### Resolution
+Fetched DLLogger from its official source inside the local project runtime and
+synchronized only its Python package into the isolated dependency overlay.
+
+---
+
+## [ERR-20260731-017] OpenFold eager imports hit a Lightning API mismatch
+
+**Logged**: 2026-07-31
+**Status**: pending
+**Area**: peptide-structure
+
+### What happened
+After DLLogger was supplied, OpenFold's package initializer eagerly imported
+training-only utilities and requested `seed_everything` from an incompatible
+newer PyTorch Lightning namespace. ESMFold inference does not call that seed
+utility.
+
+### Resolution
+Patched only the isolated OpenFold package initializers to avoid eager imports,
+retained direct imports of the exact inference submodules, and documented the
+production-to-isolated delta.
+
+---
+
+## [ERR-20260731-018] OpenFold custom attention kernel was not compiled
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: peptide-structure
+
+### What happened
+The inference-only import path reached OpenFold's
+`attn_core_inplace_cuda` extension, which is unavailable because the isolated
+source overlay was intentionally not installed into the host environment.
+
+### Resolution
+Added a documented inference-only PyTorch fallback implementing the same
+`QK-transpose`, bias, softmax and value projection sequence. Keep the fallback
+inside the isolated OpenFold copy and recorded it in the patch note. The
+complete ESMFold import gate then passed with NumPy 1.26.4 and fair-esm 2.0.0.
+
+---
+
+## [ERR-20260731-019] Production runner used nonstandard ESMFold arguments
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: peptide-structure
+
+### What happened
+The copied model loaded successfully and reached inference, then fair-esm 2.0.0
+rejected the production runner's nonstandard `mask_rate` and
+`return_contacts` keyword arguments.
+
+### Resolution
+Remove the two optional production extensions from the isolated runner and use
+the public ESMFold 2.0.0 inference signature. Preserve the failed attempt and
+relaunch under a new attempt tag.
+
+---
+
+## [ERR-20260731-020] OpenFold detected an incompatible Deepspeed API
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: peptide-structure
+
+### What happened
+The ESMFold forward pass entered the folding trunk, where the pinned OpenFold
+commit detected the host's newer Deepspeed package and called a removed
+`deepspeed.utils.is_initialized` API.
+
+### Resolution
+Disable the optional Deepspeed branch in the isolated single-GPU inference
+overlay. Layer normalization continues through the native PyTorch path used by
+the same code whenever Deepspeed is absent.
 
 ---

@@ -84,6 +84,7 @@
 - [x] DirectMultiStep/FragGen 三轮稳定性重复：39/39 typed calls 成功；12/13 调用定义三轮响应文本完全一致，DirectMultiStep 路线集合平均两两 Jaccard `0.973`，FragGen 分子集合为 `1.000`；唯一变化为 aspirin/explorer 的路线集合。
 - [x] TrioPep reference panel 提交：3GBQ、1CKB、1ABO 三个 8–10 aa 参考复合物，加 4ZGM 的 20 aa contract-limited exploratory task，共 4 个 tasks 当前 queued。
 - [x] MDockPeP2 历史 glucagon audit：三次同序列 run、25,000 score rows、3,000 retained models 已复核；native-frame CA RMSD 无 ≤2 Å，最佳 superposed CA RMSD 为 `2.721 Å`，top-ranked pose 可远离 native frame，作为负向结果保留。
+- [x] ESMFold GLP1R–肽正式面板：8 sequences × 3 seeds × 3 recycles，24/24 完成；mean pTM `0.636`、mean pLDDT `64.99`、峰值分配显存 `8314 MiB`。Glucagon receptor-aligned peptide CA RMSD 为 `28.619 Å`，跨 seed 最大差 `0.000002 Å`，稳定复现同一个远离 native 的 pose。
 - [ ] MDockPeP2 prospective rerun。🟠 **外部凭据依赖**：19 GiB 隔离 runtime 已复制，Modeller 9.13 license 未进入可执行副本；禁止复制第三方 license credential，prospective 主线由 TrioPep 与 AF3 承担。
 
 ### 首轮证据入口
@@ -342,10 +343,10 @@
 
 ### S3-E｜Glucagon 与肽 docking
 
-- [ ] 保存 sequence-to-3D 的真实流程。🔵 **运行中**：8 个 GLP1R–肽 AF3 job spec、inspection report、bundle 与 submission manifest 已保存；TrioPep 4-task reference/exploratory panel 已提交；结果等待队列完成后自动取回。
+- [ ] 保存 sequence-to-3D 的真实流程。🔵 **运行中**：ESMFold 24-case 隔离正式面板、依赖补丁、PDB、显存与结构分析已保存；8 个 GLP1R–肽 AF3 job 与 4 个 TrioPep task 已提交，结果等待队列完成后自动取回。
 - [ ] 记录二级结构来源、模板/预测器、采样、最小化和受体准备。
 - [x] 选择小型、有参考结构的 peptide–protein set。3GBQ（10 aa）、1CKB（8 aa）、1ABO（10 aa）来自 RCSB 实验复合物；4ZGM 另作 GLP1R contract-limited exploratory case。
-- [ ] 报告 secondary-structure agreement、RMSD/TM-score（适用时）和 interface quality。
+- [ ] 报告 secondary-structure agreement、RMSD/TM-score（适用时）和 interface quality。🟡 **部分完成**：ESMFold 已报告 pTM、pLDDT、4ZGM receptor-aligned peptide CA RMSD、native/predicted interface contacts 与跨 seed 稳定性；AF3/TrioPep 终态后补齐对照。
 - [ ] 核实实际使用的 MDockPep2、HADDOCK 或 pepATTRACT。🟡 **部分完成**：论文生产痕迹与历史输出支持 MDockPep2；HADDOCK/pepATTRACT 未在两个生产目录出现。历史 MDockPeP2 作为 retrospective evidence，prospective provider 使用 TrioPep/AF3。
 - [ ] 报告成功率、运行时间和失败原因。🔵 **运行中**：历史 MDockPeP2 三 run 的 score rows、retained models、reported runtime、RMSD 与重复性已输出；TrioPep/AF3 等待终态。
 - [ ] 分开报告前端响应、任务提交和完整计算时间。
