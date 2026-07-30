@@ -85,6 +85,7 @@
 - [x] TrioPep reference panel 提交：3GBQ、1CKB、1ABO 三个 8–10 aa 参考复合物，加 4ZGM 的 20 aa contract-limited exploratory task，共 4 个 tasks 当前 queued。
 - [x] MDockPeP2 历史 glucagon audit：三次同序列 run、25,000 score rows、3,000 retained models 已复核；native-frame CA RMSD 无 ≤2 Å，最佳 superposed CA RMSD 为 `2.721 Å`，top-ranked pose 可远离 native frame，作为负向结果保留。
 - [x] ESMFold GLP1R–肽正式面板：8 sequences × 3 seeds × 3 recycles，24/24 完成；mean pTM `0.636`、mean pLDDT `64.99`、峰值分配显存 `8314 MiB`。Glucagon receptor-aligned peptide CA RMSD 为 `28.619 Å`，跨 seed 最大差 `0.000002 Å`，稳定复现同一个远离 native 的 pose。
+- [x] ESMFold 三复合物 reference panel：3GBQ、1CKB、1ABO 各 3 seeds，共 9/9 完成；平均 receptor-aligned peptide CA RMSD `6.526 Å`，仅 1/3 complexes 达到 ≤2 Å（分别为 `2.123/1.542/15.914 Å`），跨 seed 最大差 `0.000001 Å`。
 - [ ] MDockPeP2 prospective rerun。🟠 **外部凭据依赖**：19 GiB 隔离 runtime 已复制，Modeller 9.13 license 未进入可执行副本；禁止复制第三方 license credential，prospective 主线由 TrioPep 与 AF3 承担。
 
 ### 首轮证据入口

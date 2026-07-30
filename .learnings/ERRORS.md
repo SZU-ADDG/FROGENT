@@ -7552,3 +7552,21 @@ overlay. Layer normalization continues through the native PyTorch path used by
 the same code whenever Deepspeed is absent.
 
 ---
+
+## [ERR-20260731-021] Reference success count was inserted at the wrong level
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-analysis
+
+### What happened
+The first report-only update placed `complexes_with_any_run_le_2a` inside each
+per-complex dictionary while the report read it from the summary. Reanalysis
+raised a `KeyError`; the nine PDB predictions and their first analysis remained
+unchanged.
+
+### Resolution
+Move the aggregate field to the summary after all per-complex records are
+built, rerun the deterministic analysis, and revalidate the JSON report.
+
+---
