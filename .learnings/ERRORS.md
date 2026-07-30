@@ -7570,3 +7570,21 @@ Move the aggregate field to the summary after all per-complex records are
 built, rerun the deterministic analysis, and revalidate the JSON report.
 
 ---
+
+## [ERR-20260731-022] One-time heartbeat rejected an explicit DTSTART
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-automation
+
+### What happened
+The automation API rejected an immediate heartbeat create containing a
+timezone-specific `DTSTART`, because that mode does not accept an anchored
+start that could be converted to UTC.
+
+### Resolution
+Express the requested 2026-08-03 10:00 Asia/Shanghai wake-up as the next Monday
+at 10:00 with `COUNT=1`, omit `DTSTART`, and keep the heartbeat attached to the
+current FROGENT task.
+
+---
