@@ -7588,3 +7588,21 @@ at 10:00 with `COUNT=1`, omit `DTSTART`, and keep the heartbeat attached to the
 current FROGENT task.
 
 ---
+
+## [ERR-20260731-023] TrioMol2 status query assumed the wrong collection key
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-analysis
+
+### What happened
+A read-only `jq` summary addressed the TrioMol2 task collection as `jobs`,
+while the status schema stores it under `tasks`, so the query stopped after the
+preregistration records had already been read.
+
+### Resolution
+Inspect the top-level keys before projecting task records, then read `tasks`
+for both TrioMol2 and TrioPep status files. The corrected query confirmed 15
+TrioMol2 tasks and 4 TrioPep tasks without changing experiment state.
+
+---
