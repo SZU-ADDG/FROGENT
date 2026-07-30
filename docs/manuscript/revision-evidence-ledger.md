@@ -1,10 +1,12 @@
 # FROGENT major-revision evidence ledger
 
-Date: 2026-07-30
+Date: 2026-07-31
 
 CPU-only run root: `runtime/evaluation/revision-20260730/nongpu-final/`
 
-Source commit: `4a3daabc30673ad9258d964c8d8dca71b89b6f48`
+GPU/provider run root: `runtime/evaluation/revision-20260731/gpu-final/`
+
+Source commits: CPU final `4a3daabc30673ad9258d964c8d8dca71b89b6f48`; GPU execution base `8174bf3`
 
 This ledger maps reviewer concerns to completed evidence, the claim that the evidence can support,
 and the planned manuscript destination. A `not_measured` result is an explicit boundary and must
@@ -27,11 +29,13 @@ remain visible in the response letter.
 | R1-5a, R2-3b | `multitarget-docking/` | 12/15 poses had RMSD ≤2 Å; EGFR 1M17 failed stably at 5.886 Å with PLIP recall 0.167 | Report success and failure by complex; include the stable alternate-pose failure in error attribution | M-CONF, M-RES, T-3, SI-4 |
 | R2-3b | `plip-parser-baseline/` | Direct and adapter XML matched 12/12; typed end-to-end exact rate was 0.667; metal and water-bridge fields are schema gaps | Keep parser fail-closed behavior and disclose unsupported interaction classes | M-TOOLS, M-RES, SI-1, SI-4 |
 | R1-5b, R1-9d/e | `glp1r-peptide-audit/` | 4ZGM provenance, missing residues, interface geometry and sequence chemistry audited; figure/text inconsistencies identified | Correct the figure, sequence chemistry and source description; full peptide-docking performance awaits the actual provider/model | M-CONF, M-RES, T-3, SI-1 |
+| R1-6, E-5 | `gpu-final/live-weighted-mcp/` | Three repeats completed 39/39 typed live calls; every repeat had 10/10 nonempty target-rooted RDKit-valid retrosynthesis calls and 15/15 valid FragGen molecules; 12/13 call definitions had identical text across all repeats; DirectMultiStep route-set and FragGen molecule-set mean pairwise Jaccard were 0.973 and 1.000 | Support current provider executability, parse validity and within-panel stability; retain original manuscript retrosynthesis accuracy as `not_measured` | M-TOOLS, M-RES, SI-1, SI-4 |
+| R1-5b, R1-9d/e | `gpu-final/mdockpep2/` | Three read-only historical glucagon runs contained 25,000 scores and 3,000 retained models; none reached native-frame CA RMSD ≤2 Å and best superposed CA RMSD was 2.721 Å | Report the provider trace and negative structural audit; remove any unsupported near-native docking-performance implication | M-CONF, M-RES, M-DISC, T-3, SI-4 |
 | R2-1b, R2-4 | `telemetry/` | 70 per-run records and 49 valid summary rows cover wall time, CPU, RSS and calls; token, queue and energy fields are unavailable | Report measured CPU/live-provider resource data and mark unavailable telemetry as `not_measured` | M-RES, M-DISC, SI-4 |
 | R1-9c | `safety-contract/` | 23/23 contract cases passed, including refusals, degradation, recovery, provenance and synthetic-secret leakage | Describe the tested safety boundary and limit effectiveness claims to the preregistered matrix | M-TOOLS, M-DISC, SI-1, SI-4 |
 | R1-4a/b/c | `recent-baselines/` | CLADD, Prompt-to-Pill and Robin mapped; fair numerical reproduction is unavailable; one public implementation had a compile failure | Add the systems to Related Work and the capability matrix; remove global priority claims; keep score comparison `not_measured` | M-INT, M-DISC, T-2, SI-1 |
 | R2-3a, R2-3c | `admet-cpu/`, `molecular-properties/` | ADMET-AI completed 18/18 workflows across 41 endpoints; all deterministic repeats matched; invalid inputs failed before prediction | Separate model prediction, deterministic descriptors and validation failures in the benchmark table | M-BENCH, M-RES, T-1, SI-4 |
-| E-5, R1-6, R2-2 | all third-batch manifests | CPU/live paths, deferred providers, parser gaps and unavailable source inputs are explicitly classified | Align manuscript capability statements with the final manifest; defer every unexecuted GPU/provider claim | M-TOOLS, F-1, SI-1 |
+| E-5, R1-6, R2-2 | CPU and GPU/provider manifests | CPU/live paths, weighted providers, running GPU studies, parser gaps and unavailable source inputs are explicitly classified | Align manuscript capability statements with final terminal states and preserve every `not_measured` boundary | M-TOOLS, F-1, SI-1 |
 
 ## Inputs still required for manuscript-level recomputation
 

@@ -1756,3 +1756,30 @@ Classify design work as qualitative, quantitative, or hybrid. Lead qualitative a
 - Promoted: AGENTS.md
 
 ---
+## [LRN-20260731-001] inspect_declared_production_paths_before_classifying_models_as_missing
+
+**Logged**: 2026-07-31T02:52:00+08:00
+**Priority**: high
+**Area**: gpu-rebuttal
+
+### Learning
+
+For FROGENT rebuttal work, model and checkpoint availability must be checked in the declared
+production deployments before concluding that a manuscript model is absent. The authoritative
+read-only locations are `doomx_3nd:/work/pqh/projects/agent/` for MCP services and
+`doomx_3nd:/work/pqh/projects/Frogent1/` for the FROGENT front end and back end.
+
+### Trigger
+
+The initial GPU inventory searched the copied project and `/work/doomx` caches, then described the
+five named generation checkpoints as absent. The user corrected the scope and pointed to the
+production directories where the deployed weights live.
+
+### Application
+
+- Inventory both production paths read-only before assigning `deferred` or `not_measured`.
+- Trace each live MCP endpoint to its exact model config and checkpoint lineage.
+- Run experiments through the live endpoints or copied, isolated assets; keep the production
+  source directories and Git worktrees unchanged.
+
+---

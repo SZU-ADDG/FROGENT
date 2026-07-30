@@ -1,6 +1,6 @@
 # FROGENT 大修实验与证据清单
 
-## 0. 当前执行状态｜2026-07-30
+## 0. 当前执行状态｜2026-07-31
 
 ### 状态标记
 
@@ -70,6 +70,22 @@
 - [x] 稿件 QA ledger：记录 30 个问题，其中 15 blocking、15 major；10 confirmed、8 ambiguous、12 missing-input。
 - [x] 最终仓库回归：259/259 tests passed；690 个第三批 JSON assets 全部可解析；real-agent 主验证 11/11 与独立复核通过。
 
+### GPU 与真实模型工作｜执行中
+
+- [x] 只读核实生产目录 `/work/pqh/projects/agent/` 与 `/work/pqh/projects/Frogent1/`；确认 CBGBench 的 TargetDiff、Pocket2Mol、DiffSBDD 权重和生成入口。
+- [x] 将最小代码、配置、3 个 checkpoint 和 5-pocket 输入复制到隔离 run；生产源码、权重和 Git 状态保持不变。
+- [x] 冻结 CBGBench 正式矩阵：5 pockets × 3 seeds × 3 models × 500 attempts，共 45 jobs、22,500 raw attempts；canary 排除在正式统计之外。
+- [ ] CBGBench 正式矩阵。🔵 **运行中**：15/45 jobs 已 terminal-success；其余任务由 GPU 1/3/4/5/6/7 六个 worker 并行推进，GPU 0/2 的原有任务保持不受影响。
+- [x] TrioMol2 正式面板提交：15/15 tasks、150 planned candidates、每任务 search budget 500；当前 1 running、14 queued。
+- [x] GLP1R–肽 AF3 提交：Glucagon、Semaglutide、Tirzepatide 与 Peptide(a–e) 共 8 个任务；当前均 queued、队列位置 55–62，序列化学表达边界已逐项记录。
+- [x] 建立 TrioMol2 与 AF3 单次轮询/自动取回脚本；完成任务会保存 verified artifacts 到当前 GPU run。
+- [x] 启动统一异步监控器：每 15 分钟轮询 TrioMol2、TrioPep 与 AF3，CBGBench terminal manifest 生成后自动同步，全部任务终态后写入 `gpu-final/final-manifest.json`。
+- [x] DirectMultiStep/FragGen live 权重面板：13/13 typed calls 成功；10/10 retrosynthesis calls 返回非空路线且 route root 与目标一致，路线内分子字符串全部 RDKit-valid；FragGen 3 cases 返回 15/15 valid、15 unique molecules。
+- [x] DirectMultiStep/FragGen 三轮稳定性重复：39/39 typed calls 成功；12/13 调用定义三轮响应文本完全一致，DirectMultiStep 路线集合平均两两 Jaccard `0.973`，FragGen 分子集合为 `1.000`；唯一变化为 aspirin/explorer 的路线集合。
+- [x] TrioPep reference panel 提交：3GBQ、1CKB、1ABO 三个 8–10 aa 参考复合物，加 4ZGM 的 20 aa contract-limited exploratory task，共 4 个 tasks 当前 queued。
+- [x] MDockPeP2 历史 glucagon audit：三次同序列 run、25,000 score rows、3,000 retained models 已复核；native-frame CA RMSD 无 ≤2 Å，最佳 superposed CA RMSD 为 `2.721 Å`，top-ranked pose 可远离 native frame，作为负向结果保留。
+- [ ] MDockPeP2 prospective rerun。🟠 **外部凭据依赖**：19 GiB 隔离 runtime 已复制，Modeller 9.13 license 未进入可执行副本；禁止复制第三方 license credential，prospective 主线由 TrioPep 与 AF3 承担。
+
 ### 首轮证据入口
 
 - Local run：`runtime/evaluation/revision-20260730/nongpu-local/`
@@ -135,8 +151,8 @@
 - [x] 核实 Retrieve、Forge、Gauge 和 orchestrator 的真实工具与数据流。证据：real-agent job packets、evidence-propagation adapter、matched-resource panel 与 production regression。
 - [ ] 核实 DrugBank 内容进入哪个 Agent 或 context。🟡 **第三批部分完成**：PubChem cross-reference 与 structured proxy 已审计；DrugBank direct/API 返回 403，生产 context 注入仍需部署配置。
 - [x] 核实 task state、working context、working memory 和 persistent memory 的真实实现。证据：本地/远端 73 项 evidence regression，以及 research-eval fixture replay。
-- [ ] 核实 TargetDiff、Pocket2Mol、DiffSBDD、PocketFlow、MolCRAFT 的部署与可复现性。
-- [ ] 核实 MDockPep2、HADDOCK、pepATTRACT 和 rDock 的 endpoint、版本、权限和回退。
+- [ ] 核实 TargetDiff、Pocket2Mol、DiffSBDD、PocketFlow、MolCRAFT 的部署与可复现性。🔵 **运行中**：前三项 checkpoint、配置和 canary 已核实，正式 45-job matrix 已启动；两个生产目录中尚未发现 PocketFlow/MolCRAFT 权重。
+- [ ] 核实 MDockPep2、HADDOCK、pepATTRACT 和 rDock 的 endpoint、版本、权限和回退。🟡 **部分完成**：MDockPep2 endpoint/source/history 已核实，历史输出完成负向审计；隔离 prospective runtime 受 Modeller license 限制。两个生产目录中未发现 HADDOCK、pepATTRACT 或 rDock 安装。
 - [ ] 核实参数微调、few-shot prompting 和 in-context learning 的真实配置。
 - [ ] 核实生产/演示环境与论文实验环境是否一致。🟡 **首轮部分完成**：已确认远端系统 Python 3.10 与当前 `StrEnum` runtime contract 不一致，并保留失败证据。
 - [ ] 从干净环境验证主 GitHub、安装入口、最小示例和公开数据。🟡 **首轮部分完成**：远端 source-only copy、73 项 evidence regression 和 result verification 已通过；正式 Python 3.11+ clean environment 仍待建立。
@@ -145,7 +161,7 @@
 ### G0 产出
 
 - [ ] 八项 benchmark datasheets。🟡 **第二批部分完成**：八项 first-pass datasheet 已完成并通过唯一性、样本量和 archive 一致性验证；版本、许可、case IDs 与 scorer 字段待原始材料补齐。
-- [ ] capability inventory。🟡 **第三批部分完成**：CPU 可执行能力、live public providers、受限接口、deferred GPU generation 与 parser gaps 已形成可审计 inventory；正式模型部署凭据与受限 provider 状态待作者确认。
+- [ ] capability inventory。🔵 **GPU 更新**：CPU/live provider inventory 已完成；TargetDiff、Pocket2Mol、DiffSBDD 与 TrioMol2 已转为 live-running，AF3 GLP1R jobs 为 queued；PocketFlow、MolCRAFT 和受限 provider 继续保留缺失/待核实状态。
 - [x] claim–evidence matrix。证据：`docs/manuscript/revision-evidence-ledger.md`。
 - [x] baseline configuration matrix。证据：`recent-baselines/baseline-configuration-matrix.csv` 与 real-agent/matched-resource preregistration。
 - [ ] 评分影响报告：哪些结果保留、重新计算或撤回。🟡 **第三批部分完成**：QED、SA、DAVIS、semantic mismatch、live evidence 和 docking/PLIP 已给出保留/限定/重算结论；八项 headline results 等待原始样本级输出。
@@ -290,15 +306,15 @@
 
 ### S3-A｜实验范围
 
-- [ ] 仅纳入 G0 确认 live 且可复现的生成模型。
+- [ ] 仅纳入 G0 确认 live 且可复现的生成模型。🔵 **运行中**：已纳入核实 checkpoint 的 TargetDiff、Pocket2Mol、DiffSBDD 与 contract-verified TrioMol2；缺失权重模型不进入正式数值比较。
 - [x] 选择小型、有代表性的蛋白 pocket 集。5 structures 覆盖 ABL1、HSP90AA1、EGFR，共 15 个 seeds 和 20 个 PLIP reports。
-- [ ] 固定每个 pocket 的生成数、后处理、evaluator 和 compute budget。
-- [ ] 跨模型使用多次独立运行；不把相同 seed 数值解释为相同随机样本。
+- [x] 固定每个 pocket 的生成数、后处理、evaluator 和 compute budget。CBGBench 固定每个 model–pocket–seed 500 attempts、10 Å ligand-defined pocket、共同 evaluator；TrioMol2 固定每任务 10 candidates、budget 500。
+- [x] 跨模型使用多次独立运行；seed 17/23/31 仅定义各模型内部重复，不解释为跨模型相同随机样本。
 - [ ] 训练集和已知活性物数据库使用明确的 as-of date。
 
 ### S3-B｜生成模型比较
 
-- [ ] 每个 live 生成模型独立运行。
+- [ ] 每个 live 生成模型独立运行。🔵 **运行中**：CBGBench 三模型 45 个独立任务已启动；TrioMol2 15 个任务已提交。
 - [ ] 固定最佳单模型。
 - [ ] FROGENT 单轮模型选择。
 - [ ] Single-pass Forge→Gauge。
@@ -326,12 +342,12 @@
 
 ### S3-E｜Glucagon 与肽 docking
 
-- [ ] 保存 sequence-to-3D 的真实流程。
+- [ ] 保存 sequence-to-3D 的真实流程。🔵 **运行中**：8 个 GLP1R–肽 AF3 job spec、inspection report、bundle 与 submission manifest 已保存；TrioPep 4-task reference/exploratory panel 已提交；结果等待队列完成后自动取回。
 - [ ] 记录二级结构来源、模板/预测器、采样、最小化和受体准备。
-- [ ] 选择小型、有参考结构的 peptide–protein set。
+- [x] 选择小型、有参考结构的 peptide–protein set。3GBQ（10 aa）、1CKB（8 aa）、1ABO（10 aa）来自 RCSB 实验复合物；4ZGM 另作 GLP1R contract-limited exploratory case。
 - [ ] 报告 secondary-structure agreement、RMSD/TM-score（适用时）和 interface quality。
-- [ ] 核实实际使用的 MDockPep2、HADDOCK 或 pepATTRACT。
-- [ ] 报告成功率、运行时间和失败原因。
+- [ ] 核实实际使用的 MDockPep2、HADDOCK 或 pepATTRACT。🟡 **部分完成**：论文生产痕迹与历史输出支持 MDockPep2；HADDOCK/pepATTRACT 未在两个生产目录出现。历史 MDockPeP2 作为 retrospective evidence，prospective provider 使用 TrioPep/AF3。
+- [ ] 报告成功率、运行时间和失败原因。🔵 **运行中**：历史 MDockPeP2 三 run 的 score rows、retained models、reported runtime、RMSD 与重复性已输出；TrioPep/AF3 等待终态。
 - [ ] 分开报告前端响应、任务提交和完整计算时间。
 
 ### S3 产出
@@ -342,7 +358,7 @@
 - [ ] 生成模型与 orchestration 对照。
 - [ ] raw/minimized/redocked 对照。
 - [ ] Glucagon 可审计轨迹。
-- [ ] 最终 run 路径和 manifest。🟡 **第三批部分完成**：pose/PLIP、multi-target、DAVIS、ADMET 与 property CPU 结果已冻结；de novo model comparison 和完整 peptide docking 需要实际部署模型/服务。
+- [ ] 最终 run 路径和 manifest。🔵 **运行中**：CPU 结果已冻结；GPU run 位于 `runtime/evaluation/revision-20260731/gpu-final/`，远端 CBGBench 位于 `doomx_3nd:/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-final/cbgbench/`，待全部终态后生成最终 manifest。
 
 ### S3 完成标准
 
@@ -498,8 +514,8 @@
 ### Day 5–6｜2026-08-03 至 2026-08-04
 
 - [ ] Track B 完成 global-context、Retrieve、Gauge、动态规划和故障回退条件。
-- [ ] Track C 完成 Forge–Gauge 迭代、raw/minimized/redocked 和 PLIP。
-- [ ] Track C 完成 Glucagon 与参考肽集的构象/docking runs。
+- [ ] Track C 完成 Forge–Gauge 迭代、raw/minimized/redocked 和 PLIP。🔵 **运行中**：TrioMol2 15-task candidate pool 已提交；CPU raw/minimized/redocked 与 PLIP 已完成。
+- [ ] Track C 完成 Glucagon 与参考肽集的构象/docking runs。🔵 **运行中**：8 个 GLP1R–肽 AF3 任务排队，结构结果完成后进入 interface 与 docking 分析。
 - [ ] Track D 完成 citation support、conflict detection、uncertainty 和 downstream propagation。🟡 **提前部分完成**：citation identifier metrics、conflict detection、gap visibility 和 revocation 已完成；semantic support 与 downstream propagation 待补。
 - [ ] Track G 完成首个可用版本并开始 smoke test。
 

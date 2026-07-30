@@ -6,7 +6,7 @@
 
 **Logged**: 2026-07-30T23:59:30+08:00
 **Priority**: low
-**Status**: resolved
+**Status**: resolved_readonly_fallback
 **Area**: security
 
 ### Summary
@@ -7108,5 +7108,285 @@ bounded cleanup mode with an exact one-file allowlist and dry-run review.
 - **Resolved**: 2026-07-30T21:08:00+08:00
 - **Commit/PR**: N/A
 - **Notes**: Added and used a scoped cleanup mode after dry-run, open-file, path, and reverse checks.
+
+---
+## [ERR-20260731-001] remote_docker_nvidia_runtime_missing
+
+**Logged**: 2026-07-31T02:43:00+08:00
+**Priority**: high
+**Status**: pending
+**Area**: gpu-infra
+
+### Summary
+
+Three cached CUDA/peptide images on `doomx_3nd` failed before container startup because the
+Docker daemon selects an NVIDIA runtime executable that is absent from the host.
+
+### Error
+
+```text
+exec: "nvidia-container-runtime": executable file not found in $PATH
+```
+
+### Context
+
+- Images: `doomx_peptide/pepcraft:esmfold`, `doomx_peptide/peptide2_env:new`,
+  and `doomx_peptide/trio_qc:trio`.
+- The failures occurred before any image command or GPU workload ran.
+- Existing containers and GPU processes were not changed.
+
+### Suggested Fix
+
+Use `runc` only for bounded image-content inspection. Run rebuttal workloads through a
+project-contained host Python/CUDA environment, keeping all packages, checkpoints and outputs
+under the isolated GPU run root. Treat the cached images as unavailable for GPU execution until
+the host runtime is repaired by an administrator.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260731/gpu-final/
+
+---
+
+## [ERR-20260731-002] third_party_git_requires_per_command_safe_directory
+
+**Logged**: 2026-07-31T02:54:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: inventory
+
+### Summary
+
+A read-only Git query against the deployed CBGBench checkout was rejected because the SSH user
+does not own the third-party repository.
+
+### Error
+
+```text
+fatal: detected dubious ownership in repository
+```
+
+### Context
+
+- Repository: `doomx_3nd:/work/pqh/projects/agent/mcp-toolset/CBGBench`.
+- No Git configuration, repository file or worktree state changed.
+
+### Suggested Fix
+
+Read `.git/HEAD` and the exact referenced ref file through the authorized
+read-only path. Do not modify global or repository Git configuration.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260731/gpu-final/
+
+### Resolution
+
+- **Resolved**: 2026-07-31T03:24:00+08:00
+- **Notes**: Per-command safe-directory overrides remained ineffective in the mapped container path. Read `.git/HEAD` and `refs/heads/master` directly and recovered commit `983fca2a066e1ba9c9f06b2a61ef207ff3c86264`.
+
+---
+
+## [ERR-20260731-003] af3_input_inspector_requires_rdkit_interpreter
+
+**Logged**: 2026-07-31T02:58:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: peptide-structure
+
+### Summary
+
+The first AlphaFold 3 input-inspection call used the macOS system Python, which does not provide
+RDKit, so the packaged inspector stopped during import.
+
+### Error
+
+```text
+ModuleNotFoundError: No module named 'rdkit'
+```
+
+### Context
+
+- Input: the verified public `4ZGM.pdb` artifact.
+- The failure happened before inspection output, bundle creation or remote submission.
+
+### Suggested Fix
+
+Run the packaged AF3 client scripts with a project-contained interpreter that provides RDKit and
+PyYAML. Re-run inspection from the same immutable PDB input before drafting any job.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260731/gpu-final/af3-glp1r/
+
+### Resolution
+
+- **Resolved**: 2026-07-31T03:05:00+08:00
+- **Notes**: Used `runtime/app/venv/bin/python`, completed inspection, built eight bundles, and submitted all eight AF3 jobs.
+
+---
+
+## [ERR-20260731-004] cross_environment_site_packages_shadowed_typing
+
+**Logged**: 2026-07-31T03:02:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: gpu-runtime
+
+### Summary
+
+The first CBGBench import canary appended the complete TrioBinder site-packages directory only to
+reuse its Open Babel module. That directory contains an obsolete `typing` package, which shadowed
+Python 3.10's standard-library module while importing Torch.
+
+### Error
+
+```text
+AttributeError: module 'typing' has no attribute '_ClassVar'
+```
+
+### Suggested Fix
+
+Install only the required `openbabel-wheel` into the run-contained dependency directory. Never
+merge complete site-packages trees from independently solved Conda environments.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260731/gpu-final/cbgbench/
+
+### Resolution
+
+- **Resolved**: 2026-07-31T03:02:00+08:00
+- **Notes**: Removed the cross-environment path from the planned runner and isolated Open Babel.
+
+---
+
+## [ERR-20260731-005] CBGBench canary used the RDKit data directory as RDBASE
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-runtime
+
+### What happened
+All three isolated CBGBench canaries stopped during import because the snapshot
+appends `Data/BaseFeatures.fdef` to `RDBASE`, producing a duplicated
+`.../rdkit/Data/Data/BaseFeatures.fdef` path.
+
+### Resolution
+Set `RDBASE` to the RDKit package root
+`.../site-packages/rdkit`, retained the failed attempt logs, and relaunched with
+new attempt tags. Added an EXIT trap so every later background job records its
+exit code.
+
+---
+
+## [ERR-20260731-006] Pocket2Mol exceeded 24 GiB on the uncropped receptor
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-runtime
+
+### What happened
+The five-sample Pocket2Mol canary exhausted a 24 GiB RTX 4090 while conditioning
+on the entire 2,232-line prepared receptor.
+
+### Resolution
+Retained the failed run and telemetry, then launched a new canary with the
+production script's documented 10 Angstrom reference-ligand pocket crop,
+batch size one, and expandable CUDA segments.
+
+---
+
+## [ERR-20260731-007] Wildcard import shadowed the diagnostic Counter
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-instrumentation
+
+### What happened
+The isolated diagnostic patch imported `Counter` before the production
+snapshot's wildcard import. The wildcard replaced that name, so three canaries
+completed sampling and wrote their molecule CSV files, then failed while
+serializing the added summary.
+
+### Resolution
+Qualified the standard-library type as `collections.Counter`. The completed
+canary outputs remain usable; full runs use the corrected instrumentation.
+
+---
+
+## [ERR-20260731-008] MDockPeP2 staging encountered seven private Fortran sources
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: remote-readonly-staging
+
+### What happened
+Read-only rsync copied 19 GiB of the isolated MDockPeP2 runtime, then returned
+code 23 because seven mode-600 Fortran source files were unreadable.
+
+### Resolution
+Verified that the compiled ITScorePP executables, runtime libraries, parameter
+files and tests were copied. Excluded only the seven build-time `.for` sources
+and retained the first staging error log before resuming.
+
+---
+
+## [ERR-20260731-009] Isolated MDockPeP2 requires an unavailable Modeller license
+
+**Logged**: 2026-07-31
+**Status**: pending_external_credential
+**Area**: peptide-docking
+
+### What happened
+The 19 GiB isolated MDockPeP2 runtime passed executable-asset staging, while
+its copied Modeller 9.13 installation has no license key. The production
+account's configured Modeller executable and Python environment are
+permission-restricted.
+
+### Current handling
+Do not copy, reveal, or reuse the third-party license credential. Preserve the
+prospective staging record, use the three read-only historical glucagon runs
+for an explicitly retrospective audit, and continue prospective peptide work
+through TrioPep and AF3.
+
+---
+
+## [ERR-20260731-010] GPU queue pollers lacked executable mode
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-monitoring
+
+### What happened
+The three local status pollers returned shell exit code 126 when invoked as
+executables because the ignored runtime scripts had not been assigned an
+executable file mode.
+
+### Resolution
+Preserved the failed invocation and called the scripts explicitly through the
+project Python interpreter. This avoids a metadata-only file-mode change in the
+runtime output tree and does not submit duplicate tasks.
+
+---
+
+## [ERR-20260731-011] Shell-detached local monitor did not persist
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-monitoring
+
+### What happened
+The GPU queue monitor wrote its initial state, then exited when launched with
+plain `nohup` from the managed command shell. No poll cycle or error output was
+recorded, while every remote experiment process remained active.
+
+### Resolution
+Run the monitor inside a named detached terminal session and verify both the
+session and its first completed polling event before relying on it.
 
 ---

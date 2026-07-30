@@ -15,10 +15,12 @@
 - 2026-07-30 执行检查点：首批当前可执行的非 GPU 工作已完成，包含 255 项完整测试、73 项 evidence regression、89 项 molecular-tool regression、远端 73 项 evidence regression、live literature smoke、Capability-52 rescore、Vina/PLIP/Dimorphite/PDB2PQR 真实 CPU 案例和 37 页论文构建。
 - 2026-07-30 第二批检查点：完成 Capability-52 的 50,000 次 bootstrap/95% CI、八项 benchmark datasheet、6-case evidence reliability/recovery panel、63 项 focused tests、Europe PMC 单查询与四任务重复运行、Vina seed stability、12-case protonation panel、3-case receptor pH panel、live RCSB target/pocket repeat，以及远端 Python 3.11/RDKit source-copy-safe CPU validation。
 - 2026-07-30 第三批检查点：完成语义双评与 κ、统计分析入口、matched-resource 与真实 subagent 消融、8-case live evidence 独立裁决、structured retrieval、evidence propagation、Luteolin 独立性、ADMET/property、raw/local/redocking、multi-target docking、PLIP parser、DAVIS screening、GLP1R audit、safety contract、telemetry、HLE access audit 和近期 baseline 审计。
+- 2026-07-31 GPU 检查点：在只读生产目录中确认 TargetDiff、Pocket2Mol、DiffSBDD 三个 CBGBench checkpoint；隔离复制到 `doomx_3nd:/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-final/cbgbench/`。45 个正式生成任务已启动（5 pockets × 3 seeds × 3 models，22,500 raw attempts），当前 15/45 terminal-success，剩余任务占用 GPU 1/3/4/5/6/7 持续运行；TrioMol2 15 个任务当前 1 running、14 queued；GLP1R–肽 AF3 8 个任务均 queued，当前队列位置 55–62。
+- 2026-07-31 provider 检查点：DirectMultiStep flash/explorer 与 FragGen 三轮共 39/39 typed live MCP calls 成功；每轮 DirectMultiStep 10/10 返回非空且 root 与目标一致的 RDKit-valid 路线，每轮 FragGen 返回 15/15 valid molecules。13 个调用定义中 12 个三轮响应文本完全一致，DirectMultiStep 路线集合平均两两 Jaccard `0.973`，FragGen 分子集合为 `1.000`。TrioPep 3 个短肽参考复合物与 1 个 GLP1R length-limited 任务已提交。三次只读历史 MDockPeP2 glucagon run 完成独立审计，1000 retained models 中 native-frame CA RMSD 均无 ≤2 Å，作为负向结果保留。
 - 对应勾选状态见 `FROGENT_experiment_checklist.md`；首轮证据与 claim limits 见 `runtime/evaluation/revision-20260730/nongpu-local/manifest.json`。
 - 第二批证据与 claim limits 见 `runtime/evaluation/revision-20260730/nongpu-next/manifest.json`；远端 CPU 细节见 `runtime/evaluation/revision-20260730/nongpu-next/remote/final-manifest.json`。
 - 第三批证据、负向结果与未测量边界见 `runtime/evaluation/revision-20260730/nongpu-final/manifest.json`；审稿意见映射见 `docs/manuscript/revision-evidence-ledger.md`。
-- 当前可执行的非 GPU 实验范围已关闭。G0 和 S1 的稿件级重算继续依赖八项 benchmark 样本级输出、scorer、case IDs、seeds、baseline 配置和 figure source tables；de novo generation 与完整 peptide/RNA docking 依赖实际模型或 provider。
+- 当前可执行的非 GPU 实验范围已关闭。G0 和 S1 的稿件级重算继续依赖八项 benchmark 样本级输出、scorer、case IDs、seeds、baseline 配置和 figure source tables。De novo generation 已进入正式 GPU 运行；GLP1R sequence-to-3D 已进入 AF3 队列；其余 peptide/RNA docking 按已核实 provider 能力继续推进。
 
 ## 2. 修订主张
 
@@ -26,7 +28,7 @@ FROGENT 的主张先限定为一项待验证的研究假设：
 
 > FROGENT 通过任务分解、基于 evidence 的 context 管理、专业工具路由和 Forge–Gauge 反馈，提高多阶段药物设计任务中的检索质量、科学决策质量与 tool-use reliability。
 
-Matched-resource comparison 与关键组件 CPU 消融为 orchestration 主张提供了受限证据。生成模型对照仍缺真实部署模型，摘要、引言和讨论应收缩到 retrieval、evidence handling、tool execution 与 CPU 验证范围。
+Matched-resource comparison 与关键组件 CPU 消融为 orchestration 主张提供了受限证据。三项真实生成模型对照和 TrioMol2 study 正在运行；摘要、引言和讨论的最终范围将在 GPU 结果完成后冻结。
 
 ## 3. 全局修改位置
 
@@ -691,6 +693,7 @@ Matched-resource comparison 与关键组件 CPU 消融为 orchestration 主张�
 - Severity：`major`
 - Decision：agree
 - Action：single-pass 与 iterative loop 比较，记录每轮反馈、候选变化和停止原因。
+- Current status：TrioMol2 15 个共同预算任务已提交，固定池、single-pass 和最多三轮 iterative 分析协议已冻结；首任务运行中，其余排队。
 - Outcome：`revised_in_both`
 - Evidence：S3
 - Planned locations：M-RES、T-3、SI-5
@@ -712,6 +715,7 @@ Matched-resource comparison 与关键组件 CPU 消融为 orchestration 主张�
 - Severity：`blocking`
 - Decision：agree
 - Action：仅纳入真实部署且可复现的生成模型；在相同 pocket、sample count、post-processing、evaluator 和 compute budget 下比较独立模型、固定最佳模型、单轮选择和 Forge–Gauge 迭代。
+- Current status：TargetDiff、Pocket2Mol、DiffSBDD checkpoint 与可执行 snapshot 已核实；45 个正式独立模型任务已在 6 张 RTX 4090 上启动。PocketFlow 与 MolCRAFT 未在用户指定的两个生产目录中发现 checkpoint，保持缺失资产记录。
 - Outcome：`revised_in_both`
 - Evidence：G0、S3
 - Planned locations：M-RES、T-3、SI-4
