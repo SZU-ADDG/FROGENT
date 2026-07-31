@@ -1,5 +1,72 @@
 # Learnings
 
+## [LRN-20260731-4ZGM-REFERENCE] correction
+
+**Logged**: 2026-07-31T16:02:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: structural-evaluation
+
+### Summary
+4ZGM chain B is a Semaglutide backbone reference and cannot serve as a native glucagon pose.
+
+### Details
+The earlier ESMFold report labeled a receptor-aligned comparison between predicted glucagon and
+4ZGM chain B as a native-pose RMSD. The deposited chain B is the Semaglutide peptide backbone,
+with coordinates for parent-sequence positions 4-31. The `28.619 Å` value is therefore a
+cross-ligand pose distance. The AF3 analysis uses 4ZGM only for sequence-mapped Semaglutide,
+yielding an `8.133 Å` receptor-aligned CA RMSD and explicit contact recall/precision.
+
+### Suggested Action
+Bind every peptide coordinate reference to its exact deposited entity and sequence mapping.
+Use native-pose language only for the matching ligand; preserve cross-ligand distances under an
+explicit exploratory label.
+
+### Metadata
+- Source: analysis_correction
+- Related Files: runtime/evaluation/revision-20260731/gpu-final/af3-glp1r/analysis.json
+- Tags: 4zgm, semaglutide, glucagon, rmsd, reference-mapping
+- Pattern-Key: structural_eval.bind_reference_to_exact_ligand
+- Recurrence-Count: 1
+- First-Seen: 2026-07-31
+- Last-Seen: 2026-07-31
+
+---
+
+## [LRN-20260731-GPU-CONTINUITY] best_practice
+
+**Logged**: 2026-07-31T15:50:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Continuous GPU authorization still requires preserving active third-party services and assigning
+only verified idle cards to isolated rebuttal experiments.
+
+### Details
+The user authorized all eight RTX 4090 cards for ongoing rebuttal experiments. Live inventory
+showed GPU 0 hosting TrioMol2 and existing services, GPU 2 fully occupied by a third-party
+production service, and GPUs 1/3/4/5/6/7 idle. A post-outcome CBGBench independent-seed
+replication was therefore assigned to the six idle cards with a new run root, fixed protocol,
+separate preregistration amendment, per-job telemetry and an automatic terminal finalizer.
+
+### Suggested Action
+Before every follow-up matrix, re-check process ownership and free memory. Preserve occupied
+production workloads, use a new exact run root, label post-outcome extensions explicitly, and
+attach an automatic terminal manifest generator.
+
+### Metadata
+- Source: user_instruction
+- Related Files: runtime/evaluation/revision-20260731/gpu-final/cbgbench_seed_extension_preregistration.json
+- Tags: gpu, scheduling, isolation, replication, rebuttal
+- Pattern-Key: evaluation.continuous_gpu_use_preserve_existing_services
+- Recurrence-Count: 1
+- First-Seen: 2026-07-31
+- Last-Seen: 2026-07-31
+
+---
+
 ## [LRN-20260730-DVS] best_practice
 
 **Logged**: 2026-07-30T21:37:00+08:00

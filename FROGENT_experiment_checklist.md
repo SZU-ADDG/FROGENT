@@ -75,20 +75,22 @@
 - [x] 只读核实生产目录 `/work/pqh/projects/agent/` 与 `/work/pqh/projects/Frogent1/`；确认 CBGBench 的 TargetDiff、Pocket2Mol、DiffSBDD 权重和生成入口。
 - [x] 将最小代码、配置、3 个 checkpoint 和 5-pocket 输入复制到隔离 run；生产源码、权重和 Git 状态保持不变。
 - [x] 冻结 CBGBench 正式矩阵：5 pockets × 3 seeds × 3 models × 500 attempts，共 45 jobs、22,500 raw attempts；canary 排除在正式统计之外。
-- [ ] CBGBench 正式矩阵。🔵 **运行中**：15/45 jobs 已 terminal-success；其余任务由 GPU 1/3/4/5/6/7 六个 worker 并行推进，GPU 0/2 的原有任务保持不受影响。
+- [x] CBGBench 正式矩阵：45/45 jobs terminal-success，完成 22,500 raw attempts；TargetDiff、DiffSBDD、Pocket2Mol 分别得到 7,263、1,809、753 个 valid molecules，mean job QED 为 `0.458/0.234/0.128`，final manifest 已生成。
+- [ ] CBGBench 独立 seed 扩展。🔵 **运行中**：seed 47/59/71 × 5 pockets × 3 models，共 45 jobs、22,500 raw attempts；GPU 1/3/4/5/6/7 六个 worker 已进入真实推理。原三 seed 结果保持主分析，扩展结果单独报告并生成透明标记的六 seed pooled stability manifest。
 - [x] TrioMol2 正式面板提交：15/15 tasks、150 planned candidates、每任务 search budget 500；当前 1 running、14 queued。
-- [x] GLP1R–肽 AF3 提交：Glucagon、Semaglutide、Tirzepatide 与 Peptide(a–e) 共 8 个任务；当前均 queued、队列位置 55–62，序列化学表达边界已逐项记录。
+- [x] GLP1R–肽 AF3：Glucagon、Semaglutide、Tirzepatide 与 Peptide(a–e) 共 8/8 任务完成，8 个结果包已取回；序列化学表达边界、结构、界面、reference geometry 与跨 provider disagreement 已完成分析。
 - [x] 建立 TrioMol2 与 AF3 单次轮询/自动取回脚本；完成任务会保存 verified artifacts 到当前 GPU run。
 - [x] 启动统一异步监控器：每 15 分钟轮询 TrioMol2、TrioPep 与 AF3，CBGBench terminal manifest 生成后自动同步，全部任务终态后写入 `gpu-final/final-manifest.json`。
 - [x] DirectMultiStep/FragGen live 权重面板：13/13 typed calls 成功；10/10 retrosynthesis calls 返回非空路线且 route root 与目标一致，路线内分子字符串全部 RDKit-valid；FragGen 3 cases 返回 15/15 valid、15 unique molecules。
 - [x] DirectMultiStep/FragGen 三轮稳定性重复：39/39 typed calls 成功；12/13 调用定义三轮响应文本完全一致，DirectMultiStep 路线集合平均两两 Jaccard `0.973`，FragGen 分子集合为 `1.000`；唯一变化为 aspirin/explorer 的路线集合。
 - [x] TrioPep reference panel 提交：3GBQ、1CKB、1ABO 三个 8–10 aa 参考复合物，加 4ZGM 的 20 aa contract-limited exploratory task，共 4 个 tasks 当前 queued。
 - [x] MDockPeP2 历史 glucagon audit：三次同序列 run、25,000 score rows、3,000 retained models 已复核；native-frame CA RMSD 无 ≤2 Å，最佳 superposed CA RMSD 为 `2.721 Å`，top-ranked pose 可远离 native frame，作为负向结果保留。
-- [ ] ADCP v1.1 正式面板。🔵 **运行中**：官方 ADCP 0.0.25 / v1.1.21 隔离 runtime 已验证，3GBQ、1CKB、1ABO 三套 AGFR target 已生成，a07 三例 canary 全部完成并保存 poses/summary；正式 3 complexes × 3 seeds、每任务 100 replicas、每 replica 8–10M steps 的 9 个任务已在 `doomx_3nd:/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-final/adcp-reference-formal-r01/` 并行启动。29 aa glucagon/Peptide(a–e) 保持为长度外推探索分析。
-- [x] ESMFold GLP1R–肽正式面板：8 sequences × 3 seeds × 3 recycles，24/24 完成；mean pTM `0.636`、mean pLDDT `64.99`、峰值分配显存 `8314 MiB`。Glucagon receptor-aligned peptide CA RMSD 为 `28.619 Å`，跨 seed 最大差 `0.000002 Å`，稳定复现同一个远离 native 的 pose。
+- [x] ADCP v1.1 正式面板：官方 ADCP 0.0.25 / v1.1.21 隔离 runtime、3GBQ/1CKB/1ABO 三套 AGFR target 和 a07 canary 均验证；正式 3 complexes × 3 seeds、每任务 100 replicas、每 replica 8–10M steps 的 9/9 任务完成。独立评分的平均 top-1/top-5/top-10 backbone RMSD 为 `11.262/5.840/4.690 Å`，native-contact recovery 为 `0.271/0.564/0.593`。29 aa glucagon/Peptide(a–e) 保持为长度外推探索分析。
+- [x] ESMFold GLP1R–肽正式面板：8 sequences × 3 seeds × 3 recycles，24/24 完成；mean pTM `0.636`、mean pLDDT `64.99`、峰值分配显存 `8314 MiB`。Glucagon 预测 pose 与 4ZGM deposited Semaglutide 坐标的 cross-ligand CA distance 为 `28.619 Å`；该值不承担 glucagon native-pose 结论。
 - [x] ESMFold 三复合物 reference panel：3GBQ、1CKB、1ABO 各 3 seeds，共 9/9 完成；平均 receptor-aligned peptide CA RMSD `6.526 Å`，仅 1/3 complexes 达到 ≤2 Å（分别为 `2.123/1.542/15.914 Å`），跨 seed 最大差 `0.000001 Å`。
 - [x] ESMFold recycle sensitivity：4ZGM、3GBQ、1CKB、1ABO 的 1-vs-3 recycle 对照完成；3 recycles 改善 2/4 cases，平均 native pose RMSD `9.546 → 12.050 Å`，最大 protocol pose shift `16.560 Å`，确认更多 recycles 不保证 pose recovery 单调改善。
 - [x] ESMFold GLP1R ranking sensitivity：8 条肽的 1-vs-3 recycle pTM/pLDDT 排名相关分别为 Spearman ρ `0.738/0.810`，top 候选一致；pose 平均/最大位移 `2.144/3.816 Å`，confidence ranking 仅作有限优先级信号。
+- [x] AF3 GLP1R–肽分析：8/8 结果包完成安全检查与结构分析，mean pair-ipTM `0.755`，Tirzepatide 排名第一；sequence-mapped Semaglutide 对 4ZGM 的 receptor-aligned peptide CA RMSD `8.133 Å`，native-contact recall/precision `0.882/0.732`。AF3–ESMFold pose RMSD 平均/最大 `31.513/36.545 Å`，AF3 pair-ipTM 与 ESMFold pTM 排序相关 `ρ=-0.119`，明确限制 confidence-to-docking-accuracy 外推。
 - [ ] MDockPeP2 prospective rerun。🟠 **外部凭据依赖**：19 GiB 隔离 runtime 已复制，Modeller 9.13 license 未进入可执行副本；禁止复制第三方 license credential。MDockPeP2 历史证据与 ADCP prospective panel 共同承担正式 docking 主线。
 
 ### 首轮证据入口
@@ -319,7 +321,7 @@
 
 ### S3-B｜生成模型比较
 
-- [ ] 每个 live 生成模型独立运行。🔵 **运行中**：CBGBench 三模型 45 个独立任务已启动；TrioMol2 15 个任务已提交。
+- [ ] 每个 live 生成模型独立运行。🟡 **部分完成**：CBGBench 三模型首轮 45/45 完成，新 seed 扩展 45 个任务运行中；TrioMol2 15 个任务当前 1 running、14 queued。
 - [ ] 固定最佳单模型。
 - [ ] FROGENT 单轮模型选择。
 - [ ] Single-pass Forge→Gauge。
@@ -347,12 +349,12 @@
 
 ### S3-E｜Glucagon 与肽 docking
 
-- [ ] 保存多肽 docking 与 sequence-to-complex 的真实流程。🔵 **运行中**：正式 docking 方法固定为 MDockPeP2 与 ADCP；ESMFold、AF3 和 TrioPep 作为结构/provider 补充对照。ESMFold 24-case 隔离正式面板已保存，8 个 AF3 job 与 4 个 TrioPep task 已提交。
+- [ ] 保存多肽 docking 与 sequence-to-complex 的真实流程。🟡 **部分完成**：正式 docking 方法固定为 MDockPeP2 与 ADCP；ADCP 9/9 reference-redocking 完成，MDockPeP2 历史证据完成审计。ESMFold、AF3 和 TrioPep 作为结构/provider 补充对照；ESMFold 24-case 与 AF3 8-case 结构分析已保存，4 个 TrioPep task 仍 queued。
 - [ ] 记录二级结构来源、模板/预测器、采样、最小化和受体准备。
 - [x] 选择小型、有参考结构的 peptide–protein set。3GBQ（10 aa）、1CKB（8 aa）、1ABO（10 aa）来自 RCSB 实验复合物；4ZGM 另作 GLP1R contract-limited exploratory case。
-- [ ] 报告 secondary-structure agreement、RMSD/TM-score（适用时）和 interface quality。🟡 **部分完成**：ESMFold 已报告 pTM、pLDDT、4ZGM receptor-aligned peptide CA RMSD、native/predicted interface contacts 与跨 seed 稳定性；ADCP 主 redocking panel 将补齐 top-1/top-5/top-10 backbone RMSD 与 native-contact recovery。
-- [ ] 核实实际使用的 MDockPeP2 与 ADCP。🟡 **部分完成**：MDockPeP2 生产痕迹、source 和历史输出已核实；用户确认 ADCP 为第二个正式 docking 方法，官方 v1.1 隔离 runtime 正在准备。TrioPep/AF3 保留为补充证据。
-- [ ] 报告成功率、运行时间和失败原因。🔵 **运行中**：历史 MDockPeP2 三 run 的 score rows、retained models、reported runtime、RMSD 与重复性已输出；ADCP 将按三参考体系与 GLP-1R 外推体系分别报告。
+- [ ] 报告 secondary-structure agreement、RMSD/TM-score（适用时）和 interface quality。🟡 **部分完成**：ESMFold 已报告 pTM、pLDDT、reference RMSD、predicted interface 与跨 seed 稳定性；AF3 已报告 ipTM、pLDDT、Semaglutide reference RMSD、contact recall/precision 和跨 provider pose disagreement；ADCP 已补齐 top-1/top-5/top-10 backbone RMSD 与 native-contact recovery。
+- [x] 核实实际使用的 MDockPeP2 与 ADCP：MDockPeP2 生产痕迹、source 和历史输出已核实；ADCP 官方 v1.1 隔离 runtime、输入、采样、输出和独立 scorer 已验证。TrioPep/AF3 保留为补充证据。
+- [ ] 报告成功率、运行时间和失败原因。🟡 **部分完成**：历史 MDockPeP2 三 run 与 ADCP 9 个正式任务的输出、RMSD、接触恢复和终态已保存；AF3/TrioPep 完整时延与 provider 状态继续汇总。
 - [ ] 分开报告前端响应、任务提交和完整计算时间。
 
 ### S3 产出
@@ -363,7 +365,7 @@
 - [ ] 生成模型与 orchestration 对照。
 - [ ] raw/minimized/redocked 对照。
 - [ ] Glucagon 可审计轨迹。
-- [ ] 最终 run 路径和 manifest。🔵 **运行中**：CPU 结果已冻结；GPU run 位于 `runtime/evaluation/revision-20260731/gpu-final/`，远端 CBGBench 位于 `doomx_3nd:/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-final/cbgbench/`，待全部终态后生成最终 manifest。
+- [ ] 最终 run 路径和 manifest。🔵 **运行中**：CPU 结果已冻结；CBGBench 三 seed final manifest、ADCP 正式输出与 scorer summary 已完成。六 seed 扩展位于 `doomx_3nd:/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-followup-20260731/cbgbench-seed-extension-r01/`，终态后自动生成扩展与 pooled manifests；TrioMol2/TrioPep 仍由 control plane 推进。
 
 ### S3 完成标准
 
