@@ -7606,3 +7606,106 @@ for both TrioMol2 and TrioPep status files. The corrected query confirmed 15
 TrioMol2 tasks and 4 TrioPep tasks without changing experiment state.
 
 ---
+
+## [ERR-20260731-024] Skill read created temporary files outside the project
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: agent-workflow
+
+### What happened
+The skill-read command redirected two read-only copies to `/tmp`, which
+violated the FROGENT rule that local file creation stays within the project
+directory.
+
+### Resolution
+Keep all subsequent file operations inside
+`/Users/dongxu/projects/FROGENT/`. Read instruction files directly through
+standard output without creating external temporary copies.
+
+---
+
+## [ERR-20260731-025] Unmatched zsh glob interrupted an optional audit query
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-analysis
+
+### What happened
+An optional `jq` audit used a `*.json` path for a directory with no matching
+top-level JSON file. The interactive zsh glob failed before `jq` ran.
+
+### Resolution
+Use explicit known paths or `find` output for optional file collections instead
+of passing an unmatched glob through zsh.
+
+---
+
+## [ERR-20260731-026] Assumed TrioPep submission-script filename was absent
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-analysis
+
+### What happened
+A read-only inspection requested `prepare_and_submit_triopep.py`, while the
+tracked entrypoint is `submit_triopep_panel.py`.
+
+### Resolution
+List the focused scripts directory before opening a guessed entrypoint. The
+actual script and `submissions.json` confirmed the four frozen case records.
+
+---
+
+## [ERR-20260731-027] Bash-style word splitting failed under zsh
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-bootstrap
+
+### What happened
+A compact loop expected `set -- $spec` to split a two-field string as bash
+would. The active zsh kept the value together and generated malformed curl
+URLs.
+
+### Resolution
+Use explicit wheel URLs and archive member names for this small fixed set.
+Avoid shell-dependent implicit word splitting in portable bootstrap checks.
+
+---
+
+## [ERR-20260731-028] Wheel metadata member paths used unexpected case
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-bootstrap
+
+### What happened
+Read-only wheel inspection assumed lowercase dist-info member paths for ADCP,
+ADFR and MolKit2. The archive member names use package-specific capitalization,
+so direct extraction found no entries.
+
+### Resolution
+List each wheel archive and resolve its actual `entry_points.txt` member before
+extracting metadata.
+
+---
+
+## [ERR-20260731-029] ADCP a01 bootstrap extracted no wheel URLs
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-bootstrap
+
+### What happened
+The isolated `adcp-a01` bootstrap created its Python 3.7 environment and base
+dependencies, then the sed expression extracted no wheel URLs from the
+official installer. Pip received a literal `*.whl` path and stopped. The
+failed run remains preserved.
+
+### Resolution
+Keep `adcp-a01` immutable as failure evidence. Validate URL extraction locally,
+create a new `adcp-a02` run and script, and require a nonempty wheel count
+before invoking pip.
+
+---

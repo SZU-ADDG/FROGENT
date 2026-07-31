@@ -16,12 +16,12 @@
 - 2026-07-30 第二批检查点：完成 Capability-52 的 50,000 次 bootstrap/95% CI、八项 benchmark datasheet、6-case evidence reliability/recovery panel、63 项 focused tests、Europe PMC 单查询与四任务重复运行、Vina seed stability、12-case protonation panel、3-case receptor pH panel、live RCSB target/pocket repeat，以及远端 Python 3.11/RDKit source-copy-safe CPU validation。
 - 2026-07-30 第三批检查点：完成语义双评与 κ、统计分析入口、matched-resource 与真实 subagent 消融、8-case live evidence 独立裁决、structured retrieval、evidence propagation、Luteolin 独立性、ADMET/property、raw/local/redocking、multi-target docking、PLIP parser、DAVIS screening、GLP1R audit、safety contract、telemetry、HLE access audit 和近期 baseline 审计。
 - 2026-07-31 GPU 检查点：在只读生产目录中确认 TargetDiff、Pocket2Mol、DiffSBDD 三个 CBGBench checkpoint；隔离复制到 `doomx_3nd:/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-final/cbgbench/`。45 个正式生成任务已启动（5 pockets × 3 seeds × 3 models，22,500 raw attempts），当前 15/45 terminal-success，剩余任务占用 GPU 1/3/4/5/6/7 持续运行；TrioMol2 15 个任务当前 1 running、14 queued；GLP1R–肽 AF3 8 个任务均 queued，当前队列位置 55–62。
-- 2026-07-31 provider 检查点：DirectMultiStep flash/explorer 与 FragGen 三轮共 39/39 typed live MCP calls 成功；每轮 DirectMultiStep 10/10 返回非空且 root 与目标一致的 RDKit-valid 路线，每轮 FragGen 返回 15/15 valid molecules。13 个调用定义中 12 个三轮响应文本完全一致，DirectMultiStep 路线集合平均两两 Jaccard `0.973`，FragGen 分子集合为 `1.000`。TrioPep 3 个短肽参考复合物与 1 个 GLP1R length-limited 任务已提交。三次只读历史 MDockPeP2 glucagon run 完成独立审计，1000 retained models 中 native-frame CA RMSD 均无 ≤2 Å，作为负向结果保留。
+- 2026-07-31 provider 检查点：DirectMultiStep flash/explorer 与 FragGen 三轮共 39/39 typed live MCP calls 成功；每轮 DirectMultiStep 10/10 返回非空且 root 与目标一致的 RDKit-valid 路线，每轮 FragGen 返回 15/15 valid molecules。13 个调用定义中 12 个三轮响应文本完全一致，DirectMultiStep 路线集合平均两两 Jaccard `0.973`，FragGen 分子集合为 `1.000`。用户确认正式多肽对接方法为 MDockPeP2 与 ADCP：MDockPeP2 三次历史 glucagon run 已完成独立审计；ADCP v1.1 采用 3GBQ、1CKB、1ABO 三套晶体参考复合物做主 redocking，并对 29 aa GLP-1R 候选执行明确标记为长度外推的探索性压力测试。TrioPep 4 个已提交任务保留为补充 provider signal，AF3/ESMFold 保留为 sequence-to-complex 结构对照。
 - 2026-07-31 ESMFold 检查点：从 TrioPep 生产目录只读复制 8.45 GB ESMFold 权重，在隔离环境完成 GLP1R ECD–肽 8 sequences × 3 seeds、3 recycles 的 24/24 正式预测。Mean pTM `0.636`、mean pLDDT `64.99`、峰值分配显存 `8314 MiB`；glucagon 受体对齐后的肽 CA RMSD 为 `28.619 Å`，跨 seed 最大差 `0.000002 Å`。追加 3GBQ、1CKB、1ABO 三个实验复合物的 9/9 reference runs，平均 peptide CA RMSD `6.526 Å`，仅 1/3 complexes 达到 ≤2 Å（3GBQ `2.123 Å`、1CKB `1.542 Å`、1ABO `15.914 Å`）。探索性 recycle sensitivity 显示 3 recycles 仅改善 2/4 cases，平均 native pose RMSD 从 1 recycle 的 `9.546 Å` 变为 `12.050 Å`，1ABO 的 protocol shift 达 `16.560 Å`。8 条 GLP1R 肽的 1-vs-3 recycle 排名相关为 pTM ρ `0.738`、pLDDT ρ `0.810`，top 候选一致，pose 最大位移 `3.816 Å`。这些 confidence 排名只作为有限优先级信号，成功、失败与参数敏感性共同限制 sequence-only complex prediction 和 docking accuracy 主张。
 - 对应勾选状态见 `FROGENT_experiment_checklist.md`；首轮证据与 claim limits 见 `runtime/evaluation/revision-20260730/nongpu-local/manifest.json`。
 - 第二批证据与 claim limits 见 `runtime/evaluation/revision-20260730/nongpu-next/manifest.json`；远端 CPU 细节见 `runtime/evaluation/revision-20260730/nongpu-next/remote/final-manifest.json`。
 - 第三批证据、负向结果与未测量边界见 `runtime/evaluation/revision-20260730/nongpu-final/manifest.json`；审稿意见映射见 `docs/manuscript/revision-evidence-ledger.md`。
-- 当前可执行的非 GPU 实验范围已关闭。G0 和 S1 的稿件级重算继续依赖八项 benchmark 样本级输出、scorer、case IDs、seeds、baseline 配置和 figure source tables。De novo generation 已进入正式 GPU 运行；GLP1R sequence-to-3D 已进入 AF3 队列；其余 peptide/RNA docking 按已核实 provider 能力继续推进。
+- 当前可执行的非 GPU 实验新增 ADCP 主线。G0 和 S1 的稿件级重算继续依赖八项 benchmark 样本级输出、scorer、case IDs、seeds、baseline 配置和 figure source tables。De novo generation 已进入正式 GPU 运行；GLP1R sequence-to-3D 已进入 AF3；多肽 docking 按 MDockPeP2 与 ADCP 的真实方法继续推进。
 
 ## 2. 修订主张
 
@@ -436,13 +436,13 @@ Matched-resource comparison 与关键组件 CPU 消融为 orchestration 主张�
 - Evidence：S3、X1
 - Planned locations：M-RES、SI-4
 
-### R1-9e. MDockPep2 与 HADDOCK/pepATTRACT 不一致
+### R1-9e. MDockPeP2、ADCP 与稿件 provider 一致性
 
 - Triage：`high-risk criticism`
 - Severity：`blocking`
 - Decision：agree
-- Action：核实实际调用、版本和回退；修正论文、prompt、图或部署声明。
-- Current status：MDockPeP2 endpoint、source、三次历史输出和隔离运行条件已核实；两个声明的生产目录中未发现 HADDOCK 或 pepATTRACT 安装。MDockPeP2 prospective rerun 受 Modeller license 限制，相关性能主张使用历史负向审计与 TrioPep/AF3 prospective evidence 限定。
+- Action：核实 MDockPeP2 与 ADCP 的实际调用、版本、输入、采样、输出和回退；修正论文、prompt、图或部署声明。
+- Current status：用户确认 MDockPeP2 与 ADCP 为正式多肽对接方法。MDockPeP2 endpoint、source、三次历史输出和隔离运行条件已核实；prospective rerun 受 Modeller license 限制。ADCP 未出现在两个声明的生产目录或 `/work` 文件名盘点中，已依据官方 v1.1 安装路径建立隔离预注册与 bootstrap；TrioPep/AF3 只承担补充 provider/结构证据。
 - Outcome：`revised_in_both`
 - Evidence：G0
 - Planned locations：M-TOOLS、F-1、SI-1

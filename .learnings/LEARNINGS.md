@@ -1783,3 +1783,44 @@ production directories where the deployed weights live.
   source directories and Git worktrees unchanged.
 
 ---
+
+## [LRN-20260731-002] correction
+
+**Logged**: 2026-07-31T07:30:00+08:00
+**Priority**: critical
+**Status**: resolved
+**Area**: gpu-rebuttal
+
+### Summary
+The FROGENT major-revision peptide-docking methods are MDockPeP2 and ADCP.
+
+### Details
+The user corrected an experiment-role explanation that treated TrioPep as the
+primary prospective peptide-docking method. The formal docking evidence must
+be organized around MDockPeP2 and ADCP. TrioPep results, if retained, require a
+separate explicitly scoped role and cannot silently substitute for either
+named docking method.
+
+### Suggested Action
+Audit the declared production roots for ADCP and MDockPeP2 entrypoints, assets,
+versions, inputs and historical outputs. Update the revision plan, checklist,
+provider inventory and S3-E preregistration before interpreting TrioPep
+results. Run the executable MDockPeP2 and ADCP experiments under matched,
+auditable conditions when their verified dependencies permit.
+
+### Metadata
+- Source: user_feedback
+- Related Files: FROGENT_revision_plan.md, FROGENT_experiment_checklist.md, docs/manuscript/revision-evidence-ledger.md
+- Tags: peptide-docking, MDockPeP2, ADCP, TrioPep, correction
+- Pattern-Key: rebuttal.peptide_docking_methods
+- Recurrence-Count: 1
+- First-Seen: 2026-07-31
+- Last-Seen: 2026-07-31
+
+### Resolution
+The revision plan, checklist, evidence ledger, provider inventory and new ADCP
+preregistration now define MDockPeP2 and ADCP as the formal docking methods.
+TrioPep, AlphaFold 3 and ESMFold are explicitly scoped as supplementary
+provider or sequence-to-complex evidence.
+
+---

@@ -84,11 +84,12 @@
 - [x] DirectMultiStep/FragGen 三轮稳定性重复：39/39 typed calls 成功；12/13 调用定义三轮响应文本完全一致，DirectMultiStep 路线集合平均两两 Jaccard `0.973`，FragGen 分子集合为 `1.000`；唯一变化为 aspirin/explorer 的路线集合。
 - [x] TrioPep reference panel 提交：3GBQ、1CKB、1ABO 三个 8–10 aa 参考复合物，加 4ZGM 的 20 aa contract-limited exploratory task，共 4 个 tasks 当前 queued。
 - [x] MDockPeP2 历史 glucagon audit：三次同序列 run、25,000 score rows、3,000 retained models 已复核；native-frame CA RMSD 无 ≤2 Å，最佳 superposed CA RMSD 为 `2.721 Å`，top-ranked pose 可远离 native frame，作为负向结果保留。
+- [ ] ADCP v1.1 正式面板。🔵 **准备中**：用户确认 ADCP 为正式多肽对接方法；3GBQ、1CKB、1ABO 三套晶体参考 redocking 为主分析，29 aa glucagon/Peptide(a–e) 为长度外推探索分析；官方隔离 runtime、AGFR target 和多 seed 运行正在准备。
 - [x] ESMFold GLP1R–肽正式面板：8 sequences × 3 seeds × 3 recycles，24/24 完成；mean pTM `0.636`、mean pLDDT `64.99`、峰值分配显存 `8314 MiB`。Glucagon receptor-aligned peptide CA RMSD 为 `28.619 Å`，跨 seed 最大差 `0.000002 Å`，稳定复现同一个远离 native 的 pose。
 - [x] ESMFold 三复合物 reference panel：3GBQ、1CKB、1ABO 各 3 seeds，共 9/9 完成；平均 receptor-aligned peptide CA RMSD `6.526 Å`，仅 1/3 complexes 达到 ≤2 Å（分别为 `2.123/1.542/15.914 Å`），跨 seed 最大差 `0.000001 Å`。
 - [x] ESMFold recycle sensitivity：4ZGM、3GBQ、1CKB、1ABO 的 1-vs-3 recycle 对照完成；3 recycles 改善 2/4 cases，平均 native pose RMSD `9.546 → 12.050 Å`，最大 protocol pose shift `16.560 Å`，确认更多 recycles 不保证 pose recovery 单调改善。
 - [x] ESMFold GLP1R ranking sensitivity：8 条肽的 1-vs-3 recycle pTM/pLDDT 排名相关分别为 Spearman ρ `0.738/0.810`，top 候选一致；pose 平均/最大位移 `2.144/3.816 Å`，confidence ranking 仅作有限优先级信号。
-- [ ] MDockPeP2 prospective rerun。🟠 **外部凭据依赖**：19 GiB 隔离 runtime 已复制，Modeller 9.13 license 未进入可执行副本；禁止复制第三方 license credential，prospective 主线由 TrioPep 与 AF3 承担。
+- [ ] MDockPeP2 prospective rerun。🟠 **外部凭据依赖**：19 GiB 隔离 runtime 已复制，Modeller 9.13 license 未进入可执行副本；禁止复制第三方 license credential。MDockPeP2 历史证据与 ADCP prospective panel 共同承担正式 docking 主线。
 
 ### 首轮证据入口
 
@@ -156,7 +157,7 @@
 - [ ] 核实 DrugBank 内容进入哪个 Agent 或 context。🟡 **第三批部分完成**：PubChem cross-reference 与 structured proxy 已审计；DrugBank direct/API 返回 403，生产 context 注入仍需部署配置。
 - [x] 核实 task state、working context、working memory 和 persistent memory 的真实实现。证据：本地/远端 73 项 evidence regression，以及 research-eval fixture replay。
 - [ ] 核实 TargetDiff、Pocket2Mol、DiffSBDD、PocketFlow、MolCRAFT 的部署与可复现性。🔵 **运行中**：前三项 checkpoint、配置和 canary 已核实，正式 45-job matrix 已启动；两个生产目录中尚未发现 PocketFlow/MolCRAFT 权重。
-- [ ] 核实 MDockPep2、HADDOCK、pepATTRACT 和 rDock 的 endpoint、版本、权限和回退。🟡 **部分完成**：MDockPep2 endpoint/source/history 已核实，历史输出完成负向审计；隔离 prospective runtime 受 Modeller license 限制。两个生产目录中未发现 HADDOCK、pepATTRACT 或 rDock 安装。
+- [ ] 核实 MDockPeP2、ADCP、HADDOCK、pepATTRACT 和 rDock 的 endpoint、版本、权限和回退。🟡 **部分完成**：用户确认 MDockPeP2 与 ADCP 为正式多肽对接方法；MDockPeP2 endpoint/source/history 已核实，历史输出完成负向审计，隔离 prospective runtime 受 Modeller license 限制；ADCP 官方 v1.1 隔离 runtime 正在准备；两个生产目录中未发现 ADCP、HADDOCK、pepATTRACT 或 rDock 安装。
 - [ ] 核实参数微调、few-shot prompting 和 in-context learning 的真实配置。
 - [ ] 核实生产/演示环境与论文实验环境是否一致。🟡 **首轮部分完成**：已确认远端系统 Python 3.10 与当前 `StrEnum` runtime contract 不一致，并保留失败证据。
 - [ ] 从干净环境验证主 GitHub、安装入口、最小示例和公开数据。🟡 **首轮部分完成**：远端 source-only copy、73 项 evidence regression 和 result verification 已通过；正式 Python 3.11+ clean environment 仍待建立。
@@ -346,12 +347,12 @@
 
 ### S3-E｜Glucagon 与肽 docking
 
-- [ ] 保存 sequence-to-3D 的真实流程。🔵 **运行中**：ESMFold 24-case 隔离正式面板、依赖补丁、PDB、显存与结构分析已保存；8 个 GLP1R–肽 AF3 job 与 4 个 TrioPep task 已提交，结果等待队列完成后自动取回。
+- [ ] 保存多肽 docking 与 sequence-to-complex 的真实流程。🔵 **运行中**：正式 docking 方法固定为 MDockPeP2 与 ADCP；ESMFold、AF3 和 TrioPep 作为结构/provider 补充对照。ESMFold 24-case 隔离正式面板已保存，8 个 AF3 job 与 4 个 TrioPep task 已提交。
 - [ ] 记录二级结构来源、模板/预测器、采样、最小化和受体准备。
 - [x] 选择小型、有参考结构的 peptide–protein set。3GBQ（10 aa）、1CKB（8 aa）、1ABO（10 aa）来自 RCSB 实验复合物；4ZGM 另作 GLP1R contract-limited exploratory case。
-- [ ] 报告 secondary-structure agreement、RMSD/TM-score（适用时）和 interface quality。🟡 **部分完成**：ESMFold 已报告 pTM、pLDDT、4ZGM receptor-aligned peptide CA RMSD、native/predicted interface contacts 与跨 seed 稳定性；AF3/TrioPep 终态后补齐对照。
-- [ ] 核实实际使用的 MDockPep2、HADDOCK 或 pepATTRACT。🟡 **部分完成**：论文生产痕迹与历史输出支持 MDockPep2；HADDOCK/pepATTRACT 未在两个生产目录出现。历史 MDockPeP2 作为 retrospective evidence，prospective provider 使用 TrioPep/AF3。
-- [ ] 报告成功率、运行时间和失败原因。🔵 **运行中**：历史 MDockPeP2 三 run 的 score rows、retained models、reported runtime、RMSD 与重复性已输出；TrioPep/AF3 等待终态。
+- [ ] 报告 secondary-structure agreement、RMSD/TM-score（适用时）和 interface quality。🟡 **部分完成**：ESMFold 已报告 pTM、pLDDT、4ZGM receptor-aligned peptide CA RMSD、native/predicted interface contacts 与跨 seed 稳定性；ADCP 主 redocking panel 将补齐 top-1/top-5/top-10 backbone RMSD 与 native-contact recovery。
+- [ ] 核实实际使用的 MDockPeP2 与 ADCP。🟡 **部分完成**：MDockPeP2 生产痕迹、source 和历史输出已核实；用户确认 ADCP 为第二个正式 docking 方法，官方 v1.1 隔离 runtime 正在准备。TrioPep/AF3 保留为补充证据。
+- [ ] 报告成功率、运行时间和失败原因。🔵 **运行中**：历史 MDockPeP2 三 run 的 score rows、retained models、reported runtime、RMSD 与重复性已输出；ADCP 将按三参考体系与 GLP-1R 外推体系分别报告。
 - [ ] 分开报告前端响应、任务提交和完整计算时间。
 
 ### S3 产出
