@@ -7709,3 +7709,180 @@ create a new `adcp-a02` run and script, and require a nonempty wheel count
 before invoking pip.
 
 ---
+
+## [ERR-20260731-030] ADCP a02 package wrapper assumed a suite-style layout
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-bootstrap
+
+### What happened
+The isolated `adcp-a02` run installed ADCP 0.0.25 and all 24 official wheel
+packages successfully. Its bundled `ADCP/bin/adcp` wrapper derives
+`ADS_ROOT` from a suite-style `bin/` installation and therefore looked for
+`ADCP/runADCP.py` under a nonexistent nested `lib/python*/site-packages`
+path. The bootstrap stopped before writing its completion sentinel, and the
+canary watcher stopped as designed.
+
+### Resolution
+Keep `adcp-a02` immutable as installation evidence. The package entry module
+works when invoked directly with the same isolated Python environment. Use a
+new `adcp-a03` run root, reference the verified a02 environment read-only,
+invoke `ADCP/runADCP.py` explicitly, and require fresh help checks before
+preparing targets or launching canaries.
+
+---
+
+## [ERR-20260731-031] System rsync lacks protect-args support
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-transfer
+
+### What happened
+The local system rsync rejected the GNU-style `--protect-args` option before
+transferring any ADCP a03 launcher files.
+
+### Resolution
+The four explicit source and destination paths contain no spaces, globs or
+shell metacharacters. Retry with the supported `rsync -a` form and keep the
+remote absence checks as the overwrite guard.
+
+---
+
+## [ERR-20260731-032] ADCP a03 launch chain called non-executable scripts directly
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-launch
+
+### What happened
+The a03 chain itself was started through `bash`, while its two child scripts
+were invoked as executables. Files added through the patch workflow had mode
+`0644`, so the chain stopped with `Permission denied` before creating the a03
+run root.
+
+### Resolution
+Preserve the first launch log, create a new r02 chain file, and invoke each
+child explicitly through `bash`. Continue to avoid remote permission changes
+and verify that the a03 run root is absent before relaunching.
+
+---
+
+## [ERR-20260731-033] Legacy prepare-receptor help returns a failure status
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-bootstrap
+
+### What happened
+The a03 runtime passed ADCP and AGFR help checks. The legacy
+`prepare_receptor` entrypoint prints its complete usage text for `--help` and
+then returns a nonzero status because that option is not recognized. Strict
+error handling stopped a03 before its completion sentinel.
+
+### Resolution
+Preserve a03 as compatibility evidence. In a new a04 root, validate the
+legacy preparation commands by requiring their usage signatures even when
+their help return code is nonzero. Keep ADCP and AGFR on strict zero-return
+self-checks.
+
+---
+
+## [ERR-20260731-034] ADCP Python entry module was checked as executable
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-bootstrap
+
+### What happened
+The a04 preflight grouped the `ADCP/runADCP.py` module with shell entrypoints
+and required executable mode for every item. The Python module is a regular
+file intentionally invoked through the isolated interpreter, so a04 stopped
+before creating its run root.
+
+### Resolution
+Preserve the a04 launch log. Use separate preflight predicates in a05:
+`-f` for the Python module and `-x` for AGFR and ligand/receptor preparation
+entrypoints. Verify these predicates remotely before launching.
+
+---
+
+## [ERR-20260731-035] Legacy prepare-ligand strips input directories
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-preparation
+
+### What happened
+The a05 runtime and chain extraction completed, and receptor preparation
+succeeded. The installed `prepare_ligand4.py` explicitly replaces its `-l`
+argument with `os.path.basename(a)`, so an absolute native-peptide path became
+only `native-peptide.pdb` and could not be found from the launcher directory.
+
+### Resolution
+Preserve a05. In a new a06 root, execute receptor and peptide preparation from
+inside each case directory and pass local filenames. Keep all output paths
+case-local, then give AGFR the resolved files.
+
+---
+
+## [ERR-20260731-036] ADCP reference post-processing crashed after sampling
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-canary
+
+### What happened
+The a06 run generated all three AGFR targets and ADCP completed the first
+two-replica sampling job, writing its docked poses and summary. During the
+optional `-ref` branch, legacy ADCP passed an invalid coordinate-set index to
+ProDy while writing a best-native-contact PDB and exited nonzero after the
+sampling artifacts were already produced.
+
+### Resolution
+Preserve a06 and its successful sampling artifacts. Use a07 to reuse the
+validated target files and omit the faulty built-in `-ref` post-processing.
+Calculate receptor-aligned peptide RMSD and native-contact recovery with an
+independent scorer from saved poses and crystallographic references.
+
+---
+
+## [ERR-20260731-037] Associative-array key was parsed as arithmetic
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-launch
+
+### What happened
+Local validation of the formal ADCP launcher found that using
+`lengths[$case_id]` directly inside arithmetic made Bash parse the alphanumeric
+case key `3gbq` as a number. Validation stopped before any remote transfer.
+
+### Resolution
+Avoid associative arrays because the local validation shell is the older
+system Bash. Resolve `sequence` and `case_length` with an explicit case
+statement, then perform integer arithmetic on the scalar. Retain the local
+arithmetic test as a launch gate.
+
+---
+
+## [ERR-20260731-038] Crystal reference lacked a peptide backbone oxygen
+
+**Logged**: 2026-07-31
+**Status**: resolved
+**Area**: experiment-scoring
+
+### What happened
+The independent scorer's first a07 validation required N, CA, C and O for
+every peptide residue. The deposited 3GBQ reference lacks the O atom for ARG
+8, so the scorer stopped before producing metrics and left its new r01 output
+root as failure evidence.
+
+### Resolution
+Use the complete N, CA and C main-chain atom set for backbone RMSD across all
+three references. Continue reporting CA RMSD separately and retain the 4.5
+Angstrom heavy-atom residue-contact recovery metric. Revalidate in a new
+a07-score-r02 root.
+
+---

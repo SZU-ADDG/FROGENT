@@ -442,7 +442,7 @@ Matched-resource comparison 与关键组件 CPU 消融为 orchestration 主张�
 - Severity：`blocking`
 - Decision：agree
 - Action：核实 MDockPeP2 与 ADCP 的实际调用、版本、输入、采样、输出和回退；修正论文、prompt、图或部署声明。
-- Current status：用户确认 MDockPeP2 与 ADCP 为正式多肽对接方法。MDockPeP2 endpoint、source、三次历史输出和隔离运行条件已核实；prospective rerun 受 Modeller license 限制。ADCP 未出现在两个声明的生产目录或 `/work` 文件名盘点中，已依据官方 v1.1 安装路径建立隔离预注册与 bootstrap；TrioPep/AF3 只承担补充 provider/结构证据。
+- Current status：用户确认 MDockPeP2 与 ADCP 为正式多肽对接方法。MDockPeP2 endpoint、source、三次历史输出和隔离运行条件已核实；prospective rerun 受 Modeller license 限制。ADCP 未出现在两个声明的生产目录或 `/work` 文件名盘点中；官方 ADCP 0.0.25 / v1.1.21 隔离 runtime、三套 AGFR target 和三例 a07 canary 已验证，正式 3 complexes × 3 seeds、每任务 100 replicas 的 reference-redocking 矩阵已在 `adcp-reference-formal-r01` 启动。TrioPep/AF3 只承担补充 provider/结构证据。
 - Outcome：`revised_in_both`
 - Evidence：G0
 - Planned locations：M-TOOLS、F-1、SI-1

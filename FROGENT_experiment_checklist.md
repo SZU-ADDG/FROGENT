@@ -84,7 +84,7 @@
 - [x] DirectMultiStep/FragGen 三轮稳定性重复：39/39 typed calls 成功；12/13 调用定义三轮响应文本完全一致，DirectMultiStep 路线集合平均两两 Jaccard `0.973`，FragGen 分子集合为 `1.000`；唯一变化为 aspirin/explorer 的路线集合。
 - [x] TrioPep reference panel 提交：3GBQ、1CKB、1ABO 三个 8–10 aa 参考复合物，加 4ZGM 的 20 aa contract-limited exploratory task，共 4 个 tasks 当前 queued。
 - [x] MDockPeP2 历史 glucagon audit：三次同序列 run、25,000 score rows、3,000 retained models 已复核；native-frame CA RMSD 无 ≤2 Å，最佳 superposed CA RMSD 为 `2.721 Å`，top-ranked pose 可远离 native frame，作为负向结果保留。
-- [ ] ADCP v1.1 正式面板。🔵 **准备中**：用户确认 ADCP 为正式多肽对接方法；3GBQ、1CKB、1ABO 三套晶体参考 redocking 为主分析，29 aa glucagon/Peptide(a–e) 为长度外推探索分析；官方隔离 runtime、AGFR target 和多 seed 运行正在准备。
+- [ ] ADCP v1.1 正式面板。🔵 **运行中**：官方 ADCP 0.0.25 / v1.1.21 隔离 runtime 已验证，3GBQ、1CKB、1ABO 三套 AGFR target 已生成，a07 三例 canary 全部完成并保存 poses/summary；正式 3 complexes × 3 seeds、每任务 100 replicas、每 replica 8–10M steps 的 9 个任务已在 `doomx_3nd:/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-final/adcp-reference-formal-r01/` 并行启动。29 aa glucagon/Peptide(a–e) 保持为长度外推探索分析。
 - [x] ESMFold GLP1R–肽正式面板：8 sequences × 3 seeds × 3 recycles，24/24 完成；mean pTM `0.636`、mean pLDDT `64.99`、峰值分配显存 `8314 MiB`。Glucagon receptor-aligned peptide CA RMSD 为 `28.619 Å`，跨 seed 最大差 `0.000002 Å`，稳定复现同一个远离 native 的 pose。
 - [x] ESMFold 三复合物 reference panel：3GBQ、1CKB、1ABO 各 3 seeds，共 9/9 完成；平均 receptor-aligned peptide CA RMSD `6.526 Å`，仅 1/3 complexes 达到 ≤2 Å（分别为 `2.123/1.542/15.914 Å`），跨 seed 最大差 `0.000001 Å`。
 - [x] ESMFold recycle sensitivity：4ZGM、3GBQ、1CKB、1ABO 的 1-vs-3 recycle 对照完成；3 recycles 改善 2/4 cases，平均 native pose RMSD `9.546 → 12.050 Å`，最大 protocol pose shift `16.560 Å`，确认更多 recycles 不保证 pose recovery 单调改善。
