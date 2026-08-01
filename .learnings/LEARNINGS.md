@@ -1,5 +1,38 @@
 # Learnings
 
+## [LRN-20260801-NOVELTY-BOUNDARY] best_practice
+
+**Logged**: 2026-08-01T23:59:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Separate local reference-ligand diversity from training-set and known-active novelty.
+
+### Details
+The completed CBGBench primary analysis can measure exact identity, Bemis-Murcko scaffold,
+ECFP4 distance to the supplied same-pocket reference ligand and geometric pocket compatibility.
+Those signals do not establish distance from the generator training set or a versioned known-active
+collection. Keeping the latter fields as `not_measured` preserves a strong, precise local-diversity
+claim without creating an unsupported global novelty claim.
+
+### Suggested Action
+Report the reference collection next to every novelty metric. Require a versioned training or
+known-active collection with an as-of date before using training-set novelty, active-neighbor or
+global scaffold-novelty language.
+
+### Metadata
+- Source: experiment_analysis
+- Related Files: scripts/analyze_cbgbench_novelty_pocket.py, docs/manuscript/revision-evidence-ledger.md
+- Tags: novelty, scaffold, ecfp4, reference-set, claim-boundary
+- Pattern-Key: evaluation.separate_local_reference_diversity_from_training_novelty
+- Recurrence-Count: 1
+- First-Seen: 2026-08-01
+- Last-Seen: 2026-08-01
+
+---
+
 ## [LRN-20260801-DUAL-GPU-PROCESSES] correction
 
 **Logged**: 2026-08-01T19:41:00+08:00

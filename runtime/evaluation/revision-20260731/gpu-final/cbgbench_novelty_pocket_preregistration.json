@@ -1,0 +1,33 @@
+{
+  "schema_version": "frogent-cbgbench-novelty-pocket-preregistration-v1",
+  "created_at": "2026-08-01T23:55:00+08:00",
+  "analysis_unit": "valid generated molecule nested within model-pocket-seed job",
+  "input_run": "/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-final/cbgbench",
+  "input_scope": "45 terminal-success primary jobs only; canaries excluded",
+  "models": ["targetdiff", "diffsbdd", "pocket2mol"],
+  "pockets": ["1IEP", "2HYY", "3CS9", "4WA9", "1M17"],
+  "seeds": [17, 23, 31],
+  "identity_definition": "RDKit canonical isomeric SMILES after hydrogen removal",
+  "fingerprint": "Morgan radius 2, 2048 bits, Tanimoto similarity",
+  "scaffold": "RDKit Bemis-Murcko canonical scaffold SMILES",
+  "reference": "the crystallographic ligand supplied for the same pocket",
+  "pocket_metrics": {
+    "reference_neighborhood_radius_angstrom": 10.0,
+    "severe_receptor_clash_angstrom": 1.2,
+    "pocket_compatible": "all generated heavy atoms lie within 10 A of at least one reference-ligand heavy atom"
+  },
+  "primary_outputs": [
+    "parse and coordinate success",
+    "within-job identity uniqueness",
+    "Bemis-Murcko scaffold diversity",
+    "same-pocket reference-ligand ECFP4 similarity",
+    "reference-scaffold match rate",
+    "pocket-compatible fraction",
+    "severe receptor-clash-free fraction"
+  ],
+  "claim_limits": [
+    "Reference-ligand dissimilarity is a local structural comparison and does not establish training-set novelty.",
+    "Known-active and training-set nearest-neighbor claims remain not_measured until versioned comparison collections are supplied.",
+    "Pocket compatibility and clash metrics are geometric computational signals and do not establish binding affinity."
+  ]
+}

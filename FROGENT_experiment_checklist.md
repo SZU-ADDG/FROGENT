@@ -76,8 +76,8 @@
 - [x] 将最小代码、配置、3 个 checkpoint 和 5-pocket 输入复制到隔离 run；生产源码、权重和 Git 状态保持不变。
 - [x] 冻结 CBGBench 正式矩阵：5 pockets × 3 seeds × 3 models × 500 attempts，共 45 jobs、22,500 raw attempts；canary 排除在正式统计之外。
 - [x] CBGBench 正式矩阵：45/45 jobs terminal-success，完成 22,500 raw attempts；TargetDiff、DiffSBDD、Pocket2Mol 分别得到 7,263、1,809、753 个 valid molecules，mean job QED 为 `0.458/0.234/0.128`，final manifest 已生成。
-- [ ] CBGBench 独立 seed 扩展。🔵 **双进程运行**：原暂停 run 的 15 个 exit-zero Pocket2Mol jobs 直接继承；TargetDiff/DiffSBDD 的 30 个逻辑任务在 resume run 运行。当前 12/30 terminal-success、12 running、6 remaining、0 failed；1IEP 与 2HYY 的 12 个新 jobs 全部 exit zero，3CS9 与 4WA9 各 6 个 jobs 并行。GPU 1/3/4/5/6/7 各 2 个互斥 worker，显存约 6.9–7.0 GiB/卡、利用率 100%；终态后自动生成完整 45-job 扩展 manifest 与 90-job 六 seed pooled manifest。
-- [x] TrioMol2 正式面板提交：15/15 tasks、150 planned candidates、每任务 search budget 500；当前 2 succeeded、1 running、12 queued。两个成功任务的 32/32 artifacts 已在服务器流式下载并完成 checksum/size 验证。
+- [ ] CBGBench 独立 seed 扩展。🔵 **终态收尾**：原暂停 run 的 15 个 exit-zero Pocket2Mol jobs 直接继承；TargetDiff/DiffSBDD 的 30 个逻辑任务在 resume run 运行。当前 26/30 terminal-success、4 running、0 remaining-unstarted、0 failed；1IEP、2HYY、3CS9 与 4WA9 的 24 个新 jobs 全部 exit zero，1M17 已完成 2 个 TargetDiff jobs。GPU 3/4/5/7 继续运行剩余 4 项，GPU 1/6 已释放；终态后自动生成完整 45-job 扩展 manifest 与 90-job 六 seed pooled manifest。
+- [x] TrioMol2 正式面板提交：15/15 tasks、150 planned candidates、每任务 search budget 500；当前 3 succeeded、1 running、11 queued，三个成功任务的 48/48 artifacts 已在服务器完成校验，下载失败数为 0。
 - [x] GLP1R–肽 AF3：Glucagon、Semaglutide、Tirzepatide 与 Peptide(a–e) 共 8/8 任务完成，8 个结果包已取回；序列化学表达边界、结构、界面、reference geometry 与跨 provider disagreement 已完成分析。
 - [x] 建立 TrioMol2 与 AF3 单次轮询/自动取回脚本；TrioMol2 的服务器抓取器支持超过 SSH relay 45 MiB 上限的 artifact 流式下载，并逐项执行 checksum/size 验证与失败隔离。
 - [x] 启动异步监控：TrioMol2 与 TrioPep 每 15 分钟在服务器轮询，CBGBench resume finalizer 独立等待终态。TrioMol2 服务器根为 `gpu-followup-20260801/triomol2-server-poller-r02/`，TrioPep 服务器根为 `gpu-followup-20260801/triopep-server-poller-r01/`；本地旧统一 monitor 已停止。
@@ -91,6 +91,7 @@
 - [x] ESMFold recycle sensitivity：4ZGM、3GBQ、1CKB、1ABO 的 1-vs-3 recycle 对照完成；3 recycles 改善 2/4 cases，平均 native pose RMSD `9.546 → 12.050 Å`，最大 protocol pose shift `16.560 Å`，确认更多 recycles 不保证 pose recovery 单调改善。
 - [x] ESMFold GLP1R ranking sensitivity：8 条肽的 1-vs-3 recycle pTM/pLDDT 排名相关分别为 Spearman ρ `0.738/0.810`，top 候选一致；pose 平均/最大位移 `2.144/3.816 Å`，confidence ranking 仅作有限优先级信号。
 - [x] AF3 GLP1R–肽分析：8/8 结果包完成安全检查与结构分析，mean pair-ipTM `0.755`，Tirzepatide 排名第一；sequence-mapped Semaglutide 对 4ZGM 的 receptor-aligned peptide CA RMSD `8.133 Å`，native-contact recall/precision `0.882/0.732`。AF3–ESMFold pose RMSD 平均/最大 `31.513/36.545 Å`，AF3 pair-ipTM 与 ESMFold pTM 排序相关 `ρ=-0.119`，明确限制 confidence-to-docking-accuracy 外推。
+- [x] CBGBench novelty/scaffold/pocket compatibility：45/45 primary jobs、9,825 个 SDF 完成 CPU-only 分析，9,767 个解析成功、58 个 molecule-level parse failures 保留。TargetDiff/DiffSBDD/Pocket2Mol identity uniqueness 为 `1.000/1.000/0.965`，scaffold per parsed molecule 为 `0.997/0.866/0.458`，mean reference-ligand ECFP4 Tanimoto 为 `0.093/0.065/0.055`，均无 exact identity、reference scaffold match 或 Tanimoto ≥0.5；10 Å pocket-compatible rate 均为 1.000，severe clash-free rate 为 `1.000/0.942/0.996`。训练集/已知活性物最近邻保持 `not_measured`；final manifest 位于 `gpu-followup-20260801/cbgbench-novelty-pocket-r01/output/final-manifest.json`。
 - [ ] MDockPeP2 prospective rerun。🟠 **外部凭据依赖**：19 GiB 隔离 runtime 已复制，Modeller 9.13 license 未进入可执行副本；禁止复制第三方 license credential。MDockPeP2 历史证据与 ADCP prospective panel 共同承担正式 docking 主线。
 
 ### 首轮证据入口

@@ -7964,8 +7964,8 @@ utilization.
 
 ### Metadata
 - See Also: ERR-20260801-041
-- Recurrence-Count: 5
-- Last-Seen: 2026-08-01T20:46:00+08:00
+- Recurrence-Count: 7
+- Last-Seen: 2026-08-02T00:05:00+08:00
 
 ---
 
@@ -7984,5 +7984,23 @@ files at each run root. These runs store them as `state/finalizer.pid` and
 Locate PID files within the bounded run tree before evaluating liveness, then
 verify each PID with `kill -0` and a read-only process listing. The corrected
 probe confirmed the CBGBench finalizer and both Trio server pollers are live.
+
+---
+
+## [ERR-20260801-044] Local Python lacks RDKit for CBGBench post-processing
+
+**Logged**: 2026-08-01
+**Status**: resolved
+**Area**: experiment-analysis
+
+### What happened
+The new CBGBench novelty and pocket-geometry analysis passed a source syntax
+check, while the local default Python stopped at import with
+`ModuleNotFoundError: No module named 'rdkit'`.
+
+### Resolution
+Keep the local machine limited to source and Git work. Validate and execute the
+analysis with the already verified server `mlm` environment, which provides
+RDKit 2023.09.6 and reads the completed CBGBench run in place.
 
 ---
