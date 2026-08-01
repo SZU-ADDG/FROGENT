@@ -1,5 +1,39 @@
 # Learnings
 
+## [LRN-20260801-RESUME-ISOLATION] best_practice
+
+**Logged**: 2026-08-01T16:40:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Resume a partially completed GPU matrix by carrying verified terminal jobs and rerunning the
+remaining logical jobs in a new immutable run root.
+
+### Details
+The paused CBGBench extension contained 15 exit-zero Pocket2Mol jobs, four interrupted
+TargetDiff/DiffSBDD directories and 26 unstarted jobs. The safe resume keeps the paused root
+unchanged, carries the 15 verified jobs, reruns all 30 remaining logical jobs in a dated resume
+root, and finalizes only after validating 45 unique logical jobs. This avoids stale PID records,
+partial-output reuse and in-place state mutation.
+
+### Suggested Action
+For every resumed matrix, classify logical jobs as verified-terminal, interrupted or unstarted.
+Carry only exit-zero terminal jobs, use a new run root for every remaining logical job, and bind
+the final manifest to unique logical identities across the source and resume roots.
+
+### Metadata
+- Source: user_instruction
+- Related Files: runtime/evaluation/revision-20260731/gpu-final/cbgbench_seed_extension_resume_preregistration.json
+- Tags: gpu, resume, immutable-run, manifest, recovery
+- Pattern-Key: evaluation.resume_with_carried_terminal_and_new_root
+- Recurrence-Count: 1
+- First-Seen: 2026-08-01
+- Last-Seen: 2026-08-01
+
+---
+
 ## [LRN-20260731-4ZGM-REFERENCE] correction
 
 **Logged**: 2026-07-31T16:02:00+08:00
