@@ -76,7 +76,8 @@
 - [x] 将最小代码、配置、3 个 checkpoint 和 5-pocket 输入复制到隔离 run；生产源码、权重和 Git 状态保持不变。
 - [x] 冻结 CBGBench 正式矩阵：5 pockets × 3 seeds × 3 models × 500 attempts，共 45 jobs、22,500 raw attempts；canary 排除在正式统计之外。
 - [x] CBGBench 正式矩阵：45/45 jobs terminal-success，完成 22,500 raw attempts；TargetDiff、DiffSBDD、Pocket2Mol 分别得到 7,263、1,809、753 个 valid molecules，mean job QED 为 `0.458/0.234/0.128`，final manifest 已生成。
-- [ ] CBGBench 独立 seed 扩展。🔵 **终态收尾**：原暂停 run 的 15 个 exit-zero Pocket2Mol jobs 直接继承；TargetDiff/DiffSBDD 的 30 个逻辑任务在 resume run 运行。当前 26/30 terminal-success、4 running、0 remaining-unstarted、0 failed；1IEP、2HYY、3CS9 与 4WA9 的 24 个新 jobs 全部 exit zero，1M17 已完成 2 个 TargetDiff jobs。GPU 3/4/5/7 继续运行剩余 4 项，GPU 1/6 已释放；终态后自动生成完整 45-job 扩展 manifest 与 90-job 六 seed pooled manifest。
+- [x] CBGBench 独立 seed 扩展：15 个暂停源 Pocket2Mol jobs 继承验证通过，30/30 resume TargetDiff/DiffSBDD jobs 全部 exit zero；完整 extension 45/45、combined six-seed 90/90 manifests 均已生成。六张实验 GPU 已释放。
+- [x] CBGBench 六 seed稳定性：三项模型在 valid rate、QED 和 SA 上的排序全部保持；primary-versus-pooled model–pocket Spearman ρ 为 `0.993/0.971/0.704`。TargetDiff primary→pooled QED `0.458→0.408`、valid rate `0.968→0.949`，extension-minus-primary pocket-cluster 95% CI 为 `[-0.188,-0.004]` 与 `[-0.073,-0.006]`，确认相对排序稳定且绝对性能具有 seed sensitivity。逐 pocket 最大变化集中于 TargetDiff–2HYY/3CS9；reconstruction error 最高为 DiffSBDD–3CS9 的 0.73%，0 job failure。Final manifest：`gpu-followup-20260802/cbgbench-six-seed-stability-r01/output/final-manifest.json`。
 - [x] TrioMol2 正式面板提交：15/15 tasks、150 planned candidates、每任务 search budget 500；当前 3 succeeded、1 running、11 queued，三个成功任务的 48/48 artifacts 已在服务器完成校验，下载失败数为 0。
 - [x] GLP1R–肽 AF3：Glucagon、Semaglutide、Tirzepatide 与 Peptide(a–e) 共 8/8 任务完成，8 个结果包已取回；序列化学表达边界、结构、界面、reference geometry 与跨 provider disagreement 已完成分析。
 - [x] 建立 TrioMol2 与 AF3 单次轮询/自动取回脚本；TrioMol2 的服务器抓取器支持超过 SSH relay 45 MiB 上限的 artifact 流式下载，并逐项执行 checksum/size 验证与失败隔离。

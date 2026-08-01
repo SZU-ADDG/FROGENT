@@ -1,5 +1,37 @@
 # Learnings
 
+## [LRN-20260802-RANK-VS-ABSOLUTE-STABILITY] best_practice
+
+**Logged**: 2026-08-02T00:56:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Report model-rank stability separately from absolute metric stability across seeds.
+
+### Details
+The CBGBench six-seed extension retained the same model ordering for valid rate, QED and SA, while
+TargetDiff's absolute QED and valid rate decreased in the extension cohort with pocket-cluster
+confidence intervals excluding zero. A single statement that the result is stable would hide this
+important distinction.
+
+### Suggested Action
+For stochastic generation benchmarks, report top-model retention and rank correlation alongside
+cohort deltas, clustered uncertainty and the largest model-pocket shifts. Preserve the original
+cohort as primary when additional seeds are added after observing its results.
+
+### Metadata
+- Source: experiment_analysis
+- Related Files: scripts/analyze_cbgbench_six_seed_stability.py, docs/manuscript/revision-evidence-ledger.md
+- Tags: seeds, stability, ranking, absolute-performance, clustered-bootstrap
+- Pattern-Key: evaluation.separate_rank_stability_from_absolute_metric_stability
+- Recurrence-Count: 1
+- First-Seen: 2026-08-02
+- Last-Seen: 2026-08-02
+
+---
+
 ## [LRN-20260801-NOVELTY-BOUNDARY] best_practice
 
 **Logged**: 2026-08-01T23:59:00+08:00

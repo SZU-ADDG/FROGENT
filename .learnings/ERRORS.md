@@ -8004,3 +8004,22 @@ analysis with the already verified server `mlm` environment, which provides
 RDKit 2023.09.6 and reads the completed CBGBench run in place.
 
 ---
+
+## [ERR-20260802-045] Rsync could not create a run below a new dated parent
+
+**Logged**: 2026-08-02
+**Status**: resolved
+**Area**: experiment-transfer
+
+### What happened
+The first transfer for `cbgbench-six-seed-stability-r01` targeted the new
+`gpu-followup-20260802` parent. Rsync could create the run directory only when
+its immediate parent already existed, so it stopped before transferring files.
+
+### Resolution
+Create the exact dated parent and isolated run root explicitly, verify the run
+contains no files, then transfer the two preregistered analysis inputs. Preserve
+the failed transfer output as operational evidence; no experiment output was
+created or overwritten.
+
+---
