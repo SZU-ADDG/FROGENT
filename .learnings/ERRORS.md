@@ -7945,22 +7945,25 @@ needed for the progress decision. The retry succeeded and confirmed all six
 
 ---
 
-## [ERR-20260801-042] Closely spaced SSH telemetry probes were closed
+## [ERR-20260801-042] Repeated closely spaced SSH telemetry probes were closed
 
 **Logged**: 2026-08-01
 **Status**: resolved
 **Area**: experiment-monitoring
 
 ### What happened
-Two telemetry probes immediately after the dual-process launch were closed by
-the SSH endpoint. The helper workers, GPU jobs and finalizer continued running.
+Four telemetry probes immediately after the dual-process launch were closed
+by the SSH endpoint. The helper workers, GPU jobs and finalizer continued
+running.
 
 ### Resolution
-Reduce each probe to one bounded decision and retry through a fresh BatchMode
-connection. The follow-up checks confirmed 12 active generation jobs, 12 live
-workers in the finalizer and six GPUs at full utilization.
+Reduce each probe to one bounded decision, pace fresh BatchMode connections,
+and avoid rapid post-launch retries. The successful checks confirmed 12 active
+generation jobs, 12 live workers in the finalizer and six GPUs at full
+utilization.
 
 ### Metadata
 - See Also: ERR-20260801-041
+- Recurrence-Count: 4
 
 ---
