@@ -1,5 +1,39 @@
 # Learnings
 
+## [LRN-20260801-DUAL-GPU-PROCESSES] correction
+
+**Logged**: 2026-08-01T19:41:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Each CBGBench experiment GPU can run two generation processes concurrently under the validated
+batch-32 protocol.
+
+### Details
+The user clarified that the six experiment cards support two concurrent processes and asked to
+use the available memory. A conflict-free helper partition assigned 3CS9 and 1M17 to six new
+workers while the original workers retained 2HYY and 4WA9. On GPU 1/3/4/5/6/7, memory use rose
+from about 3.9 GiB to 7.9 GiB per card and utilization reached 100%, with no helper stderr or OOM.
+The existing finalizer automatically counted all 12 shard workers.
+
+### Suggested Action
+For CBGBench continuation, use two workers per experiment GPU with exclusive logical-job
+reservations, unchanged batch size and shared finalizer visibility. Preserve GPU 0 and GPU 2 for
+their existing services and keep every scheduling change in a dated amendment.
+
+### Metadata
+- Source: user_feedback
+- Related Files: FROGENT_revision_plan.md, FROGENT_experiment_checklist.md
+- Tags: gpu, concurrency, scheduling, memory, cbgbench, finalizer
+- Pattern-Key: evaluation.cbgbench_two_processes_per_experiment_gpu
+- Recurrence-Count: 1
+- First-Seen: 2026-08-01
+- Last-Seen: 2026-08-01
+
+---
+
 ## [LRN-20260801-SERVER-STREAMING-ARTIFACTS] best_practice
 
 **Logged**: 2026-08-01T17:46:00+08:00
