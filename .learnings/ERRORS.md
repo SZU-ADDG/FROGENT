@@ -7967,3 +7967,21 @@ utilization.
 - Recurrence-Count: 4
 
 ---
+
+## [ERR-20260801-043] Monitor PID probes used root-level paths
+
+**Logged**: 2026-08-01
+**Status**: resolved
+**Area**: experiment-monitoring
+
+### What happened
+The first bounded status probe looked for `finalizer.pid` and poller `pid`
+files at each run root. These runs store them as `state/finalizer.pid` and
+`monitor.pid`, so the probe temporarily reported live monitors as dead.
+
+### Resolution
+Locate PID files within the bounded run tree before evaluating liveness, then
+verify each PID with `kill -0` and a read-only process listing. The corrected
+probe confirmed the CBGBench finalizer and both Trio server pollers are live.
+
+---
