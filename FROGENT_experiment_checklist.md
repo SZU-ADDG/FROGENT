@@ -77,10 +77,10 @@
 - [x] 冻结 CBGBench 正式矩阵：5 pockets × 3 seeds × 3 models × 500 attempts，共 45 jobs、22,500 raw attempts；canary 排除在正式统计之外。
 - [x] CBGBench 正式矩阵：45/45 jobs terminal-success，完成 22,500 raw attempts；TargetDiff、DiffSBDD、Pocket2Mol 分别得到 7,263、1,809、753 个 valid molecules，mean job QED 为 `0.458/0.234/0.128`，final manifest 已生成。
 - [ ] CBGBench 独立 seed 扩展。🔵 **已恢复运行**：原暂停 run 的 15 个 exit-zero Pocket2Mol jobs 直接继承；TargetDiff/DiffSBDD 的 30 个逻辑任务在全新 resume run 运行，包含 4 个先前中断任务与 26 个未启动任务。GPU 1/3/4/5/6/7 六个 worker 均健康，终态后自动生成完整 45-job 扩展 manifest 与 90-job 六 seed pooled manifest。
-- [x] TrioMol2 正式面板提交：15/15 tasks、150 planned candidates、每任务 search budget 500；当前 1 running、14 queued。
+- [x] TrioMol2 正式面板提交：15/15 tasks、150 planned candidates、每任务 search budget 500；当前 2 succeeded、1 running、12 queued。两个成功任务的 32/32 artifacts 已在服务器流式下载并完成 checksum/size 验证。
 - [x] GLP1R–肽 AF3：Glucagon、Semaglutide、Tirzepatide 与 Peptide(a–e) 共 8/8 任务完成，8 个结果包已取回；序列化学表达边界、结构、界面、reference geometry 与跨 provider disagreement 已完成分析。
-- [x] 建立 TrioMol2 与 AF3 单次轮询/自动取回脚本；完成任务会保存 verified artifacts 到当前 GPU run。
-- [x] 启动统一异步监控器：每 15 分钟轮询 TrioMol2、TrioPep 与 AF3，CBGBench terminal manifest 生成后自动同步，全部任务终态后写入 `gpu-final/final-manifest.json`。
+- [x] 建立 TrioMol2 与 AF3 单次轮询/自动取回脚本；TrioMol2 的服务器抓取器支持超过 SSH relay 45 MiB 上限的 artifact 流式下载，并逐项执行 checksum/size 验证与失败隔离。
+- [x] 启动异步监控：TrioMol2 与 TrioPep 每 15 分钟在服务器轮询，CBGBench resume finalizer 独立等待终态。TrioMol2 服务器根为 `gpu-followup-20260801/triomol2-server-poller-r02/`，TrioPep 服务器根为 `gpu-followup-20260801/triopep-server-poller-r01/`；本地旧统一 monitor 已停止。
 - [x] DirectMultiStep/FragGen live 权重面板：13/13 typed calls 成功；10/10 retrosynthesis calls 返回非空路线且 route root 与目标一致，路线内分子字符串全部 RDKit-valid；FragGen 3 cases 返回 15/15 valid、15 unique molecules。
 - [x] DirectMultiStep/FragGen 三轮稳定性重复：39/39 typed calls 成功；12/13 调用定义三轮响应文本完全一致，DirectMultiStep 路线集合平均两两 Jaccard `0.973`，FragGen 分子集合为 `1.000`；唯一变化为 aspirin/explorer 的路线集合。
 - [x] TrioPep reference panel 提交：3GBQ、1CKB、1ABO 三个 8–10 aa 参考复合物，加 4ZGM 的 20 aa contract-limited exploratory task，共 4 个 tasks 当前 queued。

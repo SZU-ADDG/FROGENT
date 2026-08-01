@@ -7886,3 +7886,43 @@ Angstrom heavy-atom residue-contact recovery metric. Revalidate in a new
 a07-score-r02 root.
 
 ---
+
+## [ERR-20260801-039] TrioMol2 polling stopped at the SSH relay artifact ceiling
+
+**Logged**: 2026-08-01
+**Status**: resolved
+**Area**: experiment-monitoring
+
+### What happened
+The local TrioMol2 poller repeatedly stopped after the first completed task
+exposed a 64.6 MB search trajectory. The client and one-shot SSH relay accept
+at most 45 MiB, so the status snapshot remained stale and later artifacts were
+never reached.
+
+### Resolution
+Move TrioMol2 polling and artifact retrieval to a server-side isolated run.
+Stream each artifact from the signed loopback control-plane endpoint, enforce a
+1 GiB explicit ceiling, verify declared byte size and SHA-256, and record
+artifact failures independently. The first two successful tasks now have all
+32 artifacts verified in `triomol2-server-poller-r02`.
+
+---
+
+## [ERR-20260801-040] Server poller compared lexical and resolved roots
+
+**Logged**: 2026-08-01
+**Status**: resolved
+**Area**: experiment-monitoring
+
+### What happened
+The first server-poller run resolved `/work` to its physical mount before
+comparing it with the lexical output path. The valid isolated output directory
+failed the containment check before any task query or artifact write.
+
+### Resolution
+Preserve the failed r01 root. In r02, validate lexical containment under
+`/work/doomx/FROGENT/runtime`, reject descendant symlinks, then independently
+confirm resolved containment under the physical runtime root. Run syntax and
+functional validation on the server.
+
+---

@@ -1,5 +1,38 @@
 # Learnings
 
+## [LRN-20260801-SERVER-STREAMING-ARTIFACTS] best_practice
+
+**Logged**: 2026-08-01T17:46:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Keep server-bound experiment polling on the server and isolate artifact failures at the
+individual download boundary.
+
+### Details
+TrioMol2 produced search trajectories larger than the bounded one-shot SSH relay. A poller that
+downloads every artifact before saving status allowed one large artifact to stale the entire
+15-task panel. Server-side streaming through the signed loopback API recovered all artifacts
+while preserving explicit size limits, checksums and task-level status.
+
+### Suggested Action
+For server-only providers, run polling, artifact transfer and terminal validation on the server.
+Stream large artifacts into a fresh isolated run, verify declared size and SHA-256 before atomic
+admission, and record each failed artifact while continuing the remaining task snapshot.
+
+### Metadata
+- Source: experiment_recovery
+- Related Files: scripts/poll_triomol2_server.py
+- Tags: server-only, polling, artifacts, streaming, checksum, failure-isolation
+- Pattern-Key: evaluation.server_streaming_with_per_artifact_failure_isolation
+- Recurrence-Count: 1
+- First-Seen: 2026-08-01
+- Last-Seen: 2026-08-01
+
+---
+
 ## [LRN-20260801-RESUME-ISOLATION] best_practice
 
 **Logged**: 2026-08-01T16:40:00+08:00
