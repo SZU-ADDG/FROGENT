@@ -8060,3 +8060,119 @@ and run the unchanged analysis in a fresh `r02` root. Use only the r02 final
 manifest and results in the revision documents.
 
 ---
+
+## [ERR-20260802-048] Public training-corpus source preflight hit unsupported and blocked endpoints
+
+**Logged**: 2026-08-02
+**Status**: resolved
+**Area**: experiment-input
+
+### What happened
+The first Hugging Face tree request used an unsupported `limit` parameter. Direct
+file CDN and Google Drive probes then timed out from both the local shell and
+`doomx_3nd`, so they could not provide the declared CrossDocked train split.
+
+### Resolution
+Use the Hugging Face datasets metadata API for the immutable revision and file
+sizes, then use the installed Hub client with its Xet transfer path inside an
+isolated project input root. Preserve the exact dataset revision and label the
+collection as a declared-training-corpus proxy because checkpoint data digests
+remain unavailable.
+
+---
+
+## [ERR-20260802-049] Boolean scaffold hits were excluded from known-active summaries
+
+**Logged**: 2026-08-02
+**Status**: resolved
+**Area**: experiment-analysis
+
+### What happened
+The row-level known-active output stored `active_scaffold_match` as a Boolean,
+while the summary function compared it with the string `"True"`. Nearest-active
+similarities and thresholds remain valid; every aggregate scaffold-hit rate in
+r02 was forced to zero by the type mismatch.
+
+### Resolution
+Accept native Boolean values and normalized string values in the summarizer,
+retain r02 as failed aggregate evidence, and repeat the unchanged frozen analysis
+in a fresh r03 root. Apply the same typed-Boolean handling to the new CrossDocked
+training-proxy analysis before its first run.
+
+---
+
+## [ERR-20260802-050] macOS rsync rejected progress2 during CrossDocked transfer
+
+**Logged**: 2026-08-02
+**Status**: resolved
+**Area**: experiment-transfer
+
+### What happened
+The bundled macOS rsync predates `--info=progress2`, so the first CrossDocked
+transfer stopped during argument parsing. The new remote run root contained no
+transferred input and no analysis process was launched.
+
+### Resolution
+Keep the isolated empty run root and repeat the transfer with the supported
+`--progress` option. Validate the three destination sizes before executing the
+frozen analysis.
+
+---
+
+## [ERR-20260802-051] CrossDocked rsync path projected a 25-minute transfer
+
+**Logged**: 2026-08-02
+**Status**: resolved
+**Area**: experiment-transfer
+
+### What happened
+The supported rsync retry transferred at about 2.4 MB/s and projected roughly
+25 minutes for the 3.76 GB LMDB. It was stopped after the first complete mapping
+file and a partial LMDB; no analysis process was launched in r01.
+
+### Resolution
+Retain the partial r01 input as failed transfer evidence and leave it untouched.
+Create a fresh r02 run, record a transfer amendment, and fetch the same immutable
+Hugging Face revision directly on the server with its installed Hub/Xet client.
+
+---
+
+## [ERR-20260802-052] doomx_3nd could not reach Hugging Face for direct transfer
+
+**Logged**: 2026-08-02
+**Status**: resolved
+**Area**: experiment-transfer
+
+### What happened
+The r02 server-side Hub client exhausted five bounded metadata retries because
+`doomx_3nd` could not connect to `huggingface.co:443`. It created no dataset
+input and launched no analysis.
+
+### Resolution
+Retain r02 as failed transfer evidence. Use a fresh r03 root and the complete
+immutable source already downloaded inside the local project, enable rsync
+compression, validate the exact three source sizes, and launch the frozen
+analysis only after the transfer is complete.
+
+---
+
+## [ERR-20260802-053] Training-proxy completeness check contradicted loader membership
+
+**Logged**: 2026-08-02
+**Status**: resolved
+**Area**: experiment-analysis
+
+### What happened
+R03 safely extracted all 99,990 train names that map through the public
+`name2id` file with zero LMDB failures, then marked the run incomplete because
+10 of 100,000 split names have no processed mapping. The frozen membership rule
+and the CBGBench dataloader both admit mapped names only.
+
+### Resolution
+Retain the r03 incomplete manifest. In r04, use the unchanged executable-loader
+membership of 99,990 records, report the 10 source gaps and 99.99% declared-name
+coverage, and require zero extraction failures plus all 9,767 generated rows.
+This correction aligns completion with the preregistered membership and loader
+semantics without changing any molecular metric.
+
+---

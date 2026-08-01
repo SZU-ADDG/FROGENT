@@ -2,6 +2,7 @@
   "schema_version": "frogent-cbgbench-known-active-neighbors-preregistration-v1",
   "frozen_at": "2026-08-02T01:56:02+08:00",
   "amendment": "The r01 copied protocol contained a clerical frozen_at value of 02:05, later than its execution. Its outputs are retained but excluded from evidence. This corrected timestamp comes from the source protocol file mtime and is frozen before the clean r02 repetition; all targets, filters, metrics and interpretation boundaries are unchanged.",
+  "r03_correction_amendment": "The r02 row-level active_scaffold_match values are valid, but its aggregate summarizer compared native Booleans with the string True and therefore reported every scaffold-hit rate as zero. Similarities and thresholds remain valid. The typed-Boolean correction is frozen before r03; r03 repeats the unchanged collection, mappings and metrics and supersedes r02 for all aggregate evidence.",
   "question": "How similar are the 9,767 parsed CBGBench primary generated molecules to a versioned, target-matched collection of known active molecules?",
   "input": "/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-followup-20260801/cbgbench-novelty-pocket-r01/output/molecule-metrics.csv",
   "pocket_target_mapping": {

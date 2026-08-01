@@ -169,7 +169,10 @@ def summarize(rows: list[dict], group_fields: list[str]) -> list[dict]:
     output = []
     for key, members in sorted(groups.items()):
         similarities = [float(row["nearest_active_tanimoto"]) for row in members]
-        scaffold_hits = [row["active_scaffold_match"] == "True" for row in members]
+        scaffold_hits = [
+            value if isinstance(value, bool) else str(value).lower() == "true"
+            for value in (row["active_scaffold_match"] for row in members)
+        ]
         summary = {field: value for field, value in zip(group_fields, key)}
         summary.update({
             "n": len(members),

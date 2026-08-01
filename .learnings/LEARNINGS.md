@@ -32,6 +32,43 @@ cohort as primary when additional seeds are added after observing its results.
 
 ---
 
+## [LRN-20260802-EXECUTABLE-TRAIN-MEMBERSHIP] best_practice
+
+**Logged**: 2026-08-02T03:28:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Define a processed training proxy by the executable loader intersection and report source gaps.
+
+### Details
+The public CrossDocked split declares 100,000 train names, while the paired
+`name2id` mapping resolves 99,990. CBGBench applies the same intersection in its
+dataloader. Evaluating those 99,990 executable records gives a reproducible
+processed-corpus proxy and preserves the 10 unresolved names as an explicit
+source gap. Nearest-neighbor and scaffold metrics answer different questions:
+zero identity and rare high ECFP4 similarity can coexist with model-specific
+scaffold reuse.
+
+### Suggested Action
+Freeze the split, mapping, processed dataset revision and loader semantics
+together. Report mapping coverage, extraction failures, exact identity,
+fingerprint thresholds and scaffold overlap separately. Keep checkpoint-exact
+training membership outside the claim when the checkpoint bundle lacks a data
+digest.
+
+### Metadata
+- Source: experiment_analysis
+- Related Files: scripts/analyze_cbgbench_crossdocked_training_proxy.py, docs/manuscript/revision-evidence-ledger.md
+- Tags: crossdocked, training-proxy, loader-membership, novelty, scaffold
+- Pattern-Key: evaluation.define_training_proxy_by_executable_loader_membership
+- Recurrence-Count: 1
+- First-Seen: 2026-08-02
+- Last-Seen: 2026-08-02
+
+---
+
 ## [LRN-20260801-NOVELTY-BOUNDARY] best_practice
 
 **Logged**: 2026-08-01T23:59:00+08:00
