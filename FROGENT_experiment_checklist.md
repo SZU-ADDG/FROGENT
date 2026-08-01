@@ -321,11 +321,11 @@
 - [x] 选择小型、有代表性的蛋白 pocket 集。5 structures 覆盖 ABL1、HSP90AA1、EGFR，共 15 个 seeds 和 20 个 PLIP reports。
 - [x] 固定每个 pocket 的生成数、后处理、evaluator 和 compute budget。CBGBench 固定每个 model–pocket–seed 500 attempts、10 Å ligand-defined pocket、共同 evaluator；TrioMol2 固定每任务 10 candidates、budget 500。
 - [x] 跨模型使用多次独立运行；seed 17/23/31 仅定义各模型内部重复，不解释为跨模型相同随机样本。
-- [ ] 训练集和已知活性物数据库使用明确的 as-of date。
+- [x] 训练集和已知活性物 comparison collections 使用明确版本：CrossDocked public proxy 固定 Hugging Face revision `87ca3754...`，ChEMBL known-actives 固定 ChEMBL 37（release 2026-05-01）与冻结 assay filters。
 
 ### S3-B｜生成模型比较
 
-- [ ] 每个 live 生成模型独立运行。🟡 **部分完成**：CBGBench 三模型首轮 45/45 完成，新 seed 扩展以 15 carried + 30 resume 的隔离方案运行；TrioMol2 control-plane 面板保持原有状态。
+- [ ] 每个 live 生成模型独立运行。🟡 **部分完成**：TargetDiff、Pocket2Mol、DiffSBDD 的 primary、extension 与 combined matrices 已分别完成 45/45、45/45、90/90；TrioMol2 当前 3 succeeded、1 running、11 queued。
 - [ ] 固定最佳单模型。
 - [ ] FROGENT 单轮模型选择。
 - [ ] Single-pass Forge→Gauge。
@@ -336,8 +336,8 @@
 
 - [x] 结构标准化：盐、互变异构体、立体化学。11 records 均保存标准化与立体化学 identity。
 - [x] Validity、uniqueness、duplicate rate。11/11 valid、10 个 unique stereo identities；当前输入为 traceable reference panel。
-- [ ] ECFP4 最近邻和 Bemis–Murcko scaffold overlap。
-- [ ] 训练集最近邻与靶点已知活性物最近邻。
+- [x] ECFP4 最近邻和 Bemis–Murcko scaffold overlap：9,767 个生成分子已完成同 pocket 参考配体、ChEMBL target-active 与 CrossDocked training-proxy 三类 comparison；各模型结果和 scaffold reuse 均已分层报告。
+- [x] 训练集最近邻与靶点已知活性物最近邻：CrossDocked public proxy 覆盖 99,990/100,000 declared train names；ChEMBL 37 集合含 ABL1 1,653 与 EGFR 8,072 个 canonical actives。Checkpoint-exact membership 与其他未披露训练语料保持未确认。
 - [x] QED 和 SA 仅作为设计描述指标，不承担生物活性结论。property panel 与 final claim limits 已分层。
 - [x] Pocket compatibility、clash 和几何指标。报告 RMSD、centroid、clash、pocket escape 与 PLIP interaction retention。
 - [x] Docking/PLIP 作为计算信号，避免写成实验亲和力事实。DAVIS ρ `0.115` 的负向结果进一步限定 affinity 主张。
@@ -369,7 +369,7 @@
 - [ ] 生成模型与 orchestration 对照。
 - [ ] raw/minimized/redocked 对照。
 - [ ] Glucagon 可审计轨迹。
-- [ ] 最终 run 路径和 manifest。🔵 **运行中**：CPU 结果已冻结；CBGBench 三 seed final manifest、ADCP 正式输出与 scorer summary 已完成。六 seed 扩展由暂停源 `gpu-followup-20260731/cbgbench-seed-extension-r01/` 与续跑根 `gpu-followup-20260801/cbgbench-seed-extension-resume-r01/` 共同组成，终态 manifest 将写入续跑根；TrioMol2/TrioPep 由 control plane 继续推进。
+- [ ] 最终 run 路径和 manifest。🟡 **部分完成**：CBGBench primary 45/45、extension 45/45、combined 90/90、六 seed stability、novelty/pocket、ChEMBL known-active 与 CrossDocked training-proxy manifests 均已冻结；ADCP 正式输出与 scorer summary 已完成。TrioMol2/TrioPep 由 control plane 继续推进。
 
 ### S3 完成标准
 
