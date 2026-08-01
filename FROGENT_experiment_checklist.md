@@ -76,7 +76,7 @@
 - [x] 将最小代码、配置、3 个 checkpoint 和 5-pocket 输入复制到隔离 run；生产源码、权重和 Git 状态保持不变。
 - [x] 冻结 CBGBench 正式矩阵：5 pockets × 3 seeds × 3 models × 500 attempts，共 45 jobs、22,500 raw attempts；canary 排除在正式统计之外。
 - [x] CBGBench 正式矩阵：45/45 jobs terminal-success，完成 22,500 raw attempts；TargetDiff、DiffSBDD、Pocket2Mol 分别得到 7,263、1,809、753 个 valid molecules，mean job QED 为 `0.458/0.234/0.128`，final manifest 已生成。
-- [ ] CBGBench 独立 seed 扩展。🔵 **已恢复运行**：原暂停 run 的 15 个 exit-zero Pocket2Mol jobs 直接继承；TargetDiff/DiffSBDD 的 30 个逻辑任务在全新 resume run 运行，包含 4 个先前中断任务与 26 个未启动任务。GPU 1/3/4/5/6/7 六个 worker 均健康，终态后自动生成完整 45-job 扩展 manifest 与 90-job 六 seed pooled manifest。
+- [ ] CBGBench 独立 seed 扩展。🔵 **已恢复运行**：原暂停 run 的 15 个 exit-zero Pocket2Mol jobs 直接继承；TargetDiff/DiffSBDD 的 30 个逻辑任务在全新 resume run 运行。当前 6/30 terminal-success、6 running、18 unstarted；1IEP 的 6 个新 jobs 全部 exit zero，六个 worker 已进入 2HYY。终态后自动生成完整 45-job 扩展 manifest 与 90-job 六 seed pooled manifest。
 - [x] TrioMol2 正式面板提交：15/15 tasks、150 planned candidates、每任务 search budget 500；当前 2 succeeded、1 running、12 queued。两个成功任务的 32/32 artifacts 已在服务器流式下载并完成 checksum/size 验证。
 - [x] GLP1R–肽 AF3：Glucagon、Semaglutide、Tirzepatide 与 Peptide(a–e) 共 8/8 任务完成，8 个结果包已取回；序列化学表达边界、结构、界面、reference geometry 与跨 provider disagreement 已完成分析。
 - [x] 建立 TrioMol2 与 AF3 单次轮询/自动取回脚本；TrioMol2 的服务器抓取器支持超过 SSH relay 45 MiB 上限的 artifact 流式下载，并逐项执行 checksum/size 验证与失败隔离。

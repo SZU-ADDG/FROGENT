@@ -7926,3 +7926,21 @@ confirm resolved containment under the physical runtime root. Run syntax and
 functional validation on the server.
 
 ---
+
+## [ERR-20260801-041] Two read-only SSH probes closed during CBGBench inspection
+
+**Logged**: 2026-08-01
+**Status**: resolved
+**Area**: experiment-monitoring
+
+### What happened
+Two read-only commands that enumerated many CBGBench result files were closed
+by the SSH endpoint on port 33301. Active GPU workers and remote artifacts were
+unaffected.
+
+### Resolution
+Retry with bounded output and query only the six `run_summary.json` files
+needed for the progress decision. The retry succeeded and confirmed all six
+1IEP jobs as exit zero with complete summaries.
+
+---
