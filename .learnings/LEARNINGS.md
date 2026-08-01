@@ -65,6 +65,38 @@ global scaffold-novelty language.
 
 ---
 
+## [LRN-20260802-KNOWN-ACTIVE-SCOPE] best_practice
+
+**Logged**: 2026-08-02T02:05:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Bind every active-neighbor novelty result to a database release, target mapping and activity filter.
+
+### Details
+ChEMBL 37 provides a reproducible target-matched comparator when the target IDs, assay type,
+endpoint, units, relation, standard flag and potency threshold are frozen together. Low ECFP4
+similarity to that collection narrows the novelty gap substantially while leaving generator
+training-set distance and other databases or assay types outside the measured scope.
+
+### Suggested Action
+Report the ChEMBL release and collection sizes next to nearest-neighbor metrics. Preserve raw
+activity rows, the deduplicated canonical collection and the exact query filters. Keep training-set
+novelty as `not_measured` until the actual model training collections are available.
+
+### Metadata
+- Source: experiment_analysis
+- Related Files: scripts/analyze_cbgbench_known_active_neighbors.py, docs/manuscript/revision-evidence-ledger.md
+- Tags: chembl, novelty, nearest-neighbor, target-mapping, claim-boundary
+- Pattern-Key: evaluation.bind_known_active_novelty_to_versioned_collection
+- Recurrence-Count: 1
+- First-Seen: 2026-08-02
+- Last-Seen: 2026-08-02
+
+---
+
 ## [LRN-20260801-DUAL-GPU-PROCESSES] correction
 
 **Logged**: 2026-08-01T19:41:00+08:00

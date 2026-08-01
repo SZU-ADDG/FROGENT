@@ -8023,3 +8023,40 @@ the failed transfer output as operational evidence; no experiment output was
 created or overwritten.
 
 ---
+
+## [ERR-20260802-046] Direct RCSB REST URLs were rejected by the browser safety check
+
+**Logged**: 2026-08-02
+**Status**: resolved
+**Area**: target-mapping-evidence
+
+### What happened
+Direct browser opens for `data.rcsb.org` target-mapping endpoints were rejected
+as unsafe URLs, so those opens produced no usable PDB-to-target evidence.
+
+### Resolution
+Use indexed RCSB entry pages or a read-only shell/API query, then project only
+the PDB identifier, target name and UniProt accession needed for the protocol.
+The target mapping was confirmed before the ChEMBL collection was frozen.
+
+---
+
+## [ERR-20260802-047] Known-active r01 protocol carried a future freeze timestamp
+
+**Logged**: 2026-08-02
+**Status**: resolved
+**Area**: experiment-protocol
+
+### What happened
+The copied `cbgbench-known-active-neighbors-r01` protocol recorded `02:05` as
+its freeze time, while the source file and run were created several minutes
+earlier. The filters and metrics were already frozen, though the impossible
+timestamp weakens the preregistration record.
+
+### Resolution
+Retain r01 and exclude it from manuscript evidence. Recover the actual source
+protocol creation time from its local mtime, record a transparent amendment,
+and run the unchanged analysis in a fresh `r02` root. Use only the r02 final
+manifest and results in the revision documents.
+
+---
