@@ -1,0 +1,61 @@
+{
+  "schema_version": "frogent-forge-gauge-top-candidate-geometry-preregistration-v1",
+  "created_at": "2026-08-02T22:00:00+08:00",
+  "protocol_id": "forge-gauge-top-candidate-geometry-r01",
+  "source_run": "/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-matched-budget-prospective-recovery-r06",
+  "source_gate": {
+    "status": "complete",
+    "expected_jobs": 120,
+    "exit_zero_jobs": 120,
+    "paired_cells_per_condition": 15
+  },
+  "conditions": [
+    "fixed_best",
+    "single_pass",
+    "iterative"
+  ],
+  "pockets": [
+    "1IEP",
+    "2HYY",
+    "3CS9",
+    "4WA9",
+    "1M17"
+  ],
+  "prospective_seeds": [
+    83,
+    97,
+    109
+  ],
+  "candidate_selection": {
+    "unit": "condition-pocket-prospective-seed cell",
+    "top_k": 50,
+    "score": "0.70 * RDKit_QED + 0.30 * favorable_SA",
+    "favorable_SA": "(10 - Ertl_SA) / 9 rounded to two decimals, using the same generator implementation",
+    "tie_breakers": [
+      "higher QED",
+      "higher favorable SA",
+      "lexicographically smaller job tag",
+      "lexicographically smaller sample filename"
+    ],
+    "selection_time": "after the source final manifest is terminal; no outcome-dependent threshold changes"
+  },
+  "geometry": {
+    "reference_ligand_neighborhood_angstrom": 10.0,
+    "receptor_neighborhood_angstrom": 12.0,
+    "severe_receptor_clash_angstrom": 1.2,
+    "pocket_compatible": "all generated heavy atoms lie within 10 A of at least one reference-ligand heavy atom"
+  },
+  "primary_outputs": [
+    "45 cell-level top-50 geometry summaries",
+    "condition-level pocket compatibility and clash-free rates",
+    "condition-by-generating-model geometry summaries",
+    "selected model allocation by condition and pocket",
+    "molecule-level traceability to source job and SDF"
+  ],
+  "claim_limits": [
+    "The analysis is conditional on the frozen QED and favorable-SA top-50 selection rule.",
+    "Pocket compatibility and receptor clashes are geometric computational signals and do not establish binding affinity.",
+    "Generating-model strata describe selected candidate composition and geometry; they do not isolate causal model effects.",
+    "Docking and PLIP are outside this run and require a separate frozen protocol."
+  ]
+}

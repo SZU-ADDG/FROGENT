@@ -2252,3 +2252,22 @@ full logical-job coverage at the merge boundary.
   any earlier run.
 
 ---
+## [LRN-20260802-005] require stable molecule IDs across properties and coordinates
+
+**Logged**: 2026-08-02T22:08:00+08:00
+**Category**: best_practice
+**Area**: molecular generation evaluation
+
+### Learning
+
+Property summaries and coordinate files need a shared stable molecule ID. Matching by row order,
+filename convention or aggregate counts is insufficient once a generator sorts, deduplicates or
+serializes through separate paths. A coordinate follow-up must validate a molecule-level
+bijection before selecting top candidates from a property table.
+
+### Applied Change
+
+The Forge-Gauge geometry follow-up now selects from properties recomputed directly from persisted
+SDFs and explicitly separates that analysis from the source property-CSV top-50 summaries.
+
+---

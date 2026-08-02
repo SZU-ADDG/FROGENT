@@ -8324,3 +8324,64 @@ then writes one immutable tag-to-source map. Missing coverage remains in a
 wait state while later failures enter fresh exact retry roots.
 
 ---
+## [ERR-20260802-062] Generator property rows could not be linked to persisted coordinates
+
+**Logged**: 2026-08-02T22:08:00+08:00
+**Priority**: high
+**Status**: resolved for the geometry follow-up
+**Area**: evaluation data contract
+
+### Summary
+
+The first Forge-Gauge top-candidate geometry smoke attempted to validate recomputed SDF QED/SA
+against `generated_smiles_qed_sa.csv`. The generator sorts and deduplicates the CSV, and the
+persisted SDF canonical-identity multiset did not represent the same molecules: overlap was
+45/1,443 in one prospective TargetDiff job and 34/486 in one completed primary TargetDiff job.
+
+### Resolution
+
+The r01 geometry controller was never started and its zero-output run root was preserved. A new
+r02 amendment recomputes QED and favorable SA from each persisted SDF, applies exact within-job
+deduplication, and selects the coordinate-bearing top 50 independently. Its claim boundary states
+that this set cannot validate the source finalizer's unlinked property-CSV top-50 molecules.
+
+### Suggested Fix
+
+Future generators should emit one append-only molecule table containing a stable molecule ID,
+sample filename, canonical SMILES, QED and SA in the same transaction as the SDF write. Validate
+the ID-to-file bijection before using property-selected molecules in coordinate analyses.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-top-candidate-geometry-r01, runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-top-candidate-geometry-r02
+
+---
+
+## [ERR-20260802-061] Remote status heredoc was expanded by local zsh
+
+**Logged**: 2026-08-02T21:56:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: remote monitoring
+
+### Summary
+
+A quoted SSH status command embedded shell wildcard and alternation text deeply enough that local
+zsh expanded it before Python reached the remote host. The command exited before touching any run
+state; all experiment and controller processes continued unchanged.
+
+### Resolution
+
+The status program was passed to `ssh ... python3 -` with a local single-quoted heredoc, removing
+the nested shell interpretation. The corrected command returned the expected 29 success, eight
+failure and nine running states.
+
+### Suggested Fix
+
+Transmit nontrivial remote status logic over stdin and keep wildcard matching inside Python.
+
+### Metadata
+- Reproducible: yes
+- Related Files: FROGENT_revision_plan.md
+
+---
