@@ -1,0 +1,4 @@
+job_index	condition	stage	method	pocket	seed	num_samples	tag
+0	iterative	round1	diffsbdd	2HYY	109	250	iterative-round1-diffsbdd-2hyy-s109-n250-r02
+1	iterative	round1	diffsbdd	3CS9	83	250	iterative-round1-diffsbdd-3cs9-s83-n250-r02
+2	iterative	round1	diffsbdd	4WA9	83	250	iterative-round1-diffsbdd-4wa9-s83-n250-r02
