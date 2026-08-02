@@ -36,6 +36,7 @@
 - 2026-08-02 06:53 持续巡检：CBGBench resume/carried jobs 与 45/45 extension、90/90 combined manifests 继续保持完整终态，fatal stderr count 为 0。GPU 1/3/4/5/6/7 空闲；GPU 0 与 GPU 2 的既有进程归属未改变，运行卷剩余约 406 GB。TrioMol2 仍为 3 succeeded、1 running、11 queued，2HYY seed 17 task 保持 progress 3/5；其进程已连续运行约 9 小时，持续使用约 130% CPU 并持有约 1.5 GiB GPU context，现场证据显示任务仍活跃。TrioPep 维持 4 queued，两个 poller 存活，48 个 artifacts 校验有效且 download failures 为 0。本轮无新增终态或失败，未干预 control-plane task，未重复运行已闭合实验。
 - 2026-08-02 07:53 持续巡检：CBGBench resume/carried jobs 继续为 30/30、15/15 exit zero，45/45 extension 与 90/90 combined manifests 保持完整，fatal stderr count 为 0。GPU 1/3/4/5/6/7 空闲；GPU 0/2 既有进程归属未改变，运行卷剩余约 406 GB。TrioMol2 保持 3 succeeded、1 running、11 queued；2HYY seed 17 task 仍为 progress 3/5，其进程连续运行约 10 小时并持续使用约 127% CPU、约 1.5 GiB GPU context，仍属于活跃计算。TrioPep 保持 4 queued；两个 poller 均存活，48 个 artifacts 校验有效且 download failures 为 0。本轮无新终态、失败、恢复动作或主张变化，未重复启动已闭合实验。
 - 2026-08-02 08:54 持续巡检：CBGBench resume/carried jobs 仍为 30/30、15/15 exit zero，45/45 extension 与 90/90 combined manifests 完整，fatal stderr count 为 0。GPU 1/3/4/5/6/7 空闲；GPU 0/2 既有进程归属未改变，运行卷剩余约 406 GB。TrioMol2 保持 3 succeeded、1 running、11 queued；2HYY seed 17 task 仍为 progress 3/5，其进程连续运行约 11 小时并持续使用约 125% CPU、约 1.5 GiB GPU context，仍有现场活跃计算信号。TrioPep 保持 4 queued；两个 poller 均存活，48 个 artifacts 校验有效且 download failures 为 0。本轮无新增终态、失败、恢复动作或主张变化，未干预现有任务，未重复启动已闭合实验。
+- 2026-08-02 09:30 用户范围纠正：TrioMol2 未出现在论文中，立即从大修实验主线、完成条件、稿件证据和每小时终态等待中排除。现有 3 个 succeeded tasks 与 48 个已验证 artifacts 只保留为历史运行记录，不进行终态分析；禁止新增、补跑或恢复 TrioMol2。现场核查确认已验证 LAN control plane 仅提供 submit/get/artifact routes，没有 cancel route；为遵守 control-plane-only 与既有任务不可干预边界，未直接修改 TrioWorkspace database/job files，也未直接终止 worker。当前 1 running、11 queued tasks 不再阻塞修订或进入稿件。每小时 automation 已移除 TrioMol2 轮询和实验优先级；Agent 自有 TrioMol2 poller PID 689528 已经按精确进程校验后停止，TrioPep poller 与 TrioMol2 control-plane task 均保持原状态。
 - 2026-08-01 Trio control-plane 检查点：TrioMol2 已推进至 2 succeeded、1 running、12 queued。前两个成功任务各产生 16 个 artifacts；其中 64.6–64.8 MB 的 search trajectory 超出现有 45 MiB SSH relay 上限。已在服务器隔离根 `gpu-followup-20260801/triomol2-server-poller-r02/` 建立流式、逐 artifact 校验的恢复抓取，32/32 artifacts 完整下载且 checksum/size 验证通过。TrioMol2 与 4-task TrioPep 的 15 分钟轮询均已迁移到服务器常驻进程；本地旧 monitor 已停止，后续 TrioMol2 执行、抓取与终态验收留在服务器。
 - 2026-07-31 provider 检查点：DirectMultiStep flash/explorer 与 FragGen 三轮共 39/39 typed live MCP calls 成功；每轮 DirectMultiStep 10/10 返回非空且 root 与目标一致的 RDKit-valid 路线，每轮 FragGen 返回 15/15 valid molecules。13 个调用定义中 12 个三轮响应文本完全一致，DirectMultiStep 路线集合平均两两 Jaccard `0.973`，FragGen 分子集合为 `1.000`。用户确认正式多肽对接方法为 MDockPeP2 与 ADCP：MDockPeP2 三次历史 glucagon run 已完成独立审计；ADCP v1.1 采用 3GBQ、1CKB、1ABO 三套晶体参考复合物做主 redocking，并对 29 aa GLP-1R 候选执行明确标记为长度外推的探索性压力测试。TrioPep 4 个已提交任务保留为补充 provider signal，AF3/ESMFold 保留为 sequence-to-complex 结构对照。
 - 2026-07-31 ESMFold/AF3 检查点：从 TrioPep 生产目录只读复制 8.45 GB ESMFold 权重，在隔离环境完成 GLP1R ECD–肽 8 sequences × 3 seeds、3 recycles 的 24/24 正式预测。Mean pTM `0.636`、mean pLDDT `64.99`、峰值分配显存 `8314 MiB`；glucagon 预测 pose 与 4ZGM deposited Semaglutide 坐标的 cross-ligand CA distance 为 `28.619 Å`，该值不再标作 glucagon native-pose RMSD。追加 3GBQ、1CKB、1ABO 三个实验复合物的 9/9 reference runs，平均 peptide CA RMSD `6.526 Å`，仅 1/3 complexes 达到 ≤2 Å（3GBQ `2.123 Å`、1CKB `1.542 Å`、1ABO `15.914 Å`）。AF3 的 8/8 GLP1R-ECD–肽任务完成：mean pair-ipTM `0.755`，Tirzepatide 置信度最高；sequence-mapped Semaglutide 对 4ZGM 的受体对齐肽 CA RMSD 为 `8.133 Å`，native-contact recall/precision 为 `0.882/0.732`。AF3–ESMFold receptor-aligned peptide pose RMSD 平均/最大 `31.513/36.545 Å`，AF3 pair-ipTM 与 ESMFold pTM 的排序相关为 `ρ=-0.119`。这些 confidence 排名只作为有限优先级信号，成功、失败、provider disagreement 与参数敏感性共同限制 sequence-only complex prediction 和 docking accuracy 主张。
@@ -50,7 +51,7 @@ FROGENT 的主张先限定为一项待验证的研究假设：
 
 > FROGENT 通过任务分解、基于 evidence 的 context 管理、专业工具路由和 Forge–Gauge 反馈，提高多阶段药物设计任务中的检索质量、科学决策质量与 tool-use reliability。
 
-Matched-resource comparison 与关键组件 CPU 消融为 orchestration 主张提供了受限证据。三项真实生成模型对照及六 seed 稳定性分析已完成，TrioMol2 study 继续运行；摘要、引言和讨论的最终范围将在 TrioMol2 终态和剩余 claim-boundary 分析完成后冻结。
+Matched-resource comparison 与关键组件 CPU 消融为 orchestration 主张提供了受限证据。三项真实生成模型对照及六 seed 稳定性分析已完成；TrioMol2 已按论文范围纠正从修订主线排除，摘要、引言和讨论的最终范围不再等待其终态。
 
 ## 3. 全局修改位置
 
@@ -717,7 +718,7 @@ Matched-resource comparison 与关键组件 CPU 消融为 orchestration 主张�
 - Severity：`major`
 - Decision：agree
 - Action：single-pass 与 iterative loop 比较，记录每轮反馈、候选变化和停止原因。
-- Current status：TrioMol2 15 个共同预算任务已提交，固定池、single-pass 和最多三轮 iterative 分析协议已冻结；首任务运行中，其余排队。
+- Current status：TrioMol2 未出现在论文中，用户已于 2026-08-02 将其从大修范围排除。15 个历史提交任务中 3 个 succeeded，其余 control-plane 状态不进入论文证据或完成条件；single-pass/iterative 分析取消，禁止新增或补跑 TrioMol2。
 - Outcome：`revised_in_both`
 - Evidence：S3
 - Planned locations：M-RES、T-3、SI-5

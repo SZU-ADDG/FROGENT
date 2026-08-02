@@ -78,10 +78,10 @@
 - [x] CBGBench 正式矩阵：45/45 jobs terminal-success，完成 22,500 raw attempts；TargetDiff、DiffSBDD、Pocket2Mol 分别得到 7,263、1,809、753 个 valid molecules，mean job QED 为 `0.458/0.234/0.128`，final manifest 已生成。
 - [x] CBGBench 独立 seed 扩展：15 个暂停源 Pocket2Mol jobs 继承验证通过，30/30 resume TargetDiff/DiffSBDD jobs 全部 exit zero；完整 extension 45/45、combined six-seed 90/90 manifests 均已生成。六张实验 GPU 已释放。
 - [x] CBGBench 六 seed稳定性：三项模型在 valid rate、QED 和 SA 上的排序全部保持；primary-versus-pooled model–pocket Spearman ρ 为 `0.993/0.971/0.704`。TargetDiff primary→pooled QED `0.458→0.408`、valid rate `0.968→0.949`，extension-minus-primary pocket-cluster 95% CI 为 `[-0.188,-0.004]` 与 `[-0.073,-0.006]`，确认相对排序稳定且绝对性能具有 seed sensitivity。逐 pocket 最大变化集中于 TargetDiff–2HYY/3CS9；reconstruction error 最高为 DiffSBDD–3CS9 的 0.73%，0 job failure。Final manifest：`gpu-followup-20260802/cbgbench-six-seed-stability-r01/output/final-manifest.json`。
-- [x] TrioMol2 正式面板提交：15/15 tasks、150 planned candidates、每任务 search budget 500；当前 3 succeeded、1 running、11 queued，三个成功任务的 48/48 artifacts 已在服务器完成校验，下载失败数为 0。
+- [x] TrioMol2 历史面板：曾提交 15 tasks；用户确认该方法未出现在论文中，已从大修主线、完成条件与稿件证据排除。3 个 succeeded tasks 的 48 个 artifacts 仅保留为历史记录，禁止新增、补跑或恢复；其余 control-plane 状态不再等待。
 - [x] GLP1R–肽 AF3：Glucagon、Semaglutide、Tirzepatide 与 Peptide(a–e) 共 8/8 任务完成，8 个结果包已取回；序列化学表达边界、结构、界面、reference geometry 与跨 provider disagreement 已完成分析。
 - [x] 建立 TrioMol2 与 AF3 单次轮询/自动取回脚本；TrioMol2 的服务器抓取器支持超过 SSH relay 45 MiB 上限的 artifact 流式下载，并逐项执行 checksum/size 验证与失败隔离。
-- [x] 启动异步监控：TrioMol2 与 TrioPep 每 15 分钟在服务器轮询，CBGBench resume finalizer 独立等待终态。TrioMol2 服务器根为 `gpu-followup-20260801/triomol2-server-poller-r02/`，TrioPep 服务器根为 `gpu-followup-20260801/triopep-server-poller-r01/`；本地旧统一 monitor 已停止。
+- [x] 启动异步监控：TrioPep 每 15 分钟在服务器轮询；CBGBench 已完成。Agent 自有 TrioMol2 poller 已停止，run root 只保留为历史 operational evidence，并已从每小时 automation 与大修终态等待移除；本地旧统一 monitor 已停止。
 - [x] DirectMultiStep/FragGen live 权重面板：13/13 typed calls 成功；10/10 retrosynthesis calls 返回非空路线且 route root 与目标一致，路线内分子字符串全部 RDKit-valid；FragGen 3 cases 返回 15/15 valid、15 unique molecules。
 - [x] DirectMultiStep/FragGen 三轮稳定性重复：39/39 typed calls 成功；12/13 调用定义三轮响应文本完全一致，DirectMultiStep 路线集合平均两两 Jaccard `0.973`，FragGen 分子集合为 `1.000`；唯一变化为 aspirin/explorer 的路线集合。
 - [x] TrioPep reference panel 提交：3GBQ、1CKB、1ABO 三个 8–10 aa 参考复合物，加 4ZGM 的 20 aa contract-limited exploratory task，共 4 个 tasks 当前 queued。
@@ -93,7 +93,7 @@
 - [x] ESMFold GLP1R ranking sensitivity：8 条肽的 1-vs-3 recycle pTM/pLDDT 排名相关分别为 Spearman ρ `0.738/0.810`，top 候选一致；pose 平均/最大位移 `2.144/3.816 Å`，confidence ranking 仅作有限优先级信号。
 - [x] AF3 GLP1R–肽分析：8/8 结果包完成安全检查与结构分析，mean pair-ipTM `0.755`，Tirzepatide 排名第一；sequence-mapped Semaglutide 对 4ZGM 的 receptor-aligned peptide CA RMSD `8.133 Å`，native-contact recall/precision `0.882/0.732`。AF3–ESMFold pose RMSD 平均/最大 `31.513/36.545 Å`，AF3 pair-ipTM 与 ESMFold pTM 排序相关 `ρ=-0.119`，明确限制 confidence-to-docking-accuracy 外推。
 - [x] CBGBench novelty/scaffold/pocket compatibility：45/45 primary jobs、9,825 个 SDF 完成 CPU-only 分析，9,767 个解析成功、58 个 molecule-level parse failures 保留。TargetDiff/DiffSBDD/Pocket2Mol identity uniqueness 为 `1.000/1.000/0.965`，scaffold per parsed molecule 为 `0.997/0.866/0.458`，mean reference-ligand ECFP4 Tanimoto 为 `0.093/0.065/0.055`，均无 exact identity、reference scaffold match 或 Tanimoto ≥0.5；10 Å pocket-compatible rate 均为 1.000，severe clash-free rate 为 `1.000/0.942/0.996`。Final manifest：`gpu-followup-20260801/cbgbench-novelty-pocket-r01/output/final-manifest.json`。
-- [x] CBGBench target-matched known-active neighbors：ChEMBL 37 的 ABL1/EGFR binding IC50（pChEMBL ≥6）集合分别去重为 1,653/8,072 个 canonical actives；9,767 个已解析生成分子全部完成 nearest-neighbor 分析。TargetDiff/DiffSBDD/Pocket2Mol mean nearest-active ECFP4 Tanimoto 为 `0.176/0.143/0.120`，最大值为 `0.405/0.256/0.217`；Tanimoto ≥0.5 均为 0，exact active-scaffold overlap 分别为 `2/7253`、`0/1771`、`1/743`。Training-set novelty 和其他数据库/assay 类型继续标记 `not_measured`。r01 协议时间错误与 r02 aggregate Boolean 类型错误均排除；final manifest：`gpu-followup-20260802/cbgbench-known-active-neighbors-r03/output/final-manifest.json`。
+- [x] CBGBench target-matched known-active neighbors：ChEMBL 37 的 ABL1/EGFR binding IC50（pChEMBL ≥6）集合分别去重为 1,653/8,072 个 canonical actives；9,767 个已解析生成分子全部完成 nearest-neighbor 分析。TargetDiff/DiffSBDD/Pocket2Mol mean nearest-active ECFP4 Tanimoto 为 `0.176/0.143/0.120`，最大值为 `0.405/0.256/0.217`；Tanimoto ≥0.5 均为 0，exact active-scaffold overlap 分别为 `2/7253`、`0/1771`、`1/743`。Checkpoint-exact training membership 和其他数据库/assay 类型继续标记 `not_measured`；public CrossDocked training proxy 由下一项单独报告。r01 协议时间错误与 r02 aggregate Boolean 类型错误均排除；final manifest：`gpu-followup-20260802/cbgbench-known-active-neighbors-r03/output/final-manifest.json`。
 - [x] CBGBench CrossDocked training-proxy nearest neighbors：公开 split 的 100,000 个 train names 中 99,990 个按 CBGBench dataloader 映射，安全 opcode 提取 99,990/99,990 成功并去重为 10,404 个 canonical molecules。9,767 个生成分子无 exact identity；TargetDiff/DiffSBDD/Pocket2Mol mean nearest-train ECFP4 Tanimoto 为 `0.216/0.189/0.203`，最大值为 `0.453/0.682/0.474`，仅 DiffSBDD 有 `1/1771` 达到 ≥0.5。Exact scaffold overlap 为 `0.772%/7.510%/15.612%`。结果限定为 declared-training-corpus proxy，checkpoint 原始 training-file identity 未确认。Final manifest：`gpu-followup-20260802/cbgbench-crossdocked-training-proxy-r04/output/final-manifest.json`。
 - [ ] MDockPeP2 prospective rerun。🟠 **外部凭据依赖**：19 GiB 隔离 runtime 已复制，Modeller 9.13 license 未进入可执行副本；禁止复制第三方 license credential。MDockPeP2 历史证据与 ADCP prospective panel 共同承担正式 docking 主线。
 
@@ -172,7 +172,7 @@
 ### G0 产出
 
 - [ ] 八项 benchmark datasheets。🟡 **第二批部分完成**：八项 first-pass datasheet 已完成并通过唯一性、样本量和 archive 一致性验证；版本、许可、case IDs 与 scorer 字段待原始材料补齐。
-- [ ] capability inventory。🔵 **GPU 更新**：CPU/live provider inventory 已完成；TargetDiff、Pocket2Mol、DiffSBDD 与 TrioMol2 已转为 live-running，AF3 GLP1R jobs 为 queued；PocketFlow、MolCRAFT 和受限 provider 继续保留缺失/待核实状态。
+- [ ] capability inventory。🟡 **范围更新**：CPU/live provider inventory 已完成；TargetDiff、Pocket2Mol、DiffSBDD 为正式生成模型证据。TrioMol2 已按论文范围排除；PocketFlow、MolCRAFT 和受限 provider 继续保留缺失/待核实状态。
 - [x] claim–evidence matrix。证据：`docs/manuscript/revision-evidence-ledger.md`。
 - [x] baseline configuration matrix。证据：`recent-baselines/baseline-configuration-matrix.csv` 与 real-agent/matched-resource preregistration。
 - [ ] 评分影响报告：哪些结果保留、重新计算或撤回。🟡 **第三批部分完成**：QED、SA、DAVIS、semantic mismatch、live evidence 和 docking/PLIP 已给出保留/限定/重算结论；八项 headline results 等待原始样本级输出。
@@ -317,15 +317,15 @@
 
 ### S3-A｜实验范围
 
-- [ ] 仅纳入 G0 确认 live 且可复现的生成模型。🔵 **运行中**：已纳入核实 checkpoint 的 TargetDiff、Pocket2Mol、DiffSBDD 与 contract-verified TrioMol2；缺失权重模型不进入正式数值比较。
+- [x] 仅纳入 G0 确认 live、可复现且属于论文范围的生成模型：TargetDiff、Pocket2Mol、DiffSBDD。TrioMol2 已按用户确认排除；缺失权重模型不进入正式数值比较。
 - [x] 选择小型、有代表性的蛋白 pocket 集。5 structures 覆盖 ABL1、HSP90AA1、EGFR，共 15 个 seeds 和 20 个 PLIP reports。
-- [x] 固定每个 pocket 的生成数、后处理、evaluator 和 compute budget。CBGBench 固定每个 model–pocket–seed 500 attempts、10 Å ligand-defined pocket、共同 evaluator；TrioMol2 固定每任务 10 candidates、budget 500。
+- [x] 固定每个 pocket 的生成数、后处理、evaluator 和 compute budget。正式 CBGBench 固定每个 model–pocket–seed 500 attempts、10 Å ligand-defined pocket、共同 evaluator；已排除的 TrioMol2 历史预算不进入论文比较。
 - [x] 跨模型使用多次独立运行；seed 17/23/31 仅定义各模型内部重复，不解释为跨模型相同随机样本。
 - [x] 训练集和已知活性物 comparison collections 使用明确版本：CrossDocked public proxy 固定 Hugging Face revision `87ca3754...`，ChEMBL known-actives 固定 ChEMBL 37（release 2026-05-01）与冻结 assay filters。
 
 ### S3-B｜生成模型比较
 
-- [ ] 每个 live 生成模型独立运行。🟡 **部分完成**：TargetDiff、Pocket2Mol、DiffSBDD 的 primary、extension 与 combined matrices 已分别完成 45/45、45/45、90/90；TrioMol2 当前 3 succeeded、1 running、11 queued。
+- [x] 每个论文范围内 live 生成模型独立运行：TargetDiff、Pocket2Mol、DiffSBDD 的 primary、extension 与 combined matrices 已分别完成 45/45、45/45、90/90。TrioMol2 不进入该比较。
 - [ ] 固定最佳单模型。
 - [ ] FROGENT 单轮模型选择。
 - [ ] Single-pass Forge→Gauge。
@@ -369,7 +369,7 @@
 - [ ] 生成模型与 orchestration 对照。
 - [ ] raw/minimized/redocked 对照。
 - [ ] Glucagon 可审计轨迹。
-- [ ] 最终 run 路径和 manifest。🟡 **部分完成**：CBGBench primary 45/45、extension 45/45、combined 90/90、六 seed stability、novelty/pocket、ChEMBL known-active 与 CrossDocked training-proxy manifests 均已冻结；ADCP 正式输出与 scorer summary 已完成。TrioMol2/TrioPep 由 control plane 继续推进。
+- [ ] 最终 run 路径和 manifest。🟡 **部分完成**：CBGBench primary 45/45、extension 45/45、combined 90/90、六 seed stability、novelty/pocket、ChEMBL known-active 与 CrossDocked training-proxy manifests 均已冻结；ADCP 正式输出与 scorer summary 已完成。TrioMol2 已排除；TrioPep supplementary panel 继续由 control plane 推进。
 
 ### S3 完成标准
 
@@ -525,7 +525,7 @@
 ### Day 5–6｜2026-08-03 至 2026-08-04
 
 - [ ] Track B 完成 global-context、Retrieve、Gauge、动态规划和故障回退条件。
-- [ ] Track C 完成 Forge–Gauge 迭代、raw/minimized/redocked 和 PLIP。🔵 **运行中**：TrioMol2 15-task candidate pool 已提交；CPU raw/minimized/redocked 与 PLIP 已完成。
+- [ ] Track C 完成 Forge–Gauge 迭代、raw/minimized/redocked 和 PLIP。🟡 **范围更新**：CPU raw/minimized/redocked 与 PLIP 已完成；TrioMol2 candidate pool 已从论文与大修完成条件排除，不再承担 Forge–Gauge 证据。
 - [ ] Track C 完成 Glucagon 与参考肽集的构象/docking runs。🔵 **运行中**：8 个 GLP1R–肽 AF3 任务排队，结构结果完成后进入 interface 与 docking 分析。
 - [ ] Track D 完成 citation support、conflict detection、uncertainty 和 downstream propagation。🟡 **提前部分完成**：citation identifier metrics、conflict detection、gap visibility 和 revocation 已完成；semantic support 与 downstream propagation 待补。
 - [ ] Track G 完成首个可用版本并开始 smoke test。

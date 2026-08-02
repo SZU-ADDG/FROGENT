@@ -1,5 +1,32 @@
 # Learnings
 
+## [LRN-20260802-TRIOMOL2-PAPER-SCOPE] correction
+
+**Logged**: 2026-08-02T09:30:00+08:00
+**Priority**: critical
+**Status**: resolved
+**Area**: gpu-rebuttal
+
+### Summary
+TrioMol2 does not appear in the paper and must not remain on the FROGENT major-revision experiment path.
+
+### Details
+The revision workflow had treated a 15-task TrioMol2 panel as evidence for independent generation and Forge–Gauge single-pass/iterative analysis. The user clarified that TrioMol2 is absent from the manuscript, so its terminal state cannot gate the revision or consume further analysis effort. Three completed tasks remain useful only as historical operational records.
+
+### Suggested Action
+Exclude TrioMol2 from manuscript claims, completion criteria, scheduled monitoring and new experiments. Preserve existing results without interpreting them. Use only verified control-plane APIs for task operations; when cancellation is unavailable, leave remaining external task state untouched and continue the revision without waiting for it.
+
+### Metadata
+- Source: user_feedback
+- Related Files: FROGENT_revision_plan.md, FROGENT_experiment_checklist.md, docs/manuscript/revision-evidence-ledger.md
+- Tags: triomol2, manuscript-scope, experiment-prioritization, control-plane
+- Pattern-Key: rebuttal.exclude_nonmanuscript_provider_from_completion_path
+- Recurrence-Count: 1
+- First-Seen: 2026-08-02
+- Last-Seen: 2026-08-02
+
+---
+
 ## [LRN-20260802-RANK-VS-ABSOLUTE-STABILITY] best_practice
 
 **Logged**: 2026-08-02T00:56:00+08:00

@@ -27,6 +27,20 @@ in a reviewed project file.
 
 ---
 
+## [ERR-20260802-054] Remote PID-file display helper lost its positional argument
+
+**Logged**: 2026-08-02T09:32:00+08:00
+**Status**: resolved
+**Area**: experiment-monitoring
+
+### What happened
+The first read-only PID inventory combined `find -exec sh -c` with nested SSH quoting and passed an empty positional argument to `cat`. The process listing still identified the exact TrioMol2 poller, while the PID-file content was not displayed by that probe.
+
+### Resolution
+Read the exact `monitor.pid` path in a separate bounded command, require the value to equal the observed PID, verify the full command line belongs to the Agent-owned TrioMol2 poller, and only then send SIGTERM. A follow-up process listing confirmed that the TrioMol2 poller stopped while the TrioPep poller and control-plane task remained alive.
+
+---
+
 ## [ERR-20260730-CLN1] cleanup_test_parent_index_was_too_broad
 
 **Logged**: 2026-07-30T23:55:00+08:00
