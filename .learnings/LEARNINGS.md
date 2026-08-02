@@ -2226,3 +2226,26 @@ do not define a complete lane when rows are assigned by modulo sharding.
   sources or starting downstream selection.
 
 ---
+
+## [LRN-20260802-004] separate exact retries from dynamic recovery coverage
+
+**Logged**: 2026-08-02T20:32:00+08:00
+**Priority**: high
+**Area**: gpu-rebuttal
+
+### Learning
+
+Long source phases can accumulate failures after an earlier retry snapshot has
+already completed. Exact retry roots should remain immutable and narrow, while
+the downstream recovery gate discovers complete retry manifests and validates
+full logical-job coverage at the merge boundary.
+
+### Application
+
+- Keep each retry root tied to one timestamped set of failed logical tags.
+- Let the recovery controller wait for all source terminals and all required
+  exit-zero replacements without modifying earlier retry roots.
+- Freeze one tag-to-source map only after every logical job has a validated
+  result, then begin selection and downstream computation.
+
+---

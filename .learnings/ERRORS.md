@@ -8302,3 +8302,25 @@ with an explicit full-coverage check before any merge. Later source failures
 must enter a fresh exact retry and recovery root.
 
 ---
+
+## [ERR-20260802-060] Forge-Gauge recovery accepted one fixed retry root
+
+**Logged**: 2026-08-02
+**Status**: resolved
+**Area**: gpu-rebuttal
+
+### What happened
+Recovery-r05 referenced retry-r03 directly. Two additional r02 Pocket2Mol jobs
+failed after retry-r03 had frozen and completed its five-job snapshot, so the
+fixed source could not provide full exit-zero coverage at the future 105-job
+merge boundary. Recovery-r05 had not merged any job or started Gauge or phase
+2 when the limitation was detected.
+
+### Resolution
+Stop recovery-r05 after exact PID and command verification and preserve its
+state. Recovery-r06 waits for the full source phase, discovers every complete
+exact-retry manifest, checks all failed tags for an exit-zero state and result,
+then writes one immutable tag-to-source map. Missing coverage remains in a
+wait state while later failures enter fresh exact retry roots.
+
+---
