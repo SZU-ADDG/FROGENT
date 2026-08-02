@@ -8385,3 +8385,56 @@ Transmit nontrivial remote status logic over stdin and keep wildcard matching in
 - Related Files: FROGENT_revision_plan.md
 
 ---
+
+## [ERR-20260803-063] Validation command included prohibited recursive removal
+
+**Logged**: 2026-08-03T00:41:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: experiment-protocol
+
+### Summary
+
+The first local retry-r06 validation command included recursive removal of a possible Python
+bytecode cache. Command policy rejected the full shell invocation before any validation or file
+operation executed.
+
+### Resolution
+
+Compile the Python source in memory with `compile(...)`, avoiding bytecode output and cleanup.
+The replacement validation completed JSON parsing, Python and shell syntax checks, exact TSV
+row equality against the frozen master queue, path containment and symlink checks.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-matched-budget-prospective-retry-r06
+
+---
+
+## [ERR-20260803-064] Background launch wrote PID in the SSH login directory
+
+**Logged**: 2026-08-03T00:43:00+08:00
+**Priority**: high
+**Status**: resolved for retry-r06 monitoring
+**Area**: experiment-launch
+
+### Summary
+
+Shell precedence backgrounded the `cd && test && nohup` compound command. The following PID write
+therefore ran in the SSH login directory and updated its pre-existing `controller.pid` instead of
+creating a PID file in retry-r06. The experiment controller and retry process launched in the
+correct isolated run root and all result paths remained correct.
+
+### Resolution
+
+Read the live process tree to identify controller PID 2982202, then create the previously absent
+`state/controller/controller.pid` inside retry-r06. Preserve the login-directory file and avoid
+further access beyond read-only verification. Future remote launches must group the background
+command after entering the run root and write `$!` through an explicit absolute run-local path.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-matched-budget-prospective-retry-r06
+- See Also: ERR-20260802-061
+
+---
