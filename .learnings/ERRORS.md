@@ -6,22 +6,42 @@
 
 **Logged**: 2026-08-02T17:17:00+08:00
 **Priority**: high
-**Status**: retry_pending
+**Status**: retry_batch_pending
 **Area**: experiment-scheduling
 
 ### What happened
 `single-pass-single-pocket2mol-1iep-s109-n500-r02` completed three of sixteen
 sampling batches and then failed while requesting another 2.87 GiB. Its process
 held 17.11 GiB and the co-located process held 3.74 GiB, leaving 2.67 GiB free
-on the 23.55 GiB GPU. The other three terminal r02 jobs exited zero and all
-successful evidence remains intact.
+on the 23.55 GiB GPU. The same worker then ran
+`single-pass-single-pocket2mol-3cs9-s83-n500-r02`, which reached nine of sixteen
+batches and failed with the same allocation pattern at 17.07 GiB plus 3.74 GiB.
+The three successful terminal jobs and both failure records remain intact.
 
 ### Resolution
-Keep the failed r02 job and telemetry unchanged. Retry only this exact logical
-job in a fresh amendment root when one authorized GPU can run Pocket2Mol
-exclusively, then let the recovery finalizer consume the retry evidence without
-rerunning any exit-zero job. Schedule two processes per GPU only for
-memory-compatible model pairs.
+Keep every failed r02 job and its telemetry unchanged. After the Pocket2Mol
+lane reaches terminal state, freeze the exact failed-job list and retry only
+those logical jobs in a fresh amendment root on exclusive authorized GPUs.
+Let the recovery finalizer consume retry evidence without rerunning any
+exit-zero job. Schedule two processes per GPU only for memory-compatible model
+pairs.
+
+---
+
+## [ERR-20260802-057] remote status header used a printf option-like format
+
+**Logged**: 2026-08-02T17:24:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: experiment-monitoring
+
+### What happened
+A read-only remote inventory called `printf` with a format beginning in `--`,
+so Bash treated it as an invalid option. Scientific state, processes and files
+were unchanged; the surrounding inventory still returned the required data.
+
+### Resolution
+Use `printf '%s\n' "--label"` for option-like status headers.
 
 ---
 
