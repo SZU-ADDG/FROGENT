@@ -19,6 +19,8 @@ its observed allocation headroom.
 - Keep compatible TargetDiff and DiffSBDD pairs co-located when telemetry
   confirms adequate headroom.
 - Run Pocket2Mol alone or only beside a proven low-memory process.
+- Use batch size 8 for 24 GiB recovery runs when a batch-32 Pocket2Mol
+  trajectory exceeds the card even under exclusive execution.
 - Shard queues by model memory class so a Pocket2Mol-only worker cannot share a
   GPU with a long TargetDiff lane.
 - Preserve completed jobs and recover an OOM through an exact fresh retry root.

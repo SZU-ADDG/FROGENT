@@ -1,0 +1,23 @@
+{
+  "protocol_id": "forge-gauge-matched-budget-prospective-retry-r02",
+  "amends": [
+    "forge-gauge-matched-budget-prospective-r02",
+    "forge-gauge-matched-budget-prospective-retry-r01"
+  ],
+  "frozen_at": "2026-08-02T18:32:00+08:00",
+  "reason": "An r02 Pocket2Mol job exceeded 24 GiB even after its co-located TargetDiff job had finished, showing that the retry-r01 batch size of 32 was not executable on a 24 GiB RTX 4090 for every sampled trajectory.",
+  "prelaunch_disposition": "Retry-r01 was stopped before any retry job state or model inference. Recovery-r03 was stopped before merged state or phase-2 inference.",
+  "failed_job_freeze_rule": "After both original Pocket2Mol workers are terminal, include every r02 Pocket2Mol job with a nonzero exit code and no r02 success; freeze the exact list before retry inference.",
+  "invariants": {
+    "protein_and_ligand_inputs": "unchanged",
+    "method": "pocket2mol",
+    "seeds": "unchanged",
+    "attempt_counts": "unchanged",
+    "batch_size": 8,
+    "threshold": -1,
+    "threshold_ratio": 0.8,
+    "gpu_policy": "physical GPU 6 must be free of compute processes before sequential retries start",
+    "successful_r02_jobs": "never rerun"
+  },
+  "scientific_effect": "Batch size is an execution-memory amendment. Pocket, seed, total attempt budget, generator, evaluator and analysis remain unchanged."
+}

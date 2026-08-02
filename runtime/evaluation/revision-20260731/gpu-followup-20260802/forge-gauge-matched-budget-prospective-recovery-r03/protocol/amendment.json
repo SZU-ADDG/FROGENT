@@ -1,0 +1,9 @@
+{
+  "protocol_id": "forge-gauge-matched-budget-prospective-recovery-r03",
+  "amends": "forge-gauge-matched-budget-prospective-r02",
+  "frozen_at": "2026-08-02T18:24:00+08:00",
+  "reason": "R02 contains terminal Pocket2Mol OOM jobs and its fail-closed controller cannot create Gauge decisions or phase 2.",
+  "merge_rule": "For each of the 105 phase-1 logical tags, use the original r02 result when exit zero; otherwise require an exit-zero exact retry with the same tag. Never rerun an exit-zero job.",
+  "phase_2": "Run the original frozen Gauge policy and 15 round-2 allocations only after the merged phase-1 view contains 105 exit-zero logical jobs.",
+  "scientific_contract": "All pockets, seeds, generators, budgets, evaluation, Gauge policy, ranking and statistical analysis remain unchanged."
+}

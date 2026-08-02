@@ -2,11 +2,28 @@
 
 此文件用于记录命令、远端连接及外部工具错误。
 
+## [ERR-20260802-058] BSD find rejected GNU printf primary
+
+**Logged**: 2026-08-02T18:25:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: experiment-monitoring
+
+### What happened
+The local macOS inventory used GNU `find -printf`, which BSD `find` does not
+support. No project or remote state changed.
+
+### Resolution
+Use `rg --files` for project file inventories and reserve GNU-specific `find`
+formatting for the verified Linux server.
+
+---
+
 ## [ERR-20260802-056] Pocket2Mol exceeded memory under dual-process co-location
 
 **Logged**: 2026-08-02T17:17:00+08:00
 **Priority**: high
-**Status**: retry_batch_pending
+**Status**: batch8_retry_scheduled
 **Area**: experiment-scheduling
 
 ### What happened
@@ -16,12 +33,18 @@ held 17.11 GiB and the co-located process held 3.74 GiB, leaving 2.67 GiB free
 on the 23.55 GiB GPU. The same worker then ran
 `single-pass-single-pocket2mol-3cs9-s83-n500-r02`, which reached nine of sixteen
 batches and failed with the same allocation pattern at 17.07 GiB plus 3.74 GiB.
-The three successful terminal jobs and both failure records remain intact.
+An independent Pocket2Mol lane later failed on
+`single-pass-single-pocket2mol-2hyy-s97-n500-r02` while running alone: the
+process held 20.80 GiB and could not allocate another 3.50 GiB. This establishes
+that batch size 32 can exceed a 24 GiB card even without co-location. The
+successful terminal jobs and all failure records remain intact.
 
 ### Resolution
-Keep every failed r02 job and its telemetry unchanged. After the Pocket2Mol
-lane reaches terminal state, freeze the exact failed-job list and retry only
-those logical jobs in a fresh amendment root on exclusive authorized GPUs.
+Keep every failed r02 job and its telemetry unchanged. Retry-r01 and
+recovery-r03 were stopped before retry or phase-2 inference because batch size
+32 was shown to be infeasible for some trajectories. After both Pocket2Mol
+lanes reach terminal state, freeze the exact failed-job list and retry only
+those logical jobs in retry-r02 on an exclusive GPU with batch size 8.
 Let the recovery finalizer consume retry evidence without rerunning any
 exit-zero job. Schedule two processes per GPU only for memory-compatible model
 pairs.
