@@ -2271,3 +2271,23 @@ The Forge-Gauge geometry follow-up now selects from properties recomputed direct
 SDFs and explicitly separates that analysis from the source property-CSV top-50 summaries.
 
 ---
+## [LRN-20260802-006] advance frozen later tags onto a newly idle GPU
+
+**Logged**: 2026-08-02T22:29:00+08:00
+**Category**: best_practice
+**Area**: gpu scheduling
+
+### Learning
+
+An idle GPU can accelerate an append-only sharded experiment without adding a scientific arm.
+Choose unstarted logical tags several positions behind a live shard's current job, validate every
+scientific field against the master queue, and launch them under the same state/result roots. The
+original worker then skips each claimed or terminal tag through the existing PID/exit-code guard.
+
+### Applied Change
+
+The Forge-Gauge scheduling accelerator assigned four later TargetDiff jobs and four later DiffSBDD
+jobs to two memory-compatible workers on GPU 6. The run records this as scheduling-only and waits
+for all eight source tags before writing its final manifest.
+
+---
