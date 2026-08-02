@@ -1,5 +1,28 @@
 # Learnings
 
+## [LRN-20260802-002] make dual-process scheduling model-memory-aware
+
+**Logged**: 2026-08-02T17:17:00+08:00
+**Priority**: high
+**Status**: applied_to_recovery_plan
+**Area**: gpu-scheduling
+
+### Summary
+Two workers per GPU is a throughput target that requires a memory-compatibility
+rule. Pocket2Mol can grow beyond 17 GiB during autoregressive sampling, so it
+must receive an exclusive GPU whenever the co-located job would leave less than
+its observed allocation headroom.
+
+### Application
+
+- Use historical and live peak memory by model when assigning pairs.
+- Keep compatible TargetDiff and DiffSBDD pairs co-located when telemetry
+  confirms adequate headroom.
+- Run Pocket2Mol alone or only beside a proven low-memory process.
+- Preserve completed jobs and recover an OOM through an exact fresh retry root.
+
+---
+
 ## [LRN-20260802-TRIOMOL2-PAPER-SCOPE] correction
 
 **Logged**: 2026-08-02T09:30:00+08:00

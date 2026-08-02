@@ -2,6 +2,29 @@
 
 此文件用于记录命令、远端连接及外部工具错误。
 
+## [ERR-20260802-056] Pocket2Mol exceeded memory under dual-process co-location
+
+**Logged**: 2026-08-02T17:17:00+08:00
+**Priority**: high
+**Status**: retry_pending
+**Area**: experiment-scheduling
+
+### What happened
+`single-pass-single-pocket2mol-1iep-s109-n500-r02` completed three of sixteen
+sampling batches and then failed while requesting another 2.87 GiB. Its process
+held 17.11 GiB and the co-located process held 3.74 GiB, leaving 2.67 GiB free
+on the 23.55 GiB GPU. The other three terminal r02 jobs exited zero and all
+successful evidence remains intact.
+
+### Resolution
+Keep the failed r02 job and telemetry unchanged. Retry only this exact logical
+job in a fresh amendment root when one authorized GPU can run Pocket2Mol
+exclusively, then let the recovery finalizer consume the retry evidence without
+rerunning any exit-zero job. Schedule two processes per GPU only for
+memory-compatible model pairs.
+
+---
+
 ## [ERR-20260730-SEC1] staged_secret_scan_regex_quote_collision
 
 **Logged**: 2026-07-30T23:59:30+08:00
