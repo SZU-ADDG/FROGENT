@@ -2247,5 +2247,8 @@ full logical-job coverage at the merge boundary.
   exit-zero replacements without modifying earlier retry roots.
 - Freeze one tag-to-source map only after every logical job has a validated
   result, then begin selection and downstream computation.
+- Parameterize the exact-retry executor by its fresh run root so later frozen
+  snapshots reuse one validated memory-safe implementation without touching
+  any earlier run.
 
 ---
