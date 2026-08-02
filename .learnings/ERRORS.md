@@ -36,8 +36,10 @@ batches and failed with the same allocation pattern at 17.07 GiB plus 3.74 GiB.
 An independent Pocket2Mol lane later failed on
 `single-pass-single-pocket2mol-2hyy-s97-n500-r02` while running alone: the
 process held 20.80 GiB and could not allocate another 3.50 GiB. This establishes
-that batch size 32 can exceed a 24 GiB card even without co-location. The
-successful terminal jobs and all failure records remain intact.
+that batch size 32 can exceed a 24 GiB card even without co-location. A second
+exclusive-GPU job, `iterative-round1-pocket2mol-2hyy-s109-n250-r02`, also
+terminated nonzero before the lane completed. The successful terminal jobs and
+all five failure records remain intact.
 
 ### Resolution
 Keep every failed r02 job and its telemetry unchanged. Retry-r01 and
