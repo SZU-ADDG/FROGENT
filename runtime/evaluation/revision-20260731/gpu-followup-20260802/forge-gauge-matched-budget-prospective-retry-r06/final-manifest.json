@@ -1,0 +1,41 @@
+{
+  "status": "complete",
+  "created_at": "2026-08-03T00:47:56+08:00",
+  "protocol_id": "forge-gauge-matched-budget-prospective-retry-r06",
+  "source_protocol_id": "forge-gauge-matched-budget-prospective-r02",
+  "expected_jobs": 2,
+  "exit_zero_jobs": 2,
+  "jobs": [
+    {
+      "job_index": 25,
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "pocket2mol",
+      "pocket": "2HYY",
+      "seed": 83,
+      "num_samples": 500,
+      "tag": "single-pass-single-pocket2mol-2hyy-s83-n500-r02",
+      "batch_size": 8,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T00:41:43+08:00",
+      "finished_at": "2026-08-03T00:45:45+08:00"
+    },
+    {
+      "job_index": 73,
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "pocket2mol",
+      "pocket": "2HYY",
+      "seed": 97,
+      "num_samples": 250,
+      "tag": "iterative-round1-pocket2mol-2hyy-s97-n250-r02",
+      "batch_size": 8,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T00:45:45+08:00",
+      "finished_at": "2026-08-03T00:47:56+08:00"
+    }
+  ],
+  "amendment": "Exact terminal failed logical jobs from the frozen retry snapshot rerun sequentially at batch size 8; scientific inputs, seeds and total attempt counts are unchanged."
+}
