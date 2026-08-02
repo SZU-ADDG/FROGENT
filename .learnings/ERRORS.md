@@ -8438,3 +8438,31 @@ command after entering the run root and write `$!` through an explicit absolute 
 - See Also: ERR-20260802-061
 
 ---
+
+## [ERR-20260803-065] Forge-Gauge monitor checked the wrong job-state depth
+
+**Logged**: 2026-08-03T05:39:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: remote monitoring
+
+### Summary
+
+The first hourly status probe looked for each logical job directly below `state/<tag>` and
+therefore reported all 105 source jobs as unstarted. The active run stores logical job state below
+`state/jobs/<tag>`; accelerator controller PIDs also live below each accelerator's `state/`
+directory.
+
+### Resolution
+
+Inspect the frozen worker and finalizer scripts before interpreting a new run layout, then rerun
+the probe against `state/jobs/<tag>`. The corrected snapshot reported 69 success, 10 failed, 10
+running and 16 unstarted jobs before accelerator-r03 was launched. No experiment state was changed
+by the incorrect read-only probe.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-matched-budget-prospective-r02
+- See Also: ERR-20260802-061
+
+---
