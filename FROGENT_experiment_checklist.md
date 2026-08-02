@@ -162,7 +162,7 @@
 - [x] 核实 Retrieve、Forge、Gauge 和 orchestrator 的真实工具与数据流。证据：real-agent job packets、evidence-propagation adapter、matched-resource panel 与 production regression。
 - [ ] 核实 DrugBank 内容进入哪个 Agent 或 context。🟡 **第三批部分完成**：PubChem cross-reference 与 structured proxy 已审计；DrugBank direct/API 返回 403，生产 context 注入仍需部署配置。
 - [x] 核实 task state、working context、working memory 和 persistent memory 的真实实现。证据：本地/远端 73 项 evidence regression，以及 research-eval fixture replay。
-- [ ] 核实 TargetDiff、Pocket2Mol、DiffSBDD、PocketFlow、MolCRAFT 的部署与可复现性。🔵 **运行中**：前三项 checkpoint、配置和 canary 已核实，正式 45-job matrix 已启动；两个生产目录中尚未发现 PocketFlow/MolCRAFT 权重。
+- [ ] 核实 TargetDiff、Pocket2Mol、DiffSBDD、PocketFlow、MolCRAFT 的部署与可复现性。🟡 **范围已核实**：前三项 checkpoint、配置、canary、primary/extension matrices 均已完成；两个生产目录仍未发现 PocketFlow/MolCRAFT 权重。DiffBP 仅发现配置和 source，配置引用的 checkpoint 缺失；DecompDiff 未发现可执行 checkpoint。
 - [ ] 核实 MDockPeP2、ADCP、HADDOCK、pepATTRACT 和 rDock 的 endpoint、版本、权限和回退。🟡 **部分完成**：用户确认 MDockPeP2 与 ADCP 为正式多肽对接方法；MDockPeP2 endpoint/source/history 已核实，历史输出完成负向审计，隔离 prospective runtime 受 Modeller license 限制；ADCP 官方 v1.1 隔离 runtime 正在准备；两个生产目录中未发现 ADCP、HADDOCK、pepATTRACT 或 rDock 安装。
 - [ ] 核实参数微调、few-shot prompting 和 in-context learning 的真实配置。
 - [ ] 核实生产/演示环境与论文实验环境是否一致。🟡 **首轮部分完成**：已确认远端系统 Python 3.10 与当前 `StrEnum` runtime contract 不一致，并保留失败证据。
@@ -326,11 +326,11 @@
 ### S3-B｜生成模型比较
 
 - [x] 每个论文范围内 live 生成模型独立运行：TargetDiff、Pocket2Mol、DiffSBDD 的 primary、extension 与 combined matrices 已分别完成 45/45、45/45、90/90。TrioMol2 不进入该比较。
-- [ ] 固定最佳单模型。
-- [ ] FROGENT 单轮模型选择。
-- [ ] Single-pass Forge→Gauge。
-- [ ] Iterative Forge↔Gauge。
-- [ ] 记录每个 pocket 的模型选择、Gauge 反馈、候选淘汰和停止原因。
+- [ ] 固定最佳单模型。🔵 **运行中**：前瞻 r02 在 5 pockets × 3 seeds 上运行每 cell 1,500 次 TargetDiff；TargetDiff 的固定选择依据已由既有六 seed valid/QED 排名冻结。
+- [ ] FROGENT 单轮模型选择。🔵 **运行中**：matched-budget `single_pass` 为每个 pocket–seed 分配 TargetDiff/Pocket2Mol/DiffSBDD 各 500 次，共 1,500 attempts。
+- [ ] Single-pass Forge→Gauge。🔵 **运行中**：候选池、Gauge candidate score、top-50 汇总和 paired cell 统计均已预注册，等待 105 个 phase-1 jobs。
+- [ ] Iterative Forge↔Gauge。🔵 **运行中**：round 1 为三模型各 250 次；controller 将按冻结的 `0.50*valid_rate + 0.30*QED + 0.20*favorable_SA` 自动选择模型并追加 750 次 round 2。
+- [ ] 记录每个 pocket 的模型选择、Gauge 反馈、候选淘汰和停止原因。🔵 **运行中**：r02 将保存 `gauge-decisions.json`、两阶段 jobs、telemetry 与 final manifest；停止规则为 matched 1,500-attempt budget 耗尽。r01 保留为 0-inference launcher-path failure。
 
 ### S3-C｜新颖性与设计指标
 
@@ -369,7 +369,7 @@
 - [ ] 生成模型与 orchestration 对照。
 - [ ] raw/minimized/redocked 对照。
 - [ ] Glucagon 可审计轨迹。
-- [ ] 最终 run 路径和 manifest。🟡 **部分完成**：CBGBench primary 45/45、extension 45/45、combined 90/90、六 seed stability、novelty/pocket、ChEMBL known-active 与 CrossDocked training-proxy manifests 均已冻结；ADCP 正式输出与 scorer summary 已完成。TrioMol2 已排除；TrioPep supplementary panel 继续由 control plane 推进。
+- [ ] 最终 run 路径和 manifest。🟡 **部分完成**：CBGBench primary 45/45、extension 45/45、combined 90/90、六 seed stability、novelty/pocket、ChEMBL known-active 与 CrossDocked training-proxy manifests 均已冻结；ADCP 正式输出与 scorer summary 已完成。Forge–Gauge matched-budget prospective r02 正在运行并将自动生成 final manifest；TrioMol2 已排除，TrioPep supplementary panel 继续由 control plane 推进。
 
 ### S3 完成标准
 

@@ -1,0 +1,55 @@
+{
+  "protocol_id": "forge-gauge-matched-budget-prospective-r02",
+  "frozen_at": "2026-08-02T09:51:00+08:00",
+  "reviewer_question": "R3-M6 and R3-M5c: separate the contribution of FROGENT model routing and Gauge feedback from the underlying de novo generators.",
+  "status_at_freeze": "R01 exited before creating any job state or running model inference because workers received a relative queue path. R02 changes queue-path resolution only; no prospective seed has been inspected.",
+  "amendment_from_r01": "Resolve and validate the job TSV as an absolute path before workers change into the CBGBench workspace. Scientific conditions, seeds, budgets, endpoints and analysis remain unchanged.",
+  "scope": {
+    "pockets": ["1IEP", "2HYY", "3CS9", "4WA9", "1M17"],
+    "prospective_seeds": [83, 97, 109],
+    "generators": ["targetdiff", "pocket2mol", "diffsbdd"],
+    "excluded": {
+      "TrioMol2": "The user confirmed that TrioMol2 is absent from the manuscript.",
+      "PocketFlow": "No executable checkpoint was found in the two user-specified production roots.",
+      "MolCRAFT": "No executable checkpoint was found in the two user-specified production roots.",
+      "DiffBP": "Configuration and source are present, but the referenced checkpoint is absent.",
+      "DecompDiff": "No executable checkpoint was found in the two user-specified production roots."
+    }
+  },
+  "common_generation_contract": {
+    "protein_and_ligand_inputs": "Reuse the frozen five-pocket CBGBench inputs from gpu-final/cbgbench.",
+    "pocket_definition": "Reference-ligand-defined 10 A pocket.",
+    "attempt_budget_per_pocket_seed_condition": 1500,
+    "batch_size": 32,
+    "threshold": -1,
+    "threshold_ratio": 0.8,
+    "evaluator": "The same patched CBGBench reconstruction, RDKit QED and favorable normalized SA evaluator used by the completed six-seed experiment."
+  },
+  "conditions": {
+    "fixed_best": {
+      "allocation": "1500 TargetDiff attempts.",
+      "freeze_basis": "TargetDiff ranked first for valid rate and QED in both the three-seed primary and six-seed pooled results."
+    },
+    "single_pass": {
+      "allocation": "500 attempts from each of TargetDiff, Pocket2Mol and DiffSBDD; Gauge ranks the pooled valid candidates once."
+    },
+    "iterative": {
+      "round_1": "250 attempts from each generator (750 total).",
+      "gauge_policy": "For each pocket-seed cell, select the generator maximizing 0.50*valid_rate + 0.30*mean_QED + 0.20*mean_favorable_SA. Unique-valid ratio breaks exact score ties, followed by the frozen order TargetDiff, DiffSBDD, Pocket2Mol.",
+      "round_2": "Allocate the remaining 750 attempts to the selected generator with seed + 10000.",
+      "stop_rule": "Stop after round 2 because the matched 1500-attempt budget is exhausted."
+    }
+  },
+  "candidate_ranking": {
+    "score": "0.70*QED + 0.30*favorable_normalized_SA",
+    "primary_summary": "Mean score, QED and favorable SA among the top 50 valid candidates per pocket-seed cell.",
+    "secondary_summary": "Valid rate, unique-valid rate, total valid candidates and reconstruction errors.",
+    "geometry_follow_up": "Run the already frozen pocket/clash evaluator on the selected top candidates after the generation manifest is terminal."
+  },
+  "analysis": {
+    "unit": "pocket-seed cell (n=15 paired cells)",
+    "comparisons": ["single_pass - fixed_best", "iterative - fixed_best", "iterative - single_pass"],
+    "statistics": "Report paired cell differences, Wilcoxon signed-rank p-values when defined, and pocket-cluster bootstrap confidence intervals.",
+    "claim_boundary": "This tests deterministic, matched-budget model routing and one feedback-driven reallocation step. It does not establish unconstrained molecular refinement or experimental affinity improvement."
+  }
+}

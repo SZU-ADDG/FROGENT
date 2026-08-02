@@ -27,6 +27,29 @@ Exclude TrioMol2 from manuscript claims, completion criteria, scheduled monitori
 
 ---
 
+## [LRN-20260802-001] resolve worker inputs before changing directories
+
+**Logged**: 2026-08-02T09:50:00+08:00
+**Priority**: high
+**Status**: applied
+**Area**: experiment-launch
+
+### Summary
+Long-running workers must convert queue, protocol and state inputs to validated
+absolute paths before changing into a model workspace.
+
+### Application
+
+- Resolve the job TSV at the launcher boundary and reject a missing file.
+- Let the worker validate the absolute TSV again before `cd`.
+- Accept a launch only after job-state directories and nonzero GPU utilization
+  confirm that model inference has started.
+- Keep remote controller progress append-only; when controller logic must be
+  corrected during a live run, stop the exact owned PID and create a new script,
+  PID record and log file without replacing the running jobs or prior evidence.
+
+---
+
 ## [LRN-20260802-RANK-VS-ABSOLUTE-STABILITY] best_practice
 
 **Logged**: 2026-08-02T00:56:00+08:00

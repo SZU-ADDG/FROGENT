@@ -27,6 +27,27 @@ in a reviewed project file.
 
 ---
 
+## [ERR-20260802-055] Forge-Gauge workers received a relative queue path
+
+**Logged**: 2026-08-02
+**Status**: resolved
+**Area**: experiment-launch
+
+### What happened
+The r01 launcher passed `protocol/phase1-jobs.tsv` to each worker. The worker
+changed into the isolated CBGBench workspace before opening the queue, so all
+12 workers exited at `tail` with no job directory and no model inference. The
+controller was stopped after exact PID and command verification; the failed run
+root remains intact.
+
+### Resolution
+Preserve r01 as launch-failure evidence. In the fresh r02 run, resolve and
+validate the queue path before any working-directory change, pass the absolute
+path to workers, and require live job state plus GPU telemetry before accepting
+the launch.
+
+---
+
 ## [ERR-20260802-054] Remote PID-file display helper lost its positional argument
 
 **Logged**: 2026-08-02T09:32:00+08:00
