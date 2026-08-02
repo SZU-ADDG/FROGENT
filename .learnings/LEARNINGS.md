@@ -2203,3 +2203,26 @@ TrioPep, AlphaFold 3 and ESMFold are explicitly scoped as supplementary
 provider or sequence-to-complex evidence.
 
 ---
+
+## [LRN-20260802-003] derive queue ownership from the scheduler invariant
+
+**Logged**: 2026-08-02T19:34:00+08:00
+**Priority**: high
+**Area**: gpu-rebuttal
+
+### Learning
+
+For sharded experiment queues, derive ownership from the executable scheduler
+rule and the frozen job index. Labels such as method or current worker contents
+do not define a complete lane when rows are assigned by modulo sharding.
+
+### Application
+
+- Compute worker membership as `job_index % worker_count` when diagnosing a
+  shard or waiting for a frozen subset.
+- Freeze retries from explicit terminal state at a timestamped snapshot, or
+  wait for the entire source phase to become terminal.
+- Require complete exit-zero replacement coverage before merging recovery
+  sources or starting downstream selection.
+
+---

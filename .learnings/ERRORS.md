@@ -8279,3 +8279,26 @@ This correction aligns completion with the preregistered membership and loader
 semantics without changing any molecular metric.
 
 ---
+
+## [ERR-20260802-059] Forge-Gauge retry freeze assumed method-specific worker lanes
+
+**Logged**: 2026-08-02
+**Status**: resolved
+**Area**: gpu-rebuttal
+
+### What happened
+Retry-r02 waited for worker shards 4 and 10, then required every Pocket2Mol job
+to be terminal. The 105-job queue assigns rows by `job_index % 12`, so
+Pocket2Mol rows also remained on other live shards. The freeze helper stopped
+with `Pocket2Mol lane is not terminal` before creating retry job state or model
+inference. Recovery-r04 still depended on retry-r02 and was stopped before
+phase-1 merge, Gauge selection or phase-2 inference.
+
+### Resolution
+Preserve retry-r02 and recovery-r04 as pre-inference failure evidence. Freeze
+the five exact nonzero terminal tags at a timestamped snapshot in retry-r03,
+run them sequentially at batch size 8 on exclusive GPU 6, and use recovery-r05
+with an explicit full-coverage check before any merge. Later source failures
+must enter a fresh exact retry and recovery root.
+
+---
