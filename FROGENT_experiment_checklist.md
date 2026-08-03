@@ -102,6 +102,7 @@
 - [x] Error-attribution manuscript block：`docs/manuscript/error-attribution-rebuttal-blocks.md` 已覆盖 retrieval、memory propagation、repeat variation、PLIP schema、small-molecule docking、generation parsing、MDockPeP2 和 ADCP，包含可直接进入 Results/Methods/SI 的表述及 R2-3b、R2-5、R3-m1、R3-M3 point-by-point responses。
 - [x] Peptide workflow manuscript block：`docs/manuscript/peptide-workflow-rebuttal-blocks.md` 已分离 structure prediction 与 peptide docking，汇总 ADCP、MDockPeP2、ESMFold、AF3、TrioPep 的真实状态、结构结果、失败边界及 R1-5a、R1-5b、R1-9d、R1-9e 回复。
 - [x] Architecture/retrieval manuscript block：`docs/manuscript/architecture-retrieval-rebuttal-blocks.md` 已汇总 matched-resource、real-agent ablation、structured retrieval、live evidence 与 downstream propagation，形成 Methods、Results、SI 表及 R3-M2a/b、R3-M3、R3-M4、R3-M5a/b/d、R2-3a 回复块，并删除宽泛 multi-agent superiority 解释。
+- [x] Benchmark corrections manuscript block：`docs/manuscript/benchmark-corrections-rebuttal-blocks.md` 已把 HLE、QED、SA、virtual screening、retrosynthesis 和八任务命名/尺度问题整理为统一 disposition table、Methods、Results 及 R1-8a–e、R2-1a、R2-3c、R2-7a/b、R3-M1 回复块；无法绑定原始 case/scorer 的 headline values 保持 `not_measured`。
 - [ ] MDockPeP2 prospective rerun。🟠 **外部凭据依赖**：19 GiB 隔离 runtime 已复制，Modeller 9.13 license 未进入可执行副本；禁止复制第三方 license credential。MDockPeP2 历史证据与 ADCP prospective panel 共同承担正式 docking 主线。
 
 ### 首轮证据入口

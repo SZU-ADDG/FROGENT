@@ -65,7 +65,7 @@ CPU experiments, negative results, access audits or reproducibility evidence lis
 
 ## Latest operational verification
 
-At 2026-08-04 02:59 +08:00, the recovery-r06, phase2-accelerator-r01 and geometry-r03 final
+At 2026-08-04 03:59 +08:00, the recovery-r06, phase2-accelerator-r01 and geometry-r03 final
 manifests remained readable and unchanged. The six authorized experiment GPUs were idle; no
 closed panel was resubmitted. The supplementary TrioPep poller remained live with four queued
 tasks and zero download failures. This operational state adds no scientific result and does not
@@ -85,6 +85,11 @@ The architecture and retrieval methods, component-specific effects, structured-s
 live-evidence adjudication and downstream propagation boundaries are consolidated in
 `docs/manuscript/architecture-retrieval-rebuttal-blocks.md`. It retains the tested Retrieve signal
 and removes a broad multi-agent-superiority interpretation.
+
+The benchmark identity, metric direction, score-boundary and point-by-point corrections are
+consolidated in `docs/manuscript/benchmark-corrections-rebuttal-blocks.md`. It separates
+independently reproduced panels from submitted headline values that require original cases and
+scorers.
 
 The cross-layer failure denominator, recovery action and response-language mapping are consolidated
 in `docs/manuscript/error-attribution-rebuttal-blocks.md`. It reuses the frozen evidence in this
