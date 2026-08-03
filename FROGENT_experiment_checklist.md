@@ -366,7 +366,7 @@
 ### S3 产出
 
 - [ ] M-CONF。
-- [ ] T-3。🟡 **核心生成结果已稿件化**：`docs/manuscript/forge-gauge-rebuttal-blocks.md` 已包含三条件主表、四项 paired contrasts、geometry/failure accounting 与 R3-M5c/R3-M6 回复块；仍需与 peptide docking 结果合并并分配最终表号。
+- [ ] T-3。🟡 **核心生成结果已稿件化**：`docs/manuscript/forge-gauge-rebuttal-blocks.md` 已包含三条件 matched-budget 主表和关键 paired contrasts；`docs/manuscript/cbgbench-rebuttal-blocks.md` 已包含三模型 primary/replication/pooled、六 seed stability、novelty 与 pocket/clash 表述。仍需与 peptide docking 结果合并并分配最终表号。
 - [ ] 构象准备流程图和参数表。
 - [ ] 生成模型与 orchestration 对照。
 - [ ] raw/minimized/redocked 对照。
