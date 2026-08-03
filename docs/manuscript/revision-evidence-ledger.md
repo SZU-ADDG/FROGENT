@@ -62,3 +62,11 @@ fields remain `not_measured`. The minimum author-facing handoff for the inputs b
 
 These missing inputs constrain the affected headline claims. They do not invalidate the completed
 CPU experiments, negative results, access audits or reproducibility evidence listed above.
+
+## Latest operational verification
+
+At 2026-08-03 22:54 +08:00, the recovery-r06, phase2-accelerator-r01 and geometry-r03 final
+manifests remained readable and unchanged. The six authorized experiment GPUs were idle; no
+closed panel was resubmitted. The supplementary TrioPep poller remained live with four queued
+tasks and zero download failures. This operational state adds no scientific result and does not
+change any claim disposition in the ledger.
