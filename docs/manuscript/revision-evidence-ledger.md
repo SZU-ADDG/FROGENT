@@ -65,7 +65,7 @@ CPU experiments, negative results, access audits or reproducibility evidence lis
 
 ## Latest operational verification
 
-At 2026-08-03 23:56 +08:00, the recovery-r06, phase2-accelerator-r01 and geometry-r03 final
+At 2026-08-04 00:56 +08:00, the recovery-r06, phase2-accelerator-r01 and geometry-r03 final
 manifests remained readable and unchanged. The six authorized experiment GPUs were idle; no
 closed panel was resubmitted. The supplementary TrioPep poller remained live with four queued
 tasks and zero download failures. This operational state adds no scientific result and does not
@@ -78,3 +78,8 @@ the frozen results above.
 The cross-layer failure denominator, recovery action and response-language mapping are consolidated
 in `docs/manuscript/error-attribution-rebuttal-blocks.md`. It reuses the frozen evidence in this
 ledger and introduces no new performance claim.
+
+The peptide-provider roles, coordinate-grounded results and corresponding response language are
+consolidated in `docs/manuscript/peptide-workflow-rebuttal-blocks.md`. The document keeps
+sequence-to-complex prediction separate from docking and preserves the prospective MDockPeP2 and
+queued TrioPep boundaries.

@@ -100,6 +100,7 @@
 - [x] 2026-08-03 22:54 终态复核：上述三项 Forge–Gauge final manifest 保持可读且未变化；GPU 1/3/4/5/6/7 空闲，GPU 0/2 既有进程未干预，磁盘剩余约 404 GB。TrioPep supplementary panel 为 4 queued、0 download failures，server poller 存活。无符合透明协议且能改变当前主张的新 GPU 实验，已闭合面板保持停止。
 - [x] 剩余问题 closure matrix：`docs/manuscript/unresolved-issues-closure-matrix.md` 已区分作者输入阻塞、Agent-owned 写作/交付和唯一有条件的新实验，并为每项记录缺失时的稿件收窄方案。
 - [x] Error-attribution manuscript block：`docs/manuscript/error-attribution-rebuttal-blocks.md` 已覆盖 retrieval、memory propagation、repeat variation、PLIP schema、small-molecule docking、generation parsing、MDockPeP2 和 ADCP，包含可直接进入 Results/Methods/SI 的表述及 R2-3b、R2-5、R3-m1、R3-M3 point-by-point responses。
+- [x] Peptide workflow manuscript block：`docs/manuscript/peptide-workflow-rebuttal-blocks.md` 已分离 structure prediction 与 peptide docking，汇总 ADCP、MDockPeP2、ESMFold、AF3、TrioPep 的真实状态、结构结果、失败边界及 R1-5a、R1-5b、R1-9d、R1-9e 回复。
 - [ ] MDockPeP2 prospective rerun。🟠 **外部凭据依赖**：19 GiB 隔离 runtime 已复制，Modeller 9.13 license 未进入可执行副本；禁止复制第三方 license credential。MDockPeP2 历史证据与 ADCP prospective panel 共同承担正式 docking 主线。
 
 ### 首轮证据入口
@@ -532,7 +533,7 @@
 
 - [ ] Track B 完成 global-context、Retrieve、Gauge、动态规划和故障回退条件。
 - [ ] Track C 完成 Forge–Gauge 迭代、raw/minimized/redocked 和 PLIP。🟡 **范围更新**：CPU raw/minimized/redocked 与 PLIP 已完成；TrioMol2 candidate pool 已从论文与大修完成条件排除，不再承担 Forge–Gauge 证据。
-- [ ] Track C 完成 Glucagon 与参考肽集的构象/docking runs。🔵 **运行中**：8 个 GLP1R–肽 AF3 任务排队，结构结果完成后进入 interface 与 docking 分析。
+- [x] Track C 完成 Glucagon 与参考肽集的构象/docking runs。ADCP 9/9、ESMFold 24/24 candidate + 9/9 reference、AF3 8/8 和 MDockPeP2 历史审计均已终态；TrioPep 4-task supplementary panel 保持 queued 且不进入完成条件，prospective MDockPeP2 因授权 runtime 缺失保持 `not_measured`。
 - [ ] Track D 完成 citation support、conflict detection、uncertainty 和 downstream propagation。🟡 **提前部分完成**：citation identifier metrics、conflict detection、gap visibility 和 revocation 已完成；semantic support 与 downstream propagation 待补。
 - [ ] Track G 完成首个可用版本并开始 smoke test。
 
