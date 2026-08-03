@@ -173,6 +173,8 @@ class WebAppTests(unittest.TestCase):
             upload = runtime / "uploads" / "paper.txt"
             upload.parent.mkdir()
             upload.write_text("attachment", encoding="utf-8")
+            structure = runtime / "uploads" / "candidate.pdb"
+            structure.write_text("ATOM      1  C   LIG A   1       0.000   0.000   0.000\n", encoding="utf-8")
             config = WebLaunchConfig(ROOT, runtime, "test-secret",
                 "sqlite:///" + str(runtime / "app.sqlite3"), runtime / "memory.sqlite3")
             models, service = _models(), _Service()
@@ -190,7 +192,9 @@ class WebAppTests(unittest.TestCase):
                     "password": "pw"}).get_json()["success"])
                 response = client.post("/api/chat", json={"chat_id": "chat-1",
                     "message": "Assess LRRK2", "files": [{"filename": "paper.txt",
-                    "path": str(upload), "is_molecular": False, "format": "txt"}]}, buffered=True)
+                    "path": str(upload), "is_molecular": False, "format": "txt"},
+                    {"filename": "candidate.pdb", "path": str(structure),
+                    "is_molecular": True, "format": "pdb"}]}, buffered=True)
             self.assertEqual("", stdout.getvalue())
             body = response.get_data(as_text=True)
             self.assertIn('"content":"source-backed answer"', body)
@@ -201,6 +205,16 @@ class WebAppTests(unittest.TestCase):
                 json={"user_id": "user-alice", "chat_id": "chat-1"},
             ).get_json()["chat_session"]
             self.assertEqual(["paper.txt"], [item["filename"] for item in restored["files"]])
+            self.assertNotIn("path", restored["files"][0])
+            self.assertEqual(["candidate.pdb"], [item["filename"] for item in restored["molecules"]])
+            molecule = restored["molecules"][0]
+            self.assertNotIn("path", molecule)
+            self.assertEqual(f"/api/files/{molecule['id']}/download", molecule["download_url"])
+            downloaded = client.get(molecule["download_url"])
+            self.assertEqual(200, downloaded.status_code)
+            self.assertEqual(structure.read_bytes(), downloaded.data)
+            self.assertIn("candidate.pdb", downloaded.headers["Content-Disposition"])
+            downloaded.close()
             file_id = restored["files"][0]["id"]
             self.assertEqual(
                 400,
@@ -209,10 +223,17 @@ class WebAppTests(unittest.TestCase):
                     json={"file_id": file_id, "is_visible": "yes"},
                 ).status_code,
             )
+            client.post("/api/logout")
+            client.post("/api/register", json={"username": "bob", "password": "pw",
+                "email": "b@example.test"})
+            client.post("/api/login", json={"username": "bob", "password": "pw"})
+            self.assertEqual(404, client.get(molecule["download_url"]).status_code)
             user_id, payload, history = service.calls[0]
             self.assertEqual((user_id, payload["chat_id"], payload["message"]),
                              ("user-alice", "chat-1", "Assess LRRK2"))
-            self.assertEqual(payload["files"], [{"path": str(upload)}])
+            self.assertEqual(payload["files"], [
+                {"path": str(upload)}, {"path": str(structure)}
+            ])
             self.assertEqual(history, ())
             saved = models.ChatHistory.records[0].message_data
             self.assertTrue(saved[0]["isUser"])

@@ -8689,3 +8689,8 @@ an assumed glob.
 - Related Files: runtime/evaluation/revision-20260730/nongpu-final/telemetry
 
 ---
+## 2026-08-04 — authenticated attachment download route missed helper import
+
+- Symptom: `python -m unittest tests.test_web_app` failed with `NameError: name 'file_path' is not defined` in `download_chat_file`.
+- Cause: the route reused `app.chat.file_path` without adding it to the explicit import list in `app/server.py`.
+- Resolution: import `file_path` and rerun the focused web-app tests before commit.

@@ -147,9 +147,27 @@ function messageNode(message) {
 
 function renderMessages() {
     el.messages.replaceChildren();
-    const messages = state.chats[state.activeChatId]?.messages || [];
+    const chat = state.chats[state.activeChatId] || {};
+    const messages = chat.messages || [];
     if (!messages.length) el.messages.append(welcome());
     for (const message of messages) el.messages.append(messageNode(message));
+    const molecules = Array.isArray(chat.molecules) ? chat.molecules : [];
+    if (molecules.length) {
+        const panel = document.createElement("section");
+        panel.className = "molecule-downloads";
+        const heading = document.createElement("h3");
+        heading.textContent = "Molecular structures";
+        panel.append(heading);
+        for (const molecule of molecules) {
+            const link = document.createElement("a");
+            link.className = "molecule-download";
+            link.href = molecule.download_url;
+            link.download = molecule.filename || "structure";
+            link.textContent = `Download ${molecule.filename || "structure"}`;
+            panel.append(link);
+        }
+        el.messages.append(panel);
+    }
     el.messages.scrollTop = el.messages.scrollHeight;
 }
 

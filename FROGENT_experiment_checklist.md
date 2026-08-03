@@ -551,7 +551,7 @@
 - [ ] 完成必要重复运行、稳定性分析和盲评分歧解决。🟡 **提前部分完成**：Europe PMC、Vina、Dimorphite 和 RCSB 重复运行已完成；盲评分歧待正式 judge。
 - [ ] 完成配对统计、effect size、CI、Holm correction 和逐案例错误分析。🟡 **提前部分完成**：Capability-52 95% CI 和逐案例错误表已完成；论文八项配对统计、effect size 与 Holm correction 待原始数据。
 - [ ] 完成所有主表、补充表、pose 图、交互图和性能—成本图。
-- [ ] Track G 完成 Markdown/PDF/Word、结构下载和 viewer 验证。
+- [ ] Track G 完成 Markdown/PDF/Word、结构下载和 viewer 验证。🟡 **结构下载已完成**：聊天历史不再暴露服务器绝对路径；普通附件与分子结构均获得同源、登录态和 owner-scoped 下载 URL，跨用户访问返回 404；前端已展示分子结构下载卡。Markdown/PDF/Word 导出与 3D viewer 仍待完成。
 - [ ] Track E 完成干净环境安装和最小复现实例首轮。
 
 ### Day 10｜2026-08-08

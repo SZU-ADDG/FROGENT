@@ -6,11 +6,12 @@ from datetime import datetime
 from pathlib import Path
 from uuid import uuid4
 
-from flask import Flask, Response, jsonify, request, send_from_directory, session
+from flask import Flask, Response, jsonify, request, send_file, send_from_directory, session
 from flask import stream_with_context
 from werkzeug.utils import secure_filename
 
 from app.chat import (
+    file_path,
     load_chat_sessions,
     new_chat,
     require_text,
@@ -185,6 +186,25 @@ def _register_routes(web, state, app_root):
             is_clear=payload.get("is_clear"), is_visible=payload.get("is_visible")
         )
         return jsonify(success=bool(changed), message="更新成功" if changed else "更新失败")
+
+    @web.get("/api/files/<int:file_id>/download")
+    def download_chat_file(file_id):
+        user_id = _session_user(sessions)
+        record = models.ChatFiles.get_by_id(file_id)
+        if (
+            record is None
+            or record.user_id != user_id
+            or bool(getattr(record, "is_clear", False))
+        ):
+            return jsonify(success=False, message="文件不存在"), 404
+        path = Path(file_path(record.to_dict(), state["uploads"]))
+        download_name = secure_filename(record.filename) or path.name
+        return send_file(
+            path,
+            as_attachment=True,
+            download_name=download_name,
+            max_age=0,
+        )
 
 
 def _payload():
