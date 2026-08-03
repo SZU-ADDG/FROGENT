@@ -70,3 +70,7 @@ manifests remained readable and unchanged. The six authorized experiment GPUs we
 closed panel was resubmitted. The supplementary TrioPep poller remained live with four queued
 tasks and zero download failures. This operational state adds no scientific result and does not
 change any claim disposition in the ledger.
+
+The remaining author-input and Agent-owned closure work is indexed in
+`docs/manuscript/unresolved-issues-closure-matrix.md`; that matrix does not add evidence or alter
+the frozen results above.
