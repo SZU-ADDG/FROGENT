@@ -65,7 +65,7 @@ CPU experiments, negative results, access audits or reproducibility evidence lis
 
 ## Latest operational verification
 
-At 2026-08-04 06:06 +08:00, the recovery-r06, phase2-accelerator-r01 and geometry-r03 final
+At 2026-08-04 07:20 +08:00, the recovery-r06, phase2-accelerator-r01 and geometry-r03 final
 manifests remained readable and unchanged. The six authorized experiment GPUs were idle; no
 closed panel was resubmitted. The supplementary TrioPep poller remained live with four queued
 tasks and zero download failures. This operational state adds no scientific result and does not
@@ -80,6 +80,15 @@ and five inferred bonds, accepted a drag interaction and produced no page error;
 is `runtime/evaluation/structure-viewer-smoke-20260804-r03.png`. This closes the structure-download
 and coordinate-viewer portions of R1-9b. It does not validate binding affinity, pose correctness or
 any scientific performance claim.
+
+R1-9a is closed at the maintained interface level. Authenticated users can export the current
+conversation as Markdown, PDF or genuine OOXML Word, while another user receives 404 for the same
+report URL. All three renderers consume one canonical payload containing conversation metadata,
+messages, attachment names and molecular-structure names. In
+`runtime/evaluation/report-export-smoke-r03/`, the English result sentence, Chinese text and
+`candidate.pdb` were present in all three formats; PDF text extraction and raster inspection passed,
+and the 22-entry DOCX archive passed XML inspection and macOS Quick Look rendering. The export
+surface preserves the current report; it does not add scientific evidence.
 
 The remaining author-input and Agent-owned closure work is indexed in
 `docs/manuscript/unresolved-issues-closure-matrix.md`; that matrix does not add evidence or alter

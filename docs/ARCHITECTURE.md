@@ -59,9 +59,10 @@ evaluation
 layers cannot import product routing or feature handlers from layers to their right. Architecture
 tests enforce this dependency budget so orchestration cannot leak back into `core`.
 
-The web surface has three small modules: `app/server.py` owns HTTP/auth/routes,
-`app/chat.py` owns SSE/history/attachment context, and `app/models.py` owns persistent web
-records. `agent.app` connects that transport surface to typed Agent workflows.
+The web surface keeps transport concerns split: `app/server.py` owns HTTP/auth/routes,
+`app/chat.py` owns SSE/history/attachment context, `app/report_export.py` owns deterministic
+Markdown/PDF/Word rendering, and `app/models.py` owns persistent web records. `agent.app`
+connects that transport surface to typed Agent workflows.
 
 ## Decision workflow
 

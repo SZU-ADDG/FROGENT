@@ -6,6 +6,7 @@ import sys
 import tempfile
 import types
 import unittest
+import zipfile
 from contextlib import redirect_stdout
 from datetime import datetime
 from pathlib import Path
@@ -215,6 +216,25 @@ class WebAppTests(unittest.TestCase):
             self.assertEqual(structure.read_bytes(), downloaded.data)
             self.assertIn("candidate.pdb", downloaded.headers["Content-Disposition"])
             downloaded.close()
+            markdown = client.get("/api/chats/chat-1/report.md")
+            self.assertEqual(200, markdown.status_code)
+            self.assertIn("source-backed answer", markdown.get_data(as_text=True))
+            self.assertIn("candidate.pdb", markdown.get_data(as_text=True))
+            markdown.close()
+            if importlib.util.find_spec("reportlab"):
+                pdf = client.get("/api/chats/chat-1/report.pdf")
+                self.assertEqual(200, pdf.status_code)
+                from pypdf import PdfReader
+                pdf_text = "\n".join(page.extract_text() or "" for page in PdfReader(io.BytesIO(pdf.data)).pages)
+                self.assertIn("source-backed answer", pdf_text)
+                pdf.close()
+            if os.environ.get("NODE_PATH") or (ROOT / "node_modules" / "docx").is_dir():
+                word = client.get("/api/chats/chat-1/report.docx")
+                self.assertEqual(200, word.status_code)
+                with zipfile.ZipFile(io.BytesIO(word.data)) as archive:
+                    document_xml = archive.read("word/document.xml").decode("utf-8")
+                self.assertIn("source-backed answer", document_xml)
+                word.close()
             file_id = restored["files"][0]["id"]
             self.assertEqual(
                 400,
@@ -228,6 +248,7 @@ class WebAppTests(unittest.TestCase):
                 "email": "b@example.test"})
             client.post("/api/login", json={"username": "bob", "password": "pw"})
             self.assertEqual(404, client.get(molecule["download_url"]).status_code)
+            self.assertEqual(404, client.get("/api/chats/chat-1/report.md").status_code)
             user_id, payload, history = service.calls[0]
             self.assertEqual((user_id, payload["chat_id"], payload["message"]),
                              ("user-alice", "chat-1", "Assess LRRK2"))

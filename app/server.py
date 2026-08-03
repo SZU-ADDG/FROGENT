@@ -2,6 +2,7 @@
 
 import importlib
 import logging
+from io import BytesIO
 from datetime import datetime
 from pathlib import Path
 from uuid import uuid4
@@ -19,6 +20,7 @@ from app.chat import (
     stream_chat,
     user_content,
 )
+from app.report_export import EXPORTS, export_report
 
 ALLOWED_EXTENSIONS = {
     "csv", "docx", "fa", "fasta", "html", "pdf", "pptx", "tsv", "txt",
@@ -203,6 +205,28 @@ def _register_routes(web, state, app_root):
             path,
             as_attachment=True,
             download_name=download_name,
+            max_age=0,
+        )
+
+    @web.get("/api/chats/<path:chat_id>/report.<format_name>")
+    def download_chat_report(chat_id, format_name):
+        user_id = _session_user(sessions)
+        chat = sessions[user_id]["chat_sessions"].get(chat_id)
+        if chat is None:
+            return jsonify(success=False, message="聊天不存在"), 404
+        if format_name not in EXPORTS:
+            raise ValueError("report format must be md, pdf, or docx")
+        report = dict(chat)
+        report.update(split_files(models, user_id, chat_id, state["uploads"]))
+        try:
+            content = export_report(report, format_name, app_root.parent)
+        except Exception:
+            LOGGER.exception("report export failed")
+            return jsonify(success=False, message="报告导出依赖不可用"), 503
+        media_type, extension = EXPORTS[format_name]
+        return send_file(
+            BytesIO(content), mimetype=media_type, as_attachment=True,
+            download_name=f"frogent-report-{secure_filename(chat_id) or 'conversation'}.{extension}",
             max_age=0,
         )
 

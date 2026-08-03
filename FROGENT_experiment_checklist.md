@@ -492,8 +492,8 @@
 
 - [ ] 提供 Markdown、PDF 和 Word 导出。
 - [ ] 提供 SDF、MOL2、PDB、FASTA 和运行元数据下载。
-- [ ] 接入 Mol*、JSmol 或等价 viewer。
-- [ ] 验证报告内容、结构文件和 viewer 与同一 run 一致。
+- [x] 接入 Mol*、JSmol 或等价 viewer。已实现第一方 PDB/SDF/MOL/MOL2 coordinate viewer，并完成 Chromium interaction smoke test。
+- [x] 验证报告内容、结构文件和 viewer 与同一 run 一致。报告由当前会话 messages/attachments/molecules 单一 payload 生成；结构下载和 viewer 使用同一持久化 ChatFiles 记录。
 
 ## 11. 两周并行冲刺计划
 
@@ -551,7 +551,7 @@
 - [ ] 完成必要重复运行、稳定性分析和盲评分歧解决。🟡 **提前部分完成**：Europe PMC、Vina、Dimorphite 和 RCSB 重复运行已完成；盲评分歧待正式 judge。
 - [ ] 完成配对统计、effect size、CI、Holm correction 和逐案例错误分析。🟡 **提前部分完成**：Capability-52 95% CI 和逐案例错误表已完成；论文八项配对统计、effect size 与 Holm correction 待原始数据。
 - [ ] 完成所有主表、补充表、pose 图、交互图和性能—成本图。
-- [ ] Track G 完成 Markdown/PDF/Word、结构下载和 viewer 验证。🟡 **结构下载与 viewer 已完成**：聊天历史不再暴露服务器绝对路径；普通附件与分子结构均获得同源、登录态和 owner-scoped 下载 URL，跨用户访问返回 404。第一方交互式 3D coordinate viewer 支持 PDB、SDF/MOL 和 MOL2，显示元素着色、空间哈希推断键及拖拽旋转；Chromium smoke test 对代表性 PDB 验证 canvas 可见、4 atoms/5 bonds、拖拽后重绘且无 page error。Markdown/PDF/Word 导出仍待完成。
+- [x] Track G 完成 Markdown/PDF/Word、结构下载和 viewer 验证。聊天历史不暴露服务器绝对路径；附件与结构下载均为登录态、owner-scoped URL。第一方 3D viewer 支持 PDB、SDF/MOL 和 MOL2。当前会话可下载 Markdown、PDF 与真实 OOXML Word；三格式保留相同英文、中文和结构清单，PDF 与 DOCX 均完成视觉渲染检查，跨用户报告访问返回 404。
 - [ ] Track E 完成干净环境安装和最小复现实例首轮。
 
 ### Day 10｜2026-08-08

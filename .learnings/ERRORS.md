@@ -2,6 +2,18 @@
 
 此文件用于记录命令、远端连接及外部工具错误。
 
+## 2026-08-04 — full check treated generated caches and installed dependencies as product domains
+
+- Symptom: `scripts/check.py` failed architecture and repository-audit tests because test execution created `agent/__pycache__` and the documented `npm ci` created top-level `node_modules`.
+- Cause: both checks enumerated visible directories without excluding standard ignored runtime cache/dependency directories.
+- Resolution: keep the fixed product-domain allowlist, exclude only `__pycache__` from Python package-domain enumeration and only `node_modules` from top-level product navigation, then rerun the full check.
+
+## 2026-08-04 — repository audit found pre-existing tracked experiment runtime payload
+
+- Symptom: after the cache/dependency exclusions, `scripts/check.py` passed 258 tests and failed only `test_repository_audit_passes`; the audit listed previously tracked Forge–Gauge and CBGBench runtime protocols, manifests, scripts and state files.
+- Cause: the current branch already tracks experiment evidence under `runtime/evaluation/`, while the repository audit permits only `runtime/README.md`.
+- Resolution: preserve the required revision evidence and report the pre-existing governance conflict; do not delete or untrack those assets within the report-export change. Focused web/export tests remain 7/7 passing.
+
 ## [ERR-20260803-073] Error-attribution source validation assumed two remote assets were local
 
 **Logged**: 2026-08-03T23:58:00+08:00
@@ -8689,6 +8701,30 @@ an assumed glob.
 - Related Files: runtime/evaluation/revision-20260730/nongpu-final/telemetry
 
 ---
+## 2026-08-04 — heredoc terminator accidentally included shell control text
+
+- Symptom: a runtime dependency probe raised a Python `SyntaxError` at `PY || true`.
+- Cause: the heredoc terminator was not isolated on its own shell line.
+- Resolution: wrap the probe in a shell `if` block and keep heredoc delimiters as standalone lines.
+
+## 2026-08-04 — Quick Look status redirection escaped the local project boundary
+
+- Symptom: the DOCX thumbnail command redirected diagnostic stdout/stderr to `/tmp/frogent-ql.out`.
+- Cause: a conventional temporary-output path was used despite the project rule that all local write targets stay under `/Users/dongxu/projects/FROGENT/`.
+- Resolution: preserve the generated project-local Quick Look evidence, stop using `/tmp`, and direct every later diagnostic or generated artifact to `runtime/evaluation/` under the project.
+
+## 2026-08-04 — Word export retained Chinese XML but rendered it invisibly
+
+- Symptom: DOCX XML and round-trip extraction retained `中文内容可见。`, while the LibreOffice raster preview omitted those glyphs.
+- Cause: body runs explicitly requested Arial, which lacked the Chinese glyph coverage needed by the renderer.
+- Resolution: use `Arial Unicode MS` in DOCX body runs so installed renderers can select the Unicode face or substitute an equivalent; keep XML extraction and rendered-page inspection as separate acceptance checks.
+
+## 2026-08-04 — CID-font PDF passed text extraction but rendered blank
+
+- Symptom: the first ReportLab PDF contained extractable text, while Poppler emitted missing `Adobe-GB1` mapping errors and rendered an empty page.
+- Cause: `UnicodeCIDFont("STSong-Light")` references an external CJK font pack and does not embed portable glyph outlines.
+- Resolution: select and subset-embed an installed TrueType Unicode font, allow deployment override through `FROGENT_REPORT_FONT`, preserve a Helvetica fallback, and require visual raster verification in addition to text extraction.
+
 ## 2026-08-04 — local Playwright CLI lacks the test-runner command
 
 - Symptom: `playwright test tests/structure_viewer.spec.js --reporter=line` returned `unknown command 'test'`.

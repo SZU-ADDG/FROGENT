@@ -101,7 +101,8 @@ class ArchitectureTests(unittest.TestCase):
         package_dir = PROJECT_ROOT / "agent"
         self.assertEqual(
             {"app", "core", "design", "docking", "evaluation", "llm", "molecular", "research"},
-            {path.name for path in package_dir.iterdir() if path.is_dir()},
+            {path.name for path in package_dir.iterdir()
+             if path.is_dir() and path.name != "__pycache__"},
         )
 
         for module_path in sorted(package_dir.rglob("*.py")):

@@ -327,6 +327,21 @@ function renderMessages() {
         }
         el.messages.append(panel);
     }
+    if (state.activeChatId && messages.length) {
+        const exports = document.createElement("section");
+        exports.className = "report-exports";
+        const label = document.createElement("strong");
+        label.textContent = "Download report";
+        exports.append(label);
+        for (const [format, name] of [["md", "Markdown"], ["pdf", "PDF"], ["docx", "Word"]]) {
+            const link = document.createElement("a");
+            link.href = `/api/chats/${encodeURIComponent(state.activeChatId)}/report.${format}`;
+            link.textContent = name;
+            link.download = `frogent-report.${format}`;
+            exports.append(link);
+        }
+        el.messages.append(exports);
+    }
     el.messages.scrollTop = el.messages.scrollHeight;
 }
 

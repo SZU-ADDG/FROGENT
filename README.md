@@ -37,11 +37,18 @@ FROGENT 是面向生物医学研究与药物设计的 Agent。它把模型的世
 复制 `.env.example` 为本地 `.env` 并填写实际需要的配置。OpenAI API key 不是
 subagent worker 的运行条件；各外部 provider 只按自身要求配置凭据。
 
+首次安装同时准备 Python runtime 与 Word 导出依赖：
+
+```bash
+python3 -m pip install -r requirements.txt
+npm ci --ignore-scripts
+```
+
 ```bash
 runtime/app/venv/bin/python scripts/run_app.py
 ```
 
-应用入口提供登录、会话、附件和 SSE contract，Planner、Reader、
+应用入口提供登录、会话、附件、Markdown/PDF/Word 报告导出和 SSE contract，Planner、Reader、
 Screener、Synthesizer、定性设计、ADMET 与 docking workflow 由 `agent/` 接管。
 
 ## 验证

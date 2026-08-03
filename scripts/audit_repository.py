@@ -59,7 +59,7 @@ def audit() -> dict[str, int]:
     forbidden_present = FORBIDDEN_TOP_LEVEL & visible
     if forbidden_present:
         raise ValueError(f"retired top-level directories remain: {sorted(forbidden_present)!r}")
-    unexpected_visible = visible - PRODUCT_DIRECTORIES
+    unexpected_visible = visible - PRODUCT_DIRECTORIES - {"node_modules"}
     if unexpected_visible:
         raise ValueError(
             f"unexpected visible top-level directories remain: {sorted(unexpected_visible)!r}"

@@ -25,7 +25,7 @@ manuscript and response letter unless the listed source material becomes availab
 | P0 | Claim-boundary consolidation | E-1; E-4; E-5; R1-3; R1-4; R3-M4–M6 | CBGBench, Forge–Gauge, Luteolin and recent-system response blocks | Apply the same canonical numbers and boundaries across Abstract, Results, Discussion, tables and response letter | Retain measured routing/tool-use claims; remove global first, affinity, causal and unmeasured superiority claims |
 | P1 | Error attribution and dynamic-planning presentation | R2-3b; R2-5; R3-m1; R3-M3 | Double adjudication, repeat variation, propagation, parser and docking failure panels | One failure taxonomy table/figure with case denominator, cause, recovery and downstream consequence | Present tested recovery and variation without implying full benchmark coverage |
 | P1 | Peptide workflow and provider disagreement | R1-5a/b/c; R1-9d/e | MDockPeP2 historical negative audit, ADCP 9/9, ESMFold and AF3 panels | Consolidated workflow, preparation details, timing/failure table and provider-disagreement discussion | Report ADCP partial top-k recovery and MDockPeP2 negative history; prospective MDockPeP2 stays `not_measured` without authorization |
-| P1 | Output, viewer and reproducibility surface | R1-9a/b; R2-8b; R2-9a/b | Existing report/structure export entry points and source checks | Clean Python 3.11+ install, minimal example, downloadable formats, Mol*/JSmol and run-consistency smoke tests | Claim only interfaces that pass clean-environment and downloadable-artifact validation |
+| P1 | Output, viewer and reproducibility surface | R1-9a/b; R2-8b; R2-9a/b | Owner-scoped structure downloads; first-party PDB/SDF/MOL/MOL2 viewer; Markdown/PDF/OOXML Word exports; browser, content-consistency and visual-render smoke evidence | Run the full clean Python 3.11+ plus `npm ci` installation and minimal example from an empty environment | Claim the implemented interfaces now; reserve clean-install portability until the independent environment gate passes |
 | P2 | Efficiency and editorial cleanup | R1-1a/b/c; R2-1b; R2-4; R3-m2/m3 | 70 telemetry records; known spelling, naming and figure issues | Measured-component cost table; delete unsupported efficiency sentence; language, figure and cross-reference QA | Report wall-time/CPU/RSS/calls where measured; token, queue and energy remain `not_measured` |
 
 ## Optional experiment decision
@@ -46,4 +46,3 @@ the existing evidence closes the concern without another experiment.
 4. Build the failure-attribution, peptide-workflow and measured-resource tables from frozen
    evidence.
 5. Complete clean-install, exports/viewer, cross-reference and synchronized response-package QA.
-
