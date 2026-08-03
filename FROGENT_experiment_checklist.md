@@ -99,6 +99,7 @@
 - [x] Forge–Gauge top-candidate geometry / generating-model strata。r02 因 source SDF parse failure 严格终止且保留 traceback；parse-handling-only r03 完成 45/45 cells、2,250 个候选。47,333 个 source SDF 中 157 个不可解析并逐 job 记录；三条件 pocket-compatible rate 均为 `1.000`，severe-clash-free rate 为 `0.9987/0.9987/1.0000`。Top-50 composition 为 fixed-best `750 TargetDiff`、iterative `750 TargetDiff`、single-pass `743 TargetDiff + 4 Pocket2Mol + 3 DiffSBDD`。Final manifest：`gpu-followup-20260802/forge-gauge-top-candidate-geometry-r03/output/final-manifest.json`。
 - [x] 2026-08-03 22:54 终态复核：上述三项 Forge–Gauge final manifest 保持可读且未变化；GPU 1/3/4/5/6/7 空闲，GPU 0/2 既有进程未干预，磁盘剩余约 404 GB。TrioPep supplementary panel 为 4 queued、0 download failures，server poller 存活。无符合透明协议且能改变当前主张的新 GPU 实验，已闭合面板保持停止。
 - [x] 剩余问题 closure matrix：`docs/manuscript/unresolved-issues-closure-matrix.md` 已区分作者输入阻塞、Agent-owned 写作/交付和唯一有条件的新实验，并为每项记录缺失时的稿件收窄方案。
+- [x] Error-attribution manuscript block：`docs/manuscript/error-attribution-rebuttal-blocks.md` 已覆盖 retrieval、memory propagation、repeat variation、PLIP schema、small-molecule docking、generation parsing、MDockPeP2 和 ADCP，包含可直接进入 Results/Methods/SI 的表述及 R2-3b、R2-5、R3-m1、R3-M3 point-by-point responses。
 - [ ] MDockPeP2 prospective rerun。🟠 **外部凭据依赖**：19 GiB 隔离 runtime 已复制，Modeller 9.13 license 未进入可执行副本；禁止复制第三方 license credential。MDockPeP2 历史证据与 ADCP prospective panel 共同承担正式 docking 主线。
 
 ### 首轮证据入口

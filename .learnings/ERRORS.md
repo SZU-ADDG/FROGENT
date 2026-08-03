@@ -2,6 +2,30 @@
 
 此文件用于记录命令、远端连接及外部工具错误。
 
+## [ERR-20260803-073] Error-attribution source validation assumed two remote assets were local
+
+**Logged**: 2026-08-03T23:58:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: docs
+
+### Summary
+
+The first evidence-path check for the error-attribution draft reported the CBGBench novelty
+manifest and ADCP scorer directory as missing because the draft listed their remote run-relative
+paths as if they were present in the local checkout.
+
+### Resolution
+
+Verified both paths read-only on `doomx_3nd` and changed the evidence list to explicit
+`/work/doomx/FROGENT/...` remote paths. Local evidence paths remain relative to the project root.
+
+### Metadata
+- Reproducible: yes
+- Related Files: docs/manuscript/error-attribution-rebuttal-blocks.md
+
+---
+
 ## [ERR-20260802-058] BSD find rejected GNU printf primary
 
 **Logged**: 2026-08-02T18:25:00+08:00
