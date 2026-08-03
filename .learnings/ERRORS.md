@@ -8689,6 +8689,12 @@ an assumed glob.
 - Related Files: runtime/evaluation/revision-20260730/nongpu-final/telemetry
 
 ---
+## 2026-08-04 — local Playwright CLI lacks the test-runner command
+
+- Symptom: `playwright test tests/structure_viewer.spec.js --reporter=line` returned `unknown command 'test'`.
+- Cause: the installed `/opt/homebrew/bin/playwright` exposes browser utility commands without the Node `@playwright/test` runner.
+- Resolution: remove the temporary spec, retain syntax/unit coverage, and keep an end-to-end browser smoke test as an explicit remaining acceptance step instead of installing dependencies during the revision heartbeat.
+
 ## 2026-08-04 — authenticated attachment download route missed helper import
 
 - Symptom: `python -m unittest tests.test_web_app` failed with `NameError: name 'file_path' is not defined` in `download_chat_file`.

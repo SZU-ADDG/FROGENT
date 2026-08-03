@@ -65,7 +65,7 @@ CPU experiments, negative results, access audits or reproducibility evidence lis
 
 ## Latest operational verification
 
-At 2026-08-04 05:00 +08:00, the recovery-r06, phase2-accelerator-r01 and geometry-r03 final
+At 2026-08-04 06:06 +08:00, the recovery-r06, phase2-accelerator-r01 and geometry-r03 final
 manifests remained readable and unchanged. The six authorized experiment GPUs were idle; no
 closed panel was resubmitted. The supplementary TrioPep poller remained live with four queued
 tasks and zero download failures. This operational state adds no scientific result and does not
@@ -73,9 +73,13 @@ change any claim disposition in the ledger.
 
 The maintained web surface now exposes authenticated, owner-scoped download URLs for persisted
 attachments and molecular structures while omitting server-side absolute paths from chat-history
-responses. A PDB round-trip and cross-user denial test passed. This is interface/reproducibility
-evidence for the structure-download portion of R1-9b; it is not molecular-viewer evidence and does
-not support a scientific performance claim.
+responses. A PDB round-trip and cross-user denial test passed. The first-party coordinate viewer
+parses PDB, SDF/MOL and MOL2, renders element-colored atoms and inferred bonds, and supports pointer
+rotation. A local Chromium smoke test rendered the representative PDB fixture, reported four atoms
+and five inferred bonds, accepted a drag interaction and produced no page error; the visual record
+is `runtime/evaluation/structure-viewer-smoke-20260804-r03.png`. This closes the structure-download
+and coordinate-viewer portions of R1-9b. It does not validate binding affinity, pose correctness or
+any scientific performance claim.
 
 The remaining author-input and Agent-owned closure work is indexed in
 `docs/manuscript/unresolved-issues-closure-matrix.md`; that matrix does not add evidence or alter

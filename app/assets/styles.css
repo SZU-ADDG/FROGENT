@@ -241,3 +241,31 @@ button:disabled { opacity: .55; cursor: wait; }
     font-size: 0.85rem;
     overflow-wrap: anywhere;
 }
+
+.molecule-card {
+    display: grid;
+    gap: 8px;
+}
+
+.structure-viewer {
+    display: grid;
+    gap: 4px;
+}
+
+.structure-viewer canvas {
+    aspect-ratio: 2 / 1;
+    background: #f7faf8;
+    border: 1px solid var(--border, #d8dee8);
+    border-radius: 9px;
+    cursor: grab;
+    max-height: 260px;
+    touch-action: none;
+    width: 100%;
+}
+
+.structure-viewer canvas:active { cursor: grabbing; }
+.structure-viewer span, .structure-viewer p {
+    color: var(--muted, #66736d);
+    font-size: 0.75rem;
+    margin: 0;
+}

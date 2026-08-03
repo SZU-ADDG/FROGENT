@@ -383,6 +383,12 @@ class WebAppTests(unittest.TestCase):
                 self.assertEqual(200, response.status_code)
                 response.close()
             self.assertNotIn("app_v", markup)
+            script_response = client.get("/assets/app.js")
+            script = script_response.get_data(as_text=True)
+            script_response.close()
+            self.assertIn("Interactive 3D preview", script)
+            self.assertIn("drag to rotate", script)
+            self.assertNotIn("molstar", script.lower())
 
     def test_manager_rejects_upload_escape_and_symlinks(self):
         with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
