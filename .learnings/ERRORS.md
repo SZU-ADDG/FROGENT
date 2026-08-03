@@ -19,6 +19,29 @@ formatting for the verified Linux server.
 
 ---
 
+## [ERR-20260803-072] Multi-file patch used an inexact long context line
+
+**Logged**: 2026-08-03T19:55:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: docs
+
+### Summary
+
+The first manuscript-block patch failed atomically because a long revision-plan
+context line omitted one space present in the file. No file was changed.
+
+### Resolution
+
+Reapplied the patch with a short, stable neighboring line as the insertion
+anchor and kept the full new document content unchanged.
+
+### Metadata
+- Reproducible: yes
+- Related Files: FROGENT_revision_plan.md, docs/manuscript/forge-gauge-rebuttal-blocks.md
+
+---
+
 ## [ERR-20260803-066] remote worker-file inspection quoting
 
 **Logged**: 2026-08-03T14:47:00+08:00
