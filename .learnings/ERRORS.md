@@ -8664,3 +8664,28 @@ by the incorrect read-only probe.
 - See Also: ERR-20260802-061
 
 ---
+
+## [ERR-20260804-074] Telemetry inspection used a non-matching shell glob
+
+**Logged**: 2026-08-04T01:59:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: manuscript evidence inspection
+
+### Summary
+
+The first telemetry inspection referenced `telemetry/results/*.json`, but the frozen telemetry
+package stores its JSON at the telemetry root. Zsh rejected the unmatched glob after the file
+inventory had completed; no file was changed.
+
+### Resolution
+
+Read the explicit root-level `REPORT.md`, `METHODS.md`, `telemetry.json` and `summary.csv` paths.
+Future evidence inspection uses paths returned by `find` or quoted explicit filenames instead of
+an assumed glob.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/telemetry
+
+---

@@ -436,18 +436,18 @@
 所有 S1–S4 正式运行统一记录：
 
 - [x] End-to-end wall time。70 条 telemetry records 和独立 CPU panels 已汇总。
-- [ ] Agent、tool、queue 和 retry time。🟡 **第三批部分完成**：tool/provider/retry time 已记录；平台 queue time 未暴露，保持 `not_measured`。
-- [ ] Input/output token 和 LLM 调用次数。🟡 **第三批部分完成**：worker/tool 调用计数已保存；subagent token telemetry 未暴露，保持 `not_measured`。
+- [x] Agent、tool、queue 和 retry time 完成可测字段处置：tool/provider/retry time 已记录；平台 queue time 未暴露并固定为 `not_measured`，不据 wall time 推断。
+- [x] Input/output token 和 LLM 调用次数完成可测字段处置：worker/tool 调用计数已保存；subagent token telemetry 未暴露并固定为 `not_measured`。
 - [x] Tool/API 调用次数和可估算费用。公开 CPU/API panels 已记录 calls；免费公开接口费用为 0，外部闭源模型费用未推断。
 - [x] CPU/GPU time、peak RAM/VRAM。第三批全程 CPU-only，peak RSS 已记录；GPU/VRAM 为 0/不适用。
-- [ ] 本地可测计算可使用 CodeCarbon 或等价工具。
+- [x] 本地能耗字段完成主张处置：既有冻结运行未采集 CodeCarbon 或等价读数，不进行追溯估算，energy 保持 `not_measured`。
 - [x] 闭源云端模型能耗写为 `not_measured`，token 仅作为 workload proxy。
 - [x] 样本量足够时报告 median、IQR 和预定义高分位数。小样本组仅报告稳健统计并保留原始记录。
-- [ ] 保持硬件、服务区域、并发和缓存条件可比。
+- [x] 可比性边界已冻结：现有材料不支持近期外部系统的硬件、区域、并发和缓存匹配，因此不作跨系统效率比较。
 
 完成标准：
 
-- [ ] 摘要中的效率主张有直接对照证据；证据不足时删除该主张。
+- [x] 摘要中的广义效率提升主张因缺少 matched end-to-end external comparison 决定删除；保留逐组件实测资源结果。稿件与回复块：`docs/manuscript/resource-efficiency-rebuttal-blocks.md`。
 
 ## 8. D1｜方法、代码和 SI
 

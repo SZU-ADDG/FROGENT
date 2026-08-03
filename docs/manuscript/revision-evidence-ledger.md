@@ -65,7 +65,7 @@ CPU experiments, negative results, access audits or reproducibility evidence lis
 
 ## Latest operational verification
 
-At 2026-08-04 00:56 +08:00, the recovery-r06, phase2-accelerator-r01 and geometry-r03 final
+At 2026-08-04 01:58 +08:00, the recovery-r06, phase2-accelerator-r01 and geometry-r03 final
 manifests remained readable and unchanged. The six authorized experiment GPUs were idle; no
 closed panel was resubmitted. The supplementary TrioPep poller remained live with four queued
 tasks and zero download failures. This operational state adds no scientific result and does not
@@ -74,6 +74,12 @@ change any claim disposition in the ledger.
 The remaining author-input and Agent-owned closure work is indexed in
 `docs/manuscript/unresolved-issues-closure-matrix.md`; that matrix does not add evidence or alter
 the frozen results above.
+
+The resource denominators, measured component-level results, unavailable fields and response
+language are consolidated in `docs/manuscript/resource-efficiency-rebuttal-blocks.md`. The broad
+efficiency-superiority claim is removed because no matched end-to-end external comparison is
+available; tokens, private queue time, closed-provider cost and cloud energy remain
+`not_measured`.
 
 The cross-layer failure denominator, recovery action and response-language mapping are consolidated
 in `docs/manuscript/error-attribution-rebuttal-blocks.md`. It reuses the frozen evidence in this
