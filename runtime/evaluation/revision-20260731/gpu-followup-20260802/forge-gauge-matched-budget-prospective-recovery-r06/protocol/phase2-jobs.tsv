@@ -1,0 +1,16 @@
+job_index	condition	stage	method	pocket	seed	num_samples	tag
+0	iterative	round2	targetdiff	1IEP	10083	750	iterative-round2-targetdiff-1iep-s10083-n750-r02
+1	iterative	round2	targetdiff	1IEP	10097	750	iterative-round2-targetdiff-1iep-s10097-n750-r02
+2	iterative	round2	targetdiff	1IEP	10109	750	iterative-round2-targetdiff-1iep-s10109-n750-r02
+3	iterative	round2	targetdiff	1M17	10083	750	iterative-round2-targetdiff-1m17-s10083-n750-r02
+4	iterative	round2	targetdiff	1M17	10097	750	iterative-round2-targetdiff-1m17-s10097-n750-r02
+5	iterative	round2	targetdiff	1M17	10109	750	iterative-round2-targetdiff-1m17-s10109-n750-r02
+6	iterative	round2	targetdiff	2HYY	10083	750	iterative-round2-targetdiff-2hyy-s10083-n750-r02
+7	iterative	round2	targetdiff	2HYY	10097	750	iterative-round2-targetdiff-2hyy-s10097-n750-r02
+8	iterative	round2	targetdiff	2HYY	10109	750	iterative-round2-targetdiff-2hyy-s10109-n750-r02
+9	iterative	round2	targetdiff	3CS9	10083	750	iterative-round2-targetdiff-3cs9-s10083-n750-r02
+10	iterative	round2	targetdiff	3CS9	10097	750	iterative-round2-targetdiff-3cs9-s10097-n750-r02
+11	iterative	round2	targetdiff	3CS9	10109	750	iterative-round2-targetdiff-3cs9-s10109-n750-r02
+12	iterative	round2	targetdiff	4WA9	10083	750	iterative-round2-targetdiff-4wa9-s10083-n750-r02
+13	iterative	round2	targetdiff	4WA9	10097	750	iterative-round2-targetdiff-4wa9-s10097-n750-r02
+14	iterative	round2	targetdiff	4WA9	10109	750	iterative-round2-targetdiff-4wa9-s10109-n750-r02
