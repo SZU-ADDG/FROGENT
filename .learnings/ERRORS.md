@@ -68,6 +68,32 @@ keeping the already staged documentation changes intact.
 
 ---
 
+## [ERR-20260803-068] subagent model inheritance and wait validation
+
+**Logged**: 2026-08-03T15:49:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: agent coordination
+
+### Summary
+
+Two read-only subagent launches inherited an unavailable model identifier, and the first mailbox
+wait used a timeout below the tool's 10-second minimum.
+
+### Resolution
+
+Respawned both bounded read-only tasks with the available `gpt-5.6-terra` model and used valid
+mailbox wait intervals. The main process independently verified live experiment state while the
+subagents completed their audits. Future bounded launches in this environment set an explicit
+available model instead of inheriting the parent identifier.
+
+### Metadata
+- Reproducible: yes
+- Related Files: FROGENT_revision_plan.md
+- See Also: ERR-20260803-067
+
+---
+
 ## [ERR-20260802-056] Pocket2Mol exceeded memory under dual-process co-location
 
 **Logged**: 2026-08-02T17:17:00+08:00

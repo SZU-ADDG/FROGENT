@@ -48,6 +48,12 @@ remain visible in the response letter.
 
 ## Inputs still required for manuscript-level recomputation
 
+The manuscript-facing claim inventory is consolidated in
+`docs/manuscript/provider-claim-matrix.md`. It binds each retained claim to its provider,
+recorded endpoint or version, test input, measured result, and scope boundary; unavailable
+fields remain `not_measured`. The minimum author-facing handoff for the inputs below is
+`docs/manuscript/author-input-request.md`.
+
 - Eight benchmark sample-level outputs, case IDs, seeds, failure rows and scorer code.
 - Original HLE and retrosynthesis samples, rubric, judge records and adjudication decisions.
 - Original QED/SA values and the implementation used to generate the submitted figures.

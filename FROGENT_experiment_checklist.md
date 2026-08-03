@@ -159,7 +159,7 @@
 
 ### G0-B｜真实 capability inventory
 
-- [ ] 建立 `claim → Agent → provider → endpoint → version → test input → result` 矩阵。🟡 **第三批部分完成**：CPU/live provider、retrieval、ADMET、docking、PLIP、property 与 safety 路径已进入 evidence ledger；GPU 生成和受限 provider 继续为 deferred。
+- [x] 建立 `claim → Agent → provider → endpoint → version → test input → result` 矩阵。证据：`docs/manuscript/provider-claim-matrix.md` 已覆盖 retrieval、context/ablation、ADMET、retrosynthesis/fragment generation、Vina、PLIP、三生成模型、Forge–Gauge、MDockPeP2、ADCP、ESMFold/AF3、安全合约与 headline benchmark 边界；缺失 endpoint/version、授权材料、原始 scorer 和外部数值复现均显式标记 `not_measured`，TrioMol2 不进入稿件矩阵。
 - [x] 区分 `live`、`deferred`、`case-study-only` 和 `removed`。证据：第三批 final manifest 与 revision evidence ledger。
 - [x] 核实 Retrieve、Forge、Gauge 和 orchestrator 的真实工具与数据流。证据：real-agent job packets、evidence-propagation adapter、matched-resource panel 与 production regression。
 - [ ] 核实 DrugBank 内容进入哪个 Agent 或 context。🟡 **第三批部分完成**：PubChem cross-reference 与 structured proxy 已审计；DrugBank direct/API 返回 403，生产 context 注入仍需部署配置。

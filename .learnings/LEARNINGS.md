@@ -2290,4 +2290,15 @@ The Forge-Gauge scheduling accelerator assigned four later TargetDiff jobs and f
 jobs to two memory-compatible workers on GPU 6. The run records this as scheduling-only and waits
 for all eight source tags before writing its final manifest.
 
+The same pattern was reused for phase 2 after six jobs completed: three frozen 4WA9 jobs with no
+source state were validated against the master queue and advanced onto idle GPUs 5/6/7. This
+removed the final scheduling tail while retaining the original state and result roots.
+
+### Metadata
+- Source: user_feedback
+- Pattern-Key: gpu.advance_frozen_unstarted_jobs
+- Recurrence-Count: 2
+- First-Seen: 2026-08-02
+- Last-Seen: 2026-08-03
+
 ---
