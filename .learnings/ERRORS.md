@@ -19,6 +19,55 @@ formatting for the verified Linux server.
 
 ---
 
+## [ERR-20260803-066] remote worker-file inspection quoting
+
+**Logged**: 2026-08-03T14:47:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: remote monitoring
+
+### Summary
+
+A nested `sh -c` fragment in a read-only remote inspection command had an unmatched quote and
+stopped after printing the round-2 job states.
+
+### Resolution
+
+Replaced the nested fragment with direct `find`, `grep`, and `ps` queries. The corrected probe
+confirmed six exit-zero jobs, six live inference processes, three unstarted jobs, and no fatal
+patterns in the round-2 job stderr files. No experiment state changed.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-matched-budget-prospective-recovery-r06
+- See Also: ERR-20260803-065
+
+---
+
+## [ERR-20260803-067] ignored runtime accelerator assets
+
+**Logged**: 2026-08-03T14:52:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: version control
+
+### Summary
+
+The first staging command omitted the force flag for a new experiment protocol below the ignored
+`runtime/` tree, so Git staged the documentation updates and skipped the accelerator assets.
+
+### Resolution
+
+Verified the ignore rule and staged the exact new accelerator run path with `git add -f`, while
+keeping the already staged documentation changes intact.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-phase2-accelerator-r01
+- See Also: ERR-20260803-066
+
+---
+
 ## [ERR-20260802-056] Pocket2Mol exceeded memory under dual-process co-location
 
 **Logged**: 2026-08-02T17:17:00+08:00

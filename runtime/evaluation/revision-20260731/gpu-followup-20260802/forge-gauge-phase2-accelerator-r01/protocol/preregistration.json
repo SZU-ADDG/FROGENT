@@ -1,0 +1,16 @@
+{
+  "schema_version": "frogent-forge-gauge-phase2-scheduling-accelerator-v1",
+  "created_at": "2026-08-03T14:50:00+08:00",
+  "purpose": "Advance the three frozen unstarted 4WA9 round-2 jobs onto newly idle authorized GPUs without changing any scientific field.",
+  "source_run": "/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-matched-budget-prospective-recovery-r06",
+  "source_jobs_tsv": "/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-matched-budget-prospective-recovery-r06/protocol/phase2-jobs.tsv",
+  "selected_jobs": [
+    {"gpu": 5, "tag": "iterative-round2-targetdiff-4wa9-s10083-n750-r02"},
+    {"gpu": 6, "tag": "iterative-round2-targetdiff-4wa9-s10097-n750-r02"},
+    {"gpu": 7, "tag": "iterative-round2-targetdiff-4wa9-s10109-n750-r02"}
+  ],
+  "frozen_fields": ["condition", "stage", "method", "pocket", "seed", "num_samples", "tag", "checkpoint", "evaluator", "source_state_root", "source_result_root"],
+  "scheduling_only": true,
+  "duplicate_guard": "Refuse launch if any selected source state already exists; source workers retain their existing state guard.",
+  "completion_rule": "All three selected source jobs have exit_code files; any nonzero exit remains evidence and requires a new exact retry run."
+}
