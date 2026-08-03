@@ -2302,3 +2302,35 @@ removed the final scheduling tail while retaining the original state and result 
 - Last-Seen: 2026-08-03
 
 ---
+
+## [LRN-20260803-007] retain molecule-level parse failures without discarding analyzable cells
+
+**Logged**: 2026-08-03T16:52:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+Coordinate analyses should report unreadable generated molecules and continue when every frozen
+cell still satisfies its selection quota.
+
+### Details
+The Forge-Gauge geometry r02 analysis encountered four unreadable SDF files in its first surfaced
+job and stopped before producing any output. A parse-handling-only r03 amendment retained counts
+for all 157 unreadable files across 47,333 source SDFs, excluded only those files, and still
+completed the unchanged top-50 quota for all 45 cells.
+
+### Suggested Action
+For generated-molecule panels, use candidate-level failure accounting plus explicit per-cell
+minimum quotas. Reserve run-level failure for missing cells, broken source gates, or insufficient
+valid coordinate-bearing candidates.
+
+### Metadata
+- Source: error
+- Related Files: runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-top-candidate-geometry-r02, runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-top-candidate-geometry-r03
+- Pattern-Key: evaluation.candidate_parse_failure_quorum
+- Recurrence-Count: 1
+- First-Seen: 2026-08-03
+- Last-Seen: 2026-08-03
+
+---

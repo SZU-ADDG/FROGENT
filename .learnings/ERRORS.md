@@ -94,6 +94,82 @@ available model instead of inheriting the parent identifier.
 
 ---
 
+## [ERR-20260803-069] Forge-Gauge geometry r02 aborted on candidate parse failures
+
+**Logged**: 2026-08-03T16:49:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+
+Geometry r02 passed its 120/120 source gate and then raised on four unreadable SDF files in the
+first surfaced job, producing no output manifest.
+
+### Resolution
+
+Preserved r02 and its traceback. Frozen r03 changed only parse-failure handling: unreadable files
+are counted per source job and excluded, while every one of the 45 cells must retain the original
+top-50 quota. R03 completed 45/45 cells and recorded 157 parse failures among 47,333 source SDFs.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-top-candidate-geometry-r02, runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-top-candidate-geometry-r03
+- See Also: ERR-20260802-062
+
+---
+
+## [ERR-20260803-070] prelaunch validation caught incomplete generated patch and zsh loop syntax
+
+**Logged**: 2026-08-03T16:51:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: experiment-protocol
+
+### Summary
+
+The first generated r03 source copy changed only the docstring/schema because newline matching was
+over-escaped. A later local inventory loop also used a zsh one-line `do echo` form that parsed
+incorrectly.
+
+### Resolution
+
+The required r03 code changes were applied explicitly, then verified with an exact r02/r03 diff,
+in-memory Python compilation, shell syntax validation and JSON parsing before remote transfer.
+The inventory loop was rerun with `printf`. No incomplete protocol reached the server.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-top-candidate-geometry-r03
+- See Also: ERR-20260803-066
+
+---
+
+## [ERR-20260803-071] raw evidence line endings flooded staged diff validation
+
+**Logged**: 2026-08-03T16:56:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: version-control
+
+### Summary
+
+The first staged `git diff --check` treated every CRLF CSV row as trailing whitespace and printed
+thousands of diagnostics; the preserved traceback also contained one trailing space.
+
+### Resolution
+
+Normalized only line endings and trailing whitespace in the local evidence copies, retained the
+remote final artifacts unchanged, and reran bounded validation before commit. Scientific fields,
+row counts and JSON values were unchanged.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-top-candidate-geometry-r03/output/selected-molecule-geometry.csv
+- See Also: ERR-20260803-067
+
+---
+
 ## [ERR-20260802-056] Pocket2Mol exceeded memory under dual-process co-location
 
 **Logged**: 2026-08-02T17:17:00+08:00

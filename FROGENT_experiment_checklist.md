@@ -95,8 +95,8 @@
 - [x] CBGBench novelty/scaffold/pocket compatibility：45/45 primary jobs、9,825 个 SDF 完成 CPU-only 分析，9,767 个解析成功、58 个 molecule-level parse failures 保留。TargetDiff/DiffSBDD/Pocket2Mol identity uniqueness 为 `1.000/1.000/0.965`，scaffold per parsed molecule 为 `0.997/0.866/0.458`，mean reference-ligand ECFP4 Tanimoto 为 `0.093/0.065/0.055`，均无 exact identity、reference scaffold match 或 Tanimoto ≥0.5；10 Å pocket-compatible rate 均为 1.000，severe clash-free rate 为 `1.000/0.942/0.996`。Final manifest：`gpu-followup-20260801/cbgbench-novelty-pocket-r01/output/final-manifest.json`。
 - [x] CBGBench target-matched known-active neighbors：ChEMBL 37 的 ABL1/EGFR binding IC50（pChEMBL ≥6）集合分别去重为 1,653/8,072 个 canonical actives；9,767 个已解析生成分子全部完成 nearest-neighbor 分析。TargetDiff/DiffSBDD/Pocket2Mol mean nearest-active ECFP4 Tanimoto 为 `0.176/0.143/0.120`，最大值为 `0.405/0.256/0.217`；Tanimoto ≥0.5 均为 0，exact active-scaffold overlap 分别为 `2/7253`、`0/1771`、`1/743`。Checkpoint-exact training membership 和其他数据库/assay 类型继续标记 `not_measured`；public CrossDocked training proxy 由下一项单独报告。r01 协议时间错误与 r02 aggregate Boolean 类型错误均排除；final manifest：`gpu-followup-20260802/cbgbench-known-active-neighbors-r03/output/final-manifest.json`。
 - [x] CBGBench CrossDocked training-proxy nearest neighbors：公开 split 的 100,000 个 train names 中 99,990 个按 CBGBench dataloader 映射，安全 opcode 提取 99,990/99,990 成功并去重为 10,404 个 canonical molecules。9,767 个生成分子无 exact identity；TargetDiff/DiffSBDD/Pocket2Mol mean nearest-train ECFP4 Tanimoto 为 `0.216/0.189/0.203`，最大值为 `0.453/0.682/0.474`，仅 DiffSBDD 有 `1/1771` 达到 ≥0.5。Exact scaffold overlap 为 `0.772%/7.510%/15.612%`。结果限定为 declared-training-corpus proxy，checkpoint 原始 training-file identity 未确认。Final manifest：`gpu-followup-20260802/cbgbench-crossdocked-training-proxy-r04/output/final-manifest.json`。
-- [ ] Forge–Gauge matched-budget prospective r02。🔵 **phase 2 运行中**：phase 1 已完整终态，原始 source 为 `95 exit zero / 10 Pocket2Mol OOM`；retry-r03、r04、r05、r06 的 5/5、2/2、1/1、2/2 batch-8 精确补跑为全部失败提供 exit-zero replacement，四个 phase-1 scheduling accelerators 也已分别 complete 8/8、8/8、8/8、6/6。recovery-r06 已冻结 105/105 唯一来源映射，每个 logical tag 的 candidate source count 均为 1。Gauge 的 15/15 pocket-seed decisions 全部选择 TargetDiff，确定性 routing 在本面板表现一致；最终 matched-budget 收益等待第二轮终态。2026-08-03 15:45 检查的 15 个 round-2 TargetDiff jobs 为 `3 running / 0 unstarted / 12 terminal-success / 0 failed`，1IEP、1M17、2HYY 和 3CS9 的 12 项均已 exit zero，总追加预算 11,250 attempts。三个 4WA9 jobs 经 scheduling-only `forge-gauge-phase2-accelerator-r01` 在 GPU 5/6/7 持续运行，现场利用率为 88%/98%/100%，推理进程与 controllers 均存活，相关 stderr 无 fatal pattern。exit-zero jobs 禁止重跑，所有科学字段与分析保持冻结。预计 final manifest 于 2026-08-04 01:00 前完成，主线分析和文档同步目标为 2026-08-04 12:00、保守缓冲至 18:00。
-- [ ] Forge–Gauge top-candidate geometry / generating-model strata。🔵 **已预注册并自动等待终态**：`forge-gauge-top-candidate-geometry-r01` 的 pre-execution smoke 暴露 property CSV 与 persisted SDF 无法逐分子连接，controller 未启动且原根保留。修订协议 r02 冻结为从 persisted SDF 重新计算 QED/favorable-SA、每个 condition–pocket–seed 选 top 50，再报告 45 cells、2,250 个候选的 pocket compatibility、severe clashes、centroid displacement 与 generating-model composition。单 job 1,443 SDF smoke 已通过；远端 controller PID 2117180 已挂起等待 recovery-r06 120/120 final manifest。
+- [x] Forge–Gauge matched-budget prospective r02。Recovery-r06 完成 `120/120 exit zero`；15/15 Gauge decisions 选择 TargetDiff。Fixed-best/single-pass/iterative valid rate 为 `0.956/0.444/0.704`，top-50 score 为 `0.661/0.620/0.686`。Iterative 相对 single-pass 的 valid-rate 与 top-50 score 差为 `+0.260`（p=`6.10e-5`，95% CI `[0.231,0.276]`）和 `+0.066`（p=`0.0020`，CI `[0.029,0.106]`）；相对 fixed-best 的 valid rate 低 `0.252`，top-50 score 差无统计支持。Final manifest：`gpu-followup-20260802/forge-gauge-matched-budget-prospective-recovery-r06/final-manifest.json`。
+- [x] Forge–Gauge top-candidate geometry / generating-model strata。r02 因 source SDF parse failure 严格终止且保留 traceback；parse-handling-only r03 完成 45/45 cells、2,250 个候选。47,333 个 source SDF 中 157 个不可解析并逐 job 记录；三条件 pocket-compatible rate 均为 `1.000`，severe-clash-free rate 为 `0.9987/0.9987/1.0000`。Top-50 composition 为 fixed-best `750 TargetDiff`、iterative `750 TargetDiff`、single-pass `743 TargetDiff + 4 Pocket2Mol + 3 DiffSBDD`。Final manifest：`gpu-followup-20260802/forge-gauge-top-candidate-geometry-r03/output/final-manifest.json`。
 - [ ] MDockPeP2 prospective rerun。🟠 **外部凭据依赖**：19 GiB 隔离 runtime 已复制，Modeller 9.13 license 未进入可执行副本；禁止复制第三方 license credential。MDockPeP2 历史证据与 ADCP prospective panel 共同承担正式 docking 主线。
 
 ### 首轮证据入口
@@ -328,11 +328,11 @@
 ### S3-B｜生成模型比较
 
 - [x] 每个论文范围内 live 生成模型独立运行：TargetDiff、Pocket2Mol、DiffSBDD 的 primary、extension 与 combined matrices 已分别完成 45/45、45/45、90/90。TrioMol2 不进入该比较。
-- [ ] 固定最佳单模型。🔵 **运行中**：前瞻 r02 在 5 pockets × 3 seeds 上运行每 cell 1,500 次 TargetDiff；TargetDiff 的固定选择依据已由既有六 seed valid/QED 排名冻结。
-- [ ] FROGENT 单轮模型选择。🔵 **运行中**：matched-budget `single_pass` 为每个 pocket–seed 分配 TargetDiff/Pocket2Mol/DiffSBDD 各 500 次，共 1,500 attempts。
-- [ ] Single-pass Forge→Gauge。🔵 **运行中**：候选池、Gauge candidate score、top-50 汇总和 paired cell 统计均已预注册，等待 105 个 phase-1 jobs。
-- [ ] Iterative Forge↔Gauge。🔵 **运行中**：round 1 为三模型各 250 次；controller 将按冻结的 `0.50*valid_rate + 0.30*QED + 0.20*favorable_SA` 自动选择模型并追加 750 次 round 2。
-- [ ] 记录每个 pocket 的模型选择、Gauge 反馈、候选淘汰和停止原因。🔵 **运行中**：r02 将保存 `gauge-decisions.json`、两阶段 jobs、telemetry 与 final manifest；停止规则为 matched 1,500-attempt budget 耗尽。r01 保留为 0-inference launcher-path failure。
+- [x] 固定最佳单模型。15 cells × 1,500 TargetDiff attempts 完成；valid rate `0.956`，top-50 score `0.661`。
+- [x] FROGENT 单轮模型选择。15 cells 的三模型均匀 single-pass 完成；valid rate `0.444`，top-50 score `0.620`。
+- [x] Single-pass Forge→Gauge。候选池、top-50 汇总和 15-cell paired statistics 已进入 final manifest。
+- [x] Iterative Forge↔Gauge。15/15 cells 追加 750 次 TargetDiff，matched-budget valid rate `0.704`、top-50 score `0.686`。
+- [x] 记录每个 pocket 的模型选择、Gauge 反馈、候选淘汰和停止原因。`gauge-decisions.json`、120-job final manifest、paired Wilcoxon、pocket-cluster bootstrap 与失败/retry provenance 均已保存。
 
 ### S3-C｜新颖性与设计指标
 
@@ -371,11 +371,11 @@
 - [ ] 生成模型与 orchestration 对照。
 - [ ] raw/minimized/redocked 对照。
 - [ ] Glucagon 可审计轨迹。
-- [ ] 最终 run 路径和 manifest。🟡 **部分完成**：CBGBench primary 45/45、extension 45/45、combined 90/90、六 seed stability、novelty/pocket、ChEMBL known-active 与 CrossDocked training-proxy manifests 均已冻结；ADCP 正式输出与 scorer summary 已完成。Forge–Gauge matched-budget prospective r02 正在运行并将自动生成 final manifest；TrioMol2 已排除，TrioPep supplementary panel 继续由 control plane 推进。
+- [x] 最终 run 路径和 manifest。CBGBench primary/extension/combined、六 seed stability、novelty/pocket、ChEMBL known-active、CrossDocked training-proxy、ADCP、Forge–Gauge recovery-r06 与 geometry-r03 final manifests 均已冻结；TrioPep 仅作 supplementary provider panel，TrioMol2 已排除。
 
 ### S3 完成标准
 
-- [ ] 底层模型强度和 FROGENT 选择/反馈贡献被分开量化。
+- [x] 底层模型强度和 FROGENT 选择/反馈贡献被分开量化：反馈分配优于均匀 single-pass，已知 fixed-best 保持 valid-rate 优势，top-50 score 差异无统计支持。
 - [ ] 肽和 RNA docking 的论文声明与真实 provider 一致。
 - [ ] docking 的用途由数据支持并具有明确边界。
 
