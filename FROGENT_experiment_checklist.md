@@ -101,6 +101,7 @@
 - [x] 剩余问题 closure matrix：`docs/manuscript/unresolved-issues-closure-matrix.md` 已区分作者输入阻塞、Agent-owned 写作/交付和唯一有条件的新实验，并为每项记录缺失时的稿件收窄方案。
 - [x] Error-attribution manuscript block：`docs/manuscript/error-attribution-rebuttal-blocks.md` 已覆盖 retrieval、memory propagation、repeat variation、PLIP schema、small-molecule docking、generation parsing、MDockPeP2 和 ADCP，包含可直接进入 Results/Methods/SI 的表述及 R2-3b、R2-5、R3-m1、R3-M3 point-by-point responses。
 - [x] Peptide workflow manuscript block：`docs/manuscript/peptide-workflow-rebuttal-blocks.md` 已分离 structure prediction 与 peptide docking，汇总 ADCP、MDockPeP2、ESMFold、AF3、TrioPep 的真实状态、结构结果、失败边界及 R1-5a、R1-5b、R1-9d、R1-9e 回复。
+- [x] Architecture/retrieval manuscript block：`docs/manuscript/architecture-retrieval-rebuttal-blocks.md` 已汇总 matched-resource、real-agent ablation、structured retrieval、live evidence 与 downstream propagation，形成 Methods、Results、SI 表及 R3-M2a/b、R3-M3、R3-M4、R3-M5a/b/d、R2-3a 回复块，并删除宽泛 multi-agent superiority 解释。
 - [ ] MDockPeP2 prospective rerun。🟠 **外部凭据依赖**：19 GiB 隔离 runtime 已复制，Modeller 9.13 license 未进入可执行副本；禁止复制第三方 license credential。MDockPeP2 历史证据与 ADCP prospective panel 共同承担正式 docking 主线。
 
 ### 首轮证据入口
