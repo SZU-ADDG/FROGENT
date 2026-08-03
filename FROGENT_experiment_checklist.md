@@ -466,6 +466,7 @@
 - [ ] 可执行且可公平对齐的系统进入 score comparison。
 - [x] 无法运行的系统保留定性比较和可核查原因。
 - [x] 删除无法验证的 `first`。revision evidence ledger 将全局首创性表述列为必须收缩的 claim。
+- [x] Reviewer 1 comments 3–4 的逐点回复与稿件插入块。`docs/manuscript/reviewer1-comments-3-4-rebuttal-blocks.md` 已绑定 Luteolin、生成分子相似性、近期系统与公平比较边界；最终 page/line 等待排版后填写。
 - [ ] 主张由 S2、S3 结果决定。
 
 ## 10. D3｜安全、界面和编辑修改
