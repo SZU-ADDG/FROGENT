@@ -69,4 +69,5 @@ Agent-first 顶层结构、tracked runtime 边界、历史材料清理、文件�
 - `runtime/` payload 保持本地，源码、配置、测试和必要质量证据进入 Git。
 
 当前架构见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)，Agent harness 见
-[docs/HARNESS.md](docs/HARNESS.md)。
+[docs/HARNESS.md](docs/HARNESS.md)，模型角色与 benchmark 隔离规则见
+[docs/MODEL_POLICY.md](docs/MODEL_POLICY.md)。

@@ -81,7 +81,7 @@ class AgentRuntimeTests(unittest.TestCase):
                                                              ExecutionContext("u", "c", "j", ROOT))
         args, prompt, timeout, cwd = runner.calls[0]
         self.assertEqual("LRRK2?", request.plan.question)
-        self.assertIn("gpt-5.6-sol", args)
+        self.assertIn("gpt-5.6-terra", args)
         self.assertIn("model_reasoning_effort=\"medium\"", args)
         self.assertIn("--ephemeral", args)
         self.assertIn("--ignore-user-config", args)
@@ -433,6 +433,8 @@ class AgentRuntimeTests(unittest.TestCase):
                 tuned = RuntimeConfig.from_env(ROOT)
             self.assertEqual((31, 7, 5), (tuned.codex_timeout, tuned.max_results_per_query,
                                          tuned.max_reader_documents))
+            self.assertEqual(("deepseek", "deepseek-v4-flash", "gpt-5.6-terra"),
+                             (tuned.llm_backend, tuned.deepseek_model, tuned.codex_model))
             for disabled in ("", "   ", "0", "0.0"):
                 with self.subTest(timeout=disabled), patch.dict("os.environ", {
                         "FROGENT_MEMORY_DB": relative, "FROGENT_CODEX_TIMEOUT": disabled}, clear=True):
@@ -443,6 +445,8 @@ class AgentRuntimeTests(unittest.TestCase):
                     with self.assertRaisesRegex(ValueError, "positive finite"):
                         RuntimeConfig.from_env(ROOT)
             self.assertIsNone(CodexClient(ROOT, runner=FakeRunner([]), timeout=0).timeout)
+            with self.assertRaisesRegex(ValueError, "model"):
+                CodexClient(ROOT, runner=FakeRunner([]), model=" ")
             for invalid in (-1, float("nan"), float("inf")):
                 with self.assertRaisesRegex(ValueError, "positive finite"):
                     CodexClient(ROOT, runner=FakeRunner([]), timeout=invalid)

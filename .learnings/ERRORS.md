@@ -590,7 +590,7 @@ cache with an explicit manifest exclusion if policy continues to deny deletion.
 
 **Logged**: 2026-07-30T22:28:00+08:00
 **Priority**: low
-**Status**: open
+**Status**: unresolved_external
 **Area**: evaluation
 
 ### Summary
@@ -8919,3 +8919,152 @@ abbreviated revision roots to recursive search commands.
 ### Metadata
 - Reproducible: yes
 - Related Files: runtime/evaluation
+
+---
+
+## [ERR-20260804-076] read-only third-party source inspection exposed an embedded credential
+
+**Logged**: 2026-08-04T10:20:00+08:00
+**Priority**: critical
+**Status**: open
+**Area**: credential hygiene
+
+### Summary
+
+A read-only remote source excerpt included a hardcoded provider credential in command output. The
+credential was not copied into FROGENT, reused, or intentionally disclosed in user-facing text.
+
+### Required Action
+
+Future third-party source inspection must redact assignments whose names contain `api_key`,
+`token`, `secret`, `password`, or `license` before any excerpt is emitted. Never use or migrate an
+embedded third-party credential. The provider owner should remove the hardcoded value and rotate
+it because it has appeared in process output.
+
+### Metadata
+- Reproducible: yes
+- Related Files: third-party read-only FROGENT production source on `doomx_3nd`
+
+---
+
+## [ERR-20260804-077] DeepSeek V4 canary sent tool_choice in default thinking mode
+
+**Logged**: 2026-08-04T10:30:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: model provider compatibility
+
+### Summary
+
+The frozen r01 tool-call canary returned HTTP 400 before a tool call was accepted. Official
+DeepSeek V4 compatibility guidance states that thinking mode rejects the `tool_choice` parameter;
+the request had left thinking mode at its enabled default.
+
+### Resolution
+
+Preserve r01 as failure evidence. The r02 amendment disables thinking for this deterministic
+tool-routing canary and explicitly selects the same frozen function. No scientific prompt,
+acceptance criterion, model, endpoint or credential source changed.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260804/deepseek-v4-flash-canary-r01, runtime/evaluation/revision-20260804/deepseek-v4-flash-canary-r02
+
+---
+
+## [ERR-20260804-078] DeepSeek V4 canary provider returned HTTP 503
+
+**Logged**: 2026-08-04T10:32:00+08:00
+**Priority**: low
+**Status**: unresolved_external
+**Area**: model provider availability
+
+### Summary
+
+The compatibility-corrected r02 request returned HTTP 503 before inference. The failure is
+classified as provider availability rather than model behavior or request validation.
+
+### Required Action
+
+Preserve r02 and r03. The identical r03 retry also returned HTTP 503, so immediate retries stopped
+after two consecutive provider-availability failures. Do not weaken the tool-call acceptance
+criteria or silently substitute another model. A later DeepSeek run requires a new, declared
+canary; Terra remains a separately declared Codex-side fallback.
+
+### Metadata
+- Reproducible: unknown
+- Related Files: runtime/evaluation/revision-20260804/deepseek-v4-flash-canary-r02, runtime/evaluation/revision-20260804/deepseek-v4-flash-canary-r03
+
+---
+
+## [ERR-20260804-079] LLM backend selection pushed research_factory over module size gate
+
+**Logged**: 2026-08-04T10:28:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+
+The initial in-file DeepSeek/Codex selection raised `research_factory.py` from below the 260-line
+package gate to 268 lines.
+
+### Resolution
+
+Move model-boundary selection into `agent.llm.client_factory`. The app factory returned to exactly
+260 lines, and the architecture plus focused runtime suites passed.
+
+### Metadata
+- Reproducible: yes
+- Related Files: agent/app/research_factory.py, agent/llm/client_factory.py
+
+---
+
+## [ERR-20260804-080] full suite retained two known environment and governance blockers
+
+**Logged**: 2026-08-04T10:28:00+08:00
+**Priority**: low
+**Status**: unresolved_existing
+**Area**: test environment
+
+### Summary
+
+The 269-test discovery run could not import the exposed ADMET test because the active Python lacks
+the declared optional `admet_ai` dependency. The repository-layout audit also continues to reject
+tracked revision evidence under `runtime/evaluation`; those evidence assets predate this model
+change and are intentionally preserved for the active rebuttal.
+
+### Required Action
+
+Run the ADMET test in a prepared dependency environment. Resolve the tracked-evidence governance
+decision separately without deleting revision evidence as part of a model-selection change. The
+model-boundary, architecture and runtime focused suites remain independently green.
+
+### Metadata
+- Reproducible: yes
+- Related Files: requirements.txt, tests/test_eight_task_property_admet.py, tests/test_repository_layout.py
+
+---
+
+## [ERR-20260804-081] combined secret-scan regex broke zsh quoting
+
+**Logged**: 2026-08-04T10:32:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation command
+
+### Summary
+
+A combined `rg` expression mixed shell quote characters and failed at zsh parse time before the
+diff or scan ran.
+
+### Resolution
+
+Run the diff review and credential-pattern scans as separate commands with simple single-quoted
+patterns. No file or external state was changed by the failed command.
+
+### Metadata
+- Reproducible: yes
+- Related Files: none
+
+---

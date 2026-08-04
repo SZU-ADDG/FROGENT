@@ -12,6 +12,7 @@
   - `respectfully_declined_with_justification`
 - 稿件位置目前均为 planned location。完成正文修改后，应替换为最终 section、figure、table、page 和 line。
 - 内部完成窗口：2026-07-30 至 2026-08-12，共 14 天。全部实验、正文、SI、代码/界面修改、point-by-point response 和投稿文件均纳入本轮。
+- 2026-08-04 10:35 模型策略冻结：FROGENT Agent 固定为 `deepseek-v4-flash`，Codex 侧实现、编排和独立验收固定为 `gpt-5.6-terra`；同一 benchmark arm 禁止混合两个模型的输出。本地 active runtime 已加入 DeepSeek structured client，并将 Codex 默认由 Sol 改为 Terra。DeepSeek tool-call r01 因默认 thinking mode 与 `tool_choice` 不兼容返回 HTTP 400；仅修正该兼容字段的 r02 与完全相同的 r03 精确重试均在推理前返回 HTTP 503。三次终态和 credential non-persistence 均已保存；当前保持 DeepSeek 为目标模型，真实 Agent benchmark 等待新 canary 通过，Terra 仅作为单独声明的 Codex 侧回退。
 - 2026-07-30 执行检查点：首批当前可执行的非 GPU 工作已完成，包含 255 项完整测试、73 项 evidence regression、89 项 molecular-tool regression、远端 73 项 evidence regression、live literature smoke、Capability-52 rescore、Vina/PLIP/Dimorphite/PDB2PQR 真实 CPU 案例和 37 页论文构建。
 - 2026-07-30 第二批检查点：完成 Capability-52 的 50,000 次 bootstrap/95% CI、八项 benchmark datasheet、6-case evidence reliability/recovery panel、63 项 focused tests、Europe PMC 单查询与四任务重复运行、Vina seed stability、12-case protonation panel、3-case receptor pH panel、live RCSB target/pocket repeat，以及远端 Python 3.11/RDKit source-copy-safe CPU validation。
 - 2026-07-30 第三批检查点：完成语义双评与 κ、统计分析入口、matched-resource 与真实 subagent 消融、8-case live evidence 独立裁决、structured retrieval、evidence propagation、Luteolin 独立性、ADMET/property、raw/local/redocking、multi-target docking、PLIP parser、DAVIS screening、GLP1R audit、safety contract、telemetry、HLE access audit 和近期 baseline 审计。

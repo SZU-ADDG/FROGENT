@@ -10,6 +10,7 @@
 
 ### 已完成的首批非 GPU 工作
 
+- [x] Agent 模型边界已冻结：FROGENT Agent=`deepseek-v4-flash`，Codex 工程/验收=`gpt-5.6-terra`；local runtime 配置、structured client、credential non-persistence 和 focused tests 已完成。DeepSeek live tool-call canary 当前为 r01 HTTP 400（thinking/tool_choice compatibility）及修正后 r02/r03 两次 HTTP 503（provider availability）；真实 DeepSeek 推理验收保持待新 canary 通过，禁止把 Terra 输出混入 DeepSeek benchmark arm。
 - [x] 论文压缩包已复制到 `docs/manuscript/Arxiv_FROGENT_20251217.zip`，24 个条目通过 `unzip -t`。
 - [x] 论文源码包已完成结构、安全和材料完整性审计；确认包含 2 个 TeX、1 个 bibliography、1 个 style 和 20 个 PDF figures。
 - [x] 本地项目已安全同步到 `doomx_3nd:/work/doomx/FROGENT`；远端论文 ZIP 校验通过。

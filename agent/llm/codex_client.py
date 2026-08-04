@@ -20,19 +20,22 @@ def _subprocess_runner(args: list[str], prompt: str, timeout: float | None, cwd:
 
 
 class CodexClient:
-    """Generate one JSON object with gpt-5.6-sol under a read-only sandbox."""
+    """Generate one JSON object with a pinned Codex model in a read-only sandbox."""
 
     def __init__(self, project_root: Path, *, runner: Runner = _subprocess_runner,
-                 executable: str = "codex", timeout: float | None = None) -> None:
+                 executable: str = "codex", model: str = "gpt-5.6-terra",
+                 timeout: float | None = None) -> None:
         self.root = project_root.resolve()
         if not self.root.is_dir():
             raise ValueError("project root must be an existing directory")
         if not executable.strip():
             raise ValueError("Codex executable must be configured")
+        if not model.strip():
+            raise ValueError("Codex model must be configured")
         valid_type = isinstance(timeout, (int, float)) and not isinstance(timeout, bool)
         if timeout is not None and (not valid_type or not math.isfinite(timeout) or timeout < 0):
             raise ValueError("Codex timeout must be zero, None, or a positive finite number")
-        self.runner, self.executable = runner, executable
+        self.runner, self.executable, self.model = runner, executable, model.strip()
         self.timeout = None if timeout == 0 else timeout
 
     def generate(self, role: str, contract: str, payload: Mapping[str, object],
@@ -47,7 +50,7 @@ class CodexClient:
             raise ValueError("Codex cwd must be a contained real directory")
         prompt = (f"Role: {role}\nReturn exactly one JSON object with no markdown.\n"
                   f"Contract: {contract}\nINPUT:\n{json.dumps(payload, ensure_ascii=False, sort_keys=True)}")
-        args = [self.executable, "exec", "--model", "gpt-5.6-sol", "-c",
+        args = [self.executable, "exec", "--model", self.model, "-c",
                 'model_reasoning_effort="medium"', "-c", 'approval_policy="never"',
                 "--ephemeral", "--ignore-user-config", "--sandbox", "read-only",
                 "--cd", str(workdir)]

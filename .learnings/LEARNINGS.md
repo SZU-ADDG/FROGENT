@@ -2303,6 +2303,33 @@ removed the final scheduling tail while retaining the original state and result 
 
 ---
 
+## [LRN-20260804-008] pin one model per benchmark role
+
+**Logged**: 2026-08-04T10:20:00+08:00
+**Category**: user_preference
+**Area**: agent model policy
+
+### Learning
+
+Use `deepseek-v4-flash` for FROGENT Agent runs. Use `gpt-5.6-terra` for Codex-side orchestration,
+implementation, and independent acceptance when a Codex model is needed. Freeze the selected
+model in each benchmark protocol and do not mix outputs from the two models within one comparison
+arm.
+
+### Applied Change
+
+The active runtime model boundary and the DeepSeek provider canary are being updated to make this
+selection explicit and reproducible.
+
+### Metadata
+- Source: user_feedback
+- Pattern-Key: runtime.pin_agent_and_acceptance_models
+- Recurrence-Count: 1
+- First-Seen: 2026-08-04
+- Last-Seen: 2026-08-04
+
+---
+
 ## [LRN-20260803-007] retain molecule-level parse failures without discarding analyzable cells
 
 **Logged**: 2026-08-03T16:52:00+08:00
