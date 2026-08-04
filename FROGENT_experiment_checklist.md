@@ -103,7 +103,7 @@
 - [x] Peptide workflow manuscript block：`docs/manuscript/peptide-workflow-rebuttal-blocks.md` 已分离 structure prediction 与 peptide docking，汇总 ADCP、MDockPeP2、ESMFold、AF3、TrioPep 的真实状态、结构结果、失败边界及 R1-5a、R1-5b、R1-9d、R1-9e 回复。
 - [x] Architecture/retrieval manuscript block：`docs/manuscript/architecture-retrieval-rebuttal-blocks.md` 已汇总 matched-resource、real-agent ablation、structured retrieval、live evidence 与 downstream propagation，形成 Methods、Results、SI 表及 R3-M2a/b、R3-M3、R3-M4、R3-M5a/b/d、R2-3a 回复块，并删除宽泛 multi-agent superiority 解释。
 - [x] Benchmark corrections manuscript block：`docs/manuscript/benchmark-corrections-rebuttal-blocks.md` 已把 HLE、QED、SA、virtual screening、retrosynthesis 和八任务命名/尺度问题整理为统一 disposition table、Methods、Results 及 R1-8a–e、R2-1a、R2-3c、R2-7a/b、R3-M1 回复块；无法绑定原始 case/scorer 的 headline values 保持 `not_measured`。
-- [ ] MDockPeP2 prospective rerun。🟠 **外部凭据依赖**：19 GiB 隔离 runtime 已复制，Modeller 9.13 license 未进入可执行副本；禁止复制第三方 license credential。MDockPeP2 历史证据与 ADCP prospective panel 共同承担正式 docking 主线。
+- [ ] MDockPeP2 prospective rerun。🟠 **第三方 provider 修复依赖**：`doomx_5nd` 不存在用户给定的 `/work` 路径，实际只读安装位于 `doomx_3nd`；第三方 Modeller 配置中存在已脱敏的 license assignment，未复制或导出。Live MCP canary 在 MDockPeP2/Modeller 启动前因服务进程 global CWD 漂移与相对入口失败，返回缺失 `Sampling_scores_all.txt`。端口 9005 在 provider owner 修复 request-local workdir、绝对入口、CWD 恢复和并发隔离前禁止 benchmark 批跑；prospective accuracy 与 license validity 保持 `not_measured`。
 
 ### 首轮证据入口
 
@@ -151,14 +151,16 @@
 
 ### G0-A｜八项 benchmark 事实核查
 
-- [ ] 锁定八项任务的正式名称、目的、版本、来源和许可。🟡 **首轮部分完成**：已从论文源码提取八项声明；版本、许可和原始任务材料仍待补齐。
-- [ ] 建立 Figure 1、Figure 3、正文、数据文件和评分入口的对应表。🟡 **第二批部分完成**：八项 datasheet 已映射 Figure 1、Figure 3、Methods、Results、数据/工具/评价者线索，并记录 15 个冲突；ZIP 中仍缺原始数据文件和 scorer。
-- [ ] 核实 HLE 的真实含义、题型、样本选择和官方/原始评分协议。🟡 **第三批部分完成**：官方 HLE 访问门控、text-only 选择协议、评分框架和 59→24 候选筛选已审计；完整合法 20-case 内容和稿件原始 HLE 样本仍待作者材料。
+- [ ] 锁定八项任务的正式名称、目的、版本、来源和许可。🟡 **case/gold 已收到**：作者提供的 ZIP 含 8 项任务各 20 cases/reference answers，任务 5/6/7 结构齐全；正式版本、来源许可、原始执行配置和 scorer 仍待确认。证据：`docs/manuscript/eight-task-source-intake.md`。
+- [ ] 建立 Figure 1、Figure 3、正文、数据文件和评分入口的对应表。🟡 **数据侧已闭合**：八项 source files 已映射并通过 schema/20-case/结构完整性审计；原始逐样本 outputs、失败行、seeds、scorer 与 Figure 1/3 aggregation 仍缺。虚拟筛选必须报告 attempted 20、valid 19。
+- [ ] 核实 HLE 的真实含义、题型、样本选择和官方/原始评分协议。🟡 **author-supplied 20 cases 已收到**：4 exact-match、16 multiple-choice，答案和理由齐全；官方来源/版本/许可、授权、纳入映射与 judge 记录仍需作者确认，新增运行只能标为 exposed post-hoc rerun。
 - [x] 标出客观题、主观题、回归、排序、工具调用和专家判定任务。证据：八项 benchmark datasheets 与 `manuscript-qa/benchmark-observations.schema.json`。
 - [x] 分开记录 scoring maximum、direct-tool baseline 和 adjudicated reference。证据：benchmark datasheets、DAVIS screening、semantic consensus 与 evidence ledger。
-- [ ] 核查 QED 的生成方式；RDKit 确定性计算值从 property-prediction accuracy 中移出。🟡 **第三批部分完成**：QED 已在 11-record property panel 中作为 RDKit 确定性描述符复算并与 ADMET 预测分层；稿件原始 scorer 和样本级输出待补。
+- [x] 核查 QED 的生成方式；RDKit 确定性计算值从 property-prediction accuracy 中移出。作者提供的 20/20 SMILES 均有效，RDKit 2026.03.3 重算 QED 经三位小数与 supplied gold 20/20 一致，MAE `0.000259`；四项 model-dependent ADMET endpoints 已在独立 exposed-case r01 中重跑，原始 aggregate score 仍未复现。
+- [x] 八任务 property exposed-case rerun：ADMET-AI 2.0.1 完成 20/20。Caco-2 MAE/RMSE `0.402/0.515`、Spearman `ρ=0.501`；BBBP/CYP2D6-sub/SR-p53 accuracy `0.550/0.850/0.850`，balanced accuracy `0.550/0.786/0.472`，MCC `0.229/0.681/-0.076`。SR-p53 0/2 positives recovered，禁止用 nominal 0.85 掩盖类别失衡；原稿 `79.06` aggregate 不重构。
 - [ ] 核查 SA 的方向、代码实现、图例和所有受影响结果。🟡 **第三批部分完成**：RDKit SA 方向已确认并形成修订结论；原始实现、主表样本与受影响统计待补。
-- [ ] 核查逆合成原始评价者、rubric、自动工具和 LLM judge。🟡 **首轮部分完成**：已确认 ZIP 中缺少 rubric、judge 和逐样本记录。
+- [ ] 核查逆合成原始评价者、rubric、自动工具和 LLM judge。🟡 **cases/gold 已收到**：20 targets 和 1–5 step reference routes 已冻结；原始 outputs/failures、route-equivalence rubric、judge prompt/version 与判定记录仍缺。
+- [x] 八任务 retrosynthesis exposed-case r01：DirectMultiStep flash/explorer 共 `40/40` live calls 成功，20/20 × 2 均 nonempty、target-rooted、RDKit-valid。Flash/explorer top-1/top-5 完整 canonical reference-route exact match 为 `0.20/0.20` 与 `0.30/0.30`，mean top-5 best exact-reference reaction recall 为 `0.572/0.738`、precision 为 `0.575/0.592`。Exact mismatch 保留给后续 blind semantic adjudication，不标作化学失败。
 - [ ] 导出全部方法的样本级结果、缺失值和失败结果。
 - [ ] 检查 few-shot 示例、prompt、cache 和 working memory 与测试样本的重叠。
 - [ ] 记录模型训练/发布日期与 benchmark 暴露风险。
@@ -171,7 +173,7 @@
 - [ ] 核实 DrugBank 内容进入哪个 Agent 或 context。🟡 **第三批部分完成**：PubChem cross-reference 与 structured proxy 已审计；DrugBank direct/API 返回 403，生产 context 注入仍需部署配置。
 - [x] 核实 task state、working context、working memory 和 persistent memory 的真实实现。证据：本地/远端 73 项 evidence regression，以及 research-eval fixture replay。
 - [ ] 核实 TargetDiff、Pocket2Mol、DiffSBDD、PocketFlow、MolCRAFT 的部署与可复现性。🟡 **范围已核实**：前三项 checkpoint、配置、canary、primary/extension matrices 均已完成；两个生产目录仍未发现 PocketFlow/MolCRAFT 权重。DiffBP 仅发现配置和 source，配置引用的 checkpoint 缺失；DecompDiff 未发现可执行 checkpoint。
-- [ ] 核实 MDockPeP2、ADCP、HADDOCK、pepATTRACT 和 rDock 的 endpoint、版本、权限和回退。🟡 **部分完成**：用户确认 MDockPeP2 与 ADCP 为正式多肽对接方法；MDockPeP2 endpoint/source/history 已核实，历史输出完成负向审计，隔离 prospective runtime 受 Modeller license 限制；ADCP 官方 v1.1 隔离 runtime 正在准备；两个生产目录中未发现 ADCP、HADDOCK、pepATTRACT 或 rDock 安装。
+- [ ] 核实 MDockPeP2、ADCP、HADDOCK、pepATTRACT 和 rDock 的 endpoint、版本、权限和回退。🟡 **主要方法已核实**：MDockPeP2 endpoint/source/history 与第三方 Modeller license assignment 存在性已核实，credential 保持脱敏且未复制；live canary 暴露 provider CWD/相对路径故障，prospective accuracy 仍待 owner 修复。ADCP 官方 v1.1 隔离 runtime 和 9/9 reference-redocking 已完成；两个生产目录中未发现 HADDOCK、pepATTRACT 或 rDock 安装。
 - [ ] 核实参数微调、few-shot prompting 和 in-context learning 的真实配置。
 - [ ] 核实生产/演示环境与论文实验环境是否一致。🟡 **首轮部分完成**：已确认远端系统 Python 3.10 与当前 `StrEnum` runtime contract 不一致，并保留失败证据。
 - [ ] 从干净环境验证主 GitHub、安装入口、最小示例和公开数据。🟡 **首轮部分完成**：远端 source-only copy、73 项 evidence regression 和 result verification 已通过；正式 Python 3.11+ clean environment 仍待建立。

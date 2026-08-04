@@ -1,5 +1,166 @@
 # Errors
 
+## [ERR-20260804-MDP-LIVE-CANARY] verified MDockPeP2 MCP call produced no score file
+
+**Logged**: 2026-08-04T08:22:15+08:00
+**Priority**: high
+**Status**: diagnosed_provider_fix_required
+**Area**: peptide-docking
+
+### Summary
+The first preregistered call to the verified MDockPeP2 MCP endpoint returned a
+tool error because `Sampling_scores_all.txt` was not produced.
+
+### Error
+```text
+Error calling tool 'Peptide_protein_docking_vina_score':
+[Errno 2] No such file or directory: 'Sampling_scores_all.txt'
+```
+
+### Context
+- MCP initialize and tool-schema discovery succeeded against FastMCP 1.9.3.
+- The installed Modeller configuration contains a redacted license assignment;
+  the license value was not printed, copied, or reused.
+- The provider output directory was absent before the call, so no historical
+  result was overwritten or deleted.
+- The client and provider failure evidence remain in their original locations.
+
+### Suggested Fix
+The listener PID 761472 had already drifted into the nested working directory
+`5VAQ-test_peptide/5VAQ-test_peptide`. The tool uses process-global `os.chdir`
+and then invokes `../mdockpep2.1.py`; from the drifted directory that relative
+entrypoint did not exist. The canary created only the copied receptor and FASTA,
+then failed before MDockPeP2 or Modeller execution. Keep the failed call frozen.
+The provider owner must make work directories request-local, resolve the
+entrypoint absolutely, restore the original CWD in `finally`, remove destructive
+reuse of fixed output names, and return subprocess exit/stdout/stderr before a
+new amended canary is justified.
+
+### Metadata
+- Reproducible: unknown
+- Related Files: runtime/evaluation/revision-20260804/mdockpep2-live-endpoint-canary-r01/protocol/protocol.json, docs/manuscript/peptide-workflow-rebuttal-blocks.md
+- See Also: ERR-20260731-009
+
+---
+
+## [ERR-20260804-EIGHTTASK-VS-GOLD] one virtual-screening gold is outside its candidate pool
+
+**Logged**: 2026-08-04T08:21:00+08:00
+**Priority**: high
+**Status**: pending_author_resolution
+**Area**: evaluation
+
+### Summary
+The newly supplied eight-task source pack contains one structurally impossible
+virtual-screening case: row 13 (`JAK2(JH1domain-catalytic)`, PDB `2b7a`) names
+a gold molecule that is absent from its 11-candidate pool.
+
+### Context
+- All 20 virtual-screening rows parse and all 20 referenced PDB files exist.
+- Gold membership is 19/20; the other 19 gold molecules occur exactly in their
+  row-specific candidate pools.
+- Scoring this row as an ordinary model miss would confound source-data validity
+  with screening performance.
+
+### Suggested Fix
+Freeze the supplied row unchanged, mark it invalid/unscorable in the primary
+audit, request the intended candidate or corrected gold from the authors, and
+report both the attempted denominator (20) and valid denominator (19). Do not
+repair the source silently or impute a candidate.
+
+### Metadata
+- Reproducible: yes
+- Related Files: docs/manuscript/benchmark-corrections-rebuttal-blocks.md, FROGENT_experiment_checklist.md
+
+---
+
+## [ERR-20260804-MDP5-PATH] doomx_5nd MDockPeP2 path was absent
+
+**Logged**: 2026-08-04T07:31:00+08:00
+**Priority**: medium
+**Status**: resolved_location_mismatch
+**Area**: remote-readonly-staging
+
+### Summary
+The user-supplied `doomx_5nd:/work/pqh/projects/agent/mcp-toolset/mdockpep2.1`
+path was not present on the connected host (`szdx-4090-23-28`).
+
+### Error
+```text
+stat: cannot statx '/work/pqh/projects/agent/mcp-toolset/mdockpep2.1': No such file or directory
+find: '/work/pqh/projects/agent/mcp-toolset/mdockpep2.1': No such file or directory
+```
+
+### Context
+- The SSH alias resolved and authentication succeeded.
+- The attempted operation was a read-only inventory; no remote state changed.
+- The likely causes are a path spelling/version difference or a different mount on this host.
+
+### Suggested Fix
+Inventory the read-only parent directories with `ls`, `find`, `stat`, `file`,
+and `du`; locate the exact MDockPeP2 directory before inspecting license
+presence without printing credential contents.
+
+### Resolution
+The connected `doomx_5nd` host has no `/work` mount. The exact read-only
+directory exists on `doomx_3nd` and was inspected there without exposing or
+copying the license value. Future work must identify the actual host mount
+before treating a user-supplied remote path as executable.
+
+### Metadata
+- Reproducible: yes
+- Related Files: FROGENT_revision_plan.md, FROGENT_experiment_checklist.md
+
+---
+
+## [ERR-20260804-DOC-PATCH-CONTEXT] rebuttal document patch used stale multiline context
+
+**Logged**: 2026-08-04T09:05:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: manuscript editing
+
+### Summary
+Two large documentation patches failed verification because their expected
+multiline context did not exactly match the current benchmark and peptide
+rebuttal drafts. `apply_patch` made no partial change. A first attempt to log
+this error also used an inexact metadata anchor and failed without mutation.
+
+### Resolution
+Read the current sections, split the changes into exact-context patches, and
+apply them successfully. Future long-lived revision documents and learning
+records should be patched from freshly inspected anchors.
+
+### Metadata
+- Reproducible: yes
+- Related Files: docs/manuscript/benchmark-corrections-rebuttal-blocks.md, docs/manuscript/peptide-workflow-rebuttal-blocks.md
+
+---
+
+## [ERR-20260804-RETRO-TARGET-ROOT] retrosynthesis v1 scorer used an any-step target check
+
+**Logged**: 2026-08-04T10:05:00+08:00
+**Priority**: medium
+**Status**: resolved_in_output_v02
+**Area**: evaluation
+
+### Summary
+The first deterministic retrosynthesis analysis marked a route target-rooted
+when any reaction product equalled the requested target. The frozen protocol
+requires the first predicted retrosynthetic reaction to start from the target.
+
+### Resolution
+Preserve all 40 raw calls and the v1 output, amend only the analysis rule, keep
+predicted reaction order during parsing, and write corrected results to
+`output-v02`. Full exact-route and reaction-overlap metrics continue to compare
+reaction sets and are otherwise unchanged.
+
+### Metadata
+- Reproducible: yes
+- Related Files: scripts/analyze_eight_task_retrosynthesis.py, runtime/evaluation/revision-20260804/eight-task-retrosynthesis-exposed-r01/protocol/analysis-amendment-v02.json
+
+---
+
 此文件用于记录命令、远端连接及外部工具错误。
 
 ## 2026-08-04 — full check treated generated caches and installed dependencies as product domains
