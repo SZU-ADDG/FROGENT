@@ -8897,3 +8897,25 @@ an assumed glob.
 - Symptom: `python -m unittest tests.test_web_app` failed with `NameError: name 'file_path' is not defined` in `download_chat_file`.
 - Cause: the route reused `app.chat.file_path` without adding it to the explicit import list in `app/server.py`.
 - Resolution: import `file_path` and rerun the focused web-app tests before commit.
+
+## [ERR-20260804-075] repository search included a nonexistent abbreviated runtime path
+
+**Logged**: 2026-08-04T09:35:14+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: evidence inspection
+
+### Summary
+
+An `rg` evidence search included `runtime/evaluation/revision-2026`, which does not exist, while
+the intended dated revision directories were already covered by the broader docs and runtime
+queries. The remaining search results were valid and no file was changed.
+
+### Resolution
+
+Use `find runtime/evaluation -maxdepth 2` or exact paths returned by `rg --files` before passing
+abbreviated revision roots to recursive search commands.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation

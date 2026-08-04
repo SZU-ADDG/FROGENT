@@ -62,6 +62,7 @@
 - [x] Multi-target docking：5 structures、15 seeds、20 PLIP reports；12/15 poses 的 RMSD ≤ 2 Å，EGFR 1M17 以 5.886 Å 稳定失败并保留完整 failure analysis。
 - [x] PLIP parser baseline：12 complexes、129 interactions；direct XML 与 adapter 12/12 一致，typed parser 全案例 end-to-end exact 为 `0.667`，metal/waterbridge schema gap 已定位。
 - [x] DAVIS ABL1 CPU virtual screening：direct Vina 与 FROGENT workflow 均 10/10 成功且 pose-score vectors 完全一致；Spearman ρ `0.115`、p `0.751`，证明当前 docking score 尚未形成可靠 affinity discriminator。
+- [x] DAVIS JAK2 gold 修复：从新提供的 68-drug JAK2 数据中确定唯一 top-affinity 记录 Drug Index 49 / CID 25127112（pKd `10.443697`，Kd `0.036 nM`）；其磷酸盐的 largest organic fragment 与 Task 5 第 13 行 gold 立体精确一致。原始行保持 attempted `20` / exact-valid `19`，另建一个 post-hoc corrected replacement cell。
 - [x] GLP1R peptide audit：完成 4ZGM 来源、序列、界面、缺失残基和图文一致性核查；识别一处 `-2.41/-2.42` 差异、重复 pose、缺失 pose，以及 Aib/脂化/末端化学表达缺口。
 - [x] Safety contract panel：23/23 通过；refusal 9/9、degradation 4/4、recovery 3/3、provenance 16/16、false refusal 0/10、synthetic secret leak 0。
 - [x] CPU/live telemetry：70 条 per-run records、49 条有效 summary rows、17 个 groups；记录 wall time、CPU、RSS、provider calls 和失败尝试，token/energy 保持 `not_measured`。

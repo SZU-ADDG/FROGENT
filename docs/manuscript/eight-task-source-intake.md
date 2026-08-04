@@ -20,17 +20,27 @@ it must not be used as an unexposed or blinded evaluation set.
 | Retrieve Known Drugs | 20 queries | DrugBank-ID lists and SMILES | Case-level rerun possible; original provider release, aggregation and outputs remain missing |
 | Retrieve Known Targets | 20 queries | Two or three targets per case | Case-level rerun possible; original provider release, scorer and outputs remain missing |
 | Molecular Property Prediction | 20 SMILES × five endpoints | QED, Caco-2, BBBP, CYP2D6-sub and SR-p53 values | Deterministic QED verified 20/20; ADMET-AI 2.0.1 exact-case post-hoc rerun completed for the four model-dependent endpoints |
-| Virtual Screening | 20 receptor/candidate groups; 11 candidates per group | One supplied gold molecule per group | Attempted denominator 20; valid denominator 19 because one gold is absent from its candidate pool |
+| Virtual Screening | 20 receptor/candidate groups; 11 candidates per group | One supplied gold molecule per group | Original attempted denominator 20 and exact-isomeric valid denominator 19; a DAVIS-backed corrected replacement cell is available separately |
 | Binding Mechanism | 20 ligand/protein pairs and 20 protein PDBs | Five interaction-class outputs per case | Inputs/gold received; supplied PDBs contain receptor coordinates without the gold ligand pose, so direct PLIP reconstruction is not available |
 | Molecular Design | One shared generate-five prompt and 20 pocket PDBs | No unique gold molecule required by the prompt | Exact pocket rerun possible under a frozen generator/scorer protocol; original outputs, seeds and aggregation remain missing |
 | Retrosynthesis Planning | 20 target SMILES | One- to five-step reference routes | DirectMultiStep flash/explorer post-hoc rerun completed 40/40 calls; original outputs and semantic judge records remain missing |
 
 ## Source defect retained in the analysis population
 
-Virtual-screening row 13 (`JAK2(JH1domain-catalytic)`, PDB `2b7a`) supplies a gold molecule that is
-absent from its 11-member candidate pool. This is a source-level invalid case. It will remain in
-the attempted denominator and failure accounting, while ranking accuracy is computed only on the
-19 valid candidate pools. The gold is not inserted, replaced or imputed.
+Virtual-screening row 13 (`JAK2(JH1domain-catalytic)`, PDB `2b7a`) does not contain the exact
+isomeric gold in its 11-member candidate pool. Candidate 3 has the same non-isomeric connectivity,
+but its stereochemistry is unspecified. The original case therefore remains source-invalid for an
+exact-identity scorer and stays in the attempted denominator; original-set ranking accuracy uses
+the 19 exact-valid pools.
+
+The separately supplied DAVIS archive resolves the molecular identity without altering the
+original file. Exact-target ranking over its 68 JAK2 records identifies Drug Index 49 / PubChem CID
+25127112 as the unique top-affinity entry (pKd 10.443697; Kd 0.036 nM). Its DAVIS representation is
+a phosphate salt; largest-organic-fragment standardization gives an isomeric canonical SMILES
+that exactly matches the source answer. A transparent correction therefore replaces only
+candidate 3's connectivity-only representation with that exact DAVIS active moiety in a separate
+post-hoc replacement cell. This corrected cell is eligible for a sensitivity or replacement-cell
+rerun and is excluded from reconstruction of the originally submitted headline.
 
 ## Deterministic property audit
 
@@ -80,10 +90,14 @@ post-hoc source-grounded reruns and are never represented as the original test e
 - `runtime/evaluation/revision-20260804/source-material/eight-task-benchmark-r01/source/test_data.zip.sha256`
 - `runtime/evaluation/revision-20260804/source-material/eight-task-benchmark-r01/report/source-audit.json`
 - `runtime/evaluation/revision-20260804/source-material/eight-task-benchmark-r01/report/property-gold-audit/summary.json`
+- `runtime/evaluation/revision-20260804/source-material/davis-gold-replacement-r01/protocol/selection-protocol.json`
+- `runtime/evaluation/revision-20260804/source-material/davis-gold-replacement-r01/report/replacement-case.json`
 - `runtime/evaluation/revision-20260804/eight-task-property-exposed-r01/protocol/protocol.json`
 - `runtime/evaluation/revision-20260804/eight-task-property-exposed-r01/output/summary.json`
 - `runtime/evaluation/revision-20260804/eight-task-retrosynthesis-exposed-r01/protocol/protocol.json`
 - `runtime/evaluation/revision-20260804/eight-task-retrosynthesis-exposed-r01/output-v02/summary.json`
 - `evaluation/benchmarks/eight_task_source.py`
+- `evaluation/benchmarks/davis_gold_replacement.py`
 - `scripts/analyze_eight_task_property_gold.py`
 - `tests/test_eight_task_source.py`
+- `tests/test_davis_gold_replacement.py`

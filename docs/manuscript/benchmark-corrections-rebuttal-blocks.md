@@ -36,7 +36,7 @@ outputs and benchmark-specific scorers are supplied.
 | Retrieve Known Drugs | 20 items; reported 83/100 | Twenty exposed queries with DrugBank-ID reference lists and SMILES; structured-resource/live panels reported separately | Original headline `not_measured`; exposed-case rerun eligible | Requires original outputs/failures, provider release, seed/retry policy and score aggregation |
 | Retrieve Known Target | 20 items; reported 95/100 | Twenty exposed queries with two or three reference targets per case | Original headline `not_measured`; exposed-case rerun eligible | Requires original outputs/failures, provider release and scorer |
 | Molecular Property Prediction | 20 items; reported 79.06 on an ambiguous scale | Twenty SMILES × five supplied endpoints; QED matches 20/20 at three decimals; ADMET-AI 2.0.1 exact-case rerun completed | Endpoint-specific post-hoc results reported; submitted aggregate `not_measured` | Caco-2 rho 0.501; classification balanced accuracy varies from 0.472 to 0.786; do not pool heterogeneous endpoints or reconstruct 79.06 |
-| Virtual Screening | 20 groups; reported 6/20 | Twenty receptor structures and 11 candidates per group; one gold absent from its pool; independent DAVIS–ABL1 tool-fidelity result retained | Attempted 20, valid ranking denominator 19; new exact rerun eligible | Requires a frozen receptor preparation/grid/ranking protocol; source-invalid row remains a failure and is never imputed |
+| Virtual Screening | 20 groups; reported 6/20 | Twenty receptor structures and 11 candidates per group; row 13 lacks the exact gold stereochemistry although one candidate has matching connectivity; DAVIS identifies the exact JAK2 active moiety; independent DAVIS–ABL1 tool-fidelity result retained | Original attempted 20 and exact-valid denominator 19; one separately reported corrected replacement cell is available | Requires a frozen receptor preparation/grid/ranking protocol; original row remains a failure and the corrected cell is explicitly post-hoc |
 | Binding Mechanism | 20 items; aggregate operation absent | Twenty ligand/protein pairs, reference interaction outputs and receptor-only PDBs; independent docking/PLIP panels reported separately | Original headline `not_measured`; pose-generation rerun required before PLIP-like analysis | Gold ligand poses, original outputs, component aggregation and scorer are absent |
 | Molecular Design | 20 items; reported 32 with missing unit | Shared generate-five prompt and 20 pocket PDBs received; CBGBench and Forge–Gauge reported separately | Original headline `not_measured`; exact-pocket exposed rerun eligible | Requires original outputs, seeds and QED/SA/Vina aggregation |
 | Retrosynthesis Planning | 20 items; reported 74 with missing unit | Twenty exposed targets/reference routes; DirectMultiStep flash/explorer completed 40/40 exact-case calls | Flash/explorer exact reference-route match 0.20/0.30; original accuracy `not_measured` | All calls target-rooted/RDKit-valid; exact alternative routes await blind semantic adjudication; original outputs/judge records absent |
@@ -48,8 +48,11 @@ Numeric QA identified 30 benchmark issues: 10 confirmed, eight ambiguous and 12 
 all eight tasks contain 20 exposed cases/reference answers, and structure inputs are complete for
 virtual screening, binding mechanism and molecular design. It did not include original outputs,
 failures, seeds, scorers, versions/licenses or judge records, so it cannot reproduce the submitted
-headlines. The virtual-screening audit found one invalid case whose gold is outside its candidate
-pool; its attempted denominator is 20 and valid ranking denominator is 19. For molecular
+headlines. The virtual-screening audit found one invalid case whose exact isomeric gold is absent
+although a connectivity-only form occurs in the pool; its attempted denominator is 20 and exact-
+valid ranking denominator is 19. A separately supplied DAVIS archive identifies the matching JAK2
+gold as CID 25127112 (pKd 10.443697, Kd 0.036 nM), enabling one transparent post-hoc corrected
+replacement cell without rewriting the original input. For molecular
 properties, all 20 SMILES parsed and RDKit QED matched the supplied three-decimal values in 20/20
 cases. QED is therefore retained only as a deterministic descriptor. The verified SA
 implementation runs from 1 (easier synthesis) to 10 (harder synthesis), so the submitted statement
@@ -102,9 +105,12 @@ Both arms showed weak agreement with the experimental affinity ranking (rho=0.11
 selected imatinib while DAVIS ranked dasatinib first. We therefore describe this result as tool
 execution with a weak affinity discriminator, and remove any implication that a correct Vina call
 alone establishes screening quality. The author-supplied exact benchmark now contains 20 receptor
-structures and 11 candidates per case; one case is invalid because its gold is outside that pool.
-The exact rerun protocol will report attempted 20, valid 19 and preserve the invalid case as a
-source failure.
+structures and 11 candidates per case; one case lacks the exact gold stereochemistry even though
+candidate 3 has matching connectivity. In the supplied DAVIS archive, the same JAK2 target has 68
+assayed drugs and a unique top entry, CID 25127112 (pKd 10.443697; Kd 0.036 nM). Removing its
+phosphate counterion yields the exact isomeric source gold. We preserve the original case as a
+source failure (attempted 20, exact-valid 19) and report the one-field DAVIS-backed correction only
+as a separate post-hoc replacement/sensitivity cell.
 
 ### R1-8d / SA direction
 
