@@ -2307,6 +2307,7 @@ removed the final scheduling tail while retaining the original state and result 
 
 **Logged**: 2026-08-04T10:20:00+08:00
 **Category**: user_preference
+**Status**: superseded
 **Area**: agent model policy
 
 ### Learning
@@ -2327,6 +2328,40 @@ selection explicit and reproducible.
 - Recurrence-Count: 1
 - First-Seen: 2026-08-04
 - Last-Seen: 2026-08-04
+- See Also: LRN-20260804-009
+
+---
+
+## [LRN-20260804-009] FROGENT Agent may use DeepSeek Flash or Luna max
+
+**Logged**: 2026-08-04T10:41:16+08:00
+**Category**: correction
+**Status**: applied
+**Area**: agent model policy
+
+### Summary
+
+The accepted FROGENT Agent configurations are `deepseek-v4-flash` or `gpt-5.6-luna` with
+`model_reasoning_effort=max`. Terra is removed from the active model policy.
+
+### Details
+
+Freeze exactly one of the two configurations for each run or benchmark arm. Record the model and
+reasoning effort in its protocol and manifest. Do not pool DeepSeek and Luna outputs within an arm.
+
+### Suggested Action
+
+Make Luna/max the explicit Codex-compatible alternative, verify it with a live structured canary,
+and update runtime defaults, tests, documentation, revision plan and checklist.
+
+### Metadata
+- Source: user_feedback
+- Related Files: agent/llm/codex_client.py, agent/app/research_factory.py, docs/MODEL_POLICY.md
+- Pattern-Key: runtime.pin_agent_model_alternatives
+- Recurrence-Count: 1
+- First-Seen: 2026-08-04
+- Last-Seen: 2026-08-04
+- See Also: LRN-20260804-008
 
 ---
 

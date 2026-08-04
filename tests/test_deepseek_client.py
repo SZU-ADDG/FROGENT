@@ -15,22 +15,25 @@ from scripts.probe_deepseek_tool_call import run_canary  # noqa: E402
 
 
 class DeepSeekClientTests(unittest.TestCase):
-    def test_factory_selects_pinned_deepseek_and_terra_boundaries(self):
+    def test_factory_selects_pinned_deepseek_and_luna_max_boundaries(self):
         deepseek = build_llm_client(
             ROOT, backend="deepseek", deepseek_model="deepseek-v4-flash",
             deepseek_base_url="https://api.deepseek.com", deepseek_timeout=None,
-            codex_model="gpt-5.6-terra", codex_executable="codex", codex_timeout=None)
+            codex_model="gpt-5.6-luna", codex_reasoning_effort="max",
+            codex_executable="codex", codex_timeout=None)
         self.assertEqual("deepseek-v4-flash", deepseek.model)
-        terra = build_llm_client(
+        luna = build_llm_client(
             ROOT, backend="codex", deepseek_model="deepseek-v4-flash",
             deepseek_base_url="https://api.deepseek.com", deepseek_timeout=None,
-            codex_model="gpt-5.6-terra", codex_executable="codex", codex_timeout=None)
-        self.assertEqual("gpt-5.6-terra", terra.model)
+            codex_model="gpt-5.6-luna", codex_reasoning_effort="max",
+            codex_executable="codex", codex_timeout=None)
+        self.assertEqual(("gpt-5.6-luna", "max"), (luna.model, luna.reasoning_effort))
         with self.assertRaisesRegex(ValueError, "FROGENT_LLM_BACKEND"):
             build_llm_client(
                 ROOT, backend="unknown", deepseek_model="deepseek-v4-flash",
                 deepseek_base_url="https://api.deepseek.com", deepseek_timeout=None,
-                codex_model="gpt-5.6-terra", codex_executable="codex", codex_timeout=None)
+                codex_model="gpt-5.6-luna", codex_reasoning_effort="max",
+                codex_executable="codex", codex_timeout=None)
 
     def test_structured_client_pins_model_schema_and_hides_key_from_payload(self):
         calls = []

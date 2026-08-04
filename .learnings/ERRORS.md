@@ -9068,3 +9068,60 @@ patterns. No file or external state was changed by the failed command.
 - Related Files: none
 
 ---
+
+## [ERR-20260804-082] installed Codex CLI rejected max reasoning literal
+
+**Logged**: 2026-08-04T10:43:00+08:00
+**Priority**: medium
+**Status**: resolved_with_compatibility_mapping
+**Area**: model runtime compatibility
+
+### Summary
+
+`codex-cli 0.136.0` rejected `model_reasoning_effort=max` before sending the Luna model request.
+Its accepted values end at `xhigh`.
+
+### Resolution
+
+Preserve r01 as a local config-validation failure. Represent the user's requested Luna max tier as
+`requested_reasoning_effort=max` and `effective_cli_reasoning_effort=xhigh` for this installed CLI,
+then verify the same model and structured output in a fresh r02 run.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260804/luna-max-structured-canary-r01, runtime/evaluation/revision-20260804/luna-max-structured-canary-r02
+
+---
+
+## [ERR-20260804-083] PATH Codex CLI is too old for gpt-5.6-luna
+
+**Logged**: 2026-08-04T10:45:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: model runtime compatibility
+
+### Summary
+
+The Luna/xhigh r02 request passed local configuration and reached the service. After the CLI's
+five connection retries, the service reported that `gpt-5.6-luna` requires a newer Codex app or
+CLI than the PATH-selected `codex-cli 0.136.0`.
+
+### Suggested Action
+
+Check for a newer executable already bundled with the installed Codex desktop app. If available,
+bind the project runtime to that executable and rerun the same structured canary in a fresh root.
+Do not substitute another model or upgrade system software without an explicit need.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260804/luna-max-structured-canary-r02
+- See Also: ERR-20260804-082
+
+### Resolution
+
+The installed ChatGPT.app bundle provides `codex-cli 0.146.0-alpha.9.2`. The r03 canary used that
+executable with `gpt-5.6-luna`, literal `model_reasoning_effort=max`, read-only sandbox and the
+frozen schema. After WebSocket timeouts, the client automatically fell back to HTTPS and returned
+the exact schema-valid `{"status":"ok"}` with exit zero.
+
+---

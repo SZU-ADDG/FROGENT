@@ -8,7 +8,7 @@ from pathlib import Path
 from agent.research.biomedical_providers import (
     EuropePMCProvider, NCBIConfig, OpenAlexProvider, PubMedProvider, UnpaywallFallback,
 )
-from agent.llm.client_factory import build_llm_client
+from agent.llm.client_factory import build_llm_client, llm_settings_from_env
 from agent.research.clinical_trials import ClinicalTrialsResolver
 from agent.llm.codex_roles import CodexPlanner, CodexReader, CodexScreener, CodexSynthesizer
 from agent.app.conversation_memory import ConversationMemoryStore
@@ -52,7 +52,7 @@ class RuntimeConfig:
     max_readers: int = 4
     max_queries: int = 12
     max_expansion_queries: int = 6
-    codex_executable: str = "codex"
+    codex_executable: str = "/Applications/ChatGPT.app/Contents/Resources/codex"
     max_results_per_query: int = 10
     max_reader_documents: int = 6
     max_memory_hits: int = 8
@@ -65,7 +65,8 @@ class RuntimeConfig:
     deepseek_model: str = "deepseek-v4-flash"
     deepseek_base_url: str = "https://api.deepseek.com"
     deepseek_timeout: float | None = None
-    codex_model: str = "gpt-5.6-terra"
+    codex_model: str = "gpt-5.6-luna"
+    codex_reasoning_effort: str = "max"
 
     @classmethod
     def from_env(cls, project_root: Path):
@@ -81,7 +82,6 @@ class RuntimeConfig:
             max_readers=int(os.getenv("FROGENT_MAX_READERS", "4")),
             max_queries=int(os.getenv("FROGENT_MAX_QUERIES", "12")),
             max_expansion_queries=int(os.getenv("FROGENT_MAX_EXPANSION_QUERIES", "6")),
-            codex_executable=os.getenv("FROGENT_CODEX_EXECUTABLE", "codex").strip() or "codex",
             max_results_per_query=int(os.getenv("FROGENT_MAX_RESULTS_PER_QUERY", "10")),
             max_reader_documents=int(os.getenv("FROGENT_MAX_READER_DOCUMENTS", "6")),
             max_memory_hits=int(os.getenv("FROGENT_MAX_MEMORY_HITS", "8")),
@@ -90,15 +90,8 @@ class RuntimeConfig:
             dynamic_plip=dynamic_plip_from_env(project_root),
             ligand_states=ligand_states_from_env(project_root),
             receptor_states=receptor_states_from_env(project_root),
-            llm_backend=os.getenv("FROGENT_LLM_BACKEND", "deepseek").strip().lower(),
-            deepseek_model=(os.getenv("FROGENT_DEEPSEEK_MODEL", "deepseek-v4-flash").strip()
-                            or "deepseek-v4-flash"),
-            deepseek_base_url=(os.getenv("FROGENT_DEEPSEEK_BASE_URL",
-                                         "https://api.deepseek.com").strip()
-                               or "https://api.deepseek.com"),
             deepseek_timeout=_optional_timeout(os.getenv("FROGENT_DEEPSEEK_TIMEOUT", "")),
-            codex_model=(os.getenv("FROGENT_CODEX_MODEL", "gpt-5.6-terra").strip()
-                         or "gpt-5.6-terra"),
+            **llm_settings_from_env(),
         )
 
 
@@ -176,7 +169,8 @@ def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=
         client = build_llm_client(
             root, backend=config.llm_backend, deepseek_model=config.deepseek_model,
             deepseek_base_url=config.deepseek_base_url, deepseek_timeout=config.deepseek_timeout,
-            codex_model=config.codex_model, codex_executable=config.codex_executable,
+            codex_model=config.codex_model, codex_reasoning_effort=config.codex_reasoning_effort,
+            codex_executable=config.codex_executable,
             codex_timeout=config.codex_timeout, runner=runner)
     europe = EuropePMCProvider()
     providers, routes, gaps = {"europe-pmc.search": europe}, ["europe_pmc"], []

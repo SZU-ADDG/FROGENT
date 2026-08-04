@@ -23,7 +23,9 @@ class CodexClient:
     """Generate one JSON object with a pinned Codex model in a read-only sandbox."""
 
     def __init__(self, project_root: Path, *, runner: Runner = _subprocess_runner,
-                 executable: str = "codex", model: str = "gpt-5.6-terra",
+                 executable: str = "/Applications/ChatGPT.app/Contents/Resources/codex",
+                 model: str = "gpt-5.6-luna",
+                 reasoning_effort: str = "max",
                  timeout: float | None = None) -> None:
         self.root = project_root.resolve()
         if not self.root.is_dir():
@@ -32,10 +34,16 @@ class CodexClient:
             raise ValueError("Codex executable must be configured")
         if not model.strip():
             raise ValueError("Codex model must be configured")
+        if not reasoning_effort.strip():
+            raise ValueError("Codex reasoning effort must be configured")
+        if reasoning_effort.strip() not in {"none", "minimal", "low", "medium", "high",
+                                            "xhigh", "max"}:
+            raise ValueError("Codex reasoning effort is unsupported")
         valid_type = isinstance(timeout, (int, float)) and not isinstance(timeout, bool)
         if timeout is not None and (not valid_type or not math.isfinite(timeout) or timeout < 0):
             raise ValueError("Codex timeout must be zero, None, or a positive finite number")
         self.runner, self.executable, self.model = runner, executable, model.strip()
+        self.reasoning_effort = reasoning_effort.strip()
         self.timeout = None if timeout == 0 else timeout
 
     def generate(self, role: str, contract: str, payload: Mapping[str, object],
@@ -51,7 +59,8 @@ class CodexClient:
         prompt = (f"Role: {role}\nReturn exactly one JSON object with no markdown.\n"
                   f"Contract: {contract}\nINPUT:\n{json.dumps(payload, ensure_ascii=False, sort_keys=True)}")
         args = [self.executable, "exec", "--model", self.model, "-c",
-                'model_reasoning_effort="medium"', "-c", 'approval_policy="never"',
+                f'model_reasoning_effort="{self.reasoning_effort}"', "-c",
+                'approval_policy="never"',
                 "--ephemeral", "--ignore-user-config", "--sandbox", "read-only",
                 "--cd", str(workdir)]
         schema_path = self._schema_file(schema) if schema is not None else None
