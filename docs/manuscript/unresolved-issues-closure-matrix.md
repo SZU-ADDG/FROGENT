@@ -21,7 +21,7 @@ manuscript and response letter unless the listed source material becomes availab
 
 | Priority | Concern | Reviewer IDs | Current evidence | Remaining deliverable | Acceptance-oriented closure |
 |---|---|---|---|---|---|
-| P0 | Manuscript, SI and response synchronization | All 67 atomic comments | Evidence ledger and reviewer-specific result blocks | Edit canonical manuscript; generate clean/marked copies, SI and page/line-indexed responses | Every response ends in one outcome and cites one exact revised location |
+| P0 | Manuscript, SI and response synchronization | All 67 atomic comments | Evidence ledger, reviewer-specific result blocks and archive-local canonical edit map | Edit canonical manuscript; generate clean/marked copies, SI and page/line-indexed responses | Every response ends in one outcome and cites one exact revised location |
 | P0 | Claim-boundary consolidation | E-1; E-4; E-5; R1-3; R1-4; R3-M4–M6 | CBGBench, Forge–Gauge, Luteolin and recent-system response blocks | Apply the same canonical numbers and boundaries across Abstract, Results, Discussion, tables and response letter | Retain measured routing/tool-use claims; remove global first, affinity, causal and unmeasured superiority claims |
 | P1 | Error attribution and dynamic-planning presentation | R2-3b; R2-5; R3-m1; R3-M3 | Double adjudication, repeat variation, propagation, parser and docking failure panels | One failure taxonomy table/figure with case denominator, cause, recovery and downstream consequence | Present tested recovery and variation without implying full benchmark coverage |
 | P1 | Peptide workflow and provider disagreement | R1-5a/b/c; R1-9d/e | MDockPeP2 historical negative audit, ADCP 9/9, ESMFold and AF3 panels | Consolidated workflow, preparation details, timing/failure table and provider-disagreement discussion | Report ADCP partial top-k recovery and MDockPeP2 negative history; prospective MDockPeP2 stays `not_measured` without authorization |
@@ -40,7 +40,7 @@ scheduled for this revision.
 
 1. Request the P0 source materials through `author-input-request.md` and freeze each unavailable
    field as `not_measured` at the author deadline.
-2. Apply the provider and scientific claim boundaries to the canonical manuscript and figures.
+2. Apply `canonical-manuscript-edit-map.md` and the provider/scientific claim boundaries to the canonical manuscript and figures.
 3. Build the failure-attribution, peptide-workflow and measured-resource tables from frozen
    evidence.
 4. Complete clean-install, exports/viewer, cross-reference and synchronized response-package QA.
