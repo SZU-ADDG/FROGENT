@@ -84,10 +84,10 @@
 - [x] TrioMol2 历史面板：曾提交 15 tasks；用户确认该方法未出现在论文中，已从大修主线、完成条件与稿件证据排除。3 个 succeeded tasks 的 48 个 artifacts 仅保留为历史记录，禁止新增、补跑或恢复；其余 control-plane 状态不再等待。
 - [x] GLP1R–肽 AF3：Glucagon、Semaglutide、Tirzepatide 与 Peptide(a–e) 共 8/8 任务完成，8 个结果包已取回；序列化学表达边界、结构、界面、reference geometry 与跨 provider disagreement 已完成分析。
 - [x] 建立 TrioMol2 与 AF3 单次轮询/自动取回脚本；TrioMol2 的服务器抓取器支持超过 SSH relay 45 MiB 上限的 artifact 流式下载，并逐项执行 checksum/size 验证与失败隔离。
-- [x] 启动异步监控：TrioPep 每 15 分钟在服务器轮询；CBGBench 已完成。Agent 自有 TrioMol2 poller 已停止，run root 只保留为历史 operational evidence，并已从每小时 automation 与大修终态等待移除；本地旧统一 monitor 已停止。
+- [x] Trio 轮询范围已收紧：TrioMol2 与 TrioPep 均从 automation、大修终态等待、分析和抓取中移除；两个 Agent 自有 server poller 均已停止，run roots 只保留为历史 operational evidence；既有 control-plane tasks 保持原样。
 - [x] DirectMultiStep/FragGen live 权重面板：13/13 typed calls 成功；10/10 retrosynthesis calls 返回非空路线且 route root 与目标一致，路线内分子字符串全部 RDKit-valid；FragGen 3 cases 返回 15/15 valid、15 unique molecules。
 - [x] DirectMultiStep/FragGen 三轮稳定性重复：39/39 typed calls 成功；12/13 调用定义三轮响应文本完全一致，DirectMultiStep 路线集合平均两两 Jaccard `0.973`，FragGen 分子集合为 `1.000`；唯一变化为 aspirin/explorer 的路线集合。
-- [x] TrioPep reference panel 提交：3GBQ、1CKB、1ABO 三个 8–10 aa 参考复合物，加 4ZGM 的 20 aa contract-limited exploratory task，共 4 个 tasks 当前 queued。
+- [x] TrioPep 历史 reference panel：曾提交 3GBQ、1CKB、1ABO 和 4ZGM 共 4 个 tasks；现已从大修主线、稿件证据、轮询、抓取、分析与完成条件排除，远端 control-plane 状态保持原样。
 - [x] MDockPeP2 历史 glucagon audit：三次同序列 run、25,000 score rows、3,000 retained models 已复核；native-frame CA RMSD 无 ≤2 Å，最佳 superposed CA RMSD 为 `2.721 Å`，top-ranked pose 可远离 native frame，作为负向结果保留。
 - [x] ADCP v1.1 正式面板：官方 ADCP 0.0.25 / v1.1.21 隔离 runtime、3GBQ/1CKB/1ABO 三套 AGFR target 和 a07 canary 均验证；正式 3 complexes × 3 seeds、每任务 100 replicas、每 replica 8–10M steps 的 9/9 任务完成。独立评分的平均 top-1/top-5/top-10 backbone RMSD 为 `11.262/5.840/4.690 Å`，native-contact recovery 为 `0.271/0.564/0.593`。29 aa glucagon/Peptide(a–e) 保持为长度外推探索分析。
 - [x] ESMFold GLP1R–肽正式面板：8 sequences × 3 seeds × 3 recycles，24/24 完成；mean pTM `0.636`、mean pLDDT `64.99`、峰值分配显存 `8314 MiB`。Glucagon 预测 pose 与 4ZGM deposited Semaglutide 坐标的 cross-ligand CA distance 为 `28.619 Å`；该值不承担 glucagon native-pose 结论。
@@ -100,10 +100,10 @@
 - [x] CBGBench CrossDocked training-proxy nearest neighbors：公开 split 的 100,000 个 train names 中 99,990 个按 CBGBench dataloader 映射，安全 opcode 提取 99,990/99,990 成功并去重为 10,404 个 canonical molecules。9,767 个生成分子无 exact identity；TargetDiff/DiffSBDD/Pocket2Mol mean nearest-train ECFP4 Tanimoto 为 `0.216/0.189/0.203`，最大值为 `0.453/0.682/0.474`，仅 DiffSBDD 有 `1/1771` 达到 ≥0.5。Exact scaffold overlap 为 `0.772%/7.510%/15.612%`。结果限定为 declared-training-corpus proxy，checkpoint 原始 training-file identity 未确认。Final manifest：`gpu-followup-20260802/cbgbench-crossdocked-training-proxy-r04/output/final-manifest.json`。
 - [x] Forge–Gauge matched-budget prospective r02。Recovery-r06 完成 `120/120 exit zero`；15/15 Gauge decisions 选择 TargetDiff。Fixed-best/single-pass/iterative valid rate 为 `0.956/0.444/0.704`，top-50 score 为 `0.661/0.620/0.686`。Iterative 相对 single-pass 的 valid-rate 与 top-50 score 差为 `+0.260`（p=`6.10e-5`，95% CI `[0.231,0.276]`）和 `+0.066`（p=`0.0020`，CI `[0.029,0.106]`）；相对 fixed-best 的 valid rate 低 `0.252`，top-50 score 差无统计支持。Final manifest：`gpu-followup-20260802/forge-gauge-matched-budget-prospective-recovery-r06/final-manifest.json`。
 - [x] Forge–Gauge top-candidate geometry / generating-model strata。r02 因 source SDF parse failure 严格终止且保留 traceback；parse-handling-only r03 完成 45/45 cells、2,250 个候选。47,333 个 source SDF 中 157 个不可解析并逐 job 记录；三条件 pocket-compatible rate 均为 `1.000`，severe-clash-free rate 为 `0.9987/0.9987/1.0000`。Top-50 composition 为 fixed-best `750 TargetDiff`、iterative `750 TargetDiff`、single-pass `743 TargetDiff + 4 Pocket2Mol + 3 DiffSBDD`。Final manifest：`gpu-followup-20260802/forge-gauge-top-candidate-geometry-r03/output/final-manifest.json`。
-- [x] 2026-08-03 22:54 终态复核：上述三项 Forge–Gauge final manifest 保持可读且未变化；GPU 1/3/4/5/6/7 空闲，GPU 0/2 既有进程未干预，磁盘剩余约 404 GB。TrioPep supplementary panel 为 4 queued、0 download failures，server poller 存活。无符合透明协议且能改变当前主张的新 GPU 实验，已闭合面板保持停止。
+- [x] 2026-08-03 22:54 历史终态复核：上述三项 Forge–Gauge final manifest 保持可读且未变化；GPU 1/3/4/5/6/7 空闲，GPU 0/2 既有进程未干预，磁盘剩余约 404 GB。当时 TrioPep 为 4 queued、0 download failures；该 panel 后续已从大修范围排除且 poller 已停止。
 - [x] 剩余问题 closure matrix：`docs/manuscript/unresolved-issues-closure-matrix.md` 已区分作者输入阻塞、Agent-owned 写作/交付和唯一有条件的新实验，并为每项记录缺失时的稿件收窄方案。
 - [x] Error-attribution manuscript block：`docs/manuscript/error-attribution-rebuttal-blocks.md` 已覆盖 retrieval、memory propagation、repeat variation、PLIP schema、small-molecule docking、generation parsing、MDockPeP2 和 ADCP，包含可直接进入 Results/Methods/SI 的表述及 R2-3b、R2-5、R3-m1、R3-M3 point-by-point responses。
-- [x] Peptide workflow manuscript block：`docs/manuscript/peptide-workflow-rebuttal-blocks.md` 已分离 structure prediction 与 peptide docking，汇总 ADCP、MDockPeP2、ESMFold、AF3、TrioPep 的真实状态、结构结果、失败边界及 R1-5a、R1-5b、R1-9d、R1-9e 回复。
+- [x] Peptide workflow manuscript block：`docs/manuscript/peptide-workflow-rebuttal-blocks.md` 已分离 structure prediction 与 peptide docking，汇总 ADCP、MDockPeP2、ESMFold、AF3 的真实状态、结构结果、失败边界及 R1-5a、R1-5b、R1-9d、R1-9e 回复；TrioPep 已从稿件证据排除。
 - [x] Architecture/retrieval manuscript block：`docs/manuscript/architecture-retrieval-rebuttal-blocks.md` 已汇总 matched-resource、real-agent ablation、structured retrieval、live evidence 与 downstream propagation，形成 Methods、Results、SI 表及 R3-M2a/b、R3-M3、R3-M4、R3-M5a/b/d、R2-3a 回复块，并删除宽泛 multi-agent superiority 解释。
 - [x] Benchmark corrections manuscript block：`docs/manuscript/benchmark-corrections-rebuttal-blocks.md` 已把 HLE、QED、SA、virtual screening、retrosynthesis 和八任务命名/尺度问题整理为统一 disposition table、Methods、Results 及 R1-8a–e、R2-1a、R2-3c、R2-7a/b、R3-M1 回复块；无法绑定原始 case/scorer 的 headline values 保持 `not_measured`。
 - [ ] MDockPeP2 prospective rerun。🟠 **第三方 provider 修复依赖**：`doomx_5nd` 不存在用户给定的 `/work` 路径，实际只读安装位于 `doomx_3nd`；第三方 Modeller 配置中存在已脱敏的 license assignment，未复制或导出。Live MCP canary 在 MDockPeP2/Modeller 启动前因服务进程 global CWD 漂移与相对入口失败，返回缺失 `Sampling_scores_all.txt`。端口 9005 在 provider owner 修复 request-local workdir、绝对入口、CWD 恢复和并发隔离前禁止 benchmark 批跑；prospective accuracy 与 license validity 保持 `not_measured`。
@@ -366,12 +366,12 @@
 
 ### S3-E｜Glucagon 与肽 docking
 
-- [ ] 保存多肽 docking 与 sequence-to-complex 的真实流程。🟡 **部分完成**：正式 docking 方法固定为 MDockPeP2 与 ADCP；ADCP 9/9 reference-redocking 完成，MDockPeP2 历史证据完成审计。ESMFold、AF3 和 TrioPep 作为结构/provider 补充对照；ESMFold 24-case 与 AF3 8-case 结构分析已保存，4 个 TrioPep task 仍 queued。
+- [ ] 保存多肽 docking 与 sequence-to-complex 的真实流程。🟡 **部分完成**：正式 docking 方法固定为 MDockPeP2 与 ADCP；ADCP 9/9 reference-redocking 完成，MDockPeP2 历史证据完成审计。ESMFold 与 AF3 作为结构补充对照；ESMFold 24-case 与 AF3 8-case 结构分析已保存。TrioPep 已排除。
 - [ ] 记录二级结构来源、模板/预测器、采样、最小化和受体准备。
 - [x] 选择小型、有参考结构的 peptide–protein set。3GBQ（10 aa）、1CKB（8 aa）、1ABO（10 aa）来自 RCSB 实验复合物；4ZGM 另作 GLP1R contract-limited exploratory case。
 - [ ] 报告 secondary-structure agreement、RMSD/TM-score（适用时）和 interface quality。🟡 **部分完成**：ESMFold 已报告 pTM、pLDDT、reference RMSD、predicted interface 与跨 seed 稳定性；AF3 已报告 ipTM、pLDDT、Semaglutide reference RMSD、contact recall/precision 和跨 provider pose disagreement；ADCP 已补齐 top-1/top-5/top-10 backbone RMSD 与 native-contact recovery。
-- [x] 核实实际使用的 MDockPeP2 与 ADCP：MDockPeP2 生产痕迹、source 和历史输出已核实；ADCP 官方 v1.1 隔离 runtime、输入、采样、输出和独立 scorer 已验证。TrioPep/AF3 保留为补充证据。
-- [ ] 报告成功率、运行时间和失败原因。🟡 **部分完成**：历史 MDockPeP2 三 run 与 ADCP 9 个正式任务的输出、RMSD、接触恢复和终态已保存；AF3/TrioPep 完整时延与 provider 状态继续汇总。
+- [x] 核实实际使用的 MDockPeP2 与 ADCP：MDockPeP2 生产痕迹、source 和历史输出已核实；ADCP 官方 v1.1 隔离 runtime、输入、采样、输出和独立 scorer 已验证。AF3/ESMFold 保留为补充结构证据，TrioPep 已排除。
+- [ ] 报告成功率、运行时间和失败原因。🟡 **部分完成**：历史 MDockPeP2 三 run 与 ADCP 9 个正式任务的输出、RMSD、接触恢复和终态已保存；AF3/ESMFold 完整时延仍需按可用 telemetry 汇总，TrioPep 不进入等待或统计。
 - [ ] 分开报告前端响应、任务提交和完整计算时间。
 
 ### S3 产出
@@ -382,7 +382,7 @@
 - [ ] 生成模型与 orchestration 对照。
 - [ ] raw/minimized/redocked 对照。
 - [ ] Glucagon 可审计轨迹。
-- [x] 最终 run 路径和 manifest。CBGBench primary/extension/combined、六 seed stability、novelty/pocket、ChEMBL known-active、CrossDocked training-proxy、ADCP、Forge–Gauge recovery-r06 与 geometry-r03 final manifests 均已冻结；TrioPep 仅作 supplementary provider panel，TrioMol2 已排除。
+- [x] 最终 run 路径和 manifest。CBGBench primary/extension/combined、六 seed stability、novelty/pocket、ChEMBL known-active、CrossDocked training-proxy、ADCP、Forge–Gauge recovery-r06 与 geometry-r03 final manifests 均已冻结；TrioPep 与 TrioMol2 均已排除。
 
 ### S3 完成标准
 
@@ -540,7 +540,7 @@
 
 - [ ] Track B 完成 global-context、Retrieve、Gauge、动态规划和故障回退条件。
 - [ ] Track C 完成 Forge–Gauge 迭代、raw/minimized/redocked 和 PLIP。🟡 **范围更新**：CPU raw/minimized/redocked 与 PLIP 已完成；TrioMol2 candidate pool 已从论文与大修完成条件排除，不再承担 Forge–Gauge 证据。
-- [x] Track C 完成 Glucagon 与参考肽集的构象/docking runs。ADCP 9/9、ESMFold 24/24 candidate + 9/9 reference、AF3 8/8 和 MDockPeP2 历史审计均已终态；TrioPep 4-task supplementary panel 保持 queued 且不进入完成条件，prospective MDockPeP2 因授权 runtime 缺失保持 `not_measured`。
+- [x] Track C 完成 Glucagon 与参考肽集的构象/docking runs。ADCP 9/9、ESMFold 24/24 candidate + 9/9 reference、AF3 8/8 和 MDockPeP2 历史审计均已终态；TrioPep 已从大修范围排除，prospective MDockPeP2 因 provider operability 未闭合保持 `not_measured`。
 - [ ] Track D 完成 citation support、conflict detection、uncertainty 和 downstream propagation。🟡 **提前部分完成**：citation identifier metrics、conflict detection、gap visibility 和 revocation 已完成；semantic support 与 downstream propagation 待补。
 - [ ] Track G 完成首个可用版本并开始 smoke test。
 

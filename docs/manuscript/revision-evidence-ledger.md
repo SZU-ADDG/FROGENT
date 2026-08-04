@@ -69,11 +69,13 @@ CPU experiments, negative results, access audits or reproducibility evidence lis
 
 ## Latest operational verification
 
-At 2026-08-04 07:20 +08:00, the recovery-r06, phase2-accelerator-r01 and geometry-r03 final
+At 2026-08-04 14:45 +08:00, the recovery-r06, phase2-accelerator-r01 and geometry-r03 final
 manifests remained readable and unchanged. The six authorized experiment GPUs were idle; no
-closed panel was resubmitted. The supplementary TrioPep poller remained live with four queued
-tasks and zero download failures. This operational state adds no scientific result and does not
-change any claim disposition in the ledger.
+closed panel was resubmitted. Following the author's scope clarification, TrioPep was removed
+from active revision evidence, completion waiting, polling, fetching and analysis. The exact
+FROGENT-owned poller was stopped; the four historical control-plane tasks and their remote state
+were left untouched. This operational correction adds no scientific result and does not change
+any claim disposition in the ledger.
 
 The maintained web surface now exposes authenticated, owner-scoped download URLs for persisted
 attachments and molecular structures while omitting server-side absolute paths from chat-history
@@ -120,5 +122,5 @@ ledger and introduces no new performance claim.
 
 The peptide-provider roles, coordinate-grounded results and corresponding response language are
 consolidated in `docs/manuscript/peptide-workflow-rebuttal-blocks.md`. The document keeps
-sequence-to-complex prediction separate from docking and preserves the prospective MDockPeP2 and
-queued TrioPep boundaries.
+sequence-to-complex prediction separate from docking and preserves the prospective MDockPeP2
+boundary. TrioPep is excluded from the active revision evidence.

@@ -2396,3 +2396,32 @@ valid coordinate-bearing candidates.
 - Last-Seen: 2026-08-03
 
 ---
+
+## [LRN-20260804-010] exclude TrioPep from the active revision scope
+
+**Logged**: 2026-08-04T14:45:00+08:00
+**Category**: correction
+**Status**: applied
+**Area**: rebuttal scope
+
+### Summary
+
+TrioPep is outside the active FROGENT revision scope. It must not consume new submissions,
+polling, fetching, analysis, manuscript evidence work, or completion waiting.
+
+### Applied Change
+
+Remove TrioPep from the recurring automation and current revision documents. Stop only the exact
+FROGENT-owned polling process after verifying its command line. Preserve the four historical
+control-plane tasks and their remote state without modifying task files, databases, workers, or
+third-party services.
+
+### Metadata
+- Source: user_feedback
+- Related Files: FROGENT_revision_plan.md, FROGENT_experiment_checklist.md, docs/manuscript/peptide-workflow-rebuttal-blocks.md, docs/manuscript/revision-evidence-ledger.md
+- Pattern-Key: rebuttal.exclude_triopep_active_scope
+- Recurrence-Count: 1
+- First-Seen: 2026-08-04
+- Last-Seen: 2026-08-04
+
+---

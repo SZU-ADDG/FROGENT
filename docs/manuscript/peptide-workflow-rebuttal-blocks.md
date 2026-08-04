@@ -22,7 +22,6 @@ ranking and substantial cross-provider pose disagreement retained explicitly.
 | Sequence-to-complex prediction | AlphaFold 3 | GLP1R extracellular-domain sequence plus one of eight peptide sequences | Predicted complex, pair-ipTM/ipTM and pLDDT | Semaglutide-to-4ZGM sequence-mapped coordinate/contact check; AF3–ESMFold pose comparison | Supplementary prioritization signal; only Semaglutide has a mapped coordinate reference in this panel |
 | Peptide docking | ADCP 1.1.21 (`adcp` 0.0.25) | AGFR target prepared from 3GBQ, 1CKB or 1ABO plus peptide sequence | 100 ranked poses per task | Backbone/CA RMSD and native-contact recovery for 3 complexes × 3 seeds | Formal reference-redocking evidence; top-1 ranking is weak and top-k recovery is partial |
 | Peptide docking | MDockPeP2 | Historical GLP1R/glucagon FASTA inputs and receptor setup | Ranked models and hybrid scores | Native-frame and superposed peptide CA RMSD | Historical negative audit plus provider-operability canary; prospective accuracy remains unavailable because the live service has unsafe process-global CWD/relative-path behavior |
-| Supplementary provider panel | TrioPep control-plane tasks | 3GBQ, 1CKB, 1ABO and exploratory 4ZGM definitions | Provider artifacts when terminal | Same reference metrics after artifact retrieval | Four tasks remain queued; they do not block or enter the current manuscript conclusions |
 
 ## Proposed Methods paragraph
 
@@ -72,7 +71,6 @@ establish binding affinity or broad peptide-docking accuracy.
 | ESMFold | 24 candidate runs; 9 reference runs | Reference mean RMSD 6.526 Å; 1/3 complexes ≤2 Å | 1ABO mean RMSD 15.914 Å; confidence is not affinity | Sequence-only comparative structure signal |
 | AlphaFold 3 | 8/8 GLP1R-ECD–peptide jobs | Mean pair-ipTM 0.755; Semaglutide RMSD 8.133 Å; contact recall/precision 0.882/0.732 | Only Semaglutide has a mapped coordinate reference; noncanonical chemistry and full-length receptor omitted | Limited confidence/contact-based prioritization signal |
 | AF3 versus ESMFold | 8 matched candidate sequences | Mean receptor-aligned peptide-pose difference 31.513 Å; confidence-rank rho -0.119 | Providers disagree strongly on pose and ranking | Disagreement must reduce confidence and motivate orthogonal validation |
-| TrioPep | 4 submitted tasks | `not_measured` | All four remain queued; no artifacts available | Supplementary provider status only |
 
 ## Point-by-point response blocks
 
@@ -100,8 +98,9 @@ public ESMFold reference complexes, together with the negative MDockPeP2 history
 rather than treating a completed provider call as evidence of a correct pose. ADCP completed 9/9
 formal tasks, ESMFold completed 24/24 candidate and 9/9 reference runs, and AlphaFold 3 completed
 8/8 jobs. Provider-specific compute telemetry is retained where recorded; a matched end-to-end
-wall-time comparison and private-provider queue time remain `not_measured`. The queued TrioPep
-panel is supplementary and does not block the reported conclusions.
+wall-time comparison and private-provider queue time remain `not_measured`. TrioPep is outside the
+active revision scope and is omitted from the evidence denominator, completion criteria and
+conclusions.
 
 ### R1-9e / MDockPeP2 and ADCP consistency
 
@@ -123,8 +122,9 @@ removed because no production installation was verified.
   chemistry representations.
 - Remove: broad peptide-docking accuracy, binding-affinity prediction, full-length GLP1R,
   experimentally constrained glucagon secondary structure and unverified HADDOCK/pepATTRACT.
-- `not_measured`: prospective MDockPeP2 accuracy and license validity, matched provider wall-time, private queue time,
-  noncanonical Aib/lipid-spacer effects and TrioPep performance.
+- `not_measured`: prospective MDockPeP2 accuracy and license validity, matched provider wall-time,
+  private queue time and noncanonical Aib/lipid-spacer effects. TrioPep is outside the revision
+  scope and is not treated as an unmeasured manuscript endpoint.
 
 ## Frozen evidence sources
 
