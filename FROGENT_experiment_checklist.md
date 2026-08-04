@@ -10,7 +10,7 @@
 
 ### 已完成的首批非 GPU 工作
 
-- [x] 2026-08-04 23:44 三小时巡检：Forge–Gauge 三份 final manifest 保持 `complete` 且时间戳未变；GPU 1/3/4/5/6/7 空闲，GPU 0/2 保持既有进程，运行卷剩余约 403 GB。未轮询 TrioMol2/TrioPep，未重复提交已闭合 panel；MDockPeP2 继续等待 provider 修复与新 canary。Foundational exposed-case 终态已同步到 unresolved-issue closure matrix。
+- [x] 2026-08-05 02:44 三小时巡检：Forge–Gauge 三份 final manifest 保持 `complete` 且时间戳未变；GPU 1/3/4/5/6/7 空闲，GPU 0/2 保持既有进程，运行卷剩余约 403 GB。未轮询 TrioMol2/TrioPep，未重复提交已闭合 panel；MDockPeP2 继续等待 provider 修复与新 canary。Luteolin 主张已固定为 known-candidate evidence recovery/prioritization，hidden-candidate panel 从本轮计划移除。
 - [x] Agent 模型边界已更正并冻结：FROGENT Agent=`deepseek-v4-flash` 或 `gpt-5.6-luna` + `max`，每个 run/benchmark arm 二选一并禁止混合。DeepSeek live tool-call canary 为 r01 HTTP 400（thinking/tool_choice compatibility）及修正后 r02/r03 两次 HTTP 503（provider availability），真实 DeepSeek 推理待新 canary。Luna/max 已由 ChatGPT.app bundled Codex 0.146.0-alpha.9.2 完成 read-only/ephemeral structured canary，精确返回 `{"status":"ok"}`、exit zero；PATH Codex 0.136.0 的 `max`/Luna 失败终态已保留。
 - [x] Agent 模型透明度已进入稿件交付：`docs/manuscript/agent-model-rebuttal-blocks.md` 提供 Methods、Results、SI 配置表和 E-2/E-5/R1-0b/R1-0d/R1-6 回复块；provider-claim matrix 与 evidence ledger 已绑定六个 versioned canary roots。DeepSeek scientific behavior、DeepSeek/Luna comparative quality、生产部署模型身份和训练/提示隔离事实继续保持 `not_measured`，等待各自独立来源。
 - [x] 论文压缩包已复制到 `docs/manuscript/Arxiv_FROGENT_20251217.zip`，24 个条目通过 `unzip -t`。
@@ -480,7 +480,7 @@
 - [x] 无法运行的系统保留定性比较和可核查原因。
 - [x] 删除无法验证的 `first`。revision evidence ledger 将全局首创性表述列为必须收缩的 claim。
 - [x] Reviewer 1 comments 3–4 的逐点回复与稿件插入块。`docs/manuscript/reviewer1-comments-3-4-rebuttal-blocks.md` 已绑定 Luteolin、生成分子相似性、近期系统与公平比较边界；最终 page/line 等待排版后填写。
-- [ ] 主张由 S2、S3 结果决定。
+- [x] 主张已由 S2、S3 结果决定：保留已测的 retrieval、tool-use 与一次 feedback-allocation 结果；删除 global-first 与 exposed Luteolin novel-repurposing origin 主张，跨系统数值比较保持 `not_measured`。
 
 ## 10. D3｜安全、界面和编辑修改
 

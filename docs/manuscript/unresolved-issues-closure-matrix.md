@@ -1,6 +1,6 @@
 # FROGENT unresolved-issue closure matrix
 
-Date: 2026-08-04
+Date: 2026-08-05
 
 This matrix separates remaining decision risks from completed experimental evidence. It is an
 internal drafting control document: claims marked `not_measured` must remain visible in the
@@ -30,19 +30,17 @@ manuscript and response letter unless the listed source material becomes availab
 
 ## Optional experiment decision
 
-The existing literature-only Luteolin arm exposed the candidate name. It supports evidence
-recovery and prioritization, not blinded novel-repurposing discovery. A preregistered hidden-
-candidate literature-only panel is warranted only if the revised manuscript retains a claim that
-FROGENT can originate novel repurposing hypotheses without DrugBank. If that claim is removed,
-the existing evidence closes the concern without another experiment.
+Decision closed on 2026-08-05: the revised manuscript limits the Luteolin case to known-candidate
+retrieval, evidence recovery and prioritization. It removes the claim that this exposed-candidate
+arm demonstrates origination of novel repurposing hypotheses without DrugBank. The existing
+literature-only evidence therefore closes the reviewer concern, and no hidden-candidate panel is
+scheduled for this revision.
 
 ## Execution order
 
 1. Request the P0 source materials through `author-input-request.md` and freeze each unavailable
    field as `not_measured` at the author deadline.
-2. Decide whether to retain the novel-repurposing claim; run the hidden-candidate panel only for
-   that decision role.
-3. Apply the provider and scientific claim boundaries to the canonical manuscript and figures.
-4. Build the failure-attribution, peptide-workflow and measured-resource tables from frozen
+2. Apply the provider and scientific claim boundaries to the canonical manuscript and figures.
+3. Build the failure-attribution, peptide-workflow and measured-resource tables from frozen
    evidence.
-5. Complete clean-install, exports/viewer, cross-reference and synchronized response-package QA.
+4. Complete clean-install, exports/viewer, cross-reference and synchronized response-package QA.
