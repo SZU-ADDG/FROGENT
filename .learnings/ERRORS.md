@@ -43,6 +43,31 @@ new amended canary is justified.
 
 ---
 
+## [ERR-20260804-085] selected nonexistent unittest module names
+
+**Logged**: 2026-08-04T18:14:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+
+The first acceptance command named `tests.test_llm_client` and `tests.test_model_policy`, which
+do not exist in this repository. Unittest reported two import errors while the independently
+selected `tests.test_eight_task_source` tests passed.
+
+### Resolution
+
+Search the test tree before selecting modules. Codex client and model-policy coverage lives in
+`tests/test_agent_runtime.py` and `tests/test_molecular_chat.py`; rerun using real file paths and
+retain the failed command as testing-process evidence.
+
+### Metadata
+- Reproducible: yes
+- Related Files: tests/test_agent_runtime.py, tests/test_molecular_chat.py, tests/test_eight_task_source.py
+
+---
+
 ## [ERR-20260804-EIGHTTASK-VS-GOLD] one virtual-screening gold is outside its candidate pool
 
 **Logged**: 2026-08-04T08:21:00+08:00

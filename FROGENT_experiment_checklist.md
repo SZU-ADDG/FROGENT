@@ -156,7 +156,8 @@
 
 - [ ] 锁定八项任务的正式名称、目的、版本、来源和许可。🟡 **case/gold 已收到**：作者提供的 ZIP 含 8 项任务各 20 cases/reference answers，任务 5/6/7 结构齐全；正式版本、来源许可、原始执行配置和 scorer 仍待确认。证据：`docs/manuscript/eight-task-source-intake.md`。
 - [ ] 建立 Figure 1、Figure 3、正文、数据文件和评分入口的对应表。🟡 **数据侧已闭合**：八项 source files 已映射并通过 schema/20-case/结构完整性审计；原始逐样本 outputs、失败行、seeds、scorer 与 Figure 1/3 aggregation 仍缺。虚拟筛选必须报告 attempted 20、valid 19。
-- [ ] 核实 HLE 的真实含义、题型、样本选择和官方/原始评分协议。🟡 **author-supplied 20 cases 已收到**：4 exact-match、16 multiple-choice，答案和理由齐全；官方来源/版本/许可、授权、纳入映射与 judge 记录仍需作者确认，新增运行只能标为 exposed post-hoc rerun。
+- [ ] 核实 HLE 的真实含义、题型、样本选择和官方/原始评分协议。🟡 **exposed rerun 已完成**：author-supplied 20 cases 含 4 exact-match、16 multiple-choice；官方来源/版本/许可、授权、纳入映射与原 judge 记录仍需作者确认。
+- [x] 八任务 foundational Luna/max exposed-case r01：冻结 gold 隔离、read-only/ephemeral、4-worker、零重试与 exact scorer；20/20 structured calls 成功，exact `9/20=0.450`，Wilson 95% CI `[0.258,0.658]`。Exact-match `1/4`，multiple-choice `8/16`；20/20 均报告 high confidence，其中 9 个正确。该 run 只承担 post-hoc exposed、no-tool model-boundary 证据，不重构 submitted HLE score。
 - [x] 标出客观题、主观题、回归、排序、工具调用和专家判定任务。证据：八项 benchmark datasheets 与 `manuscript-qa/benchmark-observations.schema.json`。
 - [x] 分开记录 scoring maximum、direct-tool baseline 和 adjudicated reference。证据：benchmark datasheets、DAVIS screening、semantic consensus 与 evidence ledger。
 - [x] 核查 QED 的生成方式；RDKit 确定性计算值从 property-prediction accuracy 中移出。作者提供的 20/20 SMILES 均有效，RDKit 2026.03.3 重算 QED 经三位小数与 supplied gold 20/20 一致，MAE `0.000259`；四项 model-dependent ADMET endpoints 已在独立 exposed-case r01 中重跑，原始 aggregate score 仍未复现。

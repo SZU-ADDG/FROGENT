@@ -1,0 +1,10 @@
+{
+  "answer_type": "exactMatch",
+  "case_index": 2,
+  "response": {
+    "confidence": "high",
+    "final_answer": "0",
+    "rationale": "Glycolysis releases no CO₂."
+  },
+  "status": "succeeded"
+}

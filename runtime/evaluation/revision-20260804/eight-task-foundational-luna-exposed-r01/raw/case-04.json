@@ -1,0 +1,10 @@
+{
+  "answer_type": "multipleChoice",
+  "case_index": 4,
+  "response": {
+    "confidence": "high",
+    "final_answer": "A",
+    "rationale": "A places a TCR-specific capture oligo upstream of the V(D)J junction, bringing CDR3 into the available 225-base read while retaining bead-associated cell labeling. This is consistent with BD’s dedicated high-throughput VDJ/CDR3 library workflow ([BD Rhapsody VDJ CDR3 protocols](https://www.bdbiosciences.com/en-eu/resources/protocols/360039007471-vdj-cdr3-protocols))."
+  },
+  "status": "succeeded"
+}

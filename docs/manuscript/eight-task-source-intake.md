@@ -61,6 +61,17 @@ These values support endpoint-specific reporting and show why a single aggregate
 misleading. They are a post-hoc rerun against supplied labels, not a reconstruction of the
 submitted experiment or independent validation of the labels.
 
+## Exposed-case foundational-knowledge rerun
+
+The 20 supplied foundational-knowledge questions were run through the pinned FROGENT structured
+no-tool model boundary using `gpt-5.6-luna` with maximum reasoning effort. Gold answers,
+rationales and subject labels were withheld from model input. All 20 calls returned schema-valid
+answers; 9/20 were exact-correct (0.450; Wilson 95% CI 0.258–0.658). Exact-match and
+multiple-choice subsets were 1/4 and 8/16. Every response selected the `high` confidence label,
+while only nine were correct, so that label was not a reliable correctness indicator on this
+panel. This is a post-hoc exposed, no-tool rerun. It does not establish official HLE performance,
+reproduce the submitted 6/20 result, or measure retrieval and multi-agent orchestration.
+
 ## Exposed-case retrosynthesis rerun
 
 DirectMultiStep `generate_routes_flash` and `generate_routes_explorer` each completed 20/20 live
@@ -94,6 +105,9 @@ post-hoc source-grounded reruns and are never represented as the original test e
 - `runtime/evaluation/revision-20260804/source-material/davis-gold-replacement-r01/report/replacement-case.json`
 - `runtime/evaluation/revision-20260804/eight-task-property-exposed-r01/protocol/protocol.json`
 - `runtime/evaluation/revision-20260804/eight-task-property-exposed-r01/output/summary.json`
+- `runtime/evaluation/revision-20260804/eight-task-foundational-luna-exposed-r01/protocol/protocol.json`
+- `runtime/evaluation/revision-20260804/eight-task-foundational-luna-exposed-r01/output/summary.json`
+- `runtime/evaluation/revision-20260804/eight-task-foundational-luna-exposed-r01/output/analysis.json`
 - `runtime/evaluation/revision-20260804/eight-task-retrosynthesis-exposed-r01/protocol/protocol.json`
 - `runtime/evaluation/revision-20260804/eight-task-retrosynthesis-exposed-r01/output-v02/summary.json`
 - `evaluation/benchmarks/eight_task_source.py`

@@ -1,0 +1,8 @@
+{
+  "schema_version": "frogent-eight-task-foundational-analysis-amendment-v1",
+  "recorded_at": "2026-08-04T18:09:00+08:00",
+  "timing": "post_outcome_descriptive_only",
+  "primary_metric_unchanged": "case_exact_accuracy",
+  "added_descriptive_slices": ["answer_type", "raw_subject", "reported_confidence"],
+  "interpretation_rule": "Slices describe error concentration and confidence-label reliability; they do not create new primary hypotheses or alter the 20-case denominator."
+}

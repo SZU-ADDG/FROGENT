@@ -1,0 +1,10 @@
+{
+  "answer_type": "exactMatch",
+  "case_index": 3,
+  "response": {
+    "confidence": "high",
+    "final_answer": "3",
+    "rationale": "One anti-DNMT3A antibody detects DNMT3A1 and DNMT3A2, one anti-DNMT3B antibody detects DNMT3B1 and DNMT3B3, and DNMT3L requires a third family-specific antibody; their size differences resolve on Western Blot. [Source](https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2018.01144/full)"
+  },
+  "status": "succeeded"
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": "frogent-eight-task-foundational-protocol-v1",
+  "frozen_at": "2026-08-04T17:48:00+08:00",
+  "status": "preregistered_before_model_outputs",
+  "scope": "post_hoc_author_supplied_exposed_cases",
+  "task": "Foundational Biomedical Knowledge",
+  "source": "runtime/evaluation/revision-20260804/source-material/eight-task-benchmark-r01/extracted/test_data1.csv",
+  "denominator": 20,
+  "input_policy": {
+    "visible_to_model": ["index", "question", "answer_type"],
+    "withheld_from_model": ["answer", "rationale", "raw_subject"],
+    "case_order": "source order",
+    "retries": 0
+  },
+  "agent_condition": {
+    "boundary": "FROGENT structured no-tool foundational-knowledge arm",
+    "client": "agent.llm.codex_client.CodexClient",
+    "model": "gpt-5.6-luna",
+    "model_reasoning_effort": "max",
+    "executable": "/Applications/ChatGPT.app/Contents/Resources/codex",
+    "executable_version": "codex-cli 0.146.0-alpha.9.2",
+    "sandbox": "read-only",
+    "ephemeral": true,
+    "parallel_workers": 4
+  },
+  "output_schema": ["final_answer", "rationale", "confidence"],
+  "primary_metric": "case_exact_accuracy",
+  "scoring": {
+    "multipleChoice": "case-insensitive exact option-label set after slash/comma normalization",
+    "exactMatch": "case-insensitive whitespace-normalized exact text",
+    "failed_call": "incorrect with failure retained",
+    "uncertainty": "Wilson 95% confidence interval over 20 cases"
+  },
+  "claim_boundary": [
+    "This is an exposed post-hoc rerun and does not reconstruct the submitted HLE score.",
+    "The official HLE source, version, authorization and original judge records remain unresolved.",
+    "This no-tool arm evaluates the pinned FROGENT model boundary on supplied questions; it does not measure retrieval or multi-agent orchestration."
+  ]
+}

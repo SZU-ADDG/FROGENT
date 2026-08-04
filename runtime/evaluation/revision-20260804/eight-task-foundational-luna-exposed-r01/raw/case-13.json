@@ -1,0 +1,10 @@
+{
+  "answer_type": "multipleChoice",
+  "case_index": 13,
+  "response": {
+    "confidence": "high",
+    "final_answer": "I",
+    "rationale": "The concentration-dependent increases at 1652 and 1618 cm⁻¹ indicate simultaneous formation of alpha-helical and beta-sheet structure from an initially disordered ensemble."
+  },
+  "status": "succeeded"
+}

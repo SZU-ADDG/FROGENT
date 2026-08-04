@@ -1,0 +1,10 @@
+{
+  "answer_type": "multipleChoice",
+  "case_index": 11,
+  "response": {
+    "confidence": "high",
+    "final_answer": "A",
+    "rationale": "Broad-sense heritability bounds population variance explained by any genotype-based score at 50%. The additive component may be lower or equal to this, so B and C are not necessary; epigenetic effects alone do not force narrow-sense heritability below 0.5."
+  },
+  "status": "succeeded"
+}

@@ -32,7 +32,7 @@ outputs and benchmark-specific scorers are supplied.
 
 | Task | Submitted record | Independently verified evidence | Revised metric/status | Required boundary |
 |---|---|---|---|---|
-| Foundational Biomedical Knowledge / claimed Humanity's Last Exam | 20 items; reported 6/20 | Twenty author-supplied exposed questions: 4 exact-match, 16 multiple-choice, with answers/rationales; official access and selection protocol audited separately | Official HLE performance `not_measured`; exposed-case rerun eligible | Official source/version/license, authorization, submitted inclusion mapping, rubric and judge records unavailable |
+| Foundational Biomedical Knowledge / claimed Humanity's Last Exam | 20 items; reported 6/20 | Twenty author-supplied exposed questions; Luna/max no-tool structured arm completed 20/20 calls and scored 9/20 exact (95% CI 0.258–0.658) | Post-hoc exposed result reported separately; official HLE performance and submitted score reproduction remain `not_measured` | Official source/version/license, authorization, submitted inclusion mapping, original model/prompt, rubric and judge records unavailable; 20/20 responses reported high confidence although 9 were correct |
 | Retrieve Known Drugs | 20 items; reported 83/100 | Twenty exposed queries with DrugBank-ID reference lists and SMILES; structured-resource/live panels reported separately | Original headline `not_measured`; exposed-case rerun eligible | Requires original outputs/failures, provider release, seed/retry policy and score aggregation |
 | Retrieve Known Target | 20 items; reported 95/100 | Twenty exposed queries with two or three reference targets per case | Original headline `not_measured`; exposed-case rerun eligible | Requires original outputs/failures, provider release and scorer |
 | Molecular Property Prediction | 20 items; reported 79.06 on an ambiguous scale | Twenty SMILES × five supplied endpoints; QED matches 20/20 at three decimals; ADMET-AI 2.0.1 exact-case rerun completed | Endpoint-specific post-hoc results reported; submitted aggregate `not_measured` | Caco-2 rho 0.501; classification balanced accuracy varies from 0.472 to 0.786; do not pool heterogeneous endpoints or reconstruct 79.06 |
@@ -50,7 +50,11 @@ virtual screening, binding mechanism and molecular design. It did not include or
 failures, seeds, scorers, versions/licenses or judge records, so it cannot reproduce the submitted
 headlines. The virtual-screening audit found one invalid case whose exact isomeric gold is absent
 although a connectivity-only form occurs in the pool; its attempted denominator is 20 and exact-
-valid ranking denominator is 19. A separately supplied DAVIS archive identifies the matching JAK2
+valid ranking denominator is 19. The foundational-knowledge post-hoc rerun completed 20/20
+Luna/max structured calls and scored 9/20 exact (0.450; Wilson 95% CI 0.258–0.658); all responses
+reported high confidence, including the 11 errors. This measures the pinned no-tool model boundary
+on exposed inputs and does not reproduce official HLE or the submitted 6/20 result. A separately
+supplied DAVIS archive identifies the matching JAK2
 gold as CID 25127112 (pKd 10.443697, Kd 0.036 nM), enabling one transparent post-hoc corrected
 replacement cell without rewriting the original input. For molecular
 properties, all 20 SMILES parsed and RDKit QED matched the supplied three-decimal values in 20/20
@@ -163,6 +167,8 @@ not pooled with the submitted headline numbers.
 - `runtime/evaluation/revision-20260731/gpu-final/live-weighted-mcp/REPEAT_REPORT.md`
 - `runtime/evaluation/revision-20260804/source-material/eight-task-benchmark-r01/report/source-audit.json`
 - `runtime/evaluation/revision-20260804/source-material/eight-task-benchmark-r01/report/property-gold-audit/summary.json`
+- `runtime/evaluation/revision-20260804/eight-task-foundational-luna-exposed-r01/output/summary.json`
+- `runtime/evaluation/revision-20260804/eight-task-foundational-luna-exposed-r01/output/analysis.json`
 - `runtime/evaluation/revision-20260804/eight-task-property-exposed-r01/output/summary.json`
 - `runtime/evaluation/revision-20260804/eight-task-retrosynthesis-exposed-r01/output-v02/summary.json`
 - `docs/manuscript/eight-task-source-intake.md`

@@ -1,0 +1,10 @@
+{
+  "answer_type": "multipleChoice",
+  "case_index": 7,
+  "response": {
+    "confidence": "high",
+    "final_answer": "B",
+    "rationale": "The 12-mer primes extension across the 5′ overhang GGACCGAAT, producing CCTGGCTTA with composition 1A:3T:3C:2G."
+  },
+  "status": "succeeded"
+}

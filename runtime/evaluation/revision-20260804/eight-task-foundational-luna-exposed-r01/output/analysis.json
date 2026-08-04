@@ -1,0 +1,61 @@
+{
+  "interpretation": [
+    "All twenty calls returned the high confidence label, while nine were exact-correct.",
+    "The high-confidence label is not calibrated as a reliable correctness indicator on this panel.",
+    "Subject slices are descriptive because each group contains only two to five exposed cases."
+  ],
+  "schema_version": "frogent-eight-task-foundational-analysis-v1",
+  "slices": {
+    "answer_type": {
+      "exactMatch": {
+        "accuracy": 0.25,
+        "correct": 1,
+        "total": 4
+      },
+      "multipleChoice": {
+        "accuracy": 0.5,
+        "correct": 8,
+        "total": 16
+      }
+    },
+    "raw_subject": {
+      "Biochemistry": {
+        "accuracy": 0.5,
+        "correct": 1,
+        "total": 2
+      },
+      "Bioinformatics": {
+        "accuracy": 1.0,
+        "correct": 2,
+        "total": 2
+      },
+      "Biology": {
+        "accuracy": 0.6666666666666666,
+        "correct": 2,
+        "total": 3
+      },
+      "Biophysics": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Computational Biology": {
+        "accuracy": 0.4,
+        "correct": 2,
+        "total": 5
+      },
+      "Molecular Biology": {
+        "accuracy": 0.4,
+        "correct": 2,
+        "total": 5
+      }
+    },
+    "reported_confidence": {
+      "high": {
+        "accuracy": 0.45,
+        "correct": 9,
+        "total": 20
+      }
+    }
+  }
+}

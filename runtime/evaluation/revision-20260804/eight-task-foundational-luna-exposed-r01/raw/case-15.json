@@ -1,0 +1,10 @@
+{
+  "answer_type": "multipleChoice",
+  "case_index": 15,
+  "response": {
+    "confidence": "high",
+    "final_answer": "B",
+    "rationale": "Watterson's estimator depends on the number of segregating sites, which remains unchanged when every variant is retained in at least one sample. Reference-genome imputation lowers alternate-allele frequencies and average pairwise differences, so pi is biased downward."
+  },
+  "status": "succeeded"
+}
