@@ -9125,3 +9125,26 @@ frozen schema. After WebSocket timeouts, the client automatically fell back to H
 the exact schema-valid `{"status":"ok"}` with exit zero.
 
 ---
+## [ERR-20260804-083] Broad runtime search expanded large embedded event payloads
+
+**Logged**: 2026-08-04T11:42:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: evidence inspection
+
+### Summary
+
+A recursive `rg` over the full `runtime/` tree matched historical event JSONL records containing
+large embedded outputs, causing multi-megabyte expansion and truncated inspection output.
+
+### Resolution
+
+Limit status discovery to filename inventories and shallow exact roots first. Query the identified
+status or manifest files directly, and exclude event JSONL plus unrelated provider output trees
+from subsequent searches.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260731
+
+---
