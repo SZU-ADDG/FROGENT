@@ -10,6 +10,7 @@
 
 ### 已完成的首批非 GPU 工作
 
+- [x] 2026-08-04 20:44 三小时巡检：Forge–Gauge 三份 final manifest 保持 `complete` 且时间戳未变；GPU 1/3/4/5/6/7 空闲，GPU 0/2 既有进程归属未变，运行卷剩余约 404 GB。未轮询 TrioMol2/TrioPep，未重复提交已闭合 panel；MDockPeP2 继续等待 provider 修复与新 canary。
 - [x] Agent 模型边界已更正并冻结：FROGENT Agent=`deepseek-v4-flash` 或 `gpt-5.6-luna` + `max`，每个 run/benchmark arm 二选一并禁止混合。DeepSeek live tool-call canary 为 r01 HTTP 400（thinking/tool_choice compatibility）及修正后 r02/r03 两次 HTTP 503（provider availability），真实 DeepSeek 推理待新 canary。Luna/max 已由 ChatGPT.app bundled Codex 0.146.0-alpha.9.2 完成 read-only/ephemeral structured canary，精确返回 `{"status":"ok"}`、exit zero；PATH Codex 0.136.0 的 `max`/Luna 失败终态已保留。
 - [x] Agent 模型透明度已进入稿件交付：`docs/manuscript/agent-model-rebuttal-blocks.md` 提供 Methods、Results、SI 配置表和 E-2/E-5/R1-0b/R1-0d/R1-6 回复块；provider-claim matrix 与 evidence ledger 已绑定六个 versioned canary roots。DeepSeek scientific behavior、DeepSeek/Luna comparative quality、生产部署模型身份和训练/提示隔离事实继续保持 `not_measured`，等待各自独立来源。
 - [x] 论文压缩包已复制到 `docs/manuscript/Arxiv_FROGENT_20251217.zip`，24 个条目通过 `unzip -t`。
