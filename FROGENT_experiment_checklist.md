@@ -11,6 +11,8 @@
 ### 已完成的首批非 GPU 工作
 
 - [x] 2026-08-05 clean ten-model × eight-task panel：GPT-5.4、GPT-5.5、GPT-5.6 Sol、DeepSeek V4 Flash/Pro、Kimi K2.5、Qwen3.7 Plus、GLM 5.2、MiniMax M3、MiMo V2.5 共 80/80 cells 完成评分；无 FROGENT 初始化、历史、memory、web、tool 或推理期 gold。描述性 macro mean 前三为 `0.4494/0.4453/0.4048`（GPT-5.5/GPT-5.6 Sol/MiniMax），task-bootstrap CI 广泛重叠；八项单任务 winner 分布在五个模型家族。OpenRouter 含失败调用观测成本 `$2.76478741`。兼容失败、精确恢复与 provider route 均保留在 r03–r17，最终 manifest、CSV/JSON 与 PNG/PDF/SVG 位于 `clean-ten-model-panel-budget-controlled-r03/analysis/`。该 panel 只支持 clean exposed-case 底模比较，不承担 FROGENT 系统增益结论。
+- [x] 2026-08-05 paired 12-model direct/FROGENT panel：两臂均为 `96/96 scored`；12/12 模型的八任务 macro mean 在 same-exact-model + FROGENT 条件下上升。固定模型面板平均为 `0.3714→0.4660`，delta `+0.0946`；逐案例、task-stratified target/pocket cluster bootstrap 95% CI 为 `[0.0678,0.1201]`。机制、性质预测与逆合成 task CI 高于 0，其余五项包含 0。最终 manifest、paired-case statistics、CSV/JSON 与 PNG/PDF/SVG 位于 `paired-twelve-model-frogent-final-r42/analysis/`；结论限定于 exposed cases 和固定 12 模型面板。
+- [x] 2026-08-05 exact recovery：direct Qwen3.8 known-drug 与 11 个 FROGENT 失败 cells 均在 fresh roots 完成；成功项未重跑或覆盖。DeepSeek Flash 最终 case 20 由 Cloudflare provider failover 返回；DeepInfra 长尾、BaseTen/GMICloud 404、partial roots、逐案例复用来源和原始失败均保留。
 - [x] 2026-08-05 12:10 三小时巡检：Forge–Gauge 三份 final manifest 保持 `complete`；FROGENT 无活跃实验进程。GPU 1/3/4/5/6/7 被独立 TrioPep publication-evidence 任务占用，GPU 0/2 保持既有进程；未轮询、抓取、分析或干预排除范围。已撤下 Figure 2 的未复现总体优越性叙述并替换为任务级 revision-evidence table，完成 peptide/provider/model/eight-task Methods 与 SI claim-boundary 同步；主文档 34 页和独立 SI 6 页均构建成功。
 - [x] 2026-08-05 08:45 三小时巡检：Forge–Gauge 三份 final manifest 保持 `complete` 且时间戳未变；GPU 1/3/4/5/6/7 空闲，GPU 0/2 保持既有进程，运行卷剩余约 403 GB。未轮询 TrioMol2/TrioPep，未重复提交已闭合 panel；MDockPeP2 继续等待 provider 修复与新 canary。已初始化 `docs/manuscript/revision-source/` active source，完成 Abstract、Introduction、Luteolin、Related Work 与 Conclusion 的首批 P0 claim-boundary 修改，补入 Prompt-to-Pill/Robin bibliography，并通过 36 页 `latexmk` 完整构建。
 - [x] Agent 模型边界已更正并冻结：FROGENT Agent=`deepseek-v4-flash` 或 `gpt-5.6-luna` + `max`，每个 run/benchmark arm 二选一并禁止混合。DeepSeek live tool-call canary 为 r01 HTTP 400（thinking/tool_choice compatibility）及修正后 r02/r03 两次 HTTP 503（provider availability），真实 DeepSeek 推理待新 canary。Luna/max 已由 ChatGPT.app bundled Codex 0.146.0-alpha.9.2 完成 read-only/ephemeral structured canary，精确返回 `{"status":"ok"}`、exit zero；PATH Codex 0.136.0 的 `max`/Luna 失败终态已保留。
@@ -550,7 +552,7 @@
 
 ### Day 7｜2026-08-05
 
-- [ ] S1–S4 首轮运行全部结束。
+- [x] S1–S4 首轮运行全部结束。paired system panel 和全部 fresh-root exact recovery 已闭合：direct/FROGENT 两臂均为 `96/96 scored`，最终统计与图已生成。
 - [ ] 汇总缺失、失败、超时、权限和异常结果。🟡 **首轮部分完成**：非 GPU first-pass 已汇总到 manifest；正式 S1–S4 汇总在 Day 7 更新。
 - [ ] 只重跑有预定义理由的失败条件，保留原始失败记录。
 - [ ] Track F 完成 Methods 初稿、benchmark mapping 和工具清单。

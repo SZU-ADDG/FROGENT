@@ -1,5 +1,116 @@
 # Errors
 
+## [ERR-20260805-BOOTSTRAP-FLOAT-ASSERTION] Exact float assertion was too strict
+
+**Logged**: 2026-08-05T18:18:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+The constant-delta bootstrap test compared a percentile result to an exact
+binary float and observed `0.20000000000000004`. The test now uses
+`assertAlmostEqual`; the estimator and expected value are unchanged.
+
+## [ERR-20260805-DSV4FLASH-DEEPINFRA-LONG-TAIL] DeepInfra case request did not return
+
+**Logged**: 2026-08-05T18:02:00+08:00
+**Priority**: medium
+**Status**: resolved_with_provider_failover
+**Area**: model evaluation
+
+### Summary
+
+Cases 1–12 of the final paired FROGENT DeepSeek V4 Flash drug-retrieval cell
+completed and validated. The case-13 OpenRouter request to the pinned
+DeepInfra provider remained live for more than seven minutes without creating
+a response or error artifact.
+
+### Resolution
+
+The r36 outputs remain unchanged. Its local process was stopped, a
+provider-only amendment was documented, and cases 13–20 continue in a fresh
+r38 root using BaseTen while reusing only validated r36 case outputs.
+
+### Reusable lesson
+
+Provider failover uses a fresh run root and exact per-case reuse so that a
+transport-level long tail cannot overwrite successful evidence or silently
+change the evaluated model.
+
+### Follow-up
+
+BaseTen and GMICloud returned immediate OpenRouter 404 responses for the exact
+model even though both appeared in the public live endpoint catalogue. The
+failed r38/r40 roots remain intact. The r41 continuation requested only case
+20 and succeeded through Cloudflare after three recorded attempts; the final
+cell is 20/20 and the complete paired panel is 96/96 scored.
+
+## [ERR-20260805-QWEN38-DRUG-NULL-CONTENT] Qwen3.8 drug retrieval returned no answer content
+
+**Logged**: 2026-08-05T13:45:00+08:00
+**Priority**: medium
+**Status**: resolved_with_exact_recovery
+**Area**: model evaluation
+
+### Summary
+The low-reasoning Qwen3.8 direct recovery completed four task cells, while the
+`retrieve_known_drugs` cell returned a response envelope whose answer content was not a string.
+
+### Error
+```text
+ValueError: OpenRouter response content is not a string
+```
+
+### Context
+- Exact model: `qwen/qwen3.8-max`.
+- The request used the endpoint-required low reasoning and frozen five-case grain.
+- The failed cell has no scored model answer; successful Qwen3.8 cells remain authoritative.
+
+### Suggested Fix
+Allow the current Qwen3.8 run to reach terminal state. Inspect the preserved response envelope,
+then preregister one drug-cell-only compatibility recovery without repeating successful cells.
+
+### Metadata
+- Reproducible: unknown
+- Related Files: runtime/evaluation/revision-20260805/clean-qwen38-direct-reasoning-recovery-r19
+- See Also: ERR-20260805-QWEN38-REASONING-MANDATORY
+
+---
+
+## [ERR-20260805-QWEN38-REASONING-MANDATORY] OpenRouter rejected disabled reasoning
+
+**Logged**: 2026-08-05T13:25:00+08:00
+**Priority**: medium
+**Status**: resolved_with_compatibility_amendment
+**Area**: model evaluation
+
+### Summary
+All eight Qwen3.8 Max direct-model cells were rejected before inference because the exact
+OpenRouter endpoint requires reasoning.
+
+### Error
+```text
+OpenRouter HTTP 400: Reasoning is mandatory for this endpoint and cannot be disabled.
+```
+
+### Context
+- Exact model: `qwen/qwen3.8-max`.
+- The r18 protocol disabled reasoning to control cost and match several earlier compatibility
+  arms.
+- Kimi K3 completed 8/8 tasks under the same five-case request grain.
+- The rejected Qwen requests produced no model outputs.
+
+### Suggested Fix
+Preserve r18 unchanged. In a new Qwen-only compatibility root, change only the reasoning request
+to `effort=low`; retain the exact model, five-case batches, total completion budget, cases,
+prompt, schema and scorer.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260805/clean-twelve-model-panel-direct-extension-r18
+
+---
+
 ## [ERR-20260804-MDP-LIVE-CANARY] verified MDockPeP2 MCP call produced no score file
 
 **Logged**: 2026-08-04T08:22:15+08:00
@@ -9461,3 +9572,25 @@ from subsequent searches.
 - Related Files: runtime/evaluation/revision-20260731
 
 ---
+# [ERR-20260805-PAIRED-RUNNER-IMPORT-PATH]
+
+**Logged**: 2026-08-05
+**Area**: paired FROGENT benchmark runner
+**Error**: The first smoke invocation of `scripts/run_paired_frogent_model_panel.py` failed before creating any cell state because Python placed `scripts/`, rather than the repository root, on `sys.path`, so `agent` was not importable.
+**Resolution**: Insert the resolved project root into `sys.path` before importing production FROGENT modules. No model request was made and no benchmark result was produced by the failed invocation.
+
+---
+# [ERR-20260805-EXACT-RETRY-ROOT-INIT]
+
+**Logged**: 2026-08-05T14:48:00+08:00
+**Area**: paired/direct benchmark exact recovery
+**Error**: The first exact-retry launch pointed the runners at fresh roots before copying the frozen protocol and shared evidence manifest. Four processes failed immediately with `FileNotFoundError`; no cell state or model request was created.
+**Resolution**: Initialize each fresh retry root from the corresponding frozen protocol and, for the FROGENT arm, the immutable shared evidence cache before launch. The retry scope remains limited to the original failed model–task pairs.
+
+---
+# [ERR-20260805-TEST-MODULE-NAMES]
+
+**Logged**: 2026-08-05
+**Area**: local verification
+**Error**: A broad verification command referenced nonexistent modules `tests.test_model_runtime_policy` and `tests.test_research_factory`, so unittest reported two import errors after the 11 selected compatibility tests passed.
+**Resolution**: Discover actual test filenames before selection; use `tests.test_agent_runtime`, `tests.test_clean_ten_model_panel`, and `tests.test_research_workflow` for the broader verification.

@@ -1,10 +1,45 @@
 # Learnings
 
+## [LRN-20260805-PAIRED-BASE-AND-FROGENT-PANEL] correction
+
+**Logged**: 2026-08-05T13:18:15+08:00
+**Priority**: critical
+**Status**: applied
+**Area**: evaluation
+
+### Summary
+The requested current-model comparison has two paired arms: direct model inference and the same
+model used as the FROGENT base model.
+
+### Details
+The completed clean panel covers only direct, no-tool model inference. It cannot answer how much
+FROGENT changes each model's performance. The paired FROGENT arm must reuse the same exposed
+cases, task metrics and scorer while enabling the frozen FROGENT initialization, retrieval,
+memory and tool workflow. The current model set also adds Kimi K3 and Qwen3.8 under the user's
+latest instruction, which supersedes their earlier exclusion or older Qwen version.
+
+### Suggested Action
+Freeze a paired protocol with explicit direct and FROGENT arms, exact model IDs, equal task
+inputs and an arm-specific execution boundary. Report raw model score, FROGENT score and paired
+delta per model and task. Preserve any unavailable provider route as a terminal failure without
+substituting another model.
+
+### Metadata
+- Source: user_feedback
+- Related Files: docs/manuscript/clean-ten-model-benchmark-protocol.md, scripts/run_clean_ten_model_panel.py
+- Tags: paired-evaluation, base-model, frogent, kimi-k3, qwen3.8
+- Pattern-Key: evaluation.compare_direct_model_and_same_model_inside_frogent
+- Recurrence-Count: 1
+- First-Seen: 2026-08-05
+- Last-Seen: 2026-08-05
+
+---
+
 ## [LRN-20260805-MODEL-FIGURE-REPLACEMENT] correction
 
 **Logged**: 2026-08-05T12:24:00+08:00
 **Priority**: critical
-**Status**: in_progress
+**Status**: applied
 **Area**: evaluation
 
 ### Summary

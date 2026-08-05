@@ -322,6 +322,31 @@ def _validate_result(
         raise ValueError("response items do not match the frozen field set")
 
 
+def _collapse_single_case_repetitions(
+    value: Any,
+    expected_indices: list[int],
+) -> tuple[Any, int, bool, int]:
+    """Keep the first matching result when a one-case provider response expands."""
+    if len(expected_indices) != 1 or not isinstance(value, dict):
+        return value, 0, True, 0
+    results = value.get("results")
+    if not isinstance(results, list) or len(results) <= 1:
+        return value, 0, True, 0
+    matches = [
+        item
+        for item in results
+        if isinstance(item, dict) and item.get("case_index") == expected_indices[0]
+    ]
+    if not matches:
+        return value, 0, True, 0
+    first = matches[0]
+    identical = all(item == first for item in matches[1:])
+    out_of_scope = len(results) - len(matches)
+    normalized = dict(value)
+    normalized["results"] = [first]
+    return normalized, len(results) - 1, identical, out_of_scope
+
+
 def _codex_call(model: dict[str, Any], task: str, prompt: str, schema: dict[str, Any],
                 cell_root: Path) -> dict[str, Any]:
     schema_path = cell_root / "schema.json"
@@ -404,7 +429,7 @@ def _openrouter_call(model: dict[str, Any], task: str, prompt: str, schema: dict
     if not key:
         raise RuntimeError("OPENROUTER_API_KEY is missing")
     provider = {
-        "allow_fallbacks": False,
+        "allow_fallbacks": bool(model.get("allow_provider_fallbacks", False)),
         "require_parameters": True,
         "data_collection": "deny",
     }
@@ -481,18 +506,59 @@ def _openrouter_batched_call(
     combined: list[dict[str, Any]] = []
     metadata: list[dict[str, Any]] = []
     wall_seconds = 0.0
-    for start in range(1, 21, batch_size):
-        indices = list(range(start, min(start + batch_size, 21)))
+    max_attempts = int(model.get("max_attempts", 1))
+    if max_attempts < 1 or max_attempts > 6:
+        raise ValueError("max_attempts must be in 1..6")
+    batch_workers = int(model.get("batch_workers", 1))
+    if batch_workers < 1 or batch_workers > 5:
+        raise ValueError("batch_workers must be in 1..5")
+
+    def run_batch(indices: list[int]) -> tuple[list[int], dict[str, Any]]:
         batch_root = cell_root / f"batch-{indices[0]:02d}-{indices[-1]:02d}"
         batch_root.mkdir(parents=True, exist_ok=False)
-        outcome = _openrouter_call(
-            model,
-            task,
-            _prompt(task, set(indices)),
-            _schema(task, len(indices)),
-            batch_root,
-        )
+        outcome = None
+        last_error = None
+        for attempt in range(1, max_attempts + 1):
+            attempt_root = batch_root / f"attempt-{attempt:02d}"
+            attempt_root.mkdir()
+            try:
+                outcome = _openrouter_call(
+                    model,
+                    task,
+                    _prompt(task, set(indices)),
+                    _schema(task, len(indices)),
+                    attempt_root,
+                )
+                outcome["transport_metadata"]["request_attempts"] = attempt
+                break
+            except Exception as exc:
+                last_error = exc
+                if attempt == max_attempts:
+                    raise
+                time.sleep(2 ** (attempt - 1))
+        if outcome is None:
+            raise RuntimeError("OpenRouter batch produced no valid response") from last_error
+        (
+            outcome["response"],
+            collapsed,
+            identical,
+            out_of_scope,
+        ) = _collapse_single_case_repetitions(outcome["response"], indices)
+        if collapsed:
+            outcome["transport_metadata"]["duplicate_results_collapsed"] = collapsed
+            outcome["transport_metadata"]["repeated_results_identical"] = identical
+            outcome["transport_metadata"]["out_of_scope_results_discarded"] = out_of_scope
         _validate_result(task, outcome["response"], indices)
+        return indices, outcome
+
+    index_batches = [
+        list(range(start, min(start + batch_size, 21)))
+        for start in range(1, 21, batch_size)
+    ]
+    with ThreadPoolExecutor(max_workers=batch_workers) as pool:
+        futures = {pool.submit(run_batch, indices): indices for indices in index_batches}
+        outcomes = [future.result() for future in as_completed(futures)]
+    for indices, outcome in sorted(outcomes, key=lambda item: item[0][0]):
         combined.extend(outcome["response"]["results"])
         wall_seconds += float(outcome["wall_seconds"])
         metadata.append({

@@ -67,6 +67,9 @@ class RuntimeConfig:
     deepseek_timeout: float | None = None
     codex_model: str = "gpt-5.6-luna"
     codex_reasoning_effort: str = "max"
+    openrouter_model: str = ""
+    openrouter_base_url: str = "https://openrouter.ai/api/v1"
+    openrouter_timeout: float | None = None
 
     @classmethod
     def from_env(cls, project_root: Path):
@@ -91,6 +94,7 @@ class RuntimeConfig:
             ligand_states=ligand_states_from_env(project_root),
             receptor_states=receptor_states_from_env(project_root),
             deepseek_timeout=_optional_timeout(os.getenv("FROGENT_DEEPSEEK_TIMEOUT", "")),
+            openrouter_timeout=_optional_timeout(os.getenv("FROGENT_OPENROUTER_TIMEOUT", "")),
             **llm_settings_from_env(),
         )
 
@@ -171,7 +175,10 @@ def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=
             deepseek_base_url=config.deepseek_base_url, deepseek_timeout=config.deepseek_timeout,
             codex_model=config.codex_model, codex_reasoning_effort=config.codex_reasoning_effort,
             codex_executable=config.codex_executable,
-            codex_timeout=config.codex_timeout, runner=runner)
+            codex_timeout=config.codex_timeout, runner=runner,
+            openrouter_model=config.openrouter_model,
+            openrouter_base_url=config.openrouter_base_url,
+            openrouter_timeout=config.openrouter_timeout)
     europe = EuropePMCProvider()
     providers, routes, gaps = {"europe-pmc.search": europe}, ["europe_pmc"], []
     email = os.getenv("FROGENT_PUBMED_EMAIL", "").strip()
