@@ -51,7 +51,8 @@ assigned after the revised manuscript is built.
 
 ## Current gate
 
-The source archive can now be edited deterministically from this map and the reviewer-specific
-blocks. Final source replacement, bibliography insertion, figure regeneration, and page/line
-indexing remain pending because the repository currently contains the immutable submitted ZIP
-rather than an active revised manuscript source tree.
+The verified submitted archive has now been materialized as the active
+`docs/manuscript/revision-source/` tree. The first P0 pass has revised the Abstract, Introduction,
+Luteolin case, Related Work and Conclusion; the new Prompt-to-Pill and Robin references resolve,
+and the source completes a 36-page `latexmk` build. The eight-task Results, Methods, SI, figure
+regeneration, clean/marked copies and final page/line indexing remain pending.

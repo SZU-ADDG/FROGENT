@@ -43,6 +43,53 @@ new amended canary is justified.
 
 ---
 
+## [ERR-20260805-084] Whitespace cleanup named a nonexistent submitted style file
+
+**Logged**: 2026-08-05T08:47:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: manuscript source initialization
+
+### Summary
+
+The first mechanical trailing-whitespace cleanup included `neurips_2025.sty`, while the verified
+archive contains `naturetex.sty`. The command reported the missing path and still cleaned the three
+existing text sources; no file was created or removed.
+
+### Resolution
+
+Use the validated archive inventory before naming source files in bulk formatting commands. The
+staged tree was rechecked with `git diff --cached --check` and the manuscript was rebuilt.
+
+### Metadata
+- Reproducible: yes
+- Related Files: docs/manuscript/revision-source
+
+---
+
+## [ERR-20260805-085] Repository-relative staging path was used from manuscript subdirectory
+
+**Logged**: 2026-08-05T08:49:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: Git staging
+
+### Summary
+
+After a successful manuscript rebuild, `git add .learnings/ERRORS.md` was invoked while the shell
+working directory was `docs/manuscript/revision-source`, so Git could not match the root-relative
+path. The build completed successfully and no staged content was lost.
+
+### Resolution
+
+Run repository-wide staging and validation from `/Users/dongxu/projects/FROGENT`.
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md
+
+---
+
 ## [ERR-20260804-085] selected nonexistent unittest module names
 
 **Logged**: 2026-08-04T18:14:00+08:00

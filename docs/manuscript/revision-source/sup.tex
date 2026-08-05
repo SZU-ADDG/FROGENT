@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage[supp]{naturetex}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage[mathlines]{lineno}  %mathlines: 数学环境也编号
+\setlength\linenumbersep{12pt}
+\renewcommand\linenumberfont{\normalfont\footnotesize}
+\renewcommand{\baselinestretch}{1.5}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{setspace} % 只用于局部包裹
+\usepackage{caption}
+\usepackage{threeparttable}
+\usepackage{pdflscape}
+\usepackage{array}
+\captionsetup[algorithm]{skip=14pt}
+
+\newcommand{\name}{Frogent}
+
+\begin{document}
+
+\maketitle
+
+\beginsupplement
+
+\section{Benchmark Construction and Evaluation Details}\label{secA1}
+
+To ensure a rigorous and transparent evaluation of \name's capabilities, we constructed a suite of eight benchmarks, each designed to test a distinct aspect of the end-to-end drug discovery workflow. Each benchmark consists of 20 distinct samples, and the specific formulation and scoring criteria for each are detailed below.
+
+\subsection{Foundational Biomedical Knowledge}
+
+This benchmark was designed to assess the agent's foundational biomedical knowledge and its ability to interpret complex scientific queries. The test set was curated from the Humanity's Last Exam (HLE) dataset, including Bioinformatics, Biochemistry, Biology, Molecular Biology, Computational Biology and Biophysics. Each agent was presented with the questions and tasked with providing a correct and concise answer. Performance was scored by awarding one point for each correct answer and zero for incorrect or incomplete responses, with the final score representing the total number of correct answers.
+
+\subsection{Retrieve Known Drugs}
+
+To evaluate the agent's ability to query a specialized, structured bioinformatics database, we constructed a benchmark for retrieving known drugs. A protein name from the UniProt Knowledgebase was provided to the agent. The task was to retrieve the SMILES strings of at least five known, validated drug molecules that target the specified protein. The final performance score, on a scale of 100, was calculated based on the accuracy and completeness of the retrieved list of drug molecules when compared against the ground-truth data in the database.
+
+\subsection{Retrieve Known Target}
+
+This benchmark tested the agent's capability in disease-target validation. The agent was given a specific disease name. The task was to query the Open Targets Platform and retrieve a list of its known associated protein targets. The performance score, out of 100, was determined by calculating the precision and recall of the retrieved target list against the ground truth curated from the platform, rewarding agents that could accurately identify therapeutically relevant targets.
+
+\subsection{Molecular Property Prediction}
+
+To assess the agent's proficiency in utilizing predictive models for critical ADMET properties, we created a benchmark using test molecules from the ADMETLab 3.0 dataset. For each given molecule's SMILES string, the agent was required to predict five distinct properties: Quantitative Estimate of Drug-likeness (QED), Caco-2 Permeability, Blood-Brain Barrier Penetration (BBBP), CYP2D6-sub, and SR-p53. The final score was the average performance across all five properties. We used accuracy to evaluate BBBP, CYP2D6-sub and SR-p53 properties. For QED and Caco-2 Permeability tasks, performance was measured using a capped relative accuracy metric defined as
+
+\begin{equation}
+score = \max(1-\frac{\left | y_{pred}-y_{label} \right |}{y_{label}} ,0)
+\end{equation}
+
+where $y_{pred}$ and $y_{label}$ represent the predicted result and the actual result, respectively.
+
+\subsection{Virtual Screening}
+
+To assess the agent's virtual screening capability, the test set was constructed using the DAVIS dataset. The agent was provided with one protein target and a list of 10 randomly selected molecules from the dataset. The task was to identify the single molecule with the highest binding affinity from the provided list. Scoring was binary, where the agent received one point for correctly identifying the highest-affinity ligand and zero otherwise.
+
+\subsection{Binding Mechanism}
+To test the agent's ability to perform detailed mechanistic analysis of protein-ligand binding, this benchmark required the quantification of key molecular interactions. The ground-truth interaction data were first generated using the PLIP tool. The agent was then tasked with correctly quantifying the number of five specific interaction types: hydrophobic contacts, hydrogen bonds, pi-stacking, salt bridges, and water bridges. Each sample was scored out of a maximum of five points, with one point awarded for each of the five interaction types that were correctly quantified.
+
+\subsection{Molecular Design}
+
+This benchmark assessed the agent's creative capacity for generative design and its ability to perform multi-parameter optimization. We selected protein pockets with a volume greater than 10Å from the CrossDocked dataset. For each given pocket, the agent's task was to generate five novel, distinct small molecules. Scoring was based on a strict set of criteria: each of the five generated molecules was awarded one point (for a maximum of five points per sample) only if it simultaneously surpassed the original co-crystallized ligand in three key metrics: (1) a higher QED score, (2) a higher Synthetic Accessibility (SA) score, and (3) a more favorable Vina docking score.
+
+\subsection{Retrosynthesis Planning}
+
+This benchmark was designed to evaluate both multi-step and single-step retrosynthesis planning capabilities. The test set comprises challenging multi-step synthesis problems from the PaRoute dataset and single-step reactions from the USPTO-50k dataset. For each target molecule, the agent was tasked with providing a complete and chemically valid retrosynthesis pathway. Performance was assessed stringently on a 5-point scale, where one point was deducted for each error (e.g., an incorrect reactant, reagent, or logical step), and a score of zero was assigned for completely incorrect or invalid routes.
+
+\section{Database, Tool and Model}\label{secB}
+
+\subsection{Database}
+The database is designed to be dynamic and extensible, allowing for integrating new data sources to keep the agent at the forefront of scientific knowledge. The employed databases can be broadly classified into scientific literature archives and structured biochemical data repositories.
+
+\subsubsection{PubMed}
+PubMed is the foremost repository of biomedical literature, providing access to millions of abstracts and full-text articles from scientific journals. \name \ utilizes PubMed as its primary tool for evidence-based reasoning, automatically searching and synthesizing the latest scientific findings to validate target-disease associations and investigate mechanisms of action.
+
+\subsubsection{BioRxiv}
+BioRxiv is the leading open-access preprint server for the biological and life sciences, hosting unpublished research manuscripts before they undergo formal peer review. For \name, it is an essential resource for monitoring cutting-edge developments, allowing the agent to access the latest biological discoveries and experimental techniques before they are published in peer-reviewed journals.
+
+\subsubsection{arXiv}
+ArXiv is an open-access archive for scholarly articles, serving as the primary distribution platform for pre-print papers in computer science and artificial intelligence. For \name, Arxiv serves as a vital technical library, where the agent can retrieve foundational papers and recent advancements on specific computational algorithms.
+
+\subsubsection{E-TSN}
+Target Significance and Novelty Explorer(E-TSN) is a bioinformatics platform that leverages text mining to automatically analyze scientific literature, identifying and ranking potential drug targets based on their significance and novelty related to specific diseases. For \name, it enables the agent to autonomously survey the vast landscape of scientific research and prioritize promising or underexplored targets for a new therapeutic campaign.
+
+\subsubsection{RCSB PDB}
+The RCSB Protein Data Bank(RCSB PDB) is the world's primary repository for the three-dimensional structural data of biological macromolecules. For \name, the RCSB PDB is an indispensable resource, providing the essential 3D structural inputs required for critical downstream tasks.
+
+\subsubsection{Uniprot}
+The UniProt Knowledgebase is a comprehensive and high-quality resource for protein sequence and functional information, including annotations on function, domain structure, and biological pathways. \name \ leverages UniProt during the target identification phase to retrieve essential functional context, such as a protein's known biological roles and pathway associations, thereby validating its relevance to a specific disease.
+
+\subsubsection{DrugBank}
+DrugBank is a comprehensive bioinformatics resource that uniquely integrates detailed drug data with extensive information on their biological targets. For \name, it serves as a vital knowledge foundation, enabling the agent to efficiently identify known lead compounds and validated targets as starting points for its discovery campaigns.
+
+\subsubsection{Building Blocks}
+Enamine's Building Blocks provide a vast collection of commercially available reagents and scaffolds designed specifically for medicinal chemistry and combinatorial synthesis. For \name, it critically simplifies the retrosynthesis task, as the agent only needs to design synthetic pathways back to these purchasable compounds rather than to basic industrial chemicals.
+
+\subsection{Tool}
+Although \name \ uses a limited toolset, it is important to note that the toolset can be easily extended based on demand and availability. The toolset can be classified into molecular tools and general tools.
+
+\subsubsection{Molecular Tools}
+The molecular tools equip \name \ with a suite of essential computational chemistry libraries, all orchestrated through a standardized interface. At its core, the agent relies on the RDKit toolkit for fundamental molecular manipulation and descriptor calculation. For evaluating binding hypotheses, \name \ employs QVina to perform rapid and accurate small molecule docking and MDockPeP2 to perform peptide docking, and then automatically analyzes the resulting poses with PLIP to characterize the crucial protein-ligand interactions. To ensure that generated molecules have favorable drug-like properties, the agent utilizes predictive models trained on benchmark datasets from the Therapeutics Data Commons(TDC) for critical filtering steps.
+
+\subsubsection{General Tool}
+The general tools provide \name \ with dynamic reasoning and information retrieval capabilities essential for solving complex scientific problems. It features a Code Interpreter that offers a secure sandbox for executing custom Python scripts to perform novel data analysis and scientific computations. To access external knowledge, the agent is equipped with both web search tools powered by Tavily for real-time information gathering and specialized literature search tools that query the arXiv repository and PubMed repository. Together, these tools enable the agent to solve unforeseen problems, validate its findings against the broader web, and stay current with the latest scientific literature.
+
+\subsection{Model}
+The Model consists of four modules, including Binding Sites Discovery, ADMET Prediction, Molecule Generation, and Retrosynthesis.
+
+\subsubsection{Binding Sites Discovery}
+The discovery of viable binding sites is a foundational step in any structure-based drug design campaign, as it defines the precise 3D cavity on the target protein where a drug can bind. This identification is critical because it provides the essential geometric and chemical constraints that guide all subsequent tasks, including molecular docking and de novo generation. To accomplish this, \name \ utilizes P2Rank, a machine learning-based tool to predict druggable pockets from the protein's structure, thereby providing a validated starting point for the molecule design phase.
+
+\subsubsection{ADMET Prediction}
+A leading cause of late-stage clinical trial failures is not a lack of potency, but poor ADMET (Absorption, Distribution, Metabolism, Excretion, and Toxicity) properties. The early prediction of these properties is therefore a critical step, enabling researchers to filter out compounds that are likely to fail due to undesirable pharmacokinetics or toxicity, thereby saving significant time and resources. To address this, \name \ integrates ADMET-ai, a machine learning model designed to predict a wide range of these essential properties accurately. This capability is essential for the agent's autonomous decision-making, allowing it to de-risk the pipeline by ensuring that only candidates with a promising balance of both high potency and favorable drug-like characteristics are prioritized for further development.
+
+\subsubsection{Molecule Generation}
+Molecule generation is the creative engine at the heart of modern computational drug discovery, as it enables the design of novel chemical entities optimized for specific therapeutic objectives rather than merely screening existing ones. This capability is crucial for both exploring uncharted chemical space and for the fine-tuned refinement of known leads. \name \ leverages two complementary generative strategies: for lead optimization tasks such as scaffold decoration, it employs SAFE, which excels at making targeted edits to existing fragments. For structure-based de novo design, the agent utilizes a suite of state-of-the-art, 3D-aware diffusion models, including TargetDiff, Pocket2mol, DiffBP, MolCRAFT, DiffSBDD, DecompDiff, and PocketFlow to generate molecules from scratch that are tailored to the specific geometric and chemical constraints of a protein's binding pocket. By integrating these powerful generative tools, \name \ can both invent entirely new drug candidates and perform high-precision optimization, driving the core innovation in its discovery workflows.
+
+\subsubsection{Retrosynthesis}
+A computationally designed drug candidate is only valuable if it can be synthesized in a laboratory, making retrosynthesis the critical final step that bridges in silico design with real-world chemistry. This process involves working backward from the final molecule to devise a step-by-step pathway from commercially available starting materials. To automate this complex planning task, \name \ employs DirectMultiStep, a novel deep learning framework uniquely capable of generating a complete, multi-step synthetic route in a single pass, ensuring the overall feasibility and efficiency of the proposed pathway.
+
+\clearpage
+\printbibliography[title=Supplementary References]
+
+\end{document}

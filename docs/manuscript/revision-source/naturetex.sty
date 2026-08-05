@@ -1,0 +1,56 @@
+\ProvidesPackage{naturetex}
+
+\usepackage{etoolbox}
+\usepackage{authblk}
+\usepackage[utf8]{inputenc}
+\usepackage{lipsum} % Just for the example
+\usepackage{authblk}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{fullpage}
+\usepackage{setspace}
+
+%% Replace with your paper title
+\newcommand{\papertitle}{Midichlorian-assisted cold fusion}
+\newtoggle{supp}
+\togglefalse{supp}
+
+\DeclareOption{supp}{\toggletrue{supp}}
+\ProcessOptions\relax
+
+\iftoggle{supp}{
+	\title{Supplementary Information for\\ \papertitle}
+}{
+	\title{\papertitle}
+}
+
+% ===== Title =====
+\renewcommand{\papertitle}{FROGENT: An End-to-End Full-process Drug Design Multi-Agent System}
+
+% ===== Authors =====
+\author[1,$\dagger$]{Qihua Pan}
+\author[1,$\dagger$]{Dong Xu}
+\author[1]{Qianwei Yang}
+\author[2]{Jenna Xinyi Yao}
+\author[1]{Sisi Yuan}
+\author[1]{Zexuan Zhu}
+\author[1]{Jianqiang Li}
+\author[1,*]{Junkai Ji}
+
+% ===== Affiliations =====
+\affil[1]{School of Artificial Intelligence, Shenzhen University, Shenzhen 518060, China}
+\affil[2]{Biology Department, UC San Diego, San Diego 92093, California, USA}
+
+% ===== Corresponding author =====
+\affil[$\dagger$]{\small Equal contribution}
+\affil[*]{\small Corresponding author: \texttt{jijunkai@szu.edu.cn}}
+
+\date{}
+
+\newcommand{\beginsupplement}{%
+  \setcounter{table}{0}
+  \renewcommand{\tablename}{Supplementary Table}
+  \setcounter{figure}{0}
+  \renewcommand{\figurename}{Supplementary Figure}
+}
