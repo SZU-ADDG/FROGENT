@@ -90,6 +90,123 @@ Run repository-wide staging and validation from `/Users/dongxu/projects/FROGENT`
 
 ---
 
+## [ERR-20260805-086] Nested SSH manifest grep command had an unmatched local quote
+
+**Logged**: 2026-08-05T11:45:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: remote monitoring
+
+### Summary
+
+A compound `ssh` command embedded a JSON grep pattern inside multiple shell-quote layers. The local
+zsh parser rejected the command with `unmatched "` before any remote operation ran.
+
+### Resolution
+
+Pass the read-only remote command through a quoted heredoc so local interpolation and nested JSON
+quotes cannot alter the command text.
+
+### Metadata
+- Reproducible: yes
+- Related Files: FROGENT_revision_plan.md
+
+---
+
+## [ERR-20260805-087] Manuscript scan reused project-relative paths from the source subdirectory
+
+**Logged**: 2026-08-05T12:04:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: manuscript validation
+
+### Summary
+
+The combined validation command ran from `docs/manuscript/revision-source` while its `rg` operands
+still included that project-relative prefix. Both scans reported missing paths; the subsequent
+LaTeX build completed successfully.
+
+### Resolution
+
+Run repository-wide scans from the project root and source-local LaTeX commands from the source
+directory as separate validation steps.
+
+### Metadata
+- Reproducible: yes
+- Related Files: docs/manuscript/revision-source
+
+---
+
+## [ERR-20260805-088] Supplementary manuscript used an undefined bibliography command
+
+**Logged**: 2026-08-05T12:06:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: manuscript build
+
+### Summary
+
+The first independent `sup.tex` build stopped at `\printbibliography` because the submitted SI
+source does not load `biblatex`. The main manuscript already uses the project-compatible BibTeX
+commands.
+
+### Resolution
+
+Remove the unused SI bibliography call because the standalone SI contains no citation commands,
+then validate the SI in its own build root.
+
+### Metadata
+- Reproducible: yes
+- Related Files: docs/manuscript/revision-source/sup.tex
+
+---
+
+## [ERR-20260805-089] Multi-file patch omitted the second file update header
+
+**Logged**: 2026-08-05T12:08:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: manuscript editing
+
+### Summary
+
+A patch attempted to update the SI footer while its hunk was still scoped to `ERRORS.md`, so
+`apply_patch` rejected the expected LaTeX context without changing either file.
+
+### Resolution
+
+Use explicit update headers for each target file in a multi-file patch.
+
+### Metadata
+- Reproducible: yes
+- Related Files: .learnings/ERRORS.md, docs/manuscript/revision-source/sup.tex
+
+---
+
+## [ERR-20260805-090] Manuscript build log was redirected outside the project boundary
+
+**Logged**: 2026-08-05T12:15:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: local operation boundary
+
+### Summary
+
+A validation command redirected the transient `latexmk` console output to `/tmp/frogent-main-build.log`.
+That write fell outside the project-only local write boundary even though the manuscript outputs
+themselves remained under the project runtime directory.
+
+### Resolution
+
+Keep subsequent transient logs under the project `runtime/` tree or stream bounded command output
+directly. Do not use `/tmp` for FROGENT task artifacts.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/manuscript-build-20260805/main.log
+
+---
+
 ## [ERR-20260804-085] selected nonexistent unittest module names
 
 **Logged**: 2026-08-04T18:14:00+08:00

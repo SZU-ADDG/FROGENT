@@ -51,8 +51,10 @@ assigned after the revised manuscript is built.
 
 ## Current gate
 
-The verified submitted archive has now been materialized as the active
-`docs/manuscript/revision-source/` tree. The first P0 pass has revised the Abstract, Introduction,
-Luteolin case, Related Work and Conclusion; the new Prompt-to-Pill and Robin references resolve,
-and the source completes a 36-page `latexmk` build. The eight-task Results, Methods, SI, figure
-regeneration, clean/marked copies and final page/line indexing remain pending.
+The active `docs/manuscript/revision-source/` tree now contains synchronized P0 revisions for the
+Abstract, Introduction, eight-task Results, Luteolin and peptide cases, Related Work, Conclusion,
+provider Methods, model transparency and SI benchmark definitions. The unsupported Figure 2
+superiority narrative has been replaced by a task-level revision-evidence table. The main
+manuscript completes a 34-page build and the SI independently completes a 6-page build. Remaining
+source work covers the other case-study overstatements, prompt/training-isolation wording, Data
+Availability, editorial/figure QA, clean/marked copies and final page/line indexing.
