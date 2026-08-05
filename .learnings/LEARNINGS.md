@@ -1,5 +1,104 @@
 # Learnings
 
+## [LRN-20260805-MODEL-FIGURE-REPLACEMENT] correction
+
+**Logged**: 2026-08-05T12:24:00+08:00
+**Priority**: critical
+**Status**: in_progress
+**Area**: evaluation
+
+### Summary
+When an old multi-model figure lacks reproducible execution records, preserve the useful visual
+comparison role by running a fresh, clean, same-protocol panel on current models and rebuilding
+the figure from those results.
+
+### Details
+The revision removed the submitted radar figure together with unsupported aggregate claims. The
+user clarified that the figure itself remains valuable and can be replaced. The required response
+is a new ten-model comparison with isolated model sessions, frozen prompts and scorers, raw
+sample-level outputs, and an editable plot source. Figure removal should remain a temporary state
+until the replacement evidence is ready.
+
+### Suggested Action
+Freeze a ten-model protocol before inference. Use clean Codex executions for requested GPT models,
+OpenRouter for non-OpenAI models, and record provider model IDs, reasoning settings, prompt hashes,
+case exposure, failures, latency, usage and exact scorer outputs. Draw the replacement only from
+completed comparable cells and show missing provider cells explicitly.
+
+### Metadata
+- Source: user_feedback
+- Related Files: docs/manuscript/revision-source/main.tex, docs/manuscript/revision-evidence-ledger.md
+- Tags: model-comparison, figure, clean-room, reproducibility
+- Pattern-Key: evaluation.replace_unreproducible_figure_with_clean_current_model_panel
+- Recurrence-Count: 1
+- First-Seen: 2026-08-05
+- Last-Seen: 2026-08-05
+
+---
+
+## [LRN-20260805-CLEAN-PANEL-MODEL-EXCLUSIONS] correction
+
+**Logged**: 2026-08-05T12:35:00+08:00
+**Priority**: high
+**Status**: applied
+**Area**: evaluation
+
+### Summary
+The clean ten-model revision panel excludes Claude, Kimi K3, Grok and Gemini; the user accepts
+cost-controlled Kimi K2.5.
+
+### Details
+The user retained GPT-5.4, GPT-5.5, GPT-5.6 Sol, DeepSeek V4 Flash and DeepSeek V4 Pro, explicitly
+removed Claude, Kimi K3, Grok and Gemini, and subsequently allowed Kimi K2.5 while asking to avoid
+expensive alternatives. The remaining slots should provide current cross-family coverage through
+OpenRouter with controlled inference cost.
+
+### Suggested Action
+Use Kimi K2.5, Qwen3.7 Plus, GLM 5.2, MiniMax M3 and Xiaomi MiMo V2.5 for the five remaining
+slots. Freeze exact dated or versioned model IDs and catalog pricing before inference.
+
+### Metadata
+- Source: user_feedback
+- Related Files: docs/manuscript/model-comparison-protocol.md
+- Tags: model-selection, exclusions, openrouter
+- Pattern-Key: evaluation.clean_panel_user_selected_model_families
+- Recurrence-Count: 1
+- First-Seen: 2026-08-05
+- Last-Seen: 2026-08-05
+
+---
+
+## [LRN-20260805-TERMINAL-COUNT-FROM-FILES] best_practice
+
+**Logged**: 2026-08-05T14:42:00+08:00
+**Priority**: medium
+**Status**: applied
+**Area**: evaluation monitoring
+
+### Summary
+Count benchmark terminal states from the actual terminal records before reporting a total.
+
+### Details
+The first r03 status update listed five successful models but described the count as six. The
+model names were correct and the prose total was not. Concurrent model completions make manual
+counting especially error-prone.
+
+### Suggested Action
+Generate every reported succeeded/failed/missing count from terminal files or the deterministic
+scorer summary. When names and totals disagree, treat the machine-derived count as authoritative
+and correct the user-facing update immediately.
+
+### Metadata
+- Source: assistant_error
+- Related Files: scripts/score_clean_ten_model_panel.py
+- Tags: monitoring, counting, terminal-state
+- Pattern-Key: evaluation.report_terminal_counts_from_machine_records
+- Recurrence-Count: 1
+- First-Seen: 2026-08-05
+- Last-Seen: 2026-08-05
+
+---
+
 ## [LRN-20260802-002] make dual-process scheduling model-memory-aware
 
 **Logged**: 2026-08-02T17:17:00+08:00

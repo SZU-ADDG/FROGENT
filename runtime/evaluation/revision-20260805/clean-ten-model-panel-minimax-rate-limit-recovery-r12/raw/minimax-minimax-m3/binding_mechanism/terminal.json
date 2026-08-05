@@ -1,0 +1,11 @@
+{
+  "display_name": "MiniMax M3",
+  "error": "RuntimeError: OpenRouter HTTP 429: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"minimax/minimax-m3 is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Morph\",\"is_byok\":false,\"provider_error_code\":\"service_overloaded\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":\"Retry shortly, add your own provider key (https://openrouter.ai/settings/integrations), or route to another provider with provider routing: https://openrouter.ai/docs/features/provider-routing\",\"retry_after_seconds\":2,\"retry_after_seconds_raw\":2,\"headers\":{\"Retry-After\":\"2\"}}},\"user_id\":\"user_3GAQBir0hgQWZSZ33ZN0hlMnIPB\"}",
+  "model_id": "minimax/minimax-m3",
+  "prompt_sha256": "a265940b39e7cbf2933d4eb34936e66d84b4b988935934b308f22bac6cca35db",
+  "schema_sha256": "ea915c3383e866a45603dc999c27da0cce01be388cd3b1477c2d79f4f1373065",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "failed",
+  "task": "binding_mechanism",
+  "transport": "openrouter"
+}

@@ -1,0 +1,244 @@
+{
+  "display_name": "DeepSeek V4 Flash",
+  "model_id": "deepseek/deepseek-v4-flash-0731",
+  "prompt_sha256": "e37203d680a7d929a10d960731a2b38fd5fc14b94266e42c185961164b32956f",
+  "response": {
+    "results": [
+      {
+        "case_index": 1,
+        "smiles": [
+          "CC1=CC(=O)NC2=C1C=CC=C2",
+          "C1=CC2=C(C=C1)C(=O)NC2",
+          "CC1=CC(=O)NC2=C1C=CC=C2",
+          "C1=CC2=C(C=C1)C(=O)NC2",
+          "CC1=CC(=O)NC2=C1C=CC=C2"
+        ]
+      },
+      {
+        "case_index": 2,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 3,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 4,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 5,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 6,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 7,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 8,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 9,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 10,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 11,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 12,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 13,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 14,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 15,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 16,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 17,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 18,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 19,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 20,
+        "smiles": [
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "C1=CC=C(C=C1)NC(=O)C2=CC=CC=C2",
+          "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      }
+    ]
+  },
+  "schema_sha256": "6ac247ba5d365087ce68afb59a490a146b6b29445ac6acab6332780181fb7219",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "molecular_design",
+  "transport": "openrouter",
+  "transport_metadata": {
+    "finish_reason": "stop",
+    "provider": "DeepInfra",
+    "response_id": "gen-1785904414-egwiCyBGSHp7pT6c7gfS",
+    "returned_model": "deepseek/deepseek-v4-flash-0731",
+    "usage": {
+      "completion_tokens": 2688,
+      "completion_tokens_details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "reasoning_tokens": 0
+      },
+      "cost": 0.025767882,
+      "cost_details": {
+        "upstream_inference_completions_cost": 0.00048384,
+        "upstream_inference_cost": 0.025767882,
+        "upstream_inference_prompt_cost": 0.025284042
+      },
+      "is_byok": false,
+      "prompt_tokens": 280985,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 0,
+        "cached_tokens": 64,
+        "video_tokens": 0
+      },
+      "total_tokens": 283673
+    }
+  },
+  "wall_seconds": 34.76288720918819
+}

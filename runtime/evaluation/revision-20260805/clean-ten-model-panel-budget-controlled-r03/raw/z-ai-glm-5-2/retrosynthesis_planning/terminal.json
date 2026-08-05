@@ -1,0 +1,11 @@
+{
+  "display_name": "GLM 5.2",
+  "error": "RuntimeError: OpenRouter HTTP 429: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"z-ai/glm-5.2 is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Decart\",\"is_byok\":false,\"provider_error_code\":\"backend_invalid_argument\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":\"Retry shortly, add your own provider key (https://openrouter.ai/settings/integrations), or route to another provider with provider routing: https://openrouter.ai/docs/features/provider-routing\"}},\"user_id\":\"user_3GAQBir0hgQWZSZ33ZN0hlMnIPB\"}",
+  "model_id": "z-ai/glm-5.2",
+  "prompt_sha256": "bc0f7e4759411866c826f61030cbcfb73f6621b93cdd8cb7ebe3db42bf2de62d",
+  "schema_sha256": "98c592b4db994ae2b23d3b8e5c833ce4d4a3f23d4b3e0500a2b7d35c2d781502",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "failed",
+  "task": "retrosynthesis_planning",
+  "transport": "openrouter"
+}

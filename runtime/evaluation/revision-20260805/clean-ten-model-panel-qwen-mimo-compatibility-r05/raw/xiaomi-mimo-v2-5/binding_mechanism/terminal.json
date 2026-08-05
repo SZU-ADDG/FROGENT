@@ -1,0 +1,11 @@
+{
+  "display_name": "MiMo V2.5",
+  "error": "KeyError: 'choices'",
+  "model_id": "xiaomi/mimo-v2.5",
+  "prompt_sha256": "a265940b39e7cbf2933d4eb34936e66d84b4b988935934b308f22bac6cca35db",
+  "schema_sha256": "ea915c3383e866a45603dc999c27da0cce01be388cd3b1477c2d79f4f1373065",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "failed",
+  "task": "binding_mechanism",
+  "transport": "openrouter"
+}

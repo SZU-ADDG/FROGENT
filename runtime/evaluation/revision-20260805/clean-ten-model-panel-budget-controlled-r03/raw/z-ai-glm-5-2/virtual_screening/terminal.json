@@ -1,0 +1,124 @@
+{
+  "display_name": "GLM 5.2",
+  "model_id": "z-ai/glm-5.2",
+  "prompt_sha256": "07220602ba1c9c09e0a2541a2e3cd1ccb6c89090ccc60ea4a0a1cb69290f82d6",
+  "response": {
+    "results": [
+      {
+        "case_index": 1,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 2,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(M)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 3,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 4,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 5,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 6,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 7,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 8,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 9,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 10,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 11,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 12,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 13,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 14,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 15,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 16,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 17,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 18,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 19,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      },
+      {
+        "case_index": 20,
+        "selected_smiles": "Cc1nc(Nc2ncc(C(=O)Nc3c(C)cccc3Cl)s2)cc(N2CCN(CCO)CC2)n1"
+      }
+    ]
+  },
+  "schema_sha256": "faad9b1ecc65d035b087b80c0202b08a6cd22b2b70d7858f2574dfe0b146d714",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "virtual_screening",
+  "transport": "openrouter",
+  "transport_metadata": {
+    "finish_reason": "stop",
+    "provider": "Decart",
+    "response_id": "gen-1785904998-0mlTAeZTDxojtBS9RMRU",
+    "returned_model": "z-ai/glm-5.2",
+    "usage": {
+      "completion_tokens": 945,
+      "completion_tokens_details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "reasoning_tokens": 0
+      },
+      "cost": 0.0031507,
+      "cost_details": {
+        "upstream_inference_completions_cost": 0.0014175,
+        "upstream_inference_cost": 0.0031507,
+        "upstream_inference_prompt_cost": 0.0017332
+      },
+      "is_byok": false,
+      "prompt_tokens": 8667,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 0,
+        "cached_tokens": 6934,
+        "video_tokens": 0
+      },
+      "total_tokens": 9612
+    }
+  },
+  "wall_seconds": 6.726602457929403
+}

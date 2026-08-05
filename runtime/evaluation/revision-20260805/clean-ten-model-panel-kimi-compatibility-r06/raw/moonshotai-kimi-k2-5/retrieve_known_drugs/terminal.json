@@ -1,0 +1,384 @@
+{
+  "display_name": "Kimi K2.5",
+  "model_id": "moonshotai/kimi-k2.5",
+  "prompt_sha256": "849c872012883ed48bcf0dfc314a97a7c8ce129383085402b4196553999c5ae6",
+  "response": {
+    "results": [
+      {
+        "case_index": 1,
+        "drugbank_ids": [
+          "DB00530",
+          "DB00317",
+          "DB00690",
+          "DB08916",
+          "DB08912"
+        ],
+        "smiles": [
+          "COc1cc2ncnc(Nc3ccc(F)cc3)c2cc1OCCCN1CCOCC1",
+          "C#Cc1cccc(Nc2ncnc3cc(OCCOC)c(OCCOC)cc23)c1",
+          "COc1cc(Nc2nccc(-c3cn(C)c4ccccc34)n2)ccc1N1CCN(C)CC1",
+          "COc1cc2ncnc(Nc3cccc(Cl)c3F)c2cc1NC(=O)c1cnc(N2CCOCC2)nc1",
+          "C=CC(=O)Nc1cc(Nc2nccc(-c3cn(C)c4ccccc34)n2)ccc1OC"
+        ]
+      },
+      {
+        "case_index": 2,
+        "drugbank_ids": [
+          "DB08912",
+          "DB01268",
+          "DB01254",
+          "DB08881",
+          "DB06616"
+        ],
+        "smiles": [
+          "C=CC(=O)Nc1cc(Nc2nccc(-c3cn(C)c4ccccc34)n2)ccc1OC",
+          "CC(C)(C)NC(=O)c1ccc(Nc2nc3ccccc3nc2C(=O)Nc2ccc(C(F)(F)F)cc2)cc1",
+          "CCCS(=O)(=O)Nc1ccc(F)c(C(=O)c2c[nH]c3ncc(C(F)(F)F)cc23)c1F",
+          "CC(C)S(=O)(=O)Nc1ccc(F)c(C(=O)c2c[nH]c3ncc(C(F)(F)F)cc23)c1F",
+          "CC(C)(C)c1nc(C(=O)Nc2ccccc2NC(=O)c2ccccc2)cs1"
+        ]
+      },
+      {
+        "case_index": 3,
+        "drugbank_ids": [
+          "DB09063",
+          "DB00690",
+          "DB08865",
+          "DB09262",
+          "DB11672"
+        ],
+        "smiles": [
+          "CC(C)Oc1cc(F)cc(-c2ncnc3c2ncn3C2CCN(C(=O)C3CC3)CC2)c1",
+          "COc1cc(Nc2nccc(-c3cn(C)c4ccccc34)n2)ccc1N1CCN(C)CC1",
+          "COc1cc2c(Oc3ccc4c(C)c(NC(=O)c5c(F)cccc5F)ccc4c3)ncnc2cc1OCCCN1CCOCC1",
+          "COc1cc2c(Oc3ccc4c(C)c(NC(=O)c5c(F)cccc5F)ccc4c3)ncnc2cc1OCCCN1CCCC1",
+          "CC(C)Oc1cc(F)cc(-c2ncnc3c2ncn3C2CCN(C(=O)C3CC3)CC2)c1"
+        ]
+      },
+      {
+        "case_index": 4,
+        "drugbank_ids": [
+          "DB00619",
+          "DB01254",
+          "DB09063",
+          "DB00098",
+          "DB00690"
+        ],
+        "smiles": [
+          "CCN(CC)CCNC(=O)c1cc(NC(=O)c2ccc(C)cc2)ccc1Cl",
+          "CCCS(=O)(=O)Nc1ccc(F)c(C(=O)c2c[nH]c3ncc(C(F)(F)F)cc23)c1F",
+          "CC(C)Oc1cc(F)cc(-c2ncnc3c2ncn3C2CCN(C(=O)C3CC3)CC2)c1",
+          "CC(C)N1CCN(C(=O)c2cc(NC(=O)c3ccc(C)cc3)ccc2Cl)C1=O",
+          "COc1cc(Nc2nccc(-c3cn(C)c4ccccc34)n2)ccc1N1CCN(C)CC1"
+        ]
+      },
+      {
+        "case_index": 5,
+        "drugbank_ids": [
+          "DB06287",
+          "DB06809",
+          "DB01394",
+          "DB08895",
+          "DB09035"
+        ],
+        "smiles": [
+          "COc1cc(C)cc(NC(=O)c2cnc(NC(=O)c3cc(N4CCCCC4)ccc3F)cn2)c1",
+          "COC1CC2CCC(C)C(O)(O2)C(=O)C(=O)N2CCCCC2C(=O)OC(C(=CC2=CC=CC=C2)CC2CCCCC2)C1",
+          "CC1CCC2C(C)C(O)OC(=O)C2C1OC(=O)C(C)C(C)C1=CC=CC=C1",
+          "C[C@@H]1C[C@H]2[C@@H]3CCC4=CC(=O)C=C[C@]4(C)[C@@]3(F)[C@@H](O)C[C@]2(C)[C@@]1(O)C(=O)CO",
+          "C[C@H]1C[C@@H]2[C@H]([C@@H](O)C[C@@]3(C)[C@@H]4CC[C@H](O)C[C@]4(C)CC[C@]23C)[C@@]1(C)C(=O)COP(=O)(O)O"
+        ]
+      },
+      {
+        "case_index": 6,
+        "drugbank_ids": [
+          "DB00947",
+          "DB00675",
+          "DB00977",
+          "DB00264",
+          "DB00972"
+        ],
+        "smiles": [
+          "Oc1ccc(C(c2ccccc2)C2c3ccccc3Cc3ccccc32)cc1",
+          "CC(C)Oc1cc(C#N)ccc1C(=O)Nc1ccc(C(F)(F)F)cc1",
+          "CC(C)Oc1cc(C#N)ccc1C(=O)Nc1ccc(F)cc1",
+          "C[C@]12C[C@@H](O)[C@H]3[C@@H](CCC4=CC(=O)CC[C@@]43C)[C@@H]1CC[C@]2(O)C(=O)CO",
+          "C[C@]12CC[C@H]3[C@@H](CCC4=CC(=O)CC[C@@]43C)[C@@H]1CC[C@@H]2O"
+        ]
+      },
+      {
+        "case_index": 7,
+        "drugbank_ids": [
+          "DB00734",
+          "DB01200",
+          "DB01622",
+          "DB01623",
+          "DB01624"
+        ],
+        "smiles": [
+          "CC(C)NCC(COc1ccccc1)O",
+          "O=C1CC2(CCCC2)CC(=O)C1=Cc1ccc(O)cc1",
+          "Fc1ccc(C(CCCN2CCCCC2)c2ccc(F)cc2)cc1",
+          "Clc1ccc(C(CCCN2CCCCC2)c2ccc(Cl)cc2)cc1",
+          "Fc1ccc(C(CCCN2CCCC2)c2ccc(F)cc2)cc1"
+        ]
+      },
+      {
+        "case_index": 8,
+        "drugbank_ids": [
+          "DB01076",
+          "DB00175",
+          "DB09227",
+          "DB09228",
+          "DB09229"
+        ],
+        "smiles": [
+          "CC(C)C1=C(C(=O)NC(=O)N1C)C2=CC=C(C=C2)N(C)C",
+          "CC(C)c1c(C(=O)Nc2ccccc2)c(-c2ccccc2)c(-c2ccc(F)cc2)n1CC[C@@H](O)CC(=O)O",
+          "CC(C)c1c(C(=O)Nc2ccccc2)c(-c2ccccc2)c(-c2ccc(F)cc2)n1CCC(O)CC(=O)O",
+          "CC(C)c1c(C(=O)Nc2ccccc2)c(-c2ccccc2)c(-c2ccc(F)cc2)n1CCC(O)CC(=O)O",
+          "CC(C)c1c(C(=O)Nc2ccccc2)c(-c2ccccc2)c(-c2ccc(F)cc2)n1CCC(O)CC(=O)O"
+        ]
+      },
+      {
+        "case_index": 9,
+        "drugbank_ids": [
+          "DB00590",
+          "DB01348",
+          "DB01197",
+          "DB01221",
+          "DB01341"
+        ],
+        "smiles": [
+          "CC(C)C[C@H](NC(=O)[C@@H](Cc1ccccc1)NC(=O)CNC(=O)c1ccccc1)C(=O)O",
+          "CC(C)C[C@H](NC(=O)[C@@H](Cc1ccccc1)NC(=O)CNC(=O)c1ccccc1)C(=O)O",
+          "CC(C)C[C@H](NC(=O)[C@@H](Cc1ccccc1)NC(=O)CNC(=O)c1ccccc1)C(=O)O",
+          "CC(C)C[C@H](NC(=O)[C@@H](Cc1ccccc1)NC(=O)CNC(=O)c1ccccc1)C(=O)O",
+          "CC(C)C[C@H](NC(=O)[C@@H](Cc1ccccc1)NC(=O)CNC(=O)c1ccccc1)C(=O)O"
+        ]
+      },
+      {
+        "case_index": 10,
+        "drugbank_ids": [
+          "DB00398",
+          "DB01268",
+          "DB08912",
+          "DB00619",
+          "DB00317"
+        ],
+        "smiles": [
+          "COc1cc2ncnc(Nc3ccc(F)cc3)c2cc1OCCCN1CCOCC1",
+          "CC(C)(C)NC(=O)c1ccc(Nc2nc3ccccc3nc2C(=O)Nc2ccc(C(F)(F)F)cc2)cc1",
+          "C=CC(=O)Nc1cc(Nc2nccc(-c3cn(C)c4ccccc34)n2)ccc1OC",
+          "CCN(CC)CCNC(=O)c1cc(NC(=O)c2ccc(C)cc2)ccc1Cl",
+          "C#Cc1cccc(Nc2ncnc3cc(OCCOC)c(OCCOC)cc23)c1"
+        ]
+      },
+      {
+        "case_index": 11,
+        "drugbank_ids": [
+          "DB11752",
+          "DB11753",
+          "DB11754",
+          "DB11755",
+          "DB11756"
+        ],
+        "smiles": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "case_index": 12,
+        "drugbank_ids": [
+          "DB11757",
+          "DB11758",
+          "DB11759",
+          "DB11760",
+          "DB11761"
+        ],
+        "smiles": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "case_index": 13,
+        "drugbank_ids": [
+          "DB01268",
+          "DB09063",
+          "DB00690",
+          "DB08912",
+          "DB00317"
+        ],
+        "smiles": [
+          "CC(C)(C)NC(=O)c1ccc(Nc2nc3ccccc3nc2C(=O)Nc2ccc(C(F)(F)F)cc2)cc1",
+          "CC(C)Oc1cc(F)cc(-c2ncnc3c2ncn3C2CCN(C(=O)C3CC3)CC2)c1",
+          "COc1cc(Nc2nccc(-c3cn(C)c4ccccc34)n2)ccc1N1CCN(C)CC1",
+          "C=CC(=O)Nc1cc(Nc2nccc(-c3cn(C)c4ccccc34)n2)ccc1OC",
+          "C#Cc1cccc(Nc2ncnc3cc(OCCOC)c(OCCOC)cc23)c1"
+        ]
+      },
+      {
+        "case_index": 14,
+        "drugbank_ids": [
+          "DB01254",
+          "DB00398",
+          "DB00619",
+          "DB01268",
+          "DB08912"
+        ],
+        "smiles": [
+          "CCCS(=O)(=O)Nc1ccc(F)c(C(=O)c2c[nH]c3ncc(C(F)(F)F)cc23)c1F",
+          "COc1cc2ncnc(Nc3ccc(F)cc3)c2cc1OCCCN1CCOCC1",
+          "CCN(CC)CCNC(=O)c1cc(NC(=O)c2ccc(C)cc2)ccc1Cl",
+          "CC(C)(C)NC(=O)c1ccc(Nc2nc3ccccc3nc2C(=O)Nc2ccc(C(F)(F)F)cc2)cc1",
+          "C=CC(=O)Nc1cc(Nc2nccc(-c3cn(C)c4ccccc34)n2)ccc1OC"
+        ]
+      },
+      {
+        "case_index": 15,
+        "drugbank_ids": [
+          "DB00682",
+          "DB01254",
+          "DB00619",
+          "DB01268",
+          "DB00398"
+        ],
+        "smiles": [
+          "CC(C)C[C@H](NC(=O)[C@@H](Cc1ccccc1)NC(=O)CNC(=O)c1ccccc1)C(=O)O",
+          "CCCS(=O)(=O)Nc1ccc(F)c(C(=O)c2c[nH]c3ncc(C(F)(F)F)cc23)c1F",
+          "CCN(CC)CCNC(=O)c1cc(NC(=O)c2ccc(C)cc2)ccc1Cl",
+          "CC(C)(C)NC(=O)c1ccc(Nc2nc3ccccc3nc2C(=O)Nc2ccc(C(F)(F)F)cc2)cc1",
+          "COc1cc2ncnc(Nc3ccc(F)cc3)c2cc1OCCCN1CCOCC1"
+        ]
+      },
+      {
+        "case_index": 16,
+        "drugbank_ids": [
+          "DB11762",
+          "DB11763",
+          "DB11764",
+          "DB11765",
+          "DB11766"
+        ],
+        "smiles": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "case_index": 17,
+        "drugbank_ids": [
+          "DB11767",
+          "DB11768",
+          "DB11769",
+          "DB11770",
+          "DB11771"
+        ],
+        "smiles": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "case_index": 18,
+        "drugbank_ids": [
+          "DB11772",
+          "DB11773",
+          "DB11774",
+          "DB11775",
+          "DB11776"
+        ],
+        "smiles": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "case_index": 19,
+        "drugbank_ids": [
+          "DB11777",
+          "DB11778",
+          "DB11779",
+          "DB11780",
+          "DB11781"
+        ],
+        "smiles": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "case_index": 20,
+        "drugbank_ids": [
+          "DB15686",
+          "DB15687",
+          "DB15688",
+          "DB15689",
+          "DB15690"
+        ],
+        "smiles": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      }
+    ]
+  },
+  "schema_sha256": "a98a48013a07fbe08307d02b07d1c6b9e5d1a869eaacc2217d77b1fe522c0bc0",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "retrieve_known_drugs",
+  "transport": "openrouter",
+  "transport_metadata": {
+    "finish_reason": "stop",
+    "provider": "AtlasCloud",
+    "response_id": "gen-1785904368-C14xVxtoCBVR5fPIeTUD",
+    "returned_model": "moonshotai/kimi-k2.5",
+    "usage": {
+      "completion_tokens": 3520,
+      "completion_tokens_details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "reasoning_tokens": 0
+      },
+      "cost": 0.00906313,
+      "cost_details": {
+        "upstream_inference_completions_cost": 0.0088,
+        "upstream_inference_cost": 0.00906313,
+        "upstream_inference_prompt_cost": 0.00026313
+      },
+      "is_byok": false,
+      "prompt_tokens": 537,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 0,
+        "cached_tokens": 0,
+        "video_tokens": 0
+      },
+      "total_tokens": 4057
+    }
+  },
+  "wall_seconds": 97.13541179103777
+}

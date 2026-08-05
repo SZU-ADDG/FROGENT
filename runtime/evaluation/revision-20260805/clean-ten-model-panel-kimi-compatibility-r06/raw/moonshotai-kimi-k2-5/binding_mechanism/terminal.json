@@ -1,0 +1,11 @@
+{
+  "display_name": "Kimi K2.5",
+  "error": "RuntimeError: OpenRouter HTTP 400: {\"error\":{\"message\":\"Provider returned error\",\"code\":400,\"metadata\":{\"raw\":\"{\\\"code\\\":400,\\\"msg\\\":\\\"bad request\\\",\\\"request_id\\\":\\\"ecc26ae1-04eb-4d70-b354-df224c5a232e\\\"}\",\"provider_name\":\"AtlasCloud\",\"is_byok\":false}},\"user_id\":\"user_3GAQBir0hgQWZSZ33ZN0hlMnIPB\"}",
+  "model_id": "moonshotai/kimi-k2.5",
+  "prompt_sha256": "a265940b39e7cbf2933d4eb34936e66d84b4b988935934b308f22bac6cca35db",
+  "schema_sha256": "ea915c3383e866a45603dc999c27da0cce01be388cd3b1477c2d79f4f1373065",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "failed",
+  "task": "binding_mechanism",
+  "transport": "openrouter"
+}

@@ -1,0 +1,204 @@
+{
+  "display_name": "GLM 5.2",
+  "model_id": "z-ai/glm-5.2",
+  "prompt_sha256": "d646294e2a0aa921a21062ce6ed48b1fe1dfbeb253f4c7e39bdd937f852ffe55",
+  "response": {
+    "results": [
+      {
+        "case_index": 1,
+        "targets": [
+          "DISC1",
+          "DTNBP1",
+          "NRG1"
+        ]
+      },
+      {
+        "case_index": 2,
+        "targets": [
+          "CHIKV_E1",
+          "CHIKV_E2",
+          "CHIKV_C"
+        ]
+      },
+      {
+        "case_index": 3,
+        "targets": [
+          "BBA03",
+          "OSP",
+          "P41"
+        ]
+      },
+      {
+        "case_index": 4,
+        "targets": [
+          "SOD1",
+          "C9orf72",
+          "TARDBP"
+        ]
+      },
+      {
+        "case_index": 5,
+        "targets": [
+          "INS",
+          "IRS1",
+          "TCF7L2"
+        ]
+      },
+      {
+        "case_index": 6,
+        "targets": [
+          "PAH",
+          "QDPR",
+          "GCH1"
+        ]
+      },
+      {
+        "case_index": 7,
+        "targets": [
+          "LPG3",
+          "LPG1",
+          "LPG2"
+        ]
+      },
+      {
+        "case_index": 8,
+        "targets": [
+          "TcMUCII",
+          "TcMUCI",
+          "SAPA"
+        ]
+      },
+      {
+        "case_index": 9,
+        "targets": [
+          "KMT2D",
+          "KDM6A",
+          "RAP1A"
+        ]
+      },
+      {
+        "case_index": 10,
+        "targets": [
+          "CSF2RA",
+          "GCSF",
+          "MARS"
+        ]
+      },
+      {
+        "case_index": 11,
+        "targets": [
+          "FOXP2",
+          "CNTNAP2",
+          "ATP2C2"
+        ]
+      },
+      {
+        "case_index": 12,
+        "targets": [
+          "FOXP2",
+          "CNTNAP2",
+          "DCDC2"
+        ]
+      },
+      {
+        "case_index": 13,
+        "targets": [
+          "OCRL",
+          "CLCN5",
+          "SLC9A6"
+        ]
+      },
+      {
+        "case_index": 14,
+        "targets": [
+          "ENG",
+          "ACVRL1",
+          "SMAD4"
+        ]
+      },
+      {
+        "case_index": 15,
+        "targets": [
+          "GNAS",
+          "PRKAR1A",
+          "BRAF"
+        ]
+      },
+      {
+        "case_index": 16,
+        "targets": [
+          "CFTR",
+          "SCNN1B",
+          "SCNN1G"
+        ]
+      },
+      {
+        "case_index": 17,
+        "targets": [
+          "HBB",
+          "HBA1",
+          "BCL11A"
+        ]
+      },
+      {
+        "case_index": 18,
+        "targets": [
+          "CTNS",
+          "SLC7A9",
+          "SLC3A1"
+        ]
+      },
+      {
+        "case_index": 19,
+        "targets": [
+          "UMOD",
+          "PKD1",
+          "PKD2"
+        ]
+      },
+      {
+        "case_index": 20,
+        "targets": [
+          "INS",
+          "GHR",
+          "POMC"
+        ]
+      }
+    ]
+  },
+  "schema_sha256": "f30f23b25119c02a63b1e436bf00021b1c76243e258fcdc2330e9afd380c9677",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "retrieve_known_targets",
+  "transport": "openrouter",
+  "transport_metadata": {
+    "finish_reason": "stop",
+    "provider": "Decart",
+    "response_id": "gen-1785904981-VN1GVnnYpmyqfCYLAkH3",
+    "returned_model": "z-ai/glm-5.2",
+    "usage": {
+      "completion_tokens": 462,
+      "completion_tokens_details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "reasoning_tokens": 0
+      },
+      "cost": 0.0007651,
+      "cost_details": {
+        "upstream_inference_completions_cost": 0.000693,
+        "upstream_inference_cost": 0.0007651,
+        "upstream_inference_prompt_cost": 7.21e-05
+      },
+      "is_byok": false,
+      "prompt_tokens": 361,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 0,
+        "cached_tokens": 289,
+        "video_tokens": 0
+      },
+      "total_tokens": 823
+    }
+  },
+  "wall_seconds": 6.816913791932166
+}

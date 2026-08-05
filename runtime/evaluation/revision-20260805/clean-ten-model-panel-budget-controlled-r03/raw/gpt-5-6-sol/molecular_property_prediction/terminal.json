@@ -1,0 +1,180 @@
+{
+  "display_name": "GPT-5.6 Sol",
+  "model_id": "gpt-5.6-sol",
+  "prompt_sha256": "a5418f0a6b90e929c4c511189936469bf0286651c95de8254a26cf872c6a522b",
+  "response": {
+    "results": [
+      {
+        "bbbp": 1,
+        "caco2": -4.25,
+        "case_index": 1,
+        "cyp2d6_sub": 0,
+        "qed": 0.38,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 1,
+        "caco2": -4.18,
+        "case_index": 2,
+        "cyp2d6_sub": 0,
+        "qed": 0.45,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 1,
+        "caco2": -4.47,
+        "case_index": 3,
+        "cyp2d6_sub": 0,
+        "qed": 0.44,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 1,
+        "caco2": -4.56,
+        "case_index": 4,
+        "cyp2d6_sub": 0,
+        "qed": 0.41,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 1,
+        "caco2": -4.39,
+        "case_index": 5,
+        "cyp2d6_sub": 0,
+        "qed": 0.47,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": -5.02,
+        "case_index": 6,
+        "cyp2d6_sub": 0,
+        "qed": 0.48,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": -5.21,
+        "case_index": 7,
+        "cyp2d6_sub": 0,
+        "qed": 0.47,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 1,
+        "caco2": -4.24,
+        "case_index": 8,
+        "cyp2d6_sub": 0,
+        "qed": 0.44,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 1,
+        "caco2": -4.19,
+        "case_index": 9,
+        "cyp2d6_sub": 0,
+        "qed": 0.42,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 1,
+        "caco2": -4.48,
+        "case_index": 10,
+        "cyp2d6_sub": 0,
+        "qed": 0.43,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 1,
+        "caco2": -4.72,
+        "case_index": 11,
+        "cyp2d6_sub": 0,
+        "qed": 0.72,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 1,
+        "caco2": -4.83,
+        "case_index": 12,
+        "cyp2d6_sub": 1,
+        "qed": 0.63,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 1,
+        "caco2": -4.69,
+        "case_index": 13,
+        "cyp2d6_sub": 1,
+        "qed": 0.48,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 1,
+        "caco2": -4.37,
+        "case_index": 14,
+        "cyp2d6_sub": 1,
+        "qed": 0.66,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 1,
+        "caco2": -4.91,
+        "case_index": 15,
+        "cyp2d6_sub": 0,
+        "qed": 0.65,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 1,
+        "caco2": -4.82,
+        "case_index": 16,
+        "cyp2d6_sub": 0,
+        "qed": 0.72,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": -5.34,
+        "case_index": 17,
+        "cyp2d6_sub": 0,
+        "qed": 0.63,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 1,
+        "caco2": -5.01,
+        "case_index": 18,
+        "cyp2d6_sub": 1,
+        "qed": 0.71,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 1,
+        "caco2": -5.09,
+        "case_index": 19,
+        "cyp2d6_sub": 0,
+        "qed": 0.62,
+        "sr_p53": 1
+      },
+      {
+        "bbbp": 0,
+        "caco2": -5.48,
+        "case_index": 20,
+        "cyp2d6_sub": 0,
+        "qed": 0.46,
+        "sr_p53": 1
+      }
+    ]
+  },
+  "schema_sha256": "b53f7d3ae4888cc33cd032c550b64db4e404f8b25f74a2058f9e6e97eca80462",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "molecular_property_prediction",
+  "transport": "codex",
+  "transport_metadata": {
+    "event_lines": 11,
+    "prohibited_tool_events": 0,
+    "returncode": 0
+  },
+  "wall_seconds": 183.55919033428654
+}

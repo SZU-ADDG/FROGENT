@@ -1,0 +1,44 @@
+{
+  "schema_version": "frogent-clean-ten-model-panel-compatibility-v1",
+  "frozen_at": "2026-08-05T14:22:00+08:00",
+  "status": "preregistered_before_retry_outputs",
+  "amends": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+  "reason": "Kimi K2.5 exhausted the 12000-token completion budget on hidden reasoning and returned no answer content at low reasoning effort.",
+  "scope": "Only failed Kimi K2.5 cells are eligible for compatibility recovery; successful r03 cells remain authoritative and must not be repeated.",
+  "models": [
+    {
+      "display_name": "Kimi K2.5",
+      "transport": "openrouter",
+      "model_id": "moonshotai/kimi-k2.5",
+      "reasoning": {
+        "enabled": false
+      },
+      "max_tokens": 12000
+    }
+  ],
+  "tasks": [
+    "foundational_biomedical_knowledge",
+    "retrieve_known_drugs",
+    "retrieve_known_targets",
+    "molecular_property_prediction",
+    "virtual_screening",
+    "binding_mechanism",
+    "molecular_design",
+    "retrosynthesis_planning"
+  ],
+  "case_count_per_task": 20,
+  "request_grain": "one_stateless_request_per_model_task_cell",
+  "gold_visibility": "withheld_during_inference",
+  "tools": "disabled",
+  "web": "disabled",
+  "memory": "none",
+  "retries": 0,
+  "openrouter": {
+    "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+    "credential_env": "OPENROUTER_API_KEY",
+    "allow_fallbacks": false,
+    "data_collection": "deny",
+    "structured_outputs": true
+  },
+  "claim_boundary": "request-level Kimi compatibility amendment only; no change to cases, prompts, schemas, gold data or scoring"
+}

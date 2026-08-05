@@ -43,6 +43,55 @@ new amended canary is justified.
 
 ---
 
+## [ERR-20260805-094] OpenRouter low reasoning did not bound five reasoning-first models
+
+**Logged**: 2026-08-05T14:24:00+08:00
+**Priority**: medium
+**Status**: resolved_with_compatibility_amendments
+**Area**: model benchmark runtime
+
+### Summary
+
+DeepSeek V4 Flash/Pro, Kimi K2.5, Qwen3.7 Plus and MiMo V2.5 either exhausted the
+12,000-token completion budget on hidden reasoning or returned no answer content under the
+unified `reasoning.effort=low` request. Increasing the token budget would raise cost without
+establishing a common answer budget.
+
+### Resolution
+
+Preserve all failed r03 cells. Freeze model-scoped r04-r06 compatibility amendments and set
+`reasoning.enabled=false` only for the affected models. The foundational task then returned
+schema-valid answers for all five without changing prompts, cases, gold data or scoring.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03, runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04, runtime/evaluation/revision-20260805/clean-ten-model-panel-qwen-mimo-compatibility-r05, runtime/evaluation/revision-20260805/clean-ten-model-panel-kimi-compatibility-r06
+
+---
+
+## [ERR-20260805-095] zsh reserved status variable interrupted partial scoring wrapper
+
+**Logged**: 2026-08-05T14:25:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: local validation command
+
+### Summary
+
+A wrapper attempted `status=$?` after the partial scorer. In zsh, `status` is read-only, so the
+wrapper stopped after the scorer had already written its valid partial analysis.
+
+### Resolution
+
+Use a task-specific name such as `scorer_rc` for captured exit codes. No benchmark input,
+inference output or score was changed.
+
+### Metadata
+- Reproducible: yes
+- Related Files: scripts/score_clean_ten_model_panel.py
+
+---
+
 ## [ERR-20260805-084] Whitespace cleanup named a nonexistent submitted style file
 
 **Logged**: 2026-08-05T08:47:00+08:00
@@ -204,6 +253,81 @@ directly. Do not use `/tmp` for FROGENT task artifacts.
 ### Metadata
 - Reproducible: yes
 - Related Files: runtime/manuscript-build-20260805/main.log
+
+---
+
+## [ERR-20260805-091] Bundled Codex executable was called with a stale filename
+
+**Logged**: 2026-08-05T12:27:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: model runtime compatibility
+
+### Summary
+
+The model-panel inventory command called
+`/Applications/ChatGPT.app/Contents/Resources/codex-cli`, while the current desktop bundle exposes
+the executable as `/Applications/ChatGPT.app/Contents/Resources/codex`.
+
+### Resolution
+
+Resolve and record the executable path at protocol-freeze time. The current bundled path is
+`/Applications/ChatGPT.app/Contents/Resources/codex`; the PATH-selected client remains the older
+`/opt/homebrew/bin/codex`.
+
+### Metadata
+- Reproducible: yes
+- Related Files: docs/manuscript/agent-model-rebuttal-blocks.md
+- See Also: ERR-20260804-083
+
+---
+
+## [ERR-20260805-092] DeepSeek V4 Flash exhausted completion budget before JSON output
+
+**Logged**: 2026-08-05T12:55:00+08:00
+**Priority**: medium
+**Status**: resolved_with_amendment
+**Area**: model evaluation
+
+### Summary
+
+The first OpenRouter clean-panel canary for `deepseek/deepseek-v4-flash-0731` reached the pinned
+DeepInfra provider and consumed 17,417 reasoning tokens inside a 20,000-token completion budget.
+It terminated with `finish_reason=length` and null response content before emitting the required
+JSON.
+
+### Resolution
+
+Preserve the r01 response and usage envelope. Create a new compatibility-only r02 root with the
+same model, cases, prompt, schema and scorer, while capping OpenRouter reasoning at 8,000 tokens
+inside a 16,000-token total completion budget. Do not rerun the successful GPT-5.4 r01 cell.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260805/clean-ten-model-panel-r01
+
+---
+
+## [ERR-20260805-093] Run-root refactor left a stale module constant
+
+**Logged**: 2026-08-05T12:58:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: model evaluation
+
+### Summary
+
+After adding selectable recovery roots, the runner still initialized `PROTOCOL_PATH` from the
+removed `RUN_ROOT` name and stopped before any r02 API request.
+
+### Resolution
+
+Remove the unused module constant and resolve `protocol/protocol.json` from the validated
+`--run-root` argument inside `main`.
+
+### Metadata
+- Reproducible: yes
+- Related Files: scripts/run_clean_ten_model_panel.py
 
 ---
 

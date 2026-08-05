@@ -1,0 +1,11 @@
+{
+  "display_name": "MiniMax M3",
+  "error": "RuntimeError: OpenRouter HTTP 400: {\"error\":{\"message\":\"Provider returned error\",\"code\":400,\"metadata\":{\"raw\":\"{\\\"error\\\":{\\\"message\\\":\\\"{\\\\\\\"message\\\\\\\":\\\\\\\"This model's maximum context length is 256000 tokens. However, your messages resulted in 350159 tokens. Please reduce the length of the messages.\\\\\\\",\\\\\\\"type\\\\\\\":\\\\\\\"Bad Request\\\\\\\",\\\\\\\"code\\\\\\\":400}\\\",\\\"type\\\":\\\"proxy_error\\\"}}\",\"provider_name\":\"Morph\",\"is_byok\":false}},\"user_id\":\"user_3GAQBir0hgQWZSZ33ZN0hlMnIPB\"}",
+  "model_id": "minimax/minimax-m3",
+  "prompt_sha256": "a265940b39e7cbf2933d4eb34936e66d84b4b988935934b308f22bac6cca35db",
+  "schema_sha256": "ea915c3383e866a45603dc999c27da0cce01be388cd3b1477c2d79f4f1373065",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "failed",
+  "task": "binding_mechanism",
+  "transport": "openrouter"
+}

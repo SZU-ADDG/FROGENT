@@ -1,0 +1,1601 @@
+display_name,model_id,transport,task,case_index,score,status
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,1,1.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,2,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,3,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,4,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,5,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,6,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,7,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,8,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,9,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,10,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,11,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,12,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,13,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,14,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,15,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,16,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,17,1.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,18,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,19,0.0,scored
+GPT-5.4,gpt-5.4,codex,foundational_biomedical_knowledge,20,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,1,1.0,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,2,0.4,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,3,0.4,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,4,0.6,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,5,0.6,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,6,0.6,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,7,0.4,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,8,0.4,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,9,0.6,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,10,0.8,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,11,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,12,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,13,0.4,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,14,0.6,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,15,0.2,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,16,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,17,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,18,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,19,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_drugs,20,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,1,0.3333333333333333,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,2,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,3,0.3333333333333333,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,4,0.6666666666666666,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,5,0.3333333333333333,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,6,0.3333333333333333,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,7,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,8,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,9,0.6666666666666666,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,10,0.3333333333333333,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,11,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,12,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,13,0.3333333333333333,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,14,0.6666666666666666,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,15,0.3333333333333333,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,16,0.3333333333333333,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,17,0.3333333333333333,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,18,0.3333333333333333,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,19,0.3333333333333333,scored
+GPT-5.4,gpt-5.4,codex,retrieve_known_targets,20,0.3333333333333333,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,1,0.3897810218978102,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,2,0.5776061776061776,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,3,0.7963470319634703,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,4,0.41176790843531075,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,5,0.594756554307116,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,6,0.7832993890020367,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,7,0.5777777777777777,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,8,0.798645598194131,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,9,0.7990521327014217,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,10,0.5990654205607477,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,11,0.36470588235294116,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,12,0.5278688524590164,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,13,0.0,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,14,0.34660633484162895,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,15,0.5326732673267326,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,16,0.7749696233292831,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,17,0.6,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,18,0.5822222222222222,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,19,0.3903225806451613,scored
+GPT-5.4,gpt-5.4,codex,molecular_property_prediction,20,0.4,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,1,0.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,2,0.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,3,0.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,4,0.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,5,0.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,6,0.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,7,0.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,8,1.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,9,1.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,10,0.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,11,1.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,12,0.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,13,,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,14,0.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,15,1.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,16,0.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,17,0.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,18,1.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,19,0.0,scored
+GPT-5.4,gpt-5.4,codex,virtual_screening,20,1.0,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,1,0.2,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,2,0.0,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,3,0.2,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,4,0.0,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,5,0.0,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,6,0.4,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,7,0.4,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,8,0.2,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,9,0.0,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,10,0.2,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,11,0.4,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,12,0.2,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,13,0.2,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,14,0.4,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,15,0.0,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,16,0.4,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,17,0.0,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,18,0.4,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,19,0.0,scored
+GPT-5.4,gpt-5.4,codex,binding_mechanism,20,0.2,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,1,0.941986245045855,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,2,0.9458637392251934,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,3,0.8402670906722146,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,4,0.945167825830123,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,5,0.941986245045855,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,6,0.9482120956018756,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,7,0.8388932308884095,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,8,0.9474144951357497,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,9,0.8434943044342631,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,10,0.9445312367651926,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,11,0.8424973038516058,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,12,0.9482120956018756,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,13,0.8388932308884095,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,14,0.9482120956018756,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,15,0.8424973038516058,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,16,0.9419468636621265,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,17,0.8467247708130958,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,18,0.9436668975680707,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,19,0.8403472614691757,scored
+GPT-5.4,gpt-5.4,codex,molecular_design,20,0.9436668975680707,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,1,0.5,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,2,0.5,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,3,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,4,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,5,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,6,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,7,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,8,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,9,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,10,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,11,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,12,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,13,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,14,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,15,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,16,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,17,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,18,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,19,0.0,scored
+GPT-5.4,gpt-5.4,codex,retrosynthesis_planning,20,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,1,1.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,2,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,3,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,4,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,5,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,6,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,7,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,8,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,9,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,10,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,11,1.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,12,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,13,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,14,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,15,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,16,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,17,1.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,18,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,19,0.0,scored
+GPT-5.5,gpt-5.5,codex,foundational_biomedical_knowledge,20,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,1,1.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,2,0.6,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,3,0.2,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,4,1.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,5,0.6,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,6,1.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,7,1.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,8,0.8,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,9,1.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,10,1.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,11,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,12,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,13,0.2,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,14,0.8,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,15,0.4,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,16,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,17,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,18,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,19,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_drugs,20,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,1,0.3333333333333333,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,2,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,3,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,4,0.6666666666666666,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,5,0.3333333333333333,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,6,0.3333333333333333,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,7,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,8,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,9,0.6666666666666666,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,10,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,11,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,12,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,13,0.3333333333333333,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,14,0.6666666666666666,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,15,0.3333333333333333,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,16,0.3333333333333333,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,17,0.6666666666666666,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,18,0.3333333333333333,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,19,0.3333333333333333,scored
+GPT-5.5,gpt-5.5,codex,retrieve_known_targets,20,0.3333333333333333,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,1,0.5849148418491484,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,2,0.5621621621621621,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,3,0.5689497716894978,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,4,0.5985257985257986,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,5,0.7797752808988764,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,6,0.781800212375834,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,7,0.7923076923076924,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,8,0.798645598194131,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,9,0.7990521327014217,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,10,0.7990654205607477,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,11,0.5900452488687783,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,12,0.7377049180327868,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,13,0.15584415584415584,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,14,0.5828054298642534,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,15,0.5821782178217821,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,16,0.5798298906439854,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,17,0.6016995241332427,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,18,0.5311111111111111,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,19,0.5639784946236559,scored
+GPT-5.5,gpt-5.5,codex,molecular_property_prediction,20,0.46550522648083625,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,1,0.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,2,1.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,3,0.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,4,0.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,5,0.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,6,0.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,7,0.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,8,1.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,9,1.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,10,0.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,11,1.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,12,1.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,13,,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,14,1.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,15,0.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,16,0.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,17,0.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,18,0.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,19,0.0,scored
+GPT-5.5,gpt-5.5,codex,virtual_screening,20,1.0,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,1,0.2,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,2,0.6,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,3,0.6,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,4,0.2,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,5,0.8,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,6,0.0,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,7,0.4,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,8,0.4,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,9,0.0,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,10,0.2,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,11,0.4,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,12,0.2,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,13,0.4,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,14,0.6,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,15,0.2,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,16,0.2,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,17,0.0,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,18,0.2,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,19,0.0,scored
+GPT-5.5,gpt-5.5,codex,binding_mechanism,20,0.0,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,1,0.9492860500354853,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,2,0.9456648632451323,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,3,0.942389025172519,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,4,0.9498024575943983,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,5,0.9445033190262886,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,6,0.9462651889442854,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,7,0.9427379218773223,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,8,0.9483351197997801,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,9,0.9441242268800887,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,10,0.9512967056504631,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,11,0.9361441975632376,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,12,0.9367851859009831,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,13,0.9397372804194519,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,14,0.9438236660347705,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,15,0.7485738861737564,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,16,0.9538694762071347,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,17,0.9438864643865207,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,18,0.946990279027792,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,19,0.9439778012488664,scored
+GPT-5.5,gpt-5.5,codex,molecular_design,20,0.9553686989519925,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,1,0.5,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,2,0.5,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,3,0.5,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,4,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,5,0.5,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,6,0.5,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,7,0.5,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,8,0.5,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,9,0.5,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,10,0.5,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,11,0.5,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,12,0.5,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,13,0.5,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,14,0.5,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,15,1.0,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,16,0.0,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,17,0.5,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,18,1.0,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,19,0.5,scored
+GPT-5.5,gpt-5.5,codex,retrosynthesis_planning,20,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,1,1.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,2,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,3,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,4,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,5,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,6,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,7,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,8,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,9,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,10,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,11,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,12,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,13,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,14,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,15,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,16,1.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,17,1.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,18,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,19,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,foundational_biomedical_knowledge,20,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,1,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,2,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,3,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,4,0.4,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,5,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,6,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,7,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,8,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,9,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,10,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,11,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,12,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,13,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,14,0.4,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,15,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,16,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,17,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,18,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,19,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_drugs,20,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,1,0.3333333333333333,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,2,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,3,0.3333333333333333,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,4,0.6666666666666666,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,5,0.3333333333333333,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,6,0.6666666666666666,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,7,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,8,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,9,0.6666666666666666,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,10,0.3333333333333333,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,11,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,12,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,13,0.3333333333333333,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,14,0.6666666666666666,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,15,0.3333333333333333,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,16,0.3333333333333333,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,17,0.3333333333333333,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,18,0.3333333333333333,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,19,0.3333333333333333,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrieve_known_targets,20,0.3333333333333333,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,1,0.7635613319710484,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,2,0.7439406134845874,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,3,0.797576988896729,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,4,0.7972457279012124,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,5,0.9537267850523822,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,6,0.9730509237175429,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,7,0.7547164931401384,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,8,0.9965914431987996,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,9,0.9757335579596971,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,10,0.9957723360382449,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,11,0.5804603712377878,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,12,0.961852664791824,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,13,0.3446765794591881,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,14,0.780573427940049,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,15,0.776408928949101,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,16,0.7709484593081191,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,17,0.7815091774303194,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,18,0.5517321269449585,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,19,0.5568995123291435,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_property_prediction,20,0.4684704201641218,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,1,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,2,1.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,3,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,4,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,5,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,6,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,7,1.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,8,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,9,1.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,10,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,11,1.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,12,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,13,,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,14,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,15,1.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,16,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,17,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,18,1.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,19,1.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,virtual_screening,20,1.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,1,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,2,0.4,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,3,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,4,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,5,0.6,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,6,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,7,0.6,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,8,0.4,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,9,0.4,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,10,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,11,0.6,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,12,0.4,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,13,0.6,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,14,0.6,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,15,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,16,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,17,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,18,0.2,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,19,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,binding_mechanism,20,0.4,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,1,0.9393371442746473,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,2,0.9393430249667775,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,3,0.9392398353190857,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,4,0.9306930505463051,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,5,0.932010072456355,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,6,0.9131410375117326,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,7,0.9239555027224133,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,8,0.9268458099493682,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,9,0.9315390528533545,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,10,0.936316038494353,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,11,0.924411425494508,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,12,0.939693900757186,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,13,0.9354011208999556,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,14,0.9335605898526047,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,15,0.8823304790974258,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,16,0.9256305329881658,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,17,0.9178043145974886,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,18,0.9388288712910496,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,19,0.9429173797110199,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,molecular_design,20,0.9170467857542653,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,1,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,2,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,3,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,4,0.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,5,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,6,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,7,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,8,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,9,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,10,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,11,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,12,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,13,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,14,1.0,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,15,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,16,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,17,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,18,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,19,0.5,scored
+GPT-5.6 Sol,gpt-5.6-sol,codex,retrosynthesis_planning,20,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,1,1.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,2,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,3,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,4,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,5,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,6,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,7,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,8,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,9,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,10,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,11,1.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,12,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,13,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,14,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,15,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,16,1.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,17,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,18,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,19,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,foundational_biomedical_knowledge,20,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,1,0.2,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,2,0.2,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,3,0.2,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,4,0.2,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,5,0.2,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,6,0.2,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,7,0.8,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,8,0.4,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,9,0.4,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,10,0.2,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,11,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,12,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,13,0.2,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,14,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,15,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,16,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,17,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,18,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,19,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_drugs,20,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,1,0.3333333333333333,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,2,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,3,0.3333333333333333,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,4,0.6666666666666666,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,5,0.3333333333333333,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,6,0.3333333333333333,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,7,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,8,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,9,0.6666666666666666,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,10,0.3333333333333333,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,11,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,12,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,13,0.3333333333333333,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,14,0.6666666666666666,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,15,0.3333333333333333,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,16,0.3333333333333333,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,17,0.6666666666666666,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,18,0.3333333333333333,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,19,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrieve_known_targets,20,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,1,0.35669099756691,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,2,0.393050193050193,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,3,0.771689497716895,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,4,0.35429975429975424,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,5,0.5872659176029963,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,6,0.7963340122199593,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,7,0.5863247863247864,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,8,0.5742663656884875,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,9,0.5630331753554503,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,10,0.5663551401869158,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,11,0.5508295625942685,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,12,0.3639344262295082,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,13,0.5402597402597402,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,14,0.5508295625942685,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,15,0.365016501650165,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,16,0.7215066828675577,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,17,0.6153846153846154,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,18,0.711111111111111,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,19,0.7344086021505376,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_property_prediction,20,0.4515679442508711,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,1,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,2,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,3,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,4,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,5,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,6,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,7,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,8,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,9,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,10,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,11,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,12,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,13,,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,14,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,15,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,16,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,17,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,18,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,19,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,virtual_screening,20,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,1,0.2,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,2,0.4,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,3,0.4,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,4,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,5,0.6,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,6,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,7,0.6,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,8,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,9,0.4,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,10,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,11,0.6,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,12,0.2,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,13,0.6,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,14,0.6,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,15,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,16,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,17,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,18,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,19,0.2,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,binding_mechanism,20,0.0,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,1,0.7255067744814319,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,2,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,3,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,4,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,5,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,6,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,7,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,8,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,9,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,10,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,11,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,12,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,13,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,14,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,15,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,16,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,17,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,18,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,19,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,molecular_design,20,0.7452770257740431,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,1,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,2,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,3,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,4,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,5,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,6,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,7,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,8,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,9,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,10,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,11,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,12,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,13,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,14,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,15,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,16,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,17,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,18,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,19,0.5,scored
+DeepSeek V4 Flash,deepseek/deepseek-v4-flash-0731,openrouter,retrosynthesis_planning,20,0.5,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,1,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,2,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,3,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,4,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,5,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,6,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,7,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,8,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,9,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,10,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,11,1.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,12,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,13,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,14,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,15,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,16,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,17,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,18,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,19,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,foundational_biomedical_knowledge,20,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,1,0.8,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,2,0.4,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,3,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,4,0.8,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,5,0.6,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,6,0.8,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,7,0.8,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,8,0.6,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,9,1.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,10,0.8,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,11,1.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,12,1.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,13,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,14,0.8,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,15,0.2,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,16,1.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,17,0.25,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,18,1.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,19,1.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_drugs,20,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,1,0.3333333333333333,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,2,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,3,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,4,0.6666666666666666,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,5,0.3333333333333333,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,6,0.5,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,7,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,8,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,9,0.8,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,10,0.3333333333333333,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,11,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,12,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,13,0.5,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,14,0.6666666666666666,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,15,0.5,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,16,0.5,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,17,0.5,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,18,0.5,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,19,0.3333333333333333,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrieve_known_targets,20,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,1,0.2,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,2,0.2,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,3,0.6,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,4,0.2,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,5,0.4,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,6,0.6,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,7,0.4,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,8,0.4,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,9,0.4,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,10,0.4,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,11,0.4,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,12,0.2,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,13,0.4,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,14,0.4,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,15,0.2,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,16,0.6,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,17,0.6,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,18,0.6,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,19,0.6,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_property_prediction,20,0.4,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,1,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,2,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,3,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,4,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,5,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,6,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,7,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,8,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,9,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,10,1.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,11,1.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,12,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,13,,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,14,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,15,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,16,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,17,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,18,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,19,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,virtual_screening,20,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,1,0.2,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,2,0.4,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,3,0.2,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,4,0.2,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,5,0.8,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,6,0.2,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,7,0.4,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,8,0.4,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,9,0.2,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,10,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,11,0.6,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,12,0.2,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,13,0.6,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,14,0.6,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,15,0.2,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,16,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,17,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,18,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,19,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,binding_mechanism,20,0.2,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,1,0.9371744583299825,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,2,0.9334009870928391,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,3,0.9346590677766172,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,4,0.9334009870928391,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,5,0.9346590677766172,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,6,0.9334009870928391,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,7,0.9346590677766172,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,8,0.9334009870928391,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,9,0.9346590677766172,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,10,0.9334009870928391,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,11,0.9346590677766172,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,12,0.9334009870928391,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,13,0.9346590677766172,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,14,0.9334009870928391,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,15,0.9346590677766172,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,16,0.9334009870928391,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,17,0.9346590677766172,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,18,0.9334009870928391,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,19,0.9346590677766172,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,molecular_design,20,0.9334009870928391,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,1,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,2,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,3,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,4,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,5,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,6,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,7,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,8,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,9,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,10,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,11,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,12,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,13,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,14,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,15,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,16,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,17,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,18,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,19,0.0,scored
+DeepSeek V4 Pro,deepseek/deepseek-v4-pro,openrouter,retrosynthesis_planning,20,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,1,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,2,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,3,1.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,4,1.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,5,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,6,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,7,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,8,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,9,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,10,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,11,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,12,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,13,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,14,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,15,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,16,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,17,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,18,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,19,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,foundational_biomedical_knowledge,20,1.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,1,0.6,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,2,0.4,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,3,0.4,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,4,0.4,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,5,0.2,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,6,0.6,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,7,1.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,8,0.4,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,9,0.4,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,10,0.4,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,11,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,12,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,13,0.2,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,14,0.8,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,15,0.2,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,16,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,17,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,18,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,19,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_drugs,20,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,1,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,2,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,3,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,4,1.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,5,0.3333333333333333,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,6,0.3333333333333333,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,7,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,8,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,9,0.6666666666666666,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,10,0.3333333333333333,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,11,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,12,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,13,0.3333333333333333,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,14,0.6666666666666666,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,15,0.3333333333333333,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,16,0.3333333333333333,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,17,0.6666666666666666,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,18,0.3333333333333333,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,19,0.3333333333333333,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrieve_known_targets,20,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,1,0.7468610684118642,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,2,0.7168852891979928,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,3,0.7669456677778048,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,4,0.7554312443299421,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,5,0.9376380617124769,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,6,0.7787479754120592,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,7,0.954745965583404,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,8,0.9150916950677939,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,9,0.9006178224232668,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,10,0.9562871241421054,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,11,0.7399243578374527,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,12,0.9583601984589706,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,13,0.5476880607315391,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,14,0.542333749242094,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,15,0.7144523820063505,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,16,0.739107793785801,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,17,0.3733514615907546,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,18,0.9319117143052985,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,19,0.7409023129468746,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_property_prediction,20,0.3613089509143407,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,1,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,2,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,3,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,4,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,5,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,6,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,7,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,8,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,9,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,10,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,11,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,12,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,13,,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,14,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,15,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,16,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,17,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,18,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,19,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,virtual_screening,20,1.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,1,0.2,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,2,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,3,0.4,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,4,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,5,0.4,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,6,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,7,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,8,0.4,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,9,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,10,0.4,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,11,0.8,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,12,0.2,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,13,0.4,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,14,0.4,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,15,0.6,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,16,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,17,0.2,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,18,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,19,0.2,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,binding_mechanism,20,0.2,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,1,0.9453845010530544,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,2,0.9617344450743105,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,3,0.9548398852001356,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,4,0.9558644971663679,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,5,0.9548398852001356,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,6,0.9347781155785126,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,7,0.9347781155785126,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,8,0.9347781155785126,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,9,0.9347781155785126,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,10,0.9347781155785126,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,11,0.9503870216568362,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,12,0.9562092293609835,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,13,0.9495535300569313,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,14,0.9562092293609835,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,15,0.9495535300569313,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,16,0.9476488001464044,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,17,0.9349722884597449,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,18,0.9415284742926503,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,19,0.9415284742926503,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,molecular_design,20,0.9415284742926503,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,1,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,2,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,3,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,4,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,5,0.25,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,6,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,7,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,8,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,9,0.5,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,10,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,11,0.5,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,12,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,13,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,14,0.5,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,15,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,16,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,17,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,18,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,19,0.0,scored
+Kimi K2.5,moonshotai/kimi-k2.5,openrouter,retrosynthesis_planning,20,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,1,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,2,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,3,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,4,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,5,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,6,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,7,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,8,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,9,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,10,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,11,1.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,12,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,13,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,14,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,15,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,16,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,17,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,18,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,19,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,foundational_biomedical_knowledge,20,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,1,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,2,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,3,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,4,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,5,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,6,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,7,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,8,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,9,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,10,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,11,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,12,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,13,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,14,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,15,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,16,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,17,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,18,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,19,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_drugs,20,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,1,0.3333333333333333,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,2,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,3,0.3333333333333333,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,4,0.6666666666666666,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,5,0.3333333333333333,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,6,0.3333333333333333,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,7,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,8,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,9,0.6666666666666666,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,10,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,11,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,12,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,13,0.3333333333333333,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,14,0.6666666666666666,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,15,0.3333333333333333,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,16,0.3333333333333333,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,17,0.3333333333333333,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,18,0.3333333333333333,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,19,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrieve_known_targets,20,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,1,0.5323558018304937,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,2,0.7774628048243684,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,3,0.9365945643446313,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,4,0.5213900202644408,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,5,0.7456098820008686,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,6,0.9225491598608772,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,7,0.696229933175746,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,8,0.9199183059228206,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,9,0.9550397542699492,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,10,0.7487909968505391,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,11,0.7136254424460159,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,12,0.679255550220637,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,13,0.3666227492314449,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,14,0.703780009320365,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,15,0.6752493516330557,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,16,0.6831350009964834,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,17,0.5382889713957015,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,18,0.4553608883405305,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,19,0.4760200430284781,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_property_prediction,20,0.7478592723504576,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,1,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,2,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,3,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,4,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,5,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,6,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,7,1.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,8,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,9,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,10,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,11,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,12,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,13,,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,14,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,15,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,16,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,17,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,18,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,19,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,virtual_screening,20,1.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,1,0.4,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,2,0.4,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,3,0.6,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,4,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,5,0.8,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,6,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,7,0.6,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,8,0.4,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,9,0.2,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,10,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,11,0.4,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,12,0.2,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,13,0.4,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,14,0.6,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,15,0.2,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,16,0.2,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,17,0.2,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,18,0.2,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,19,0.2,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,binding_mechanism,20,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,1,0.9511472993305805,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,2,0.9485632443474793,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,3,0.9511472993305805,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,4,0.9485632443474793,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,5,0.9511472993305805,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,6,0.9485632443474793,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,7,0.9511472993305805,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,8,0.9485632443474793,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,9,0.9511472993305805,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,10,0.9485632443474793,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,11,0.9511472993305805,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,12,0.9485632443474793,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,13,0.9511472993305805,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,14,0.9485632443474793,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,15,0.9511472993305805,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,16,0.9485632443474793,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,17,0.9511472993305805,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,18,0.9485632443474793,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,19,0.9511472993305805,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,molecular_design,20,0.9485632443474793,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,1,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,2,0.5,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,3,0.5,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,4,0.5,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,5,0.5,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,6,0.5,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,7,0.5,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,8,0.5,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,9,0.5,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,10,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,11,0.5,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,12,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,13,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,14,0.5,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,15,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,16,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,17,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,18,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,19,0.0,scored
+Qwen3.7 Plus,qwen/qwen3.7-plus,openrouter,retrosynthesis_planning,20,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,1,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,2,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,3,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,4,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,5,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,6,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,7,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,8,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,9,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,10,1.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,11,1.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,12,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,13,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,14,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,15,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,16,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,17,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,18,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,19,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,foundational_biomedical_knowledge,20,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,1,0.4,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,2,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,3,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,4,0.2,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,5,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,6,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,7,0.2,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,8,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,9,0.2,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,10,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,11,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,12,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,13,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,14,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,15,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,16,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,17,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,18,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,19,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_drugs,20,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,1,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,2,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,3,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,4,0.6666666666666666,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,5,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,6,0.3333333333333333,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,7,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,8,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,9,0.6666666666666666,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,10,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,11,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,12,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,13,0.3333333333333333,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,14,0.6666666666666666,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,15,0.3333333333333333,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,16,0.3333333333333333,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,17,0.6666666666666666,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,18,0.3333333333333333,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,19,0.3333333333333333,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrieve_known_targets,20,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,1,0.3957130978789469,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,2,0.3478764478764479,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,3,0.7827278847011687,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,4,0.43482089260063217,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,5,0.5785936977684998,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,6,0.7878443040539596,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,7,0.5905982905982906,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,8,0.762076749435666,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,9,0.771090047393365,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,10,0.6144772613026663,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,11,0.5803921568627451,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,12,0.5763934426229508,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,13,0.028571428571428602,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,14,0.5761689291101055,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,15,0.5838283828382839,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,16,0.570352369380316,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,17,0.4,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,18,0.5528888888888889,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,19,0.5704301075268817,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_property_prediction,20,0.4,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,1,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,2,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,3,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,4,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,5,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,6,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,7,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,8,1.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,9,1.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,10,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,11,1.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,12,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,13,,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,14,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,15,1.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,16,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,17,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,18,1.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,19,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,virtual_screening,20,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,1,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,2,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,3,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,4,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,5,0.2,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,6,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,7,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,8,0.4,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,9,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,10,0.4,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,11,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,12,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,13,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,14,0.2,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,15,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,16,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,17,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,18,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,19,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,binding_mechanism,20,0.2,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,1,0.9089958950989588,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,2,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,3,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,4,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,5,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,6,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,7,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,8,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,9,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,10,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,11,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,12,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,13,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,14,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,15,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,16,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,17,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,18,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,19,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,molecular_design,20,0.9050047446283481,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,1,0.0,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,2,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,3,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,4,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,5,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,6,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,7,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,8,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,9,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,10,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,11,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,12,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,13,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,14,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,15,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,16,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,17,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,18,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,19,0.5,scored
+GLM 5.2,z-ai/glm-5.2,openrouter,retrosynthesis_planning,20,0.5,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,1,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,2,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,3,1.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,4,1.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,5,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,6,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,7,1.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,8,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,9,1.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,10,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,11,1.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,12,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,13,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,14,1.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,15,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,16,1.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,17,1.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,18,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,19,1.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,foundational_biomedical_knowledge,20,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,1,0.8,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,2,0.6,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,3,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,4,0.2,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,5,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,6,0.2,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,7,0.4,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,8,0.4,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,9,0.4,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,10,0.2,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,11,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,12,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,13,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,14,0.2,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,15,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,16,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,17,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,18,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,19,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_drugs,20,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,1,0.3333333333333333,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,2,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,3,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,4,0.6666666666666666,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,5,0.3333333333333333,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,6,0.3333333333333333,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,7,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,8,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,9,0.6666666666666666,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,10,0.3333333333333333,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,11,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,12,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,13,0.3333333333333333,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,14,0.6666666666666666,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,15,0.3333333333333333,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,16,0.3333333333333333,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,17,0.3333333333333333,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,18,0.6666666666666666,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,19,0.3333333333333333,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrieve_known_targets,20,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,1,0.5407528772133295,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,2,0.7179379472539081,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,3,0.6723123839185057,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,4,0.6601509557148489,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,5,0.9013664613222543,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,6,0.9232865634151262,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,7,0.7385439410069952,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,8,0.8694833840232856,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,9,0.8226620822104513,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,10,0.8689126665777568,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,11,0.958542334599089,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,12,0.3317145666140796,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,13,0.46711838885751933,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,14,0.9618393690213116,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,15,0.7813904107038339,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,16,0.7514924749432648,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,17,0.6271976154369084,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,18,0.7140338611282473,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,19,0.7322243862016401,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_property_prediction,20,0.707124580389211,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,1,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,2,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,3,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,4,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,5,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,6,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,7,1.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,8,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,9,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,10,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,11,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,12,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,13,,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,14,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,15,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,16,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,17,1.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,18,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,19,1.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,virtual_screening,20,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,1,0.2,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,2,0.2,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,3,0.2,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,4,0.2,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,5,0.4,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,6,0.2,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,7,0.6,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,8,0.4,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,9,0.4,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,10,0.2,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,11,0.4,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,12,0.6,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,13,0.6,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,14,0.6,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,15,0.6,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,16,0.4,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,17,0.6,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,18,0.4,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,19,0.6,scored
+MiniMax M3,minimax/minimax-m3,openrouter,binding_mechanism,20,0.2,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,1,0.937742107437643,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,2,0.937742107437643,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,3,0.937742107437643,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,4,0.937742107437643,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,5,0.937742107437643,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,6,0.946088410558624,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,7,0.946088410558624,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,8,0.946088410558624,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,9,0.946088410558624,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,10,0.946088410558624,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,11,0.9390506760375965,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,12,0.9361817381172581,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,13,0.9358062806017756,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,14,0.9358062806017756,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,15,0.9358062806017756,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,16,0.9328451150666774,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,17,0.9462214352018601,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,18,0.9328451150666774,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,19,0.9462214352018601,scored
+MiniMax M3,minimax/minimax-m3,openrouter,molecular_design,20,0.9328451150666774,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,1,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,2,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,3,0.5,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,4,0.5,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,5,0.5,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,6,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,7,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,8,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,9,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,10,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,11,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,12,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,13,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,14,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,15,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,16,0.5,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,17,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,18,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,19,0.0,scored
+MiniMax M3,minimax/minimax-m3,openrouter,retrosynthesis_planning,20,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,1,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,2,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,3,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,4,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,5,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,6,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,7,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,8,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,9,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,10,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,11,1.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,12,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,13,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,14,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,15,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,16,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,17,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,18,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,19,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,foundational_biomedical_knowledge,20,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,1,0.6,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,2,0.2,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,3,0.2,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,4,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,5,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,6,0.4,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,7,0.2,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,8,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,9,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,10,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,11,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,12,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,13,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,14,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,15,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,16,1.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,17,0.25,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,18,1.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,19,1.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_drugs,20,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,1,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,2,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,3,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,4,1.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,5,0.3333333333333333,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,6,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,7,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,8,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,9,0.8,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,10,0.6666666666666666,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,11,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,12,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,13,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,14,0.6666666666666666,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,15,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,16,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,17,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,18,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,19,0.3333333333333333,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrieve_known_targets,20,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,1,0.33236009732360094,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,2,0.3876447876447876,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,3,0.7488584474885844,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,4,0.3297297297297297,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,5,0.5940074906367041,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,6,0.7759674134419552,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,7,0.564957264957265,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,8,0.5516930022573363,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,9,0.5393364928909953,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,10,0.5429906542056074,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,11,0.5659125188536953,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,12,0.38032786885245906,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,13,0.5142857142857142,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,14,0.5659125188536953,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,15,0.38151815181518156,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,16,0.7336573511543134,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,17,0.6,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,18,0.7222222222222222,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,19,0.7478494623655914,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_property_prediction,20,0.41672473867595816,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,1,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,2,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,3,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,4,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,5,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,6,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,7,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,8,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,9,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,10,1.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,11,1.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,12,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,13,,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,14,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,15,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,16,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,17,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,18,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,19,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,virtual_screening,20,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,1,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,2,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,3,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,4,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,5,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,6,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,7,0.2,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,8,0.4,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,9,0.2,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,10,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,11,0.4,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,12,0.6,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,13,0.2,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,14,0.8,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,15,0.4,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,16,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,17,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,18,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,19,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,binding_mechanism,20,0.2,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,1,0.7825087649860089,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,2,0.7825087649860089,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,3,0.7825087649860089,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,4,0.7825087649860089,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,5,0.7825087649860089,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,6,0.7825087649860089,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,7,0.7825087649860089,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,8,0.7825087649860089,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,9,0.7825087649860089,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,10,0.7825087649860089,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,11,0.5356115990760046,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,12,0.5334760463610401,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,13,0.5356115990760046,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,14,0.5334760463610401,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,15,0.5356115990760046,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,16,0.8503684899464318,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,17,0.7974846574763096,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,18,0.7974846574763096,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,19,0.7974846574763096,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,molecular_design,20,0.7974846574763096,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,1,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,2,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,3,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,4,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,5,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,6,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,7,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,8,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,9,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,10,0.0,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,11,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,12,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,13,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,14,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,15,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,16,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,17,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,18,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,19,0.5,scored
+MiMo V2.5,xiaomi/mimo-v2.5,openrouter,retrosynthesis_planning,20,0.5,scored

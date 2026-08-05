@@ -1,0 +1,364 @@
+{
+  "display_name": "Kimi K2.5",
+  "model_id": "moonshotai/kimi-k2.5",
+  "prompt_sha256": "e37203d680a7d929a10d960731a2b38fd5fc14b94266e42c185961164b32956f",
+  "response": {
+    "results": [
+      {
+        "case_index": 1,
+        "smiles": [
+          "CC(C)Cc1ccc(C(C)C(=O)O)cc1",
+          "COc1ccc(CC(=O)Nc2ccccc2)cc1",
+          "CC(C)N1CCC(C(=O)Nc2ccccc2)CC1",
+          "O=C(Nc1ccccc1)c1ccc(O)cc1",
+          "CC(C)C(=O)Nc1ccc(C(F)(F)F)cc1"
+        ]
+      },
+      {
+        "case_index": 2,
+        "smiles": [
+          "COc1ccc(CC(=O)Nc2ccc(Cl)cc2)cc1",
+          "CC(C)Cc1ccc(C(=O)Nc2ccccc2)cc1",
+          "O=C(Nc1ccccc1)c1ccc(OC(F)(F)F)cc1",
+          "CC(C)N1CCC(C(=O)Nc2ccccc2)CC1",
+          "Cc1ccc(C(=O)Nc2ccc(Cl)cc2)cc1"
+        ]
+      },
+      {
+        "case_index": 3,
+        "smiles": [
+          "CC(C)Cc1ccc(C(=O)Nc2ccccc2)cc1",
+          "COc1ccc(CC(=O)Nc2ccccc2)cc1",
+          "CC(C)N1CCC(C(=O)Nc2ccccc2)CC1",
+          "O=C(Nc1ccccc1)c1ccc(O)cc1",
+          "Cc1ccc(C(=O)Nc2ccc(C)cc2)cc1"
+        ]
+      },
+      {
+        "case_index": 4,
+        "smiles": [
+          "CC(C)Cc1ccc(C(=O)Nc2ccccc2)cc1",
+          "COc1ccc(CC(=O)Nc2ccccc2)cc1",
+          "CC(C)N1CCC(C(=O)Nc2ccccc2)CC1",
+          "O=C(Nc1ccccc1)c1ccc(O)cc1",
+          "Cc1ccc(C(=O)Nc2ccc(Cl)cc2)cc1"
+        ]
+      },
+      {
+        "case_index": 5,
+        "smiles": [
+          "CC(C)Cc1ccc(C(=O)Nc2ccccc2)cc1",
+          "COc1ccc(CC(=O)Nc2ccccc2)cc1",
+          "CC(C)N1CCC(C(=O)Nc2ccccc2)CC1",
+          "O=C(Nc1ccccc1)c1ccc(O)cc1",
+          "Cc1ccc(C(=O)Nc2ccc(C)cc2)cc1"
+        ]
+      },
+      {
+        "case_index": 6,
+        "smiles": [
+          "CC(C)C(=O)Nc1ccc(O)cc1",
+          "COc1ccc(C(=O)Nc2ccccc2)cc1",
+          "CC(=O)Nc1ccc(C(=O)O)cc1",
+          "c1ccc(CNc2ccccc2)cc1",
+          "CC(C)Oc1ccc(NC(=O)C(C)C)cc1"
+        ]
+      },
+      {
+        "case_index": 7,
+        "smiles": [
+          "CC(C)C(=O)Nc1ccc(O)cc1",
+          "COc1ccc(C(=O)Nc2ccccc2)cc1",
+          "CC(=O)Nc1ccc(C(=O)O)cc1",
+          "c1ccc(CNc2ccccc2)cc1",
+          "CC(C)Oc1ccc(NC(=O)C(C)C)cc1"
+        ]
+      },
+      {
+        "case_index": 8,
+        "smiles": [
+          "CC(C)C(=O)Nc1ccc(O)cc1",
+          "COc1ccc(C(=O)Nc2ccccc2)cc1",
+          "CC(=O)Nc1ccc(C(=O)O)cc1",
+          "c1ccc(CNc2ccccc2)cc1",
+          "CC(C)Oc1ccc(NC(=O)C(C)C)cc1"
+        ]
+      },
+      {
+        "case_index": 9,
+        "smiles": [
+          "CC(C)C(=O)Nc1ccc(O)cc1",
+          "COc1ccc(C(=O)Nc2ccccc2)cc1",
+          "CC(=O)Nc1ccc(C(=O)O)cc1",
+          "c1ccc(CNc2ccccc2)cc1",
+          "CC(C)Oc1ccc(NC(=O)C(C)C)cc1"
+        ]
+      },
+      {
+        "case_index": 10,
+        "smiles": [
+          "CC(C)C(=O)Nc1ccc(O)cc1",
+          "COc1ccc(C(=O)Nc2ccccc2)cc1",
+          "CC(=O)Nc1ccc(C(=O)O)cc1",
+          "c1ccc(CNc2ccccc2)cc1",
+          "CC(C)Oc1ccc(NC(=O)C(C)C)cc1"
+        ]
+      },
+      {
+        "case_index": 11,
+        "smiles": [
+          "CC(C)C(=O)Nc1ccc(C(=O)O)cc1",
+          "COc1ccc(CC(=O)Nc2ccccc2C)cc1",
+          "CCc1ccc(NC(=O)c2ccccc2C)cc1",
+          "Cc1ccc(C(=O)Nc2ccc(C)cc2C)cc1",
+          "CC(C)Cc1ccc(NC(=O)C(C)C)cc1"
+        ]
+      },
+      {
+        "case_index": 12,
+        "smiles": [
+          "COc1ccc(CC(=O)Nc2ccc(C)cc2)cc1",
+          "CC(C)C(=O)Nc1ccc(C(C)C)cc1",
+          "Cc1ccc(NC(=O)c2ccc(C)cc2)cc1",
+          "CCc1ccc(NC(=O)CCc2ccccc2)cc1",
+          "COc1ccc(NC(=O)c2ccccc2)cc1OC"
+        ]
+      },
+      {
+        "case_index": 13,
+        "smiles": [
+          "COc1ccc(C(=O)Nc2ccc(C)cc2)cc1",
+          "CC(C)C(=O)Nc1ccc(Cl)cc1",
+          "Cc1ccc(NC(=O)c2ccc(C)cc2C)cc1",
+          "CCc1ccc(NC(=O)C(C)C)cc1",
+          "COc1ccc(NC(=O)CCc2ccccc2)cc1"
+        ]
+      },
+      {
+        "case_index": 14,
+        "smiles": [
+          "COc1ccc(CC(=O)Nc2ccc(C)cc2)cc1",
+          "CC(C)C(=O)Nc1ccc(C(C)C)cc1",
+          "Cc1ccc(NC(=O)c2ccc(C)cc2)cc1",
+          "CCc1ccc(NC(=O)CCc2ccccc2)cc1",
+          "COc1ccc(NC(=O)c2ccccc2)cc1OC"
+        ]
+      },
+      {
+        "case_index": 15,
+        "smiles": [
+          "COc1ccc(C(=O)Nc2ccc(C)cc2)cc1",
+          "CC(C)C(=O)Nc1ccc(Cl)cc1",
+          "Cc1ccc(NC(=O)c2ccc(C)cc2C)cc1",
+          "CCc1ccc(NC(=O)C(C)C)cc1",
+          "COc1ccc(NC(=O)CCc2ccccc2)cc1"
+        ]
+      },
+      {
+        "case_index": 16,
+        "smiles": [
+          "CC(C)Cc1ccc(C(C)C(=O)O)cc1",
+          "COc1ccc(CC(=O)Nc2ccccc2)cc1",
+          "CC(C)C(=O)Nc1ccc(C(F)(F)F)cc1",
+          "O=C(O)c1ccc(Cc2ccccc2)cc1",
+          "CC(C)Cc1ccc(C(=O)Nc2ccccc2)cc1"
+        ]
+      },
+      {
+        "case_index": 17,
+        "smiles": [
+          "CC(C)C(=O)Nc1ccc(C(C)C)cc1",
+          "COc1ccc(CC(=O)Nc2ccc(C)cc2)cc1",
+          "CC(C)Cc1ccc(C(=O)Nc2ccccc2)cc1",
+          "O=C(O)c1ccc(C(C)(C)C)cc1",
+          "CC(C)C(=O)c1ccc(C(C)(C)C)cc1"
+        ]
+      },
+      {
+        "case_index": 18,
+        "smiles": [
+          "CC(C)C(=O)Nc1ccc(C(C)C)cc1",
+          "COc1ccc(CC(=O)Nc2ccccc2)cc1",
+          "CC(C)Cc1ccc(C(=O)Nc2ccc(C)cc2)cc1",
+          "O=C(O)c1ccc(Cc2ccccc2)cc1",
+          "CC(C)C(=O)c1ccc(C(C)(C)C)cc1"
+        ]
+      },
+      {
+        "case_index": 19,
+        "smiles": [
+          "CC(C)C(=O)Nc1ccc(C(C)C)cc1",
+          "COc1ccc(CC(=O)Nc2ccccc2)cc1",
+          "CC(C)Cc1ccc(C(=O)Nc2ccc(C)cc2)cc1",
+          "O=C(O)c1ccc(Cc2ccccc2)cc1",
+          "CC(C)C(=O)c1ccc(C(C)(C)C)cc1"
+        ]
+      },
+      {
+        "case_index": 20,
+        "smiles": [
+          "CC(C)C(=O)Nc1ccc(C(C)C)cc1",
+          "COc1ccc(CC(=O)Nc2ccccc2)cc1",
+          "CC(C)Cc1ccc(C(=O)Nc2ccc(C)cc2)cc1",
+          "O=C(O)c1ccc(Cc2ccccc2)cc1",
+          "CC(C)C(=O)c1ccc(C(C)(C)C)cc1"
+        ]
+      }
+    ]
+  },
+  "schema_sha256": "6ac247ba5d365087ce68afb59a490a146b6b29445ac6acab6332780181fb7219",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "molecular_design",
+  "transport": "openrouter",
+  "transport_metadata": {
+    "batch_size": 5,
+    "batches": [
+      {
+        "case_indices": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "finish_reason": "stop",
+        "provider": "AtlasCloud",
+        "response_id": "gen-1785904644-7NmHrJSeYxMbbc1H29Jz",
+        "returned_model": "moonshotai/kimi-k2.5",
+        "usage": {
+          "completion_tokens": 642,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0
+          },
+          "cost": 0.03403418,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0.001605,
+            "upstream_inference_cost": 0.03403418,
+            "upstream_inference_prompt_cost": 0.03242918
+          },
+          "is_byok": false,
+          "prompt_tokens": 66182,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 66824
+        }
+      },
+      {
+        "case_indices": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "finish_reason": "stop",
+        "provider": "AtlasCloud",
+        "response_id": "gen-1785904662-fBHXzUv79PWffZln5Smm",
+        "returned_model": "moonshotai/kimi-k2.5",
+        "usage": {
+          "completion_tokens": 585,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0
+          },
+          "cost": 0.03743095,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0.0014625,
+            "upstream_inference_cost": 0.03743095,
+            "upstream_inference_prompt_cost": 0.03596845
+          },
+          "is_byok": false,
+          "prompt_tokens": 73405,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 73990
+        }
+      },
+      {
+        "case_indices": [
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "finish_reason": "stop",
+        "provider": "AtlasCloud",
+        "response_id": "gen-1785904679-pOyHDnre0u7u6nGSR0ix",
+        "returned_model": "moonshotai/kimi-k2.5",
+        "usage": {
+          "completion_tokens": 646,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0
+          },
+          "cost": 0.04866186,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0.001615,
+            "upstream_inference_cost": 0.04866186,
+            "upstream_inference_prompt_cost": 0.04704686
+          },
+          "is_byok": false,
+          "prompt_tokens": 96014,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 96660
+        }
+      },
+      {
+        "case_indices": [
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "finish_reason": "stop",
+        "provider": "AtlasCloud",
+        "response_id": "gen-1785904700-g3pZqP0E1y07yh0AB3gD",
+        "returned_model": "moonshotai/kimi-k2.5",
+        "usage": {
+          "completion_tokens": 639,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0
+          },
+          "cost": 0.04026291,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0.0015975,
+            "upstream_inference_cost": 0.04026291,
+            "upstream_inference_prompt_cost": 0.03866541
+          },
+          "is_byok": false,
+          "prompt_tokens": 78909,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 79548
+        }
+      }
+    ]
+  },
+  "wall_seconds": 80.81455587502569
+}

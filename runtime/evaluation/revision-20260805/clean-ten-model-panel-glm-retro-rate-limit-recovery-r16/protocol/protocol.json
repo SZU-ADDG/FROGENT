@@ -1,0 +1,37 @@
+{
+  "schema_version": "frogent-clean-ten-model-panel-compatibility-v1",
+  "frozen_at": "2026-08-05T15:16:00+08:00",
+  "status": "preregistered_before_retry_outputs",
+  "amends": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+  "reason": "GLM-5.2 retrosynthesis_planning received an upstream shared-pool HTTP 429 before inference.",
+  "scope": "Only the failed GLM-5.2 retrosynthesis_planning cell is eligible. All successful cells remain authoritative.",
+  "models": [
+    {
+      "display_name": "GLM 5.2",
+      "transport": "openrouter",
+      "model_id": "z-ai/glm-5.2",
+      "reasoning": {
+        "effort": "low"
+      },
+      "max_tokens": 12000
+    }
+  ],
+  "tasks": [
+    "retrosynthesis_planning"
+  ],
+  "case_count_per_task": 20,
+  "request_grain": "one stateless 20-case request",
+  "gold_visibility": "withheld_during_inference",
+  "tools": "disabled",
+  "web": "disabled",
+  "memory": "none",
+  "retries": 0,
+  "openrouter": {
+    "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+    "credential_env": "OPENROUTER_API_KEY",
+    "allow_fallbacks": false,
+    "data_collection": "deny",
+    "structured_outputs": true
+  },
+  "claim_boundary": "transient provider-rate-limit recovery only; prompts, cases, schemas, gold data and scoring are unchanged"
+}

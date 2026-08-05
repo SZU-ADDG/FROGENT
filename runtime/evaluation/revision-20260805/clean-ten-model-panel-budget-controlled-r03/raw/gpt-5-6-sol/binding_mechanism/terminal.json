@@ -1,0 +1,11 @@
+{
+  "display_name": "GPT-5.6 Sol",
+  "error": "RuntimeError: Codex exit 1: - retrying sampling request (2/5 in 419ms)... turn_id=019fd039-43f1-7353-b6d1-4f2c86c462ad retries=2 max_retries=5 sampling_error=request timed out\n2026-08-05T04:41:43.185364Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (3/5 in 766ms)... turn_id=019fd039-43f1-7353-b6d1-4f2c86c462ad retries=3 max_retries=5 sampling_error=request timed out\n2026-08-05T04:41:58.957110Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (4/5 in 1.697s)... turn_id=019fd039-43f1-7353-b6d1-4f2c86c462ad retries=4 max_retries=5 sampling_error=request timed out\n2026-08-05T04:42:15.658437Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (5/5 in 3.072s)... turn_id=019fd039-43f1-7353-b6d1-4f2c86c462ad retries=5 max_retries=5 sampling_error=request timed out\n2026-08-05T04:42:33.735550Z  WARN codex_core::client: falling back to HTTP\n2026-08-05T04:42:43.189381Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf(\"/Users/dongxu/.codex/shell_snapshots/019fd039-407c-7b91-b859-ecbded856c5f.1785904840829106000.sh\"): Os { code: 2, kind: NotFound, message: \"No such file or directory\" }",
+  "model_id": "gpt-5.6-sol",
+  "prompt_sha256": "a265940b39e7cbf2933d4eb34936e66d84b4b988935934b308f22bac6cca35db",
+  "schema_sha256": "ea915c3383e866a45603dc999c27da0cce01be388cd3b1477c2d79f4f1373065",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "failed",
+  "task": "binding_mechanism",
+  "transport": "codex"
+}

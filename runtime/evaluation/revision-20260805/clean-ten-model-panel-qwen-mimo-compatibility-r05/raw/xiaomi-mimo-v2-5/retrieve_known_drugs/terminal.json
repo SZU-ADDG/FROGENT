@@ -1,0 +1,11 @@
+{
+  "display_name": "MiMo V2.5",
+  "error": "JSONDecodeError: Unterminated string starting at: line 18 column 9 (char 595)",
+  "model_id": "xiaomi/mimo-v2.5",
+  "prompt_sha256": "849c872012883ed48bcf0dfc314a97a7c8ce129383085402b4196553999c5ae6",
+  "schema_sha256": "a98a48013a07fbe08307d02b07d1c6b9e5d1a869eaacc2217d77b1fe522c0bc0",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "failed",
+  "task": "retrieve_known_drugs",
+  "transport": "openrouter"
+}

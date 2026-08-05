@@ -1,0 +1,229 @@
+{
+  "display_name": "GPT-5.6 Sol",
+  "model_id": "gpt-5.6-sol",
+  "prompt_sha256": "a265940b39e7cbf2933d4eb34936e66d84b4b988935934b308f22bac6cca35db",
+  "response": {
+    "results": [
+      {
+        "case_index": 1,
+        "hydrogen_bonds": 4,
+        "hydrophobic_contacts": 12,
+        "pi_stacking": 1,
+        "salt_bridges": 1,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 2,
+        "hydrogen_bonds": 7,
+        "hydrophobic_contacts": 5,
+        "pi_stacking": 0,
+        "salt_bridges": 4,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 3,
+        "hydrogen_bonds": 3,
+        "hydrophobic_contacts": 11,
+        "pi_stacking": 2,
+        "salt_bridges": 0,
+        "water_bridges": 1
+      },
+      {
+        "case_index": 4,
+        "hydrogen_bonds": 4,
+        "hydrophobic_contacts": 13,
+        "pi_stacking": 2,
+        "salt_bridges": 0,
+        "water_bridges": 1
+      },
+      {
+        "case_index": 5,
+        "hydrogen_bonds": 3,
+        "hydrophobic_contacts": 2,
+        "pi_stacking": 0,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 6,
+        "hydrogen_bonds": 6,
+        "hydrophobic_contacts": 21,
+        "pi_stacking": 0,
+        "salt_bridges": 2,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 7,
+        "hydrogen_bonds": 3,
+        "hydrophobic_contacts": 9,
+        "pi_stacking": 0,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 8,
+        "hydrogen_bonds": 3,
+        "hydrophobic_contacts": 1,
+        "pi_stacking": 0,
+        "salt_bridges": 1,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 9,
+        "hydrogen_bonds": 2,
+        "hydrophobic_contacts": 8,
+        "pi_stacking": 0,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 10,
+        "hydrogen_bonds": 4,
+        "hydrophobic_contacts": 13,
+        "pi_stacking": 0,
+        "salt_bridges": 0,
+        "water_bridges": 1
+      },
+      {
+        "case_index": 11,
+        "hydrogen_bonds": 2,
+        "hydrophobic_contacts": 2,
+        "pi_stacking": 0,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 12,
+        "hydrogen_bonds": 5,
+        "hydrophobic_contacts": 3,
+        "pi_stacking": 1,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 13,
+        "hydrogen_bonds": 4,
+        "hydrophobic_contacts": 11,
+        "pi_stacking": 1,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 14,
+        "hydrogen_bonds": 2,
+        "hydrophobic_contacts": 1,
+        "pi_stacking": 0,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 15,
+        "hydrogen_bonds": 5,
+        "hydrophobic_contacts": 8,
+        "pi_stacking": 1,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 16,
+        "hydrogen_bonds": 4,
+        "hydrophobic_contacts": 12,
+        "pi_stacking": 2,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 17,
+        "hydrogen_bonds": 8,
+        "hydrophobic_contacts": 3,
+        "pi_stacking": 0,
+        "salt_bridges": 3,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 18,
+        "hydrogen_bonds": 3,
+        "hydrophobic_contacts": 10,
+        "pi_stacking": 1,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 19,
+        "hydrogen_bonds": 6,
+        "hydrophobic_contacts": 5,
+        "pi_stacking": 1,
+        "salt_bridges": 3,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 20,
+        "hydrogen_bonds": 5,
+        "hydrophobic_contacts": 9,
+        "pi_stacking": 1,
+        "salt_bridges": 1,
+        "water_bridges": 0
+      }
+    ]
+  },
+  "schema_sha256": "ea915c3383e866a45603dc999c27da0cce01be388cd3b1477c2d79f4f1373065",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "binding_mechanism",
+  "transport": "codex",
+  "transport_metadata": {
+    "batch_size": 5,
+    "batches": [
+      {
+        "case_indices": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "event_lines": 11,
+        "prohibited_tool_events": 0,
+        "returncode": 0
+      },
+      {
+        "case_indices": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "event_lines": 11,
+        "prohibited_tool_events": 0,
+        "returncode": 0
+      },
+      {
+        "case_indices": [
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "event_lines": 11,
+        "prohibited_tool_events": 0,
+        "returncode": 0
+      },
+      {
+        "case_indices": [
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "event_lines": 11,
+        "prohibited_tool_events": 0,
+        "returncode": 0
+      }
+    ],
+    "prohibited_tool_events": 0
+  },
+  "wall_seconds": 610.7624791678973
+}

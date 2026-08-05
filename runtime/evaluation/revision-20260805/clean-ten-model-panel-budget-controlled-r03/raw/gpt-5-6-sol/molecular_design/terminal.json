@@ -1,0 +1,220 @@
+{
+  "display_name": "GPT-5.6 Sol",
+  "model_id": "gpt-5.6-sol",
+  "prompt_sha256": "e37203d680a7d929a10d960731a2b38fd5fc14b94266e42c185961164b32956f",
+  "response": {
+    "results": [
+      {
+        "case_index": 1,
+        "smiles": [
+          "CCOc1ccc(C(=O)N2CCN(C)CC2)cc1",
+          "COc1ccc2[nH]c(CN3CCOCC3)nc2c1",
+          "CC(C)c1nc(NC(=O)C2CC2)sc1C",
+          "O=C(NCc1cccnc1)c1ccc(F)cc1",
+          "CN1CCC(COc2ccc3ccccc3n2)CC1"
+        ]
+      },
+      {
+        "case_index": 2,
+        "smiles": [
+          "COc1ccc(C(=O)Nc2nccs2)cc1F",
+          "CCN1CCC(CNc2ccc(C#N)cc2)CC1",
+          "O=C(Nc1ccccc1F)c1cnccn1",
+          "Cc1nc2ccccc2n1CC(=O)N1CCOCC1",
+          "CC(C)Oc1ccc(CN2CCN(C)CC2)cc1"
+        ]
+      },
+      {
+        "case_index": 3,
+        "smiles": [
+          "CC(C)c1ccc(C(=O)NCC2CCOCC2)cc1",
+          "COc1cc(NC(=O)c2ccncc2)ccc1F",
+          "CN1CCC(c2nc3ccccc3[nH]2)CC1",
+          "CCOc1ncc(CNC(=O)C2CC2)cc1C",
+          "O=C(NCc1ccc(O)cc1)c1ccco1"
+        ]
+      },
+      {
+        "case_index": 4,
+        "smiles": [
+          "CC1(C)CC(C(=O)Nc2ccc(F)cn2)CC1",
+          "COc1ccc(CN2CCC(O)CC2)cc1C#N",
+          "CCOc1cc2ncnc(N3CCOCC3)c2cc1",
+          "O=C(Nc1ccc(Cl)cc1)N1CCN(C)CC1",
+          "CC(C)NCC(O)c1ccc2ccccc2c1"
+        ]
+      },
+      {
+        "case_index": 5,
+        "smiles": [
+          "NC(=O)c1ccc(OCC2CCN(C)CC2)cc1",
+          "COc1ncc(C(=O)N2CCOCC2)cc1F",
+          "CCN1CCN(Cc2ccc3[nH]ncc3c2)CC1",
+          "O=C(NCc1cnccn1)c1ccccc1O",
+          "CC(C)c1cc(NC(=O)C2CCC2)ncn1"
+        ]
+      },
+      {
+        "case_index": 6,
+        "smiles": [
+          "O=C(O)c1ccc(NC(=O)C2CC2)cc1",
+          "NC(=O)c1cnc(N2CCOCC2)s1",
+          "COc1ccc(C(O)CN2CCN(C)CC2)cc1",
+          "CC1CN(C(=O)c2ccc(O)cc2)CCO1",
+          "NCCc1ccc2[nH]ccc2c1"
+        ]
+      },
+      {
+        "case_index": 7,
+        "smiles": [
+          "CCOc1ccc(C(=O)NCC2CN(C)CCO2)cc1",
+          "COc1cc2[nH]c(C)nc2cc1C(=O)N",
+          "CN1CCC(CNc2ncc(F)cn2)CC1",
+          "O=C(Nc1ccc(O)cc1)c1ccncc1",
+          "CC(C)c1ccc(OCC(=O)N2CCOCC2)cc1"
+        ]
+      },
+      {
+        "case_index": 8,
+        "smiles": [
+          "COc1ccc2c(c1)nc(CN1CCOCC1)n2C",
+          "CCN1CCC(COc2ccc(C#N)c(F)c2)CC1",
+          "O=C(NCc1ccco1)c1ccc2ccccc2n1",
+          "CC(C)Oc1ncc(NC(=O)C2CC2)cn1",
+          "CN1CCN(C(=O)c2ccc3[nH]ccc3c2)CC1"
+        ]
+      },
+      {
+        "case_index": 9,
+        "smiles": [
+          "CCOc1ccc(CN2CCC(C)CC2)cc1C(=O)N",
+          "COc1cc(C(=O)Nc2ccncn2)ccc1F",
+          "CC(C)c1nc(CN2CCOCC2)no1",
+          "O=C(NCc1ccc(F)cc1)c1nccs1",
+          "CN1CCC(c2ccc3[nH]ncc3c2)CC1"
+        ]
+      },
+      {
+        "case_index": 10,
+        "smiles": [
+          "CC1CCN(C(=O)c2ccc(O)cc2F)CC1",
+          "COc1ccc(CNC(=O)c2cnccn2)cc1",
+          "CCOc1nc(N2CCN(C)CC2)nc2ccccc12",
+          "O=C(Nc1cccnc1)c1ccc(C#N)cc1",
+          "CC(C)NCC(O)c1ccc(F)c2ccccc12"
+        ]
+      },
+      {
+        "case_index": 11,
+        "smiles": [
+          "NC(=O)c1ccc(CN2CCOCC2)cc1O",
+          "COc1ncc(NC(=O)C2CCC2)s1",
+          "CCN1CCC(COc2cc(F)ccc2C#N)CC1",
+          "O=C(NCc1ncc[nH]1)c1ccccc1F",
+          "CC(C)c1ccc(C(=O)N2CCN(C)CC2)cc1"
+        ]
+      },
+      {
+        "case_index": 12,
+        "smiles": [
+          "CCOc1ccc2[nH]c(C(=O)N3CCOCC3)cc2c1",
+          "COc1cc(CN2CCC(O)CC2)ccc1C#N",
+          "CC(C)c1nc(NC(=O)c2ccncc2)sc1",
+          "O=C(NCc1ccc(O)cc1)c1ncccn1",
+          "CN1CCN(Cc2ccc3ccccc3n2)CC1"
+        ]
+      },
+      {
+        "case_index": 13,
+        "smiles": [
+          "CC1CN(C(=O)c2ccc(F)c(O)c2)CCO1",
+          "COc1ccc(CNc2nccs2)cc1C#N",
+          "CCN1CCC(c2nc3ccccc3[nH]2)CC1",
+          "O=C(Nc1ccc(Cl)cc1)c1cnccn1",
+          "CC(C)Oc1ccc(C(=O)NCC2CC2)cc1"
+        ]
+      },
+      {
+        "case_index": 14,
+        "smiles": [
+          "COc1ccc(C(=O)N2CCC(O)CC2)cc1F",
+          "CCOc1ncc(CN2CCN(C)CC2)cc1",
+          "O=C(NCc1cccnc1)c1ccc(O)c(F)c1",
+          "CC(C)c1nc2ccccc2n1CC(=O)N",
+          "CN1CCC(COc2ccc(C#N)cc2)CC1"
+        ]
+      },
+      {
+        "case_index": 15,
+        "smiles": [
+          "C[S+](C)CC(NC(=O)c1ncccn1)C(=O)[O-]",
+          "Nc1ncnc2c1ncn2CC(O)CO",
+          "COc1ccc(C(=O)NCC2CCOCC2)cc1O",
+          "CCN1CCN(Cc2ncc(N)cn2)CC1",
+          "O=C(NCc1ccc(O)cc1)c1nc2ccccc2[nH]1"
+        ]
+      },
+      {
+        "case_index": 16,
+        "smiles": [
+          "NC(=O)c1ccc(COc2ncccn2)cc1",
+          "COc1ccc(CN2CCN(C)CC2)cc1F",
+          "CC(C)c1ncc(NC(=O)C2CC2)o1",
+          "O=C(NCc1cnccn1)c1ccc(O)cc1",
+          "CCN1CCC(c2ccc3[nH]ccc3c2)CC1"
+        ]
+      },
+      {
+        "case_index": 17,
+        "smiles": [
+          "CCOc1ccc(C(=O)Nc2nc3ccccc3s2)cc1",
+          "COc1cc(CN2CCC(C)CC2)ccc1C#N",
+          "O=C(Nc1ccncc1)c1ccc2ccccc2c1",
+          "CC(C)NCC(O)c1ccc2[nH]ccc2c1",
+          "CN1CCN(C(=O)c2ccc(Cl)cc2)CC1"
+        ]
+      },
+      {
+        "case_index": 18,
+        "smiles": [
+          "COc1ccc2[nH]c(CN3CCOCC3)nc2c1",
+          "CCOc1cc(C(=O)N2CCN(C)CC2)ccc1F",
+          "CC(C)c1nc(NC(=O)c2ccco2)sc1",
+          "O=C(NCc1ccc(C#N)cc1)c1ncccn1",
+          "CN1CCC(COc2ccc3ccccc3c2)CC1"
+        ]
+      },
+      {
+        "case_index": 19,
+        "smiles": [
+          "CC1(C)CCN(C(=O)c2ccc(O)cc2)CC1",
+          "COc1ccc(CNC(=O)c2nccs2)cc1F",
+          "CCN1CCN(Cc2ccc3[nH]ccc3c2)CC1",
+          "O=C(Nc1ccc(C#N)cc1)c1ccncc1",
+          "CC(C)Oc1ccc(C(=O)NCC2CCC2)cc1"
+        ]
+      },
+      {
+        "case_index": 20,
+        "smiles": [
+          "COc1cc2ncnc(N3CCOCC3)c2cc1F",
+          "CCN1CCC(CNc2ccc(O)c(C#N)c2)CC1",
+          "O=C(NCc1ncc[nH]1)c1ccc2ccccc2c1",
+          "CC(C)c1nc(NC(=O)C2CN(C)CCO2)no1",
+          "CN1CCN(Cc2nc3ccccc3[nH]2)CC1"
+        ]
+      }
+    ]
+  },
+  "schema_sha256": "6ac247ba5d365087ce68afb59a490a146b6b29445ac6acab6332780181fb7219",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "molecular_design",
+  "transport": "codex",
+  "transport_metadata": {
+    "event_lines": 11,
+    "prohibited_tool_events": 0,
+    "returncode": 0
+  },
+  "wall_seconds": 164.4599489159882
+}

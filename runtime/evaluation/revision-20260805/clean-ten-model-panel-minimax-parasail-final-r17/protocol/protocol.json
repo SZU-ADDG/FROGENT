@@ -1,0 +1,47 @@
+{
+  "schema_version": "frogent-clean-ten-model-panel-compatibility-v1",
+  "frozen_at": "2026-08-05T15:22:00+08:00",
+  "status": "preregistered_before_retry_outputs",
+  "amends": "runtime/evaluation/revision-20260805/clean-ten-model-panel-minimax-together-recovery-r14",
+  "reason": "Morph and Together returned model-level upstream shared-pool 429 responses. The live OpenRouter endpoint catalog lists the exact MiniMax M3 Parasail endpoint with structured_outputs, seed and a 1048576-token context.",
+  "scope": "Final recovery attempt for the same three still-unscored MiniMax M3 cells. Stop with explicit missing cells if this pinned endpoint fails.",
+  "models": [
+    {
+      "display_name": "MiniMax M3",
+      "transport": "openrouter",
+      "model_id": "minimax/minimax-m3",
+      "provider_order": [
+        "Parasail"
+      ],
+      "reasoning": {
+        "effort": "low"
+      },
+      "batch_size": 5,
+      "max_tokens": 4000
+    }
+  ],
+  "tasks": [
+    "binding_mechanism",
+    "molecular_design",
+    "retrosynthesis_planning"
+  ],
+  "case_count_per_task": 20,
+  "request_grain": "four serial stateless five-case requests per unscored model-task cell",
+  "gold_visibility": "withheld_during_inference",
+  "tools": "disabled",
+  "web": "disabled",
+  "memory": "none",
+  "retries": 0,
+  "openrouter": {
+    "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+    "credential_env": "OPENROUTER_API_KEY",
+    "provider_order": [
+      "Parasail"
+    ],
+    "allow_fallbacks": false,
+    "data_collection": "deny",
+    "structured_outputs": true
+  },
+  "stopping_rule": "No further MiniMax recovery after this root; unresolved cells remain missing and are never imputed.",
+  "claim_boundary": "final exact-model provider-route compatibility recovery only; prompts, cases, schemas, gold data and scoring are unchanged"
+}

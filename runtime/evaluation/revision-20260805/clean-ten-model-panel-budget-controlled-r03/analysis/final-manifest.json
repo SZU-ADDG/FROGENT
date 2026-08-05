@@ -1,0 +1,42 @@
+{
+  "analysis_files": [
+    "summary.json",
+    "cells.csv",
+    "per-case.json",
+    "per-case.csv",
+    "model-summary.csv",
+    "figure/clean-ten-model-panel.png",
+    "figure/clean-ten-model-panel.pdf",
+    "figure/clean-ten-model-panel.svg"
+  ],
+  "cell_counts": {
+    "scored": 80
+  },
+  "claim_boundary": "Budget-controlled clean exposed-case comparison. Scores do not include FROGENT initialization, tool use, retrieval or persistent memory.",
+  "openrouter_observed_usage_including_failed_calls": {
+    "completion_tokens": 169043,
+    "cost_usd": 2.76478741,
+    "prompt_tokens": 5260271,
+    "reasoning_tokens": 51437,
+    "response_files_with_usage": 94
+  },
+  "run_roots": [
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-qwen-mimo-compatibility-r05",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-kimi-compatibility-r06",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-large-input-recovery-r07",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-mimo-drug-retrieval-recovery-r08",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-gpt55-large-input-recovery-r09",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-pro-retro-recovery-r10",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-minimax-large-input-recovery-r11",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-minimax-rate-limit-recovery-r12",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-minimax-provider-pinned-recovery-r13",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-minimax-together-recovery-r14",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-gpt56-binding-recovery-r15",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-glm-retro-rate-limit-recovery-r16",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-minimax-parasail-final-r17"
+  ],
+  "schema_version": "frogent-clean-ten-model-final-manifest-v1",
+  "status": "complete"
+}
