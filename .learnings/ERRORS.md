@@ -1,5 +1,22 @@
 # Errors
 
+## [ERR-20260811-011] zsh expanded an unquoted GitHub Contents API query
+
+**Logged**: 2026-08-11T16:52:00+08:00
+**Status**: resolved
+**Scope**: public-release verification
+
+### Failure
+
+The GitHub Contents API path included `?ref=main` without shell quoting. zsh treated the question
+mark as a filename glob and rejected the command before any network request was sent.
+
+### Resolution
+
+Quote API paths that contain query strings before passing them to `gh api`.
+
+---
+
 ## [ERR-20260811-010] `gh pr view` does not support the `--head` selector
 
 **Logged**: 2026-08-11T16:50:00+08:00
