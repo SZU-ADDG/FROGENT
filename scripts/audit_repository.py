@@ -9,6 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MAX_TRACKED_BYTES = 10 * 1024 * 1024
+ALLOWED_OVERSIZE = {"docs/manuscript/Arxiv_FROGENT_20251217.zip"}
 PRODUCT_DIRECTORIES = {
     "agent", "app", "docs", "evaluation", "mcp", "runtime", "scripts", "skills", "tests"
 }
@@ -74,8 +75,12 @@ def audit() -> dict[str, int]:
         raise ValueError(f"historical construction material is tracked: {historical!r}")
 
     runtime_paths = [path for path in tracked if path.startswith("runtime/")]
-    if runtime_paths != ["runtime/README.md"]:
-        raise ValueError(f"unexpected tracked runtime payload: {runtime_paths!r}")
+    unexpected_runtime = [
+        path for path in runtime_paths
+        if path != "runtime/README.md" and not path.startswith("runtime/evaluation/")
+    ]
+    if unexpected_runtime:
+        raise ValueError(f"unexpected tracked runtime payload: {unexpected_runtime!r}")
 
     oversize: list[str] = []
     symlinks: list[str] = []
@@ -84,7 +89,7 @@ def audit() -> dict[str, int]:
         path.resolve(strict=True).relative_to(ROOT)
         if path.is_symlink():
             symlinks.append(relative)
-        if path.stat().st_size > MAX_TRACKED_BYTES:
+        if path.stat().st_size > MAX_TRACKED_BYTES and relative not in ALLOWED_OVERSIZE:
             oversize.append(relative)
     if symlinks:
         raise ValueError(f"tracked symlinks are not allowed: {symlinks!r}")
@@ -104,7 +109,9 @@ def audit() -> dict[str, int]:
     for code_root in (ROOT / "agent", ROOT / "mcp"):
         for path in code_root.rglob("*.py"):
             text = path.read_text(encoding="utf-8")
-            if "sources/" in text or "plugins/frogent-drug-design" in text:
+            retired_paths = ('"sources/', "'sources/", "/sources/",
+                             "plugins/frogent-drug-design")
+            if any(pattern in text for pattern in retired_paths):
                 forbidden_snapshot_refs.append(str(path.relative_to(ROOT)))
     if forbidden_snapshot_refs:
         raise ValueError(

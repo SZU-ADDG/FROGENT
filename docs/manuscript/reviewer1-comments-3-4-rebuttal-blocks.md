@@ -80,17 +80,30 @@ Forge–Gauge allocation, together with task-level evaluation and explicit
 failure accounting. It does not claim global priority over end-to-end agentic
 drug-discovery systems.
 
-We assessed whether the three systems could be scored on the submitted eight
-tasks. A common numerical comparison could not be constructed without changing
-the scientific tasks or inventing unavailable outcomes. Prompt-to-Pill lacks a
-unified sample-level scorer and depends on external component systems. CLADD's
-released tasks and endpoints overlap only partially and several exact paper
-assets are unavailable. Robin evaluates literature-to-wet-lab discovery and
-experimental-data analysis, including human and assay-dependent outcomes that
-do not map to the submitted computational task suite. We therefore include a
-capability-level comparison and mark cross-system numerical scores as
-`not_measured`; missing systems are never encoded as zero-performing
-baselines.
+We installed exact public commits for the three systems and used GPT-5.6 Sol/high
+as the common current base model. Each adaptation could use its own frozen public
+files, available native components, and public web resources, while FROGENT/private
+resources and gold answers remained excluded. Post-run command auditing rejected
+two filesystem-contaminated cells; an exact recovery reran only those two cells.
+The accepted panel completed 6/6 aligned cells. CLADD obtained 0.8239 on
+molecular-property prediction. Prompt-to-Pill obtained 0.8540, 0.8947, and 0.8383
+on molecular-property prediction, virtual screening, and molecular design. Robin
+obtained 0.6650 and 0.2833 on known-drug and known-target retrieval. Each number
+uses the revised exposed cases and frozen task-specific scorer. We report these as
+current-model resource-enabled adaptations; the original paper models and scores
+were not reconstructed. Human- and assay-dependent Robin outcomes remain
+`not_measured`.
+
+For direct alignment, the revised heatmap displays all 12 direct LLMs
+individually. FROGENT uses GPT-5.5 as its base model and obtained 0.833, 0.526,
+0.939, 0.540, and 0.250 on property prediction, virtual screening, molecular
+design, known-drug retrieval, and known-target retrieval. The aligned external-system
+results show complementary strengths rather than uniform
+dominance by one workflow. Hatched cells identify tasks that are not implemented by the
+corresponding public workflow. In Prompt-to-Pill, DrugGen generates candidate
+SMILES from a supplied UniProt target and the name resolver maps supplied
+compound names or SMILES; the public workflow contains no target-to-DrugBank
+retrieval or disease-to-target discovery agent.
 
 ### Related Work insertion
 
@@ -111,9 +124,9 @@ priority claim.
 
 | System | Public code status | Primary evaluated scope | Peptide design | Molecular generation | Wet-lab feedback | Eight-task numerical status |
 | --- | --- | --- | --- | --- | --- | --- |
-| CLADD | Apache-2.0 repository | Molecular RAG, target/property prediction | No | No | No | `not_measured` |
-| Prompt-to-Pill | Public repository; code license unverified | DPP-4 modular target-to-clinical simulation | No | DrugGen component | No | `not_measured` |
-| Robin | Apache-2.0 repository | Literature hypothesis, wet lab, experimental-data analysis | No | No | Yes, human executed | `not_measured` |
+| CLADD | Apache-2.0 repository; commit `a7ee2e5` | Molecular RAG, target/property prediction | No | No | No | Property cell 0.8239; other cells `not_measured` |
+| Prompt-to-Pill | Public repository; commit `817e177`; code license unverified | DPP-4 modular target-to-clinical simulation | No | DrugGen component | No | Property/screening/design 0.8540/0.8947/0.8383; other cells `not_measured` |
+| Robin | Apache-2.0 repository; commit `4a5cce3` | Literature hypothesis, wet lab, experimental-data analysis | No | No | Yes, human executed | Known-drug/known-target retrieval 0.6650/0.2833; wet-lab cells `not_measured` |
 | FROGENT | Submitted system | Retrieval, target validation, small-molecule and peptide design, docking, ADMET, retrosynthesis | Yes | Yes | No | Submitted task suite |
 
 ## Evidence
@@ -122,6 +135,7 @@ priority claim.
 - Luteolin final manifest: `runtime/evaluation/revision-20260730/nongpu-final/luteolin-comparison/manifest.json`
 - Recent-system audit: `runtime/evaluation/revision-20260730/nongpu-final/recent-baselines/`
 - Recent-system final manifest: `runtime/evaluation/revision-20260730/nongpu-final/recent-baselines/manifest.json`
+- Current-model adaptation final manifest: `runtime/evaluation/revision-20260810/external-sol-resource-enabled-recovery-r05/analysis/combined-final-manifest.json`
 - Generated-molecule blocks: `docs/manuscript/cbgbench-rebuttal-blocks.md`
 - Prompt-to-Pill: https://doi.org/10.1093/bioadv/vbaf323
 - CLADD: https://arxiv.org/abs/2502.17506

@@ -16,10 +16,15 @@ Build a traceable target shortlist before starting structure-based design.
 ## Workflow
 
 1. Normalize the disease term and record unresolved ambiguity.
-2. Use `target.discover` for a focused target-and-ligand result.
-3. Use `target.list-by-disease` when the request needs a broader shortlist.
+2. Use `target.rank-by-disease` for provider-ranked Open Targets associations. Bind exact
+   identifier-list requests directly from its typed records; use the Agent to resolve material
+   disease ambiguity and interpret evidence rather than reorder a canonical lookup silently.
+3. Use `target.discover` for a focused target-and-ligand result and
+   `target.list-by-disease` when a broader legacy-provider shortlist is useful.
 4. Resolve every retained target with `target.standardize`. For the executable RCSB path, require an explicit PDB accession, verify the auth chain in RCSB metadata and the downloaded PDB coordinates, and preserve both official URLs plus the project-contained artifact. UniProt or a protein name remains a candidate until a separately verified exact structure mapping is supplied.
-5. Use `drug.list-by-target` to collect known ligands for the finalists.
+5. Use `drug.list-crossrefs-by-target` for reviewed human UniProtKB DrugBank identifiers and
+   bind exact identifier-list requests in provider order. Use `drug.list-by-target` when ligand
+   structures or the legacy target-discovery provider are explicitly required.
 6. Use `protein.download` only when a downstream structural workflow needs a file.
 7. Use `$prioritize-design-hypotheses` to rank targets through causal biology, disease relevance, tractability, safety separation, translational precedent, biomarker strategy, and structure or ligand availability. Treat these as explicit scientific judgments calibrated by the retrieved evidence.
 
@@ -30,6 +35,9 @@ Lead with the recommended target and the biological thesis. Return a compact tab
 ## Guardrails
 
 - Preserve source identifiers exactly.
+- Keep Open Targets association scores and UniProtKB cross-references in provider order for exact
+  lookup outputs. Label them as structured annotations; do not convert either into causal,
+  affinity, efficacy or exhaustive DrugBank claims.
 - Do not present a disease-target or target-ligand relationship as verified fact unless a source returned it. The Agent may propose a clearly labeled causal or mechanistic target hypothesis from world knowledge and biological reasoning, with the retrieval query or experiment that would test it.
 - Treat an empty tool result as missing evidence.
 - Ask for clarification when two standardized targets remain equally plausible.

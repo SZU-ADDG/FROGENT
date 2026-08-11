@@ -1,5 +1,169 @@
 # Errors
 
+## [ERR-20260811-009] marked-copy command mixed repository-root paths with a source-directory cwd
+
+**Logged**: 2026-08-11T17:10:00+08:00
+**Status**: resolved
+**Scope**: submission packaging
+
+### Failure
+
+The first latexdiff command ran from `docs/manuscript/revision-source` while still using paths
+relative to the repository root. Baseline creation, marked source generation and PDF copies all
+failed before writing their intended files.
+
+### Resolution
+
+Run baseline extraction and packaging from the repository root, then compile `main-marked.tex`
+from the manuscript source directory with a separate command.
+
+---
+
+## [ERR-20260811-008] full repository check used the system interpreter
+
+**Logged**: 2026-08-11T17:00:00+08:00
+**Status**: resolved
+**Scope**: public-release validation
+
+### Failure
+
+`python3 scripts/check.py` used system Python 3.14, which lacks the project RDKit and ADMET-AI
+dependencies. The suite reported 13 import errors and one dependent MCP failure; it did not
+establish a product regression.
+
+### Resolution
+
+Use the documented `runtime/app/venv/bin/python scripts/check.py` entry. The project interpreter
+was verified to contain RDKit 2026.03.3 and ADMET-AI 2.0.1 before rerunning the suite.
+
+---
+
+## [ERR-20260811-007] paper-audit scripts were called with unsupported output flags
+
+**Logged**: 2026-08-11T16:45:00+08:00
+**Status**: resolved
+**Scope**: submission QA
+
+### Failure
+
+The first audit invocation omitted the common auditor's required venue and passed an unsupported
+`--json-out` option to both scripts. Argument parsing stopped before manuscript inspection.
+
+### Resolution
+
+Read each script's help output, then rerun the common auditor with
+`--venue ai4science-journal --json` and the venue auditor with its supported `--json` and
+Communications Biology abstract limit.
+
+---
+
+## [ERR-20260811-006] secret-scan shell pattern used incompatible nested quotes
+
+**Logged**: 2026-08-11T16:30:00+08:00
+**Status**: resolved
+**Scope**: public-repository audit
+
+### Failure
+
+An inline `rg` pattern mixed shell single quotes with literal quote characters and zsh rejected the
+command before the read-only scan ran.
+
+### Resolution
+
+Run separate fixed-prefix and assignment-pattern scans with double-quoted expressions and report
+only matching file paths. No repository file was changed by the failed command.
+
+---
+
+## [ERR-20260811-002] unbounded pytest collected preserved third-party runtime sources
+
+**Logged**: 2026-08-11T00:00:00+08:00
+**Status**: understood
+**Scope**: local validation
+
+### Failure
+
+Running `python -m pytest -q` from the repository root recursively collected preserved OpenFold
+tests and Python 2.3 sources under `runtime/evaluation/`. Collection stopped with 576 errors from
+missing historical dependencies and Python-2 syntax before a product regression result existed.
+
+### Resolution
+
+Use `python -m pytest -q tests` as the product test boundary. Do not install or modify preserved
+experiment dependencies to make historical third-party source trees collect under the current
+Python interpreter.
+
+---
+
+## [ERR-20260811-005] architecture documentation patch used a mismatched context line
+
+**Logged**: 2026-08-11T14:41:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: docs
+
+### Summary
+
+A multi-file patch expected the phrase `Revocation preserves the` on its own line, while the
+source kept that phrase at the end of the preceding line. The atomic patch applied no files.
+
+### Resolution
+
+Read the exact source context and reapplied the same scoped changes with matching lines.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: `docs/ARCHITECTURE.md`, `skills/discover-target/SKILL.md`
+
+---
+
+## [ERR-20260811-004] local scope check wrote a transient curl response outside the project
+
+**Logged**: 2026-08-11T14:10:54+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+
+A read-only target-discovery health check redirected its response body to
+`/tmp/frogent-target-discovery-response.txt`, violating the project rule that local write targets
+must remain inside `/Users/dongxu/projects/FROGENT`.
+
+### Resolution
+
+The endpoint was unreachable and the transient file carried no credential or provider data.
+All subsequent HTTP responses are kept in command capture or written under an explicit project
+run root. Shell redirections to `/tmp` are prohibited for this project.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: `.mcp.json`
+
+---
+
+## [ERR-20260811-003] product test collection requires optional ADMET-AI dependency
+
+**Logged**: 2026-08-11T00:00:00+08:00
+**Status**: understood
+**Scope**: local validation
+
+### Failure
+
+`python -m pytest -q tests` stopped while importing
+`tests/test_eight_task_property_admet.py` because the current interpreter does not contain the
+optional `admet_ai` package.
+
+### Resolution
+
+Keep the optional dependency unchanged and run the remaining product tests with that single test
+module explicitly excluded. The chemistry MCP validation uses its own RDKit-capable launcher and
+does not depend on ADMET-AI.
+
+---
+
 ## [ERR-20260805-BOOTSTRAP-FLOAT-ASSERTION] Exact float assertion was too strict
 
 **Logged**: 2026-08-05T18:18:00+08:00
@@ -74,6 +238,107 @@ then preregister one drug-cell-only compatibility recovery without repeating suc
 - Reproducible: unknown
 - Related Files: runtime/evaluation/revision-20260805/clean-qwen38-direct-reasoning-recovery-r19
 - See Also: ERR-20260805-QWEN38-REASONING-MANDATORY
+
+---
+## [ERR-20260809-001] raw_openrouter_response_inventory_hit_truncated_envelope
+
+**Logged**: 2026-08-09T00:00:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+The read-only inventory of failed OpenRouter batches stopped when it attempted to decode a
+preserved truncated `response.json` as a complete provider envelope.
+
+### Error
+```
+JSONDecodeError: Expecting value: line 173 column 1 (char 946)
+```
+
+### Context
+- The audit was enumerating output-shape aliases before the Chinese-model exact recovery run.
+- The source failure evidence remains immutable.
+- The affected response is consistent with the previously recorded DeepSeek molecular-design
+  truncation and does not invalidate other completed batch responses.
+
+### Suggested Fix
+Treat each raw provider envelope independently during inventory and recovery. Record unreadable
+envelopes, continue parsing readable batches, and rerun only the missing or invalid batch.
+
+### Metadata
+- Reproducible: yes
+- Related Files: `runtime/evaluation/revision-20260807/networked-three-seed-comparison-recovery-r02/`
+- See Also: ERR-20260807-028
+
+### Resolution
+- **Resolved**: 2026-08-09T00:00:00+08:00
+- **Notes**: Continue the audit with per-file JSON error handling and preserve the truncated file.
+
+---
+## [ERR-20260807-028] web_response_json_with_explanatory_prefix
+
+**Logged**: 2026-08-07T10:10:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: experiments
+
+### Summary
+Both compatibility canaries successfully used public web search and returned the requested JSON, but prefixed the fenced JSON with a short evidence summary.
+
+### Error
+```
+JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+```
+
+### Context
+- DeepSeek returned nine web annotations and Opus returned one web annotation.
+- Both contained valid fenced JSON with the expected answer and public source URLs.
+- The failure was confined to response normalization after a successful provider response.
+
+### Suggested Fix
+Extract a complete fenced JSON object from an otherwise textual provider response, then apply the unchanged downstream structural and case-index validation.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260807/networked-three-seed-comparison-transport-canary-r07/
+
+### Resolution
+- **Resolved**: 2026-08-07T10:10:00+08:00
+- **Notes**: The parser now accepts an embedded fenced JSON block while preserving strict JSON decoding.
+
+---
+## [ERR-20260807-027] openrouter_web_structured_parameter_incompatibility
+
+**Logged**: 2026-08-07T10:05:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: experiments
+
+### Summary
+The first four formal networked comparison cells failed before producing scientific outputs because OpenRouter could not route the combined server-web-tool and strict structured-output request.
+
+### Error
+```
+OpenRouter HTTP 404: Server tool request failed
+OpenRouter HTTP 404: No endpoints found that can handle the requested parameters
+```
+
+### Context
+- The immutable r01 failure records cover Direct DeepSeek V4 Flash on two tasks, CLADD on one task, and Robin on one task.
+- The task prompts, scoring rules, cases, seeds, and web-access policy were not implicated.
+- All four cells had zero successful outputs, so no scientific result was replaced or duplicated.
+
+### Suggested Fix
+Use prompt-enforced JSON with post-response validation, set `require_parameters=false`, and retain the public web-search server tool. Confirm the exact request shape with isolated canaries before starting a fresh recovery run root.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260807/networked-three-seed-comparison-r01/
+
+### Resolution
+- **Resolved**: 2026-08-07T10:05:00+08:00
+- **Notes**: Added provider compatibility controls and robust fenced-JSON normalization; r01 remains immutable and recovery will use a new run root.
 
 ---
 
@@ -9594,3 +9859,730 @@ from subsequent searches.
 **Area**: local verification
 **Error**: A broad verification command referenced nonexistent modules `tests.test_model_runtime_policy` and `tests.test_research_factory`, so unittest reported two import errors after the 11 selected compatibility tests passed.
 **Resolution**: Discover actual test filenames before selection; use `tests.test_agent_runtime`, `tests.test_clean_ten_model_panel`, and `tests.test_research_workflow` for the broader verification.
+# ERR-20260807-001: MDockPeP2 direct canary used an incompatible Modeller 9.13 Python fallback
+
+**Logged**: 2026-08-07T00:00:00+08:00
+**Area**: peptide docking
+**Status**: resolved_by_fresh_amendment
+
+The read-only MDockPeP2 source and licensed Modeller executable were found on `doomx_3nd`. Direct
+canary r01 reached the Modeller wrapper, whose missing system Python 2.3 tree caused
+`ImportError: No module named os` before scientific computation. The run root and exit code are
+preserved. R02 changes only `PYTHONHOME` to the bundled MGLTools Python 2.5 library tree.
+
+---
+
+# ERR-20260807-002: launcher PID write used the wrong account
+
+**Logged**: 2026-08-07T00:00:00+08:00
+**Area**: remote experiment orchestration
+**Status**: corrected
+
+The first launcher created a run root owned by the licensed runtime account, then the outer
+`doomx` shell attempted to write `state/launcher-pid` and received permission denied. The worker
+had already started and was checked before any retry. Future launch state is written inside the
+same `sudo -u pqh` shell that owns the isolated run root.
+
+---
+
+# ERR-20260807-003: zsh treated an unquoted diagnostic label as an operator
+
+**Logged**: 2026-08-07T00:00:00+08:00
+**Area**: shell diagnostics
+**Status**: corrected
+
+An unquoted `echo ===name===` diagnostic failed under zsh. Use `printf '%s\n' "===name==="` for
+labels in subsequent source and CSV inventory commands.
+
+---
+
+# ERR-20260807-004: MDockPeP2 Modeller compatibility probes r02 and r03 did not resolve Python 2.3 imports
+
+**Logged**: 2026-08-07T01:00:00+08:00
+**Area**: peptide docking
+**Status**: resolved_by_fresh_amendment
+
+R02 pointed `PYTHONHOME` at the bundled MGLTools root, while r03 supplied an isolated
+`lib/python2.3` symlink to its Python 2.5 standard library. Both retained the licensed Modeller
+9.13 binary and failed before scientific computation with `ImportError: No module named os`.
+R04 uses `PYTHONPATH` so the embedded interpreter can discover the bundled standard library
+without replacing the wrapper's native prefix. All failed roots and tracebacks remain immutable.
+
+---
+
+# ERR-20260807-005: first r03 remote directory creation used the runtime account at a root-owned parent
+
+**Logged**: 2026-08-07T01:00:00+08:00
+**Area**: remote experiment orchestration
+**Status**: corrected
+
+The revision parent is root-owned and mode 755, so `sudo -u pqh mkdir` could not create the new
+run root. The corrected launch creates each new run directory once with `sudo install -d -o pqh
+-g pqh`, then performs every run-local write as `pqh`. Existing paths, ownership and permissions
+are unchanged.
+
+---
+
+# ERR-20260807-006: Python 2.5 standard library is syntactically incompatible with embedded Python 2.3
+
+**Logged**: 2026-08-07T01:20:00+08:00
+**Area**: peptide docking
+**Status**: resolved_by_fresh_amendment
+
+R04 made the MGLTools Python 2.5 library visible to Modeller 9.13, then the embedded Python 2.3
+parser rejected the parenthesized import in `os.py`. R05 supplies the exact CPython 2.3.7
+standard library from the public CPython tag, leaving scientific software and inputs unchanged.
+
+---
+
+# ERR-20260807-007: MDockPeP2 r05 ZDOCK surface preparation could not resolve libg2c
+
+**Logged**: 2026-08-07T01:30:00+08:00
+**Area**: peptide docking
+**Status**: resolved_by_fresh_amendment
+
+R05 completed the licensed Modeller conformer-generation stages and reached ZDOCK. Its
+`mark_sur` binary then failed to load `libg2c.so.0`, which is present in the same read-only
+MDockPeP2 distribution under `programs/itscorepp/lib`. R06 adds that directory to the run-local
+dynamic-library search path and changes no scientific inputs or parameters.
+
+---
+
+# ERR-20260807-008: default local Python environments lacked RDKit for scorer tests
+
+**Logged**: 2026-08-07T01:30:00+08:00
+**Area**: local verification
+**Status**: corrected
+
+System Python 3.14 and the bundled workspace Python 3.12 could import the new runner but could not
+import the existing RDKit-dependent scorer. The project miniconda Python 3.13 has RDKit 2026.03.3;
+the same seven selected tests passed there. Future scorer verification should select a confirmed
+RDKit environment before running the suite.
+
+---
+
+# ERR-20260807-009: Prompt-to-Pill environment import was shadowed by the project MCP package
+
+**Logged**: 2026-08-07T02:00:00+08:00
+**Area**: isolated external-system installation
+**Status**: corrected
+
+The isolated Prompt-to-Pill runtime imported from the FROGENT project root resolved the local
+`mcp/` package before the installed MCP SDK and raised `ModuleNotFoundError: mcp.types`. Repeating
+the import from `/tmp` verified AutoGen, MCP FastMCP and RDKit successfully. External-system import
+checks must use an isolated working directory so repository-local package names cannot alter them.
+
+---
+
+# ERR-20260807-010: zsh special variable `path` removed SSH from command lookup
+
+**Logged**: 2026-08-07T02:00:00+08:00
+**Area**: remote evidence transfer
+**Status**: corrected
+
+A zsh loop assigned a relative filename to the special array variable `path`, which changed
+`PATH` and made a later `ssh` lookup fail. The transfer was rerun with `rel_file` and the absolute
+`/usr/bin/ssh` executable. Do not use `path` as a scalar loop variable in zsh automation.
+
+---
+
+# ERR-20260807-011: external recovery patch used a stale test class name
+
+**Logged**: 2026-08-07T02:10:00+08:00
+**Area**: local implementation
+**Status**: corrected
+
+The first recovery patch expected `ExternalCurrentModelAdaptationsTests`, while the actual class
+is singular `ExternalCurrentModelAdaptationTests`. `apply_patch` rejected the complete patch, so
+no partial files were created. The test file was inspected and the patch was reapplied against its
+actual context.
+
+---
+
+# ERR-20260807-012: doomx_3nd became temporarily unreachable during MDock monitoring
+
+**Logged**: 2026-08-07T02:40:00+08:00
+**Area**: remote experiment monitoring
+**Status**: unresolved_external
+
+After the three MDockPeP2 jobs had run independently for about ten minutes, new SSH connections to
+`doomx_3nd` timed out at the transport layer. The launch shells and engine processes were already
+detached on the server, so no retry or duplicate launch was attempted. Resume with read-only
+process, exit-code and artifact checks when the host is reachable; accept a case only from its
+persisted exit code and required outputs.
+
+---
+
+# ERR-20260807-013: first manuscript build used the wrong relative figure-copy path
+
+**Logged**: 2026-08-07T03:00:00+08:00
+**Area**: manuscript build
+**Status**: corrected
+
+The first figure-copy command resolved a relative source path from the manuscript directory and
+left the new PDF unavailable to LaTeX. The copy was repeated with validated absolute source and
+destination paths inside the FROGENT project, after which both manuscript targets compiled. Use
+absolute project-local paths when moving generated evidence into the canonical manuscript tree.
+
+---
+
+# ERR-20260807-014: serial SCP evidence transfer stopped after the first 1ABO artifact
+
+**Logged**: 2026-08-07T03:20:00+08:00
+**Area**: remote evidence transfer
+**Status**: corrected
+
+The first serial transfer returned without a shell error after copying all 3GBQ/1CKB artifacts
+and only the first 1ABO output, leaving the native references absent. Required-file validation in
+the independent scorer caught the incomplete evidence package before analysis. The eight missing
+artifacts were transferred as independent SCP calls and verified before scoring. Treat a transfer
+command's exit status as insufficient; verify every required destination file and size.
+
+---
+
+# ERR-20260807-015: MDockPeP2 retained nonfatal PC-align subcomparison aborts
+
+**Logged**: 2026-08-07T03:25:00+08:00
+**Area**: peptide docking
+**Status**: retained_limit
+
+The 3GBQ and 1CKB jobs exited zero and produced the required sampling scores, clustered poses and
+runtime records, while stderr contained repeated `PCalign` `std::out_of_range` aborts for a subset
+of template comparisons. The 1ABO stderr was empty. The completed parent jobs are accepted under
+the frozen success criteria, and the subcomparison failures remain visible as a method limitation;
+they are not grounds to relaunch successful cases.
+
+---
+## [ERR-20260807-016] clean validation rejected a normal venv interpreter symlink
+
+**Logged**: 2026-08-07T04:16:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+The first clean-install validator invocation resolved the venv Python symlink to the bundled
+runtime outside the run root and rejected it before executing any validation check.
+
+### Resolution
+Keep the user-supplied executable entry path lexically inside the preregistered run root, verify
+that it is a file, and allow its read-only interpreter symlink target. Data and output paths still
+use resolved containment checks.
+
+### Metadata
+- Source: error
+- Related Files: scripts/run_clean_install_validation.py
+- Pattern-Key: evaluation.venv_interpreter_symlink_containment
+- Recurrence-Count: 1
+
+---
+## [ERR-20260807-017] clean gate surfaced stale repository audit assumptions
+
+**Logged**: 2026-08-07T02:07:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: repository governance
+
+### Summary
+The clean-install full check reached two repository-audit assumptions that predated the tracked
+revision evidence and the 11.8 MB original manuscript archive.
+
+### Resolution
+Permit tracked files only under `runtime/evaluation/`, retain the 10 MiB limit for all other files,
+and add one exact-path exemption for the already tracked manuscript source archive. Runtime files
+outside the evaluation subtree and any other oversized tracked file still fail closed.
+
+### Metadata
+- Source: error
+- Related Files: scripts/audit_repository.py, docs/manuscript/Arxiv_FROGENT_20251217.zip
+- Pattern-Key: governance.audit_explicit_revision_evidence_and_archive
+- Recurrence-Count: 1
+
+---
+## [ERR-20260807-018] recovery Node copy reused a project-relative destination after cwd change
+
+**Logged**: 2026-08-07T02:15:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+The first r02 Node command changed its working directory to the isolated node root and then reused
+the project-relative destination path. `cp` failed before `npm ci` ran.
+
+### Resolution
+Use verified absolute project source paths and the current isolated node directory as the exact
+destination. No partial Node installation existed before retry.
+
+### Metadata
+- Source: error
+- Related Files: runtime/evaluation/revision-20260807/clean-install-recovery-r02/node
+- Pattern-Key: evaluation.cwd_relative_copy_destination
+- Recurrence-Count: 1
+
+---
+## [ERR-20260807-019] zsh rejected the first final secret-scan expression
+
+**Logged**: 2026-08-07T02:20:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: validation
+
+### Summary
+Nested quote classes in the first final `rg` expression were parsed by zsh as a bad pattern, so
+that command did not perform the intended scan.
+
+### Resolution
+Rerun with POSIX character classes and assignment-name patterns that require no nested shell
+quotes. Treat the first command as no scan evidence.
+
+### Metadata
+- Source: error
+- Related Files: scripts, tests, docs
+- Pattern-Key: validation.zsh_secret_scan_quoting
+- Recurrence-Count: 1
+
+---
+## [ERR-20260807-020] wrote a temporary comparison file outside the project boundary
+
+**Logged**: 2026-08-07T02:32:00+08:00
+**Priority**: high
+**Status**: unresolved_external_artifact
+**Area**: filesystem boundary
+
+### Summary
+A read-only Git comparison command redirected one file to `/tmp`, violating the project-local
+write boundary even though it did not alter project or remote source files.
+
+### Prevention
+Use pipes, process substitution, or project-contained runtime paths for all future comparisons.
+Do not create, modify, or remove local files outside `/Users/dongxu/projects/FROGENT/`.
+
+### Metadata
+- Source: error
+- Related Files: docs/manuscript/revision-source/main.tex
+- Pattern-Key: filesystem.no_local_temp_outside_project
+- Recurrence-Count: 1
+
+---
+## [ERR-20260807-021] plot script invoked from manuscript subdirectory
+
+**Logged**: 2026-08-07T15:35:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: docs
+
+### Summary
+The figure-generation command used a project-root-relative script path while the command was
+running from the manuscript source directory.
+
+### Error
+```
+python: can't open file '.../docs/manuscript/revision-source/scripts/plot_external_current_model_adaptations.py'
+```
+
+### Context
+- The subsequent LaTeX build succeeded but still consumed the previous figure file.
+- No evaluation run or source evidence was modified.
+
+### Suggested Fix
+Run the plotting script from `/Users/dongxu/projects/FROGENT`, then compile from the manuscript
+source directory as a separate command.
+
+### Metadata
+- Reproducible: yes
+- Related Files: scripts/plot_external_current_model_adaptations.py
+
+### Resolution
+- **Resolved**: 2026-08-07T15:36:00+08:00
+- **Notes**: Re-ran from the project root before rebuilding the manuscript.
+
+---
+## [ERR-20260807-022] stale systems variable in expanded comparison plot
+
+**Logged**: 2026-08-07T15:38:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: docs
+
+### Summary
+The expanded heatmap retained one reference to the removed `SYSTEMS` constant.
+
+### Error
+```
+NameError: name 'SYSTEMS' is not defined
+```
+
+### Context
+- The error occurred before figure files were saved.
+- Existing manuscript figure files remained intact.
+
+### Suggested Fix
+Use the dynamically assembled `systems` row list consistently for major and minor ticks.
+
+### Metadata
+- Reproducible: yes
+- Related Files: scripts/plot_external_current_model_adaptations.py
+
+### Resolution
+- **Resolved**: 2026-08-07T15:39:00+08:00
+- **Notes**: Replaced the stale constant reference with `systems`.
+
+---
+## [ERR-20260807-018] codex_config_key_canary_shell_boundary
+
+**Logged**: 2026-08-07T09:10:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+
+A Codex config-key diagnostic used zsh's read-only variable name `status` and redirected output
+to `/tmp`, outside the project-only local write boundary. The command stopped before validating
+the config key.
+
+### Error
+
+```text
+zsh:1: read-only variable: status
+```
+
+### Resolution
+
+Use task-specific variable names such as `config_check_exit_code` and keep every diagnostic output
+under the experiment run root inside `/Users/dongxu/projects/FROGENT`.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: `runtime/evaluation/revision-20260807/networked-three-seed-comparison-canary-r02/`
+
+---
+## [ERR-20260807-023] codex_exec_search_flag_scope
+
+**Logged**: 2026-08-07T09:20:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: config
+
+### Summary
+The clean-network canary passed the top-level `--search` flag after the `exec` subcommand, where this Codex build does not accept it.
+
+### Error
+```
+error: unexpected argument '--search' found
+```
+
+### Context
+- The fourth isolation canary exited before inference and created no benchmark output.
+- `codex exec` enables live search through `-c 'web_search="live"'` in this installed build.
+
+### Suggested Fix
+Keep `--search` at the top-level CLI only, or use the validated `web_search="live"` config override for non-interactive `exec` calls.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260807/networked-three-seed-comparison-canary-r04/
+- See Also: ERR-20260807-018
+
+### Resolution
+- **Resolved**: 2026-08-07T09:20:00+08:00
+- **Notes**: The next immutable canary uses the non-interactive config form. A subsequent strict-config check also showed that `skills.bundled` is a table rather than a boolean; the following canary uses `skills.bundled.enabled=false` and preserves the failed r05 root.
+
+---
+## [ERR-20260807-024] external_venv_relative_path_from_changed_cwd
+
+**Logged**: 2026-08-07T09:24:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+A Prompt-to-Pill native-tool probe combined a changed working directory with a project-root-relative virtual-environment path.
+
+### Error
+```
+zsh: no such file or directory: runtime/evaluation/revision-20260807/external-current-model-adaptations-r01/envs/prompt-to-pill/bin/python
+```
+
+### Context
+- The probe failed before importing or executing third-party code.
+- All intended paths are inside the FROGENT project.
+
+### Suggested Fix
+Resolve the environment executable to an absolute project-contained path before changing the subprocess working directory.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260807/external-current-model-adaptations-r01/envs/prompt-to-pill/
+
+### Resolution
+- **Resolved**: 2026-08-07T09:24:00+08:00
+- **Notes**: The next probe uses an explicit absolute executable path.
+
+---
+## [ERR-20260807-025] prompt_to_pill_native_chemprops_missing_dependency
+
+**Logged**: 2026-08-07T09:27:00+08:00
+**Priority**: medium
+**Status**: pending
+**Area**: tests
+
+### Summary
+The frozen Prompt-to-Pill public chemical-properties tool cannot import because its declared runtime lacks `pkapredict`.
+
+### Error
+```
+ModuleNotFoundError: No module named 'pkapredict'
+```
+
+### Context
+- The probe used the already-installed isolated Prompt-to-Pill environment and the frozen public source file.
+- No dependency was installed or third-party source modified after protocol freeze.
+- The public ADMET proxy also contains a placeholder Hugging Face token, so unavailable native services must remain explicit rather than silently emulated.
+
+### Suggested Fix
+Record the native tool as unavailable in each affected external-system cell, retain source-informed workflow prompts and public web retrieval, and avoid claiming execution of the missing native endpoint.
+
+### Metadata
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260807/external-current-model-adaptations-r01/sources/prompt-to-pill/chemical_properties_mcp_sever.py
+- See Also: ERR-20260807-024
+
+---
+## [ERR-20260807-026] paired_runner_package_import
+
+**Logged**: 2026-08-07T09:32:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: tests
+
+### Summary
+The new unified runner imported the paired runner as a package, exposing its legacy script-only import of `run_clean_ten_model_panel`.
+
+### Error
+```
+ModuleNotFoundError: No module named 'run_clean_ten_model_panel'
+```
+
+### Context
+- Existing direct script execution placed `scripts/` on `sys.path`; package import placed only the repository root there.
+- No formal experiment call began.
+
+### Suggested Fix
+Use the repository-qualified `scripts.run_clean_ten_model_panel` import, which works for both package import and direct execution after the runner inserts the repository root.
+
+### Metadata
+- Reproducible: yes
+- Related Files: scripts/run_paired_frogent_model_panel.py, scripts/run_networked_three_seed_comparison.py
+
+### Resolution
+- **Resolved**: 2026-08-07T09:32:00+08:00
+- **Notes**: Replaced the legacy unqualified import and reran focused tests.
+
+---
+## [ERR-20260810-002] external Sol runner rejected project-local venv interpreter symlinks
+
+**Logged**: 2026-08-10T00:00:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+
+The preflight path guard resolved project-local virtual-environment Python symlinks before checking
+their scope, so the verified uv interpreter target appeared outside the project and stopped before
+any model call.
+
+### Error
+
+```text
+ValueError: '/Users/dongxu/.local/share/uv/python/.../bin/python3.11' is not in the subpath of '/Users/dongxu/projects/FROGENT'
+```
+
+### Resolution
+
+Source roots still require a resolved path inside the project. Executable entries require a
+project-local lexical path and may follow their existing read-only interpreter symlink at process
+launch. Experiment outputs remain confined to the new project run root.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: scripts/run_external_sol_resource_enabled.py
+
+---
+## [ERR-20260810-003] two Sol external cells crossed the preregistered filesystem boundary
+
+**Logged**: 2026-08-10T16:15:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+
+The r03 post-run command audit rejected CLADD/property and Prompt-to-Pill/virtual-screening.
+CLADD inspected the user uv cache and attempted a `/tmp` download; the download failed without
+creating the file. Prompt-to-Pill/virtual-screening read the private ai-talk skill tree.
+
+### Resolution plan
+
+Preserve r03 unchanged and rerun only these two cells in a new recovery root with explicit
+filesystem hardening and automatic command-event rejection. Do not use their r03 scores.
+
+### Resolution
+
+r05 reran exactly the two rejected cells. Both returned schema-valid outputs and passed the
+hardened command-event audit; the accepted six-cell manifest uses r05 for those two cells and r03
+for the four already-clean cells.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260810/external-sol-resource-enabled-r03
+
+---
+## [ERR-20260810-004] recovery entrypoint imported the scripts package before adding project root
+
+**Logged**: 2026-08-10T16:20:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+
+Direct execution set `sys.path[0]` to `scripts/`, so the recovery entrypoint could not import the
+`scripts` package. It failed before any model call or cell output.
+
+### Resolution
+
+Insert the project root into `sys.path` before repository-qualified imports, then rerun compile and
+protocol preflight.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: scripts/run_external_sol_resource_recovery.py
+
+---
+
+## [ERR-20260811-002] target-evidence module violated the stdlib import boundary
+
+**Logged**: 2026-08-11T13:20:20+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: architecture
+
+### Summary
+
+The first ChEMBL target-evidence implementation imported RDKit directly inside `agent/`, while
+the product architecture requires explicit imports there to remain stdlib or internal modules.
+
+### Resolution
+
+Load RDKit lazily through `importlib`, matching the existing physicochemical capability boundary,
+then rerun the architecture and chemistry tests.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: agent/molecular/chembl_evidence.py, tests/test_architecture.py
+
+---
+
+## [ERR-20260810-007] zsh path loop variable shadowed the executable search path
+
+**Logged**: 2026-08-10T18:20:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: monitoring
+
+### Summary
+
+A read-only monitoring one-liner used `path` as its zsh loop variable. In zsh, `path` is tied to
+`PATH`, so the loop temporarily made `find` and `wc` unavailable. The Luna experiment processes
+were unaffected.
+
+### Resolution
+
+Use a task-specific variable such as `cell_dir` in zsh loops and avoid shell special variables.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: runtime/evaluation/revision-20260810/external-luna-resource-enabled-r01
+
+---
+
+## [ERR-20260811-001] chemistry MCP connector used a Python without RDKit
+
+**Logged**: 2026-08-11T00:15:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: MCP runtime
+
+### Summary
+
+The initial chemistry MCP canary used the `.mcp.json` command `python3`, which resolved to the
+Homebrew Python 3.14 interpreter without RDKit. Unit tests had used the active Conda Python and
+therefore did not expose the connector-level dependency mismatch.
+
+### Resolution
+
+Preserve r01 as failed evidence. Route the registered connector through a stdlib-only launcher
+that verifies RDKit importability before executing the MCP server, with an explicit
+`FROGENT_CHEMISTRY_PYTHON` override. Re-run the unchanged scientific cases under r02.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: scripts/launch_chemistry_mcp.py, runtime/evaluation/revision-20260811/chemistry-mcp-canary-r01
+
+---
+## [ERR-20260810-005] recovery prompt wrapper recursed before model launch
+
+**Logged**: 2026-08-10T16:23:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+
+The r04 wrapper called `base._prompt` after replacing that same attribute, causing recursion before
+either cell invoked Codex. Empty workdirs and schemas are preserved in r04.
+
+### Resolution
+
+Freeze the original prompt callable before monkeypatching and start r05 in a new run root. The
+scientific cases, model, scoring and resource hardening remain unchanged.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: scripts/run_external_sol_resource_recovery.py
+
+---
+## [ERR-20260810-006] recovery audit treated exclusion globs as private-file reads
+
+**Logged**: 2026-08-10T17:20:00+08:00
+**Priority**: medium
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+
+The first r05 audit rejected a command containing `!AGENTS.md` and `!SKILL.md`, although those are
+explicit ripgrep exclusion globs and the event trace showed no private-file read.
+
+### Resolution
+
+Distinguish explicit exclusion globs from reads, retain absolute private-path rejection, and rerun
+analysis from existing terminals without invoking either model cell again.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: scripts/run_external_sol_resource_recovery.py
+
+---

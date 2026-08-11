@@ -37,3 +37,15 @@ weights/
 .DS_Store
 .idea/
 .vscode/
+
+# Local LaTeX build products (source figures remain tracked explicitly)
+docs/manuscript/revision-source/*.aux
+docs/manuscript/revision-source/*.bbl
+docs/manuscript/revision-source/*.blg
+docs/manuscript/revision-source/*.fdb_latexmk
+docs/manuscript/revision-source/*.fls
+docs/manuscript/revision-source/*.out
+docs/manuscript/revision-source/main.pdf
+docs/manuscript/revision-source/sup.pdf
+docs/manuscript/revision-source/main-marked.pdf
+docs/manuscript/revision-source/main-marked.tex

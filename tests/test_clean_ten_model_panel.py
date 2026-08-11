@@ -55,6 +55,48 @@ class CleanPanelRunnerTest(unittest.TestCase):
                        "prior FROGENT instructions"):
             self.assertIn(phrase, prompt)
 
+    def test_provider_format_normalization_preserves_semantic_values(self):
+        content = """The result is:\n```json
+        {"predictions":[{"case_index":6,"QED":0.71,"Caco-2 Permeability":-4.2,
+        "BBBP":1,"CYP2D6-sub":0,"SR-p53":1}]}
+        ```"""
+        value, metadata = RUNNER._decode_provider_content(
+            "molecular_property_prediction", content, [6]
+        )
+        self.assertEqual(value["results"][0], {
+            "case_index": 6,
+            "qed": 0.71,
+            "caco2": -4.2,
+            "bbbp": 1,
+            "cyp2d6_sub": 0,
+            "sr_p53": 1,
+        })
+        self.assertTrue(metadata["provider_format_normalized"])
+
+    def test_provider_format_normalization_flattens_public_drug_records(self):
+        content = json.dumps({
+            "cases": [{
+                "case_index": 2,
+                "drugs": [
+                    {"drugbank_id": "DB00001", "smiles": "CCO", "name": "example"}
+                ],
+            }]
+        })
+        value, _ = RUNNER._decode_provider_content("retrieve_known_drugs", content, [2])
+        self.assertEqual(value, {"results": [{
+            "case_index": 2,
+            "drugbank_ids": ["DB00001"],
+            "smiles": ["CCO"],
+        }]})
+
+    def test_provider_format_normalization_uses_last_complete_single_case_design(self):
+        content = """```json
+        {"case_index":3,"pocket_id":"x","smiles":["C","CC","CCC","CCCC","CCCCC"]}
+        ```"""
+        value, _ = RUNNER._decode_provider_content("molecular_design", content, [3])
+        self.assertEqual(value["results"][0]["case_index"], 3)
+        self.assertEqual(len(value["results"][0]["smiles"]), 5)
+
 
 class CleanPanelScorerTest(unittest.TestCase):
     def test_successful_recovery_precedes_failed_primary(self):

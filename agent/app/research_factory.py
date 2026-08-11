@@ -244,7 +244,6 @@ def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=
                            design_handler=design, molecular_handler=molecular,
                            docking_handler=docking)
 
-
 def build_local_docking_adapters(config: RuntimeConfig, *, vina_executable: Path,
                                  plip_executable: Path, vina_preparer, plip_preparer,
                                  vina_version: str, plip_version: str,

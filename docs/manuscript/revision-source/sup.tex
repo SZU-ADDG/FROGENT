@@ -30,6 +30,12 @@
 
 The submitted evaluation comprised eight 20-case task categories. The revision received the case inputs and reference answers, while original sample-level outputs, failures, seeds, scorer code, task versions, and judge records remained unavailable. Newly executed panels are therefore identified as post-hoc exposed-case or independent tool-validation studies and are reported with task-specific metrics.
 
+\subsection{Model Adaptation and Evaluation Isolation}
+
+FROGENT does not train or fine-tune the language-model parameters. Agent specialization is implemented at inference time through role instructions, typed schemas, evidence-admission rules, and access to the scientific tools assigned to each role. The active role contracts contain no task-specific benchmark demonstrations. Production conversations may use project-scoped persistent memory, but benchmark cells are isolated from production conversation stores and do not reuse outputs between cases.
+
+The direct-model panel and paired FROGENT panel use the same exposed case definitions and post-inference scorers. Each direct cell begins as a stateless request without FROGENT initialization, tools, project files, persistent memory, previous benchmark outputs, or reference answers. Each paired FROGENT cell receives a frozen tool-evidence bundle constructed without access to the reference answer; this is an evidence-conditioned fixed one-pass comparison rather than a live autonomous tool-selection experiment. Reference answers are read only by the scorer after inference. The eight categories are therefore suitable for within-panel system comparison and error analysis, but they do not constitute a hidden held-out estimate of generalization.
+
 \subsection{Foundational Biomedical Knowledge}
 
 This panel contains 20 author-supplied exposed questions spanning bioinformatics, biochemistry, biology, molecular biology, computational biology, and biophysics. Official HLE source identity, version, license, submitted inclusion mapping, and original judge records were unavailable. The revision names it Foundational Biomedical Knowledge; a frozen Luna/max no-tool arm completed 20/20 calls and scored 9/20 exact (Wilson 95\% CI, 0.258--0.658).
@@ -59,7 +65,44 @@ The revision compares TargetDiff, DiffSBDD, and Pocket2Mol on five CrossDocked p
 
 \subsection{Retrosynthesis Planning}
 
-The exposed retrosynthesis panel contains 20 author-supplied targets and reference reaction sets. DirectMultiStep flash and explorer completed 40/40 calls with nonempty, target-rooted, parse-valid outputs. Full exact-reference reaction-set match was 0.200/0.300, and mean top-5 best exact-reference reaction recall was 0.572/0.738. Alternative-route equivalence awaits frozen blinded adjudication.
+The exposed retrosynthesis panel contains 20 author-supplied targets and reference reaction sets. DirectMultiStep flash and explorer completed 40/40 calls with nonempty, target-rooted, parse-valid outputs. Full exact-reference reaction-set match was 0.200/0.300, and mean top-5 best exact-reference reaction recall was 0.572/0.738. The supplied reference routes encode the existing human feasibility judgment; the revision uses deterministic exact-reference match, reaction recall, and precision and does not request a new blinded human panel.
+
+\subsection{Current-model Adaptations of Recent Public Systems}
+
+We froze CLADD commit \texttt{a7ee2e5}, Prompt-to-Pill commit \texttt{817e177}, and Robin commit \texttt{4a5cce3} and installed their public dependency surfaces in isolated environments. All three current-model adaptations used GPT-5.6 Sol with high reasoning effort. Each adapter could read only its own frozen public source and isolated environment, execute available native components in a cell-local work directory, and use public web search; FROGENT initialization, private tools and files, persistent memory, previous outputs, and gold answers were excluded. The first resource-enabled run returned all six cells. Post-run command audit rejected two cells that accessed private/cache paths, and a preregistered recovery reran only those cells under a hardened filesystem contract. The combined resource-audited panel completed 6/6 scored cells. These runs adapt the released workflows to a single current model and do not reconstruct the original paper-era models or scores.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Current-model adaptations on aligned exposed tasks. Values use the frozen task-specific scorers and are not original-paper reproductions.}
+\begin{tabular}{lp{2.7cm}p{3.1cm}rr}
+\toprule
+System & Current model & Aligned task & Cases & Score \\
+\midrule
+CLADD & GPT-5.6 Sol & Molecular properties & 20 & 0.8239 \\
+Prompt-to-Pill & GPT-5.6 Sol & Molecular properties & 20 & 0.8540 \\
+Prompt-to-Pill & GPT-5.6 Sol & Virtual screening & 19 & 0.8947 \\
+Prompt-to-Pill & GPT-5.6 Sol & Molecular design & 20 & 0.8383 \\
+Robin & GPT-5.6 Sol & Known-drug retrieval & 20 & 0.6650 \\
+Robin & GPT-5.6 Sol & Known-target retrieval & 20 & 0.2833 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Licensed MDockPeP2 Reference Redocking}
+
+MDockPeP2 v0.1 was invoked directly from the read-only third-party installation with licensed Modeller 9.13. Three public reference complexes (3GBQ, 1CKB and 1ABO) were run in isolated work directories with 20 peptide conformers, eight CPUs and 100 requested clustered modes. All 3/3 jobs exited zero and produced 2,000 sampling records and 100 clustered poses per complex. Receptor-frame peptide CA RMSD was scored independently against the deposited peptide coordinates. The top-ranked RMSD was 2.479/13.546/17.123~\AA, while best-of-100 RMSD was 2.225/2.336/4.564~\AA; runtimes were 575.86/455.41/515.20~s. Partial PC-align subcomparisons aborted for 3GBQ and 1CKB and are retained in stderr, although the parent jobs completed. These results support direct executability and limited top-$k$ pose recovery, with inconsistent top-1 ranking.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/mdockpep2-reference-redocking.pdf}
+\caption{Direct licensed MDockPeP2 reference redocking. Best-of-100 is reported as an oracle diagnostic and is separated from the operational top-ranked result.}
+\label{fig:mdockpep2-reference-redocking}
+\end{figure}
+
+\subsection{Clean-install Validation}
+
+After all revision experiments and interface changes were frozen, we created a new Python 3.12.13 virtual environment and installed the committed \texttt{requirements.txt}. We also ran \texttt{npm ci --ignore-scripts} from the committed lockfile in an empty Node root; 22 packages were installed and the npm audit reported zero vulnerabilities. Validation child processes removed API-key, token, secret, and password environment variables. A core-harness state-transition smoke, a Flask registration/login/chat/file round-trip smoke, all 295 repository tests, and the frozen exact evaluation replay returned zero. The failed first validation root, the correction-only amendment, commands, return codes, dependency inventories, and log hashes are retained. This gate establishes the tested credential-free local path for the current repository tree; it does not establish live-provider availability or portability of third-party services.
 
 \section{Database, Tool and Model}\label{secB}
 
@@ -94,7 +137,7 @@ Enamine's Building Blocks provide a vast collection of commercially available re
 Although \name \ uses a limited toolset, it is important to note that the toolset can be easily extended based on demand and availability. The toolset can be classified into molecular tools and general tools.
 
 \subsubsection{Molecular Tools}
-The molecular tools use RDKit for molecular parsing and descriptor calculation, QVina/Vina as a small-molecule ranking and pose-generation signal, and PLIP for supported structural-interaction fields. The formal peptide reference-redocking panel uses ADCP. Historical MDockPeP2 outputs are retained as negative structural evidence; its prospective endpoint failed a provider-side canary before docking execution. Docking scores are not interpreted as measured binding affinity.
+The molecular tools use RDKit for molecular parsing and descriptor calculation, QVina/Vina as a small-molecule ranking and pose-generation signal, and PLIP for supported structural-interaction fields. The formal peptide reference-redocking evidence uses ADCP and direct licensed MDockPeP2. The historical MDockPeP2 endpoint failure remains an operational boundary. Docking scores are not interpreted as measured binding affinity.
 
 \subsubsection{General Tool}
 The general tools provide \name \ with dynamic reasoning and information retrieval capabilities essential for solving complex scientific problems. It features a Code Interpreter that offers a secure sandbox for executing custom Python scripts to perform novel data analysis and scientific computations. To access external knowledge, the agent is equipped with both web search tools powered by Tavily for real-time information gathering and specialized literature search tools that query the arXiv repository and PubMed repository. Together, these tools enable the agent to solve unforeseen problems, validate its findings against the broader web, and stay current with the latest scientific literature.

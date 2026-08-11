@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import random
 import sys
 import threading
 import time
@@ -18,7 +19,7 @@ sys.path.insert(0, str(ROOT))
 
 from agent.llm.codex_client import CodexClient
 from agent.llm.openrouter_client import OpenRouterClient
-from run_clean_ten_model_panel import (
+from scripts.run_clean_ten_model_panel import (
     CODEX_EXECUTABLE,
     TASK_FILES,
     _schema,
@@ -74,6 +75,7 @@ def _run_cell(
     max_tokens: int,
     resume_from_root: Path | None,
     concise_known_drugs: bool,
+    case_order_seed: int | None = None,
 ) -> dict[str, Any]:
     cell_root = run_root / "raw" / _slug(model["model_id"]) / task
     terminal_path = cell_root / "terminal.json"
@@ -114,8 +116,12 @@ def _run_cell(
             allow_provider_fallbacks=allow_provider_fallbacks,
             max_tokens=max_tokens,
         )
-        for start in range(1, 21, batch_size):
-            indices = list(range(start, min(start + batch_size, 21)))
+        ordered_indices = list(range(1, 21))
+        if case_order_seed is not None:
+            task_offset = int(hashlib.sha256(task.encode("utf-8")).hexdigest()[:8], 16)
+            random.Random(case_order_seed + task_offset).shuffle(ordered_indices)
+        for start in range(0, 20, batch_size):
+            indices = ordered_indices[start:start + batch_size]
             batch_cases = [
                 case for case in cases if int(case["case_index"]) in indices
             ]
@@ -140,7 +146,14 @@ def _run_cell(
                     "change confidence or prioritization while preserving the required output."
                 ),
             }
-            batch_root = cell_root / f"batch-{indices[0]:02d}-{indices[-1]:02d}"
+            batch_name = (
+                f"batch-{indices[0]:02d}-{indices[-1]:02d}"
+                if case_order_seed is None
+                else "batch-"
+                + f"{start // batch_size + 1:02d}-"
+                + "-".join(f"{index:02d}" for index in indices)
+            )
+            batch_root = cell_root / batch_name
             batch_root.mkdir()
             payload_path = batch_root / "payload.json"
             payload_path.write_text(
@@ -153,7 +166,7 @@ def _run_cell(
                     / "raw"
                     / _slug(model["model_id"])
                     / task
-                    / f"batch-{indices[0]:02d}-{indices[-1]:02d}"
+                    / batch_name
                     / "unvalidated-response.json"
                 )
                 if source_batch.is_file():
@@ -193,7 +206,7 @@ def _run_cell(
                     "evidence. Preserve each case_index and return only the exact schema."
                 ),
                 payload,
-                schema=_schema(task, 5),
+                schema=_schema(task, len(indices)),
                 cwd=batch_root,
             )
             (batch_root / "unvalidated-response.json").write_text(
@@ -326,6 +339,7 @@ def main() -> int:
                 args.max_tokens,
                 resume_from_root,
                 args.concise_known_drugs,
+                None,
             ): (model, task)
             for model, task in jobs
         }

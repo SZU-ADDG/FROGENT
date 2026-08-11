@@ -39,7 +39,7 @@ agent.core    context, harness, evidence, registry, tool events
 | `agent.core` | Stable contracts, capability catalog, harness, evidence ledger, retrieval |
 | `agent.research` | Literature providers, OA readers, screening, expansion, synthesis |
 | `agent.design` | Qualitative hypothesis generation, calibration, prioritization, design memory |
-| `agent.molecular` | Molecular identity, PubChem binding, ADMET workflow and molecular chat |
+| `agent.molecular` | Molecular identity, PubChem binding, deterministic descriptors and similarity, ADMET workflow and molecular chat |
 | `agent.docking` | Target/pocket identity, preparation states, Vina execution and PLIP analysis |
 | `agent.llm` | Typed Codex roles, native schemas and fail-closed model boundary |
 | `agent.evaluation` | Active evaluation schema, integrity checks, metrics and replay |
@@ -97,6 +97,14 @@ Reader identity, record identity and task identity are checked before admission.
 corrections, abstract-only evidence and provider gaps remain explicit. Revocation preserves the
 checkpoint while removing affected evidence from future synthesis.
 
+The project-contained `structured-retrieval` MCP adds two typed routes to this flow. Disease
+queries resolve to canonical Open Targets records and retain the provider-ranked associated
+targets. Protein queries resolve to reviewed human UniProtKB records and retain their DrugBank
+cross-references. Exact identifier-list contracts bind these validated records deterministically;
+the Agent remains responsible for query planning, ambiguity resolution, biological interpretation
+and evidence synthesis. This prevents free-form generation from silently reordering a canonical
+database answer.
+
 ## Molecular and docking flow
 
 ```text
@@ -104,6 +112,7 @@ User-selected structure
   -> RDKit normalization
   -> optional PubChem verification
   -> exact full/parent binding
+  -> deterministic physicochemical descriptors / Morgan-Tanimoto similarity
   -> ADMET or verified target/pocket workflow
   -> ligand/receptor state preparation
   -> Vina poses
@@ -114,6 +123,15 @@ User-selected structure
 Every tool result retains molecule scope, canonical SMILES, InChIKey, target/pocket artifacts,
 preparation provenance and role order. Predictions remain computational evidence. The Agent uses
 them to adjust a recommendation while preserving medicinal-chemistry judgment.
+
+The project-contained `chemistry` MCP exposes deterministic RDKit descriptors,
+explicit-reference Morgan similarity, target-aware ChEMBL known-active similarity and RCSB PDB
+co-crystal ligand matching through stable capability IDs. These calls support drug-likeness
+checks, novelty triage and target-conditioned virtual-screening prioritization. Retrieved records
+retain target or PDB resolution, activity filters, chemical-component identity and provenance.
+Similarity remains a retrieval signal and does not establish affinity. Optional pKa/logD
+predictors and learned molecular proxy models remain deferred until their dependencies and live
+execution are verified.
 
 ## Repository surfaces
 

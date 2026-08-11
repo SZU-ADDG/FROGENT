@@ -16,7 +16,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import matplotlib.pyplot as plt
+import matplotlib.patheffects as path_effects
 import numpy as np
+from matplotlib.colors import TwoSlopeNorm
 
 from score_clean_ten_model_panel import SOURCE_ROOT, score
 
@@ -230,44 +232,125 @@ def _plot(summary: dict[str, Any], output_root: Path) -> None:
         if isinstance(row["delta"], (int, float)):
             matrix[model_index[row["model_id"]], task_index[row["task"]]] = row["delta"]
 
-    fig = plt.figure(figsize=(15, 9), constrained_layout=True)
-    grid = fig.add_gridspec(1, 2, width_ratios=[1.05, 1.8])
+    plt.rcParams.update({
+        "font.family": "sans-serif",
+        "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans"],
+        "font.size": 9,
+        "axes.titlesize": 11,
+        "axes.labelsize": 9.5,
+        "xtick.labelsize": 8.5,
+        "ytick.labelsize": 8.5,
+        "legend.fontsize": 8.5,
+        "svg.fonttype": "none",
+        "pdf.fonttype": 42,
+    })
+    fig = plt.figure(figsize=(15.8, 8.7), constrained_layout=True)
+    grid = fig.add_gridspec(1, 2, width_ratios=[1.0, 2.2])
     ax0 = fig.add_subplot(grid[0, 0])
     y = np.arange(len(models))
     width = 0.36
-    ax0.barh(y - width / 2, [np.nan if value is None else value for value in direct],
-             height=width, label="Direct model", color="#6E88A8")
-    ax0.barh(y + width / 2, [np.nan if value is None else value for value in frogent],
-             height=width, label="Same model + FROGENT", color="#D46A4C")
+    direct_bars = ax0.barh(
+        y - width / 2,
+        [np.nan if value is None else value for value in direct],
+        height=width,
+        label="Direct model",
+        color="#4E79A7",
+    )
+    frogent_bars = ax0.barh(
+        y + width / 2,
+        [np.nan if value is None else value for value in frogent],
+        height=width,
+        label="FROGENT",
+        color="#E76F51",
+    )
     ax0.set_yticks(y, names)
     ax0.invert_yaxis()
     ax0.set_xlim(0, 1)
     ax0.set_xlabel("Macro mean across eight tasks")
     ax0.set_title("System-level model effect")
-    ax0.grid(axis="x", alpha=0.25)
+    ax0.grid(axis="x", color="#D9D9D9", linewidth=0.7)
+    ax0.set_axisbelow(True)
     ax0.legend(loc="lower right", frameon=False)
+    ax0.bar_label(direct_bars, fmt="%.2f", padding=2, fontsize=7.2, color="#273444")
+    ax0.bar_label(frogent_bars, fmt="%.2f", padding=2, fontsize=7.2, color="#6A2818")
+    ax0.text(
+        -0.16,
+        1.035,
+        "a",
+        transform=ax0.transAxes,
+        fontsize=12,
+        fontweight="bold",
+        va="bottom",
+    )
 
     ax1 = fig.add_subplot(grid[0, 1])
-    image = ax1.imshow(matrix, aspect="auto", cmap="RdBu_r", vmin=-0.5, vmax=0.5)
+    norm = TwoSlopeNorm(vmin=-0.5, vcenter=0.0, vmax=0.5)
+    image = ax1.imshow(matrix, aspect="auto", cmap="RdBu_r", norm=norm)
     ax1.set_yticks(np.arange(len(models)), names)
     short_tasks = [
         "Knowledge", "Known drugs", "Known targets", "Properties",
         "Screening", "Mechanism", "Design", "Retrosynthesis",
     ]
-    ax1.set_xticks(np.arange(len(tasks)), short_tasks, rotation=42, ha="right")
+    ax1.set_xticks(np.arange(len(tasks)), short_tasks, rotation=36, ha="right")
     ax1.set_title("FROGENT − direct score by task")
+    ax1.set_xticks(np.arange(-0.5, len(tasks), 1), minor=True)
+    ax1.set_yticks(np.arange(-0.5, len(models), 1), minor=True)
+    ax1.grid(which="minor", color="white", linewidth=1.4)
+    ax1.tick_params(which="minor", bottom=False, left=False)
     for row in range(matrix.shape[0]):
         for column in range(matrix.shape[1]):
             value = matrix[row, column]
             if math.isfinite(value):
-                ax1.text(column, row, f"{value:+.2f}", ha="center", va="center",
-                         fontsize=7, color="black")
-    fig.colorbar(image, ax=ax1, shrink=0.72, label="Paired score delta")
-    fig.suptitle("Base-model performance before and after FROGENT", fontsize=16)
+                rgba = image.cmap(image.norm(value))
+                luminance = 0.2126 * rgba[0] + 0.7152 * rgba[1] + 0.0722 * rgba[2]
+                dark_background = luminance < 0.52
+                text_color = "white" if dark_background else "#111111"
+                halo_color = "#202020" if dark_background else "white"
+                annotation = ax1.text(
+                    column,
+                    row,
+                    f"{value:+.2f}",
+                    ha="center",
+                    va="center",
+                    fontsize=8.2,
+                    fontweight="semibold",
+                    color=text_color,
+                )
+                annotation.set_path_effects([
+                    path_effects.Stroke(linewidth=1.6, foreground=halo_color),
+                    path_effects.Normal(),
+                ])
+    colorbar = fig.colorbar(
+        image,
+        ax=ax1,
+        shrink=0.76,
+        pad=0.025,
+        ticks=[-0.5, -0.25, 0.0, 0.25, 0.5],
+    )
+    colorbar.set_label("Paired score delta (FROGENT − direct)")
+    ax1.text(
+        -0.075,
+        1.035,
+        "b",
+        transform=ax1.transAxes,
+        fontsize=12,
+        fontweight="bold",
+        va="bottom",
+    )
+    fig.suptitle(
+        "Base-model performance before and after FROGENT",
+        fontsize=15,
+        fontweight="semibold",
+    )
     figure_root = output_root / "figure"
     figure_root.mkdir(parents=True, exist_ok=True)
     for suffix in ("png", "pdf", "svg"):
-        fig.savefig(figure_root / f"paired-model-frogent-effect.{suffix}", dpi=300)
+        fig.savefig(
+            figure_root / f"paired-model-frogent-effect.{suffix}",
+            dpi=600 if suffix == "png" else None,
+            facecolor="white",
+            bbox_inches="tight",
+        )
     plt.close(fig)
 
 

@@ -39,7 +39,7 @@ outputs and benchmark-specific scorers are supplied.
 | Virtual Screening | 20 groups; reported 6/20 | Twenty receptor structures and 11 candidates per group; row 13 lacks the exact gold stereochemistry although one candidate has matching connectivity; DAVIS identifies the exact JAK2 active moiety; independent DAVIS–ABL1 tool-fidelity result retained | Original attempted 20 and exact-valid denominator 19; one separately reported corrected replacement cell is available | Requires a frozen receptor preparation/grid/ranking protocol; original row remains a failure and the corrected cell is explicitly post-hoc |
 | Binding Mechanism | 20 items; aggregate operation absent | Twenty ligand/protein pairs, reference interaction outputs and receptor-only PDBs; independent docking/PLIP panels reported separately | Original headline `not_measured`; pose-generation rerun required before PLIP-like analysis | Gold ligand poses, original outputs, component aggregation and scorer are absent |
 | Molecular Design | 20 items; reported 32 with missing unit | Shared generate-five prompt and 20 pocket PDBs received; CBGBench and Forge–Gauge reported separately | Original headline `not_measured`; exact-pocket exposed rerun eligible | Requires original outputs, seeds and QED/SA/Vina aggregation |
-| Retrosynthesis Planning | 20 items; reported 74 with missing unit | Twenty exposed targets/reference routes; DirectMultiStep flash/explorer completed 40/40 exact-case calls | Flash/explorer exact reference-route match 0.20/0.30; original accuracy `not_measured` | All calls target-rooted/RDKit-valid; exact alternative routes await blind semantic adjudication; original outputs/judge records absent |
+| Retrosynthesis Planning | 20 items; reported 74 with missing unit | Twenty exposed targets and existing human-judged reference routes; DirectMultiStep flash/explorer completed 40/40 exact-case calls | Flash/explorer exact reference-route match 0.20/0.30; original accuracy `not_measured` | All calls target-rooted/RDKit-valid; report exact/recall/precision against the existing gold, with no new human adjudication |
 
 ## Proposed Results paragraph
 
@@ -76,7 +76,7 @@ DirectMultiStep/FragGen provider panel supports current executability and output
 not recover the original retrosynthesis accuracy without the original outputs and rubric. On the
 20 exposed cases, flash/explorer completed 40/40 calls. Full canonical reference-route exact match
 was 0.20/0.30 and mean top-5 best reference-reaction recall was 0.572/0.738. Alternative-route
-equivalence remains pending blind adjudication.
+equivalence outside the supplied gold is not scored and is not labelled chemical failure.
 
 ## Point-by-point response blocks
 
@@ -128,11 +128,11 @@ sample-level inputs are supplied; unsupported original values are removed in the
 **Response.** The current live provider panel establishes executability, target-rooted nonempty
 routes, RDKit-valid molecular strings and repeat stability. It does not establish the submitted
 retrosynthesis accuracy. Twenty exposed targets and reference routes are now available. The
-original model outputs, failure rows, route-equivalence rubric, judge prompt/version and per-case
-decisions remain absent. We therefore mark the original accuracy `not_measured` and retain the
-independently verified reliability result. A post-hoc rerun will use a frozen automatic rule where
-possible and blinded dual adjudication for semantic route equivalence. The deterministic phase is
-complete: 40/40 flash/explorer calls were nonempty, target-rooted and RDKit-valid; full exact
+original model outputs, failure rows and original score aggregation remain absent. We therefore
+mark the original accuracy `not_measured` and retain the independently verified reliability result.
+The current panel uses the supplied, previously human-judged reference routes as gold and requires
+no new adjudication. The deterministic phase is complete: 40/40 flash/explorer calls were
+nonempty, target-rooted and RDKit-valid; full exact
 reference-route match was 0.20/0.30, with higher reference-reaction recall for explorer.
 
 ### R2-1a, R2-3c and R2-7a/b / task names, maxima and score interpretation

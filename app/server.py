@@ -1,12 +1,10 @@
 """Maintained Flask surface for the FROGENT Agent."""
-
 import importlib
 import logging
 from io import BytesIO
 from datetime import datetime
 from pathlib import Path
 from uuid import uuid4
-
 from flask import Flask, Response, jsonify, request, send_file, send_from_directory, session
 from flask import stream_with_context
 from werkzeug.utils import secure_filename
@@ -56,11 +54,9 @@ def _register_routes(web, state, app_root):
     @web.get("/")
     def index():
         return (app_root / "templates" / "index.html").read_text(encoding="utf-8")
-
     @web.get("/assets/<path:filename>")
     def assets(filename):
         return send_from_directory(app_root / "assets", filename)
-
     @web.post("/api/register")
     def register():
         payload = _payload()
@@ -77,7 +73,6 @@ def _register_routes(web, state, app_root):
             LOGGER.exception("user registration failed")
             return jsonify(success=False, message="注册失败")
         return jsonify(success=True, message="注册成功")
-
     @web.post("/api/login")
     def login():
         payload = _payload()
@@ -100,7 +95,6 @@ def _register_routes(web, state, app_root):
             user_id=user_id,
             chat_sessions=chats,
         )
-
     @web.post("/api/logout")
     def logout():
         user_id = session.get("user_id")
@@ -108,7 +102,6 @@ def _register_routes(web, state, app_root):
             sessions.pop(user_id, None)
         session.clear()
         return jsonify(success=True, message="已成功注销")
-
     @web.post("/api/chat_history")
     def chat_history():
         payload, user_id = _payload(), _session_user(sessions)
@@ -121,7 +114,6 @@ def _register_routes(web, state, app_root):
         result = dict(chat)
         result.update(split_files(models, user_id, chat_id, state["uploads"]))
         return jsonify(success=True, messages="获取消息成功", chat_session=result)
-
     @web.post("/api/chat")
     def chat():
         user_id = _session_user(sessions)
@@ -150,7 +142,6 @@ def _register_routes(web, state, app_root):
             mimetype="text/event-stream",
             headers={"Cache-Control": "no-cache"},
         )
-
     @web.post("/api/upload")
     def upload():
         user_id = _session_user(sessions)
@@ -177,7 +168,6 @@ def _register_routes(web, state, app_root):
                 }
             )
         return jsonify(success=True, message="文件上传成功", files=uploaded)
-
     @web.post("/api/change_chat_file")
     def change_chat_file():
         payload, user_id = _payload(), _session_user(sessions)
@@ -188,7 +178,6 @@ def _register_routes(web, state, app_root):
             is_clear=payload.get("is_clear"), is_visible=payload.get("is_visible")
         )
         return jsonify(success=bool(changed), message="更新成功" if changed else "更新失败")
-
     @web.get("/api/files/<int:file_id>/download")
     def download_chat_file(file_id):
         user_id = _session_user(sessions)
@@ -207,7 +196,6 @@ def _register_routes(web, state, app_root):
             download_name=download_name,
             max_age=0,
         )
-
     @web.get("/api/chats/<path:chat_id>/report.<format_name>")
     def download_chat_report(chat_id, format_name):
         user_id = _session_user(sessions)

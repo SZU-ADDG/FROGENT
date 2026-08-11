@@ -2,8 +2,9 @@
 
 Date: 2026-08-04
 
-Status: working draft. Results are frozen to the MDockPeP2 historical audit, ADCP formal
-reference-redocking panel, ESMFold reference/prediction panels and AlphaFold 3 GLP1R-ECD panel.
+Status: evidence-complete working draft. Results include the MDockPeP2 historical audit and
+direct licensed reference-redocking panel, ADCP formal reference-redocking panel, ESMFold
+reference/prediction panels and AlphaFold 3 GLP1R-ECD panel.
 Final section, table, page and line numbers remain `to verify`.
 
 ## AC-facing conclusion
@@ -21,7 +22,7 @@ ranking and substantial cross-provider pose disagreement retained explicitly.
 | Sequence-to-complex prediction | ESMFold | GLP1R extracellular-domain sequence plus peptide sequence | Predicted receptor–peptide coordinates, pTM and pLDDT | Three public short-peptide reference complexes; cross-seed pose comparison | Supplementary structural signal; not a docking engine or experimental structure |
 | Sequence-to-complex prediction | AlphaFold 3 | GLP1R extracellular-domain sequence plus one of eight peptide sequences | Predicted complex, pair-ipTM/ipTM and pLDDT | Semaglutide-to-4ZGM sequence-mapped coordinate/contact check; AF3–ESMFold pose comparison | Supplementary prioritization signal; only Semaglutide has a mapped coordinate reference in this panel |
 | Peptide docking | ADCP 1.1.21 (`adcp` 0.0.25) | AGFR target prepared from 3GBQ, 1CKB or 1ABO plus peptide sequence | 100 ranked poses per task | Backbone/CA RMSD and native-contact recovery for 3 complexes × 3 seeds | Formal reference-redocking evidence; top-1 ranking is weak and top-k recovery is partial |
-| Peptide docking | MDockPeP2 | Historical GLP1R/glucagon FASTA inputs and receptor setup | Ranked models and hybrid scores | Native-frame and superposed peptide CA RMSD | Historical negative audit plus provider-operability canary; prospective accuracy remains unavailable because the live service has unsafe process-global CWD/relative-path behavior |
+| Peptide docking | MDockPeP2 v0.1 + Modeller 9.13 | Historical GLP1R/glucagon inputs plus 3GBQ, 1CKB and 1ABO | Ranked models and hybrid scores | Receptor-frame and superposed peptide CA RMSD | Historical negative audit retained; direct licensed panel completed 3/3 with inconsistent top-1 ranking and limited best-of-100 recovery |
 
 ## Proposed Methods paragraph
 
@@ -32,12 +33,15 @@ ADCP panel used receptor grids prepared from three deposited peptide–protein c
 1CKB and 1ABO), three seeds per complex, 100 replicas per task and 8–10 million sampling steps per
 replica. Predictions were scored in the deposited-receptor coordinate frame using peptide
 backbone/CA RMSD and native-contact recovery at 4.5 Å. The MDockPeP2 evidence comprises a read-only
-audit of three historical glucagon runs and one preregistered live MCP canary. The historical
+audit of three historical glucagon runs, one preregistered live MCP canary and a direct licensed
+reference-redocking panel on 3GBQ, 1CKB and 1ABO. The historical
 inputs contained FASTA sequence files and no separate experimentally derived secondary-structure
 constraint file was identified. The canary used the verified endpoint without exporting the
 third-party Modeller license assignment; it failed before MDockPeP2/Modeller execution because the
 long-lived provider process had a drifted global working directory and could not resolve its
-relative entrypoint/output. ESMFold was
+relative entrypoint/output. The direct panel invoked the existing read-only MDockPeP2 v0.1 code
+and licensed Modeller 9.13 from isolated per-case workdirs, using 20 peptide conformers, eight CPUs
+and 100 requested clustered modes per complex. ESMFold was
 evaluated on 24 GLP1R-ECD candidate runs and nine runs across the three public reference
 complexes. AlphaFold 3 was evaluated on eight GLP1R-ECD–peptide jobs; Semaglutide was the only
 candidate with a sequence-mapped 4ZGM coordinate reference. All sequence-to-complex and docking
@@ -52,8 +56,12 @@ three historical MDockPeP2 glucagon runs contained 25,000 scores and 3,000 retai
 reached native-frame peptide CA RMSD ≤2 Å, and the best superposed value was 2.721 Å. The live
 MDockPeP2 canary returned missing `Sampling_scores_all.txt`; inspection showed that the server had
 nested its process-global working directory and the MDockPeP2 entrypoint was never launched. This
-measures provider operability only and leaves license validity and prospective docking accuracy
-`not_measured`. ESMFold
+measures the historical endpoint operability only. Direct licensed execution subsequently
+completed 3/3 reference complexes with 2,000 sampling records and 100 clustered poses per case.
+For 3GBQ/1CKB/1ABO, top-ranked receptor-frame peptide CA RMSD was
+2.479/13.546/17.123 Å, best-of-100 RMSD was 2.225/2.336/4.564 Å, and runtime was
+575.86/455.41/515.20 s. Execution was reproducible and near-native candidates occurred for two
+complexes within the ranked set, while top-1 ranking was reliable only for 3GBQ. ESMFold
 completed 9/9 reference runs with mean peptide RMSD 6.526 Å; only 1/3 reference complexes reached
 ≤2 Å. AlphaFold 3 completed 8/8 GLP1R-ECD–peptide jobs with mean pair-ipTM 0.755. Its
 sequence-mapped Semaglutide prediction had receptor-aligned peptide CA RMSD 8.133 Å and native-
@@ -67,7 +75,7 @@ establish binding affinity or broad peptide-docking accuracy.
 | Provider | Formal denominator | Main structural result | Failure or disagreement retained | Usable claim |
 |---|---:|---|---|---|
 | ADCP | 3 complexes × 3 seeds; 100 poses/task | Top-1/top-5/top-10 RMSD 11.262/5.840/4.690 Å; contact recovery 0.271/0.564/0.593 | Native-pose ranking is weak; 29-residue glucagon use lies beyond the established ≤20-residue range | Partial top-k interface recovery on the three reference complexes |
-| MDockPeP2 | 3 historical glucagon runs plus 1 live MCP canary | Best historical superposed CA RMSD 2.721 Å | No historical run reached native-frame CA RMSD ≤2 Å; the canary failed before engine launch because of provider CWD/relative-path drift | Historical audit does not support a near-native claim; prospective accuracy remains `not_measured` pending provider-owner repair |
+| MDockPeP2 | 3 historical glucagon runs, 1 failed endpoint canary and 3 direct reference complexes | Direct top-1 receptor-frame RMSD 2.479/13.546/17.123 Å; best-of-100 2.225/2.336/4.564 Å | No historical run reached native-frame CA RMSD ≤2 Å; the old endpoint failed before engine launch; partial PC-align comparisons aborted for 3GBQ/1CKB | Licensed direct execution and limited top-k recovery; top-ranked pose selection is inconsistent |
 | ESMFold | 24 candidate runs; 9 reference runs | Reference mean RMSD 6.526 Å; 1/3 complexes ≤2 Å | 1ABO mean RMSD 15.914 Å; confidence is not affinity | Sequence-only comparative structure signal |
 | AlphaFold 3 | 8/8 GLP1R-ECD–peptide jobs | Mean pair-ipTM 0.755; Semaglutide RMSD 8.133 Å; contact recall/precision 0.882/0.732 | Only Semaglutide has a mapped coordinate reference; noncanonical chemistry and full-length receptor omitted | Limited confidence/contact-based prioritization signal |
 | AF3 versus ESMFold | 8 matched candidate sequences | Mean receptor-aligned peptide-pose difference 31.513 Å; confidence-rank rho -0.119 | Providers disagree strongly on pose and ranking | Disagreement must reduce confidence and motivate orthogonal validation |
@@ -89,15 +97,16 @@ scoring from being presented as interchangeable operations.
 experimental secondary-structure constraint: the audited inputs contain FASTA sequences, and no
 separate secondary-structure constraint file was identified. We will state this directly and
 remove any implication that the submitted glucagon pose was experimentally constrained. The
-coordinate-grounded validation now includes three public ADCP redocking complexes and three
-public ESMFold reference complexes, together with the negative MDockPeP2 history.
+coordinate-grounded validation now includes three public ADCP redocking complexes, three direct
+MDockPeP2 redocking complexes and three public ESMFold reference complexes, together with the
+negative MDockPeP2 history.
 
 ### R1-9d / peptide capability and completion time
 
 **Response.** The revised manuscript will report terminal task counts and structural accuracy
 rather than treating a completed provider call as evidence of a correct pose. ADCP completed 9/9
-formal tasks, ESMFold completed 24/24 candidate and 9/9 reference runs, and AlphaFold 3 completed
-8/8 jobs. Provider-specific compute telemetry is retained where recorded; a matched end-to-end
+formal tasks, MDockPeP2 completed 3/3 direct reference complexes, ESMFold completed 24/24 candidate
+and 9/9 reference runs, and AlphaFold 3 completed 8/8 jobs. Provider-specific compute telemetry is retained where recorded; a matched end-to-end
 wall-time comparison and private-provider queue time remain `not_measured`. TrioPep is outside the
 active revision scope and is omitted from the evidence denominator, completion criteria and
 conclusions.
@@ -106,24 +115,24 @@ conclusions.
 
 **Response.** We have aligned the manuscript with the providers that were actually verified.
 ADCP is supported by a formal 3-complex × 3-seed reference-redocking panel. MDockPeP2 is supported
-by a read-only historical audit whose negative pose results are reported. We verified a live MCP
-tool and found a redacted Modeller license assignment in the third-party installation; the canary
-failed before MDockPeP2/Modeller execution because the service uses a drifted process-global CWD
-and relative paths. Prospective performance and license validity therefore remain `not_measured`.
-The endpoint will not be batch-run until its owner provides request-local directories, absolute
-entrypoints, CWD restoration and subprocess-error propagation. HADDOCK and pepATTRACT will be
+by both a read-only historical audit and a completed direct licensed 3-complex panel. We retain the
+old MCP canary as a provider-path failure. Direct invocation from isolated workdirs completed all
+three cases, while its top-ranked receptor-frame RMSD was 2.479 Å for 3GBQ and 13.546/17.123 Å for
+1CKB/1ABO; the best-of-100 values were 2.225/2.336/4.564 Å. The revised text reports execution and
+limited top-k recovery together with weak cross-complex ranking. HADDOCK and pepATTRACT will be
 removed because no production installation was verified.
 
 ## Required claim changes
 
 - Retain: integrated peptide workflow, explicit provider routing, ADCP partial top-k interface
-  recovery, negative MDockPeP2 historical audit and AF3/ESMFold prioritization signals.
+  recovery, direct MDockPeP2 execution with inconsistent ranking, its negative historical audit,
+  and AF3/ESMFold prioritization signals.
 - Narrow: all structure claims to the tested receptor constructs, sequences, references and
   chemistry representations.
 - Remove: broad peptide-docking accuracy, binding-affinity prediction, full-length GLP1R,
   experimentally constrained glucagon secondary structure and unverified HADDOCK/pepATTRACT.
-- `not_measured`: prospective MDockPeP2 accuracy and license validity, matched provider wall-time,
-  private queue time and noncanonical Aib/lipid-spacer effects. TrioPep is outside the revision
+- `not_measured`: matched provider wall-time, private queue time and noncanonical Aib/lipid-spacer
+  effects. TrioPep is outside the revision
   scope and is not treated as an unmeasured manuscript endpoint.
 
 ## Frozen evidence sources
@@ -131,6 +140,8 @@ removed because no production installation was verified.
 - `runtime/evaluation/revision-20260731/gpu-final/mdockpep2/HISTORICAL_AUDIT.md`
 - `runtime/evaluation/revision-20260731/gpu-final/mdockpep2/historical-audit-results.json`
 - `runtime/evaluation/revision-20260804/mdockpep2-live-endpoint-canary-r01/protocol/protocol.json`
+- `runtime/evaluation/revision-20260807/mdockpep2-reference-redocking-r01/final-manifest.json`
+- `runtime/evaluation/revision-20260807/mdockpep2-reference-redocking-r01/analysis/analysis.json`
 - `/work/doomx/FROGENT/runtime/evaluation/revision-20260804/mdockpep2-live-endpoint-canary-r01/logs/tool-call.sse` (remote frozen evidence)
 - `/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-final/adcp-reference-formal-r01-score-r01/summary.json` (remote frozen evidence)
 - `runtime/evaluation/revision-20260731/gpu-final/esmfold-glp1r/REFERENCE_REPORT.md`

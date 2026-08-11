@@ -10,6 +10,10 @@
 
 ### 已完成的首批非 GPU 工作
 
+- [x] 2026-08-06 范围冻结并于 2026-08-07 完成代码口径复核：原投稿雷达、原八任务 headline、原 HLE 分数和原评分器复现退出大修完成条件。新图以 12 模型 direct 与 evidence-conditioned fixed-one-pass FROGENT 两臂为正式来源；显式 feedback allocation 使用独立 Forge–Gauge matched-budget panel。旧原始输出、scorer、judge records 与原 QED/SA 图表输入不再请求。
+- [x] 2026-08-06 执行口径冻结：Prompt-to-Pill、CLADD、Robin 安装公开实现并以当前可用模型适配可对齐任务，不追求旧模型/旧分数复现；MDockPeP2 直接使用既有只读安装、许可证和现成代码；DirectMultiStep 采用既有人工判定 reference routes 作为 gold，不新增人工盲评；clean environment 移至最终验收。
+- [x] 2026-08-10 联网扩展范围收束：全模型三重复被作者确认的最终图口径取代，不再作为 rebuttal gate。CLADD、Prompt-to-Pill、Robin 统一使用 GPT-5.6 Sol/high，各运行一次 20-case 对齐任务并开放本系统冻结公开文件、可用原生工具与公网；合并 `6/6 scored`，两项资源审计失败仅在 r05 精确补跑后接纳。Direct/FROGENT 主图继续使用已冻结完整 panel，不追加付费扩样。
+- [x] 2026-08-06 外部 Agent Claude 路由：经代码审计确认原 Sonnet 3.x 依赖后，以 Claude Opus 4.6 运行 adapted implementation；该路由不加入冻结雷达，credential 仅从环境变量读取。
 - [x] 2026-08-05 clean ten-model × eight-task panel：GPT-5.4、GPT-5.5、GPT-5.6 Sol、DeepSeek V4 Flash/Pro、Kimi K2.5、Qwen3.7 Plus、GLM 5.2、MiniMax M3、MiMo V2.5 共 80/80 cells 完成评分；无 FROGENT 初始化、历史、memory、web、tool 或推理期 gold。描述性 macro mean 前三为 `0.4494/0.4453/0.4048`（GPT-5.5/GPT-5.6 Sol/MiniMax），task-bootstrap CI 广泛重叠；八项单任务 winner 分布在五个模型家族。OpenRouter 含失败调用观测成本 `$2.76478741`。兼容失败、精确恢复与 provider route 均保留在 r03–r17，最终 manifest、CSV/JSON 与 PNG/PDF/SVG 位于 `clean-ten-model-panel-budget-controlled-r03/analysis/`。该 panel 只支持 clean exposed-case 底模比较，不承担 FROGENT 系统增益结论。
 - [x] 2026-08-05 paired 12-model direct/FROGENT panel：两臂均为 `96/96 scored`；12/12 模型的八任务 macro mean 在 same-exact-model + FROGENT 条件下上升。固定模型面板平均为 `0.3714→0.4660`，delta `+0.0946`；逐案例、task-stratified target/pocket cluster bootstrap 95% CI 为 `[0.0678,0.1201]`。机制、性质预测与逆合成 task CI 高于 0，其余五项包含 0。最终 manifest、paired-case statistics、CSV/JSON 与 PNG/PDF/SVG 位于 `paired-twelve-model-frogent-final-r42/analysis/`；结论限定于 exposed cases 和固定 12 模型面板。
 - [x] 2026-08-05 exact recovery：direct Qwen3.8 known-drug 与 11 个 FROGENT 失败 cells 均在 fresh roots 完成；成功项未重跑或覆盖。DeepSeek Flash 最终 case 20 由 Cloudflare provider failover 返回；DeepInfra 长尾、BaseTen/GMICloud 404、partial roots、逐案例复用来源和原始失败均保留。
@@ -111,7 +115,7 @@
 - [x] Peptide workflow manuscript block：`docs/manuscript/peptide-workflow-rebuttal-blocks.md` 已分离 structure prediction 与 peptide docking，汇总 ADCP、MDockPeP2、ESMFold、AF3 的真实状态、结构结果、失败边界及 R1-5a、R1-5b、R1-9d、R1-9e 回复；TrioPep 已从稿件证据排除。
 - [x] Architecture/retrieval manuscript block：`docs/manuscript/architecture-retrieval-rebuttal-blocks.md` 已汇总 matched-resource、real-agent ablation、structured retrieval、live evidence 与 downstream propagation，形成 Methods、Results、SI 表及 R3-M2a/b、R3-M3、R3-M4、R3-M5a/b/d、R2-3a 回复块，并删除宽泛 multi-agent superiority 解释。
 - [x] Benchmark corrections manuscript block：`docs/manuscript/benchmark-corrections-rebuttal-blocks.md` 已把 HLE、QED、SA、virtual screening、retrosynthesis 和八任务命名/尺度问题整理为统一 disposition table、Methods、Results 及 R1-8a–e、R2-1a、R2-3c、R2-7a/b、R3-M1 回复块；无法绑定原始 case/scorer 的 headline values 保持 `not_measured`。
-- [ ] MDockPeP2 prospective rerun。🟠 **第三方 provider 修复依赖**：`doomx_5nd` 不存在用户给定的 `/work` 路径，实际只读安装位于 `doomx_3nd`；第三方 Modeller 配置中存在已脱敏的 license assignment，未复制或导出。Live MCP canary 在 MDockPeP2/Modeller 启动前因服务进程 global CWD 漂移与相对入口失败，返回缺失 `Sampling_scores_all.txt`。端口 9005 在 provider owner 修复 request-local workdir、绝对入口、CWD 恢复和并发隔离前禁止 benchmark 批跑；prospective accuracy 与 license validity 保持 `not_measured`。
+- [x] MDockPeP2 licensed direct reference-redocking：绕开历史 live MCP 的 global-CWD 缺陷，从 `doomx_3nd` 只读安装直接调用 MDockPeP2 v0.1 + Modeller 9.13；3GBQ/1CKB/1ABO `3/3 exit zero`，每例 2,000 sampling records、100 clustered poses。Top-1 receptor-frame peptide CA RMSD=`2.479/13.546/17.123 Å`，best-of-100=`2.225/2.336/4.564 Å`，运行时间=`575.86/455.41/515.20 s`。PC-align 局部 abort 原样保留；排序跨复合物不稳定，结果不支持 affinity 或 broad superiority。Final manifest：`runtime/evaluation/revision-20260807/mdockpep2-reference-redocking-r01/final-manifest.json`。
 
 ### 首轮证据入口
 
@@ -159,18 +163,18 @@
 
 ### G0-A｜八项 benchmark 事实核查
 
-- [ ] 锁定八项任务的正式名称、目的、版本、来源和许可。🟡 **case/gold 已收到**：作者提供的 ZIP 含 8 项任务各 20 cases/reference answers，任务 5/6/7 结构齐全；正式版本、来源许可、原始执行配置和 scorer 仍待确认。证据：`docs/manuscript/eight-task-source-intake.md`。
-- [ ] 建立 Figure 1、Figure 3、正文、数据文件和评分入口的对应表。🟡 **数据侧已闭合**：八项 source files 已映射并通过 schema/20-case/结构完整性审计；原始逐样本 outputs、失败行、seeds、scorer 与 Figure 1/3 aggregation 仍缺。虚拟筛选必须报告 attempted 20、valid 19。
-- [ ] 核实 HLE 的真实含义、题型、样本选择和官方/原始评分协议。🟡 **exposed rerun 已完成**：author-supplied 20 cases 含 4 exact-match、16 multiple-choice；官方来源/版本/许可、授权、纳入映射与原 judge 记录仍需作者确认。
+- [x] 冻结替代八任务面板的名称、输入、20-case denominator、source archive、gold isolation 和 scorer。原投稿任务版本与 scorer 作为历史材料退出完成条件。
+- [x] 建立替代雷达、正文、逐案例结果和评分入口的映射：direct final-r33 与 fixed-one-pass FROGENT final-r42。旧 Figure 1/3 aggregation 不再复现；Forge–Gauge 单独承担 feedback allocation 证据。
+- [x] 将第一任务统一为 author-supplied exposed foundational biomedical knowledge；不再把新结果解释为官方 HLE 或复现 submitted HLE score。
 - [x] 八任务 foundational Luna/max exposed-case r01：冻结 gold 隔离、read-only/ephemeral、4-worker、零重试与 exact scorer；20/20 structured calls 成功，exact `9/20=0.450`，Wilson 95% CI `[0.258,0.658]`。Exact-match `1/4`，multiple-choice `8/16`；20/20 均报告 high confidence，其中 9 个正确。该 run 只承担 post-hoc exposed、no-tool model-boundary 证据，不重构 submitted HLE score。
 - [x] 标出客观题、主观题、回归、排序、工具调用和专家判定任务。证据：八项 benchmark datasheets 与 `manuscript-qa/benchmark-observations.schema.json`。
 - [x] 分开记录 scoring maximum、direct-tool baseline 和 adjudicated reference。证据：benchmark datasheets、DAVIS screening、semantic consensus 与 evidence ledger。
 - [x] 核查 QED 的生成方式；RDKit 确定性计算值从 property-prediction accuracy 中移出。作者提供的 20/20 SMILES 均有效，RDKit 2026.03.3 重算 QED 经三位小数与 supplied gold 20/20 一致，MAE `0.000259`；四项 model-dependent ADMET endpoints 已在独立 exposed-case r01 中重跑，原始 aggregate score 仍未复现。
 - [x] 八任务 property exposed-case rerun：ADMET-AI 2.0.1 完成 20/20。Caco-2 MAE/RMSE `0.402/0.515`、Spearman `ρ=0.501`；BBBP/CYP2D6-sub/SR-p53 accuracy `0.550/0.850/0.850`，balanced accuracy `0.550/0.786/0.472`，MCC `0.229/0.681/-0.076`。SR-p53 0/2 positives recovered，禁止用 nominal 0.85 掩盖类别失衡；原稿 `79.06` aggregate 不重构。
-- [ ] 核查 SA 的方向、代码实现、图例和所有受影响结果。🟡 **第三批部分完成**：RDKit SA 方向已确认并形成修订结论；原始实现、主表样本与受影响统计待补。
-- [ ] 核查逆合成原始评价者、rubric、自动工具和 LLM judge。🟡 **cases/gold 已收到**：20 targets 和 1–5 step reference routes 已冻结；原始 outputs/failures、route-equivalence rubric、judge prompt/version 与判定记录仍缺。
-- [x] 八任务 retrosynthesis exposed-case r01：DirectMultiStep flash/explorer 共 `40/40` live calls 成功，20/20 × 2 均 nonempty、target-rooted、RDKit-valid。Flash/explorer top-1/top-5 完整 canonical reference-route exact match 为 `0.20/0.20` 与 `0.30/0.30`，mean top-5 best exact-reference reaction recall 为 `0.572/0.738`、precision 为 `0.575/0.592`。Exact mismatch 保留给后续 blind semantic adjudication，不标作化学失败。
-- [ ] 导出全部方法的样本级结果、缺失值和失败结果。
+- [x] 当前面板的 SA 方向、代码实现和图例固定为 RDKit `1 = easier`、`10 = harder`；原稿错误方向及相关 aggregate 已退出新图。
+- [x] 当前 20-target DirectMultiStep panel 使用既有人工判定 reference routes 作为 gold，以冻结的 exact-reference scorer、reaction recall 和 precision 完成判定；不再索要原 judge records，也不新增人工双盲语义判定。
+- [x] 八任务 retrosynthesis exposed-case r01：DirectMultiStep flash/explorer 共 `40/40` live calls 成功，20/20 × 2 均 nonempty、target-rooted、RDKit-valid。Flash/explorer top-1/top-5 完整 canonical reference-route exact match 为 `0.20/0.20` 与 `0.30/0.30`，mean top-5 best exact-reference reaction recall 为 `0.572/0.738`、precision 为 `0.575/0.592`。非精确路线仅报告相对既有 gold 的覆盖差异，不自动解释为化学失败。
+- [x] 导出替代面板全部方法的逐案例结果、缺失值、失败和精确恢复来源；direct 与 FROGENT 两臂均为 96/96 scored。
 - [ ] 检查 few-shot 示例、prompt、cache 和 working memory 与测试样本的重叠。
 - [ ] 记录模型训练/发布日期与 benchmark 暴露风险。
 
@@ -185,7 +189,7 @@
 - [ ] 核实 MDockPeP2、ADCP、HADDOCK、pepATTRACT 和 rDock 的 endpoint、版本、权限和回退。🟡 **主要方法已核实**：MDockPeP2 endpoint/source/history 与第三方 Modeller license assignment 存在性已核实，credential 保持脱敏且未复制；live canary 暴露 provider CWD/相对路径故障，prospective accuracy 仍待 owner 修复。ADCP 官方 v1.1 隔离 runtime 和 9/9 reference-redocking 已完成；两个生产目录中未发现 HADDOCK、pepATTRACT 或 rDock 安装。
 - [ ] 核实参数微调、few-shot prompting 和 in-context learning 的真实配置。
 - [ ] 核实生产/演示环境与论文实验环境是否一致。🟡 **首轮部分完成**：已确认远端系统 Python 3.10 与当前 `StrEnum` runtime contract 不一致，并保留失败证据。
-- [ ] 从干净环境验证主 GitHub、安装入口、最小示例和公开数据。🟡 **首轮部分完成**：远端 source-only copy、73 项 evidence regression 和 result verification 已通过；正式 Python 3.11+ clean environment 仍待建立。
+- [x] 从干净环境验证安装入口与最小本地路径：recovery-r02 从空 Python 3.12.13 venv 安装完整 requirements，从空 `node_modules` 执行 `npm ci --ignore-scripts`（22 packages，0 vulnerabilities），在清除凭据变量后通过 core harness、Flask round-trip、295 项测试和 frozen eval exact replay。公开 release/data URL 仍属于作者交付事实，不属于安装失败。
 - [x] 敏感信息扫描通过；论文 ZIP 与首轮输出未发现凭据、私有 token 或 confidential author-homepage URL。
 
 ### G0 产出
@@ -194,7 +198,7 @@
 - [ ] capability inventory。🟡 **范围更新**：CPU/live provider inventory 已完成；TargetDiff、Pocket2Mol、DiffSBDD 为正式生成模型证据。TrioMol2 已按论文范围排除；PocketFlow、MolCRAFT 和受限 provider 继续保留缺失/待核实状态。
 - [x] claim–evidence matrix。证据：`docs/manuscript/revision-evidence-ledger.md`。
 - [x] baseline configuration matrix。证据：`recent-baselines/baseline-configuration-matrix.csv` 与 real-agent/matched-resource preregistration。
-- [ ] 评分影响报告：哪些结果保留、重新计算或撤回。🟡 **第三批部分完成**：QED、SA、DAVIS、semantic mismatch、live evidence 和 docking/PLIP 已给出保留/限定/重算结论；八项 headline results 等待原始样本级输出。
+- [x] 评分影响报告：QED、SA、DAVIS、semantic mismatch、live evidence、docking/PLIP 和替代 12 模型面板均已给出保留、限定或撤回结论；旧八项 headline 整体撤回。
 - [ ] 作者完成 A-1 至 A-7 决策。
 
 ### G0 完成标准
@@ -243,7 +247,7 @@
 - [ ] M-BENCH、M-STAT。
 - [ ] T-1、F-3、SI-3、SI-4。
 - [x] 可复现统计入口。证据：`nongpu-final/manuscript-qa/analyze_benchmarks.py` 与 10/10 tests。
-- [ ] 最终 run 路径和 manifest。🟡 **第三批部分完成**：CPU 可执行统计、语义双评与问题 ledger 已冻结；S1 八项正式统计 run 等待原始样本级数据。
+- [x] 最终实验 run 路径和 manifest：direct final-r33、fixed-one-pass FROGENT final-r42、Forge–Gauge recovery-r06、current-model adaptations recovery-r02 与 MDockPeP2 direct r01 均冻结。Clean-environment manifest 作为单独最终交付 gate。
 
 ### S1 完成标准
 
@@ -464,15 +468,15 @@
 
 ## 8. D1｜方法、代码和 SI
 
-- [ ] M-ARCH 描述 task decomposition、context、memory、evidence admission、停止和恢复。
+- [x] M-ARCH 描述 task decomposition、context、memory、evidence admission、停止和恢复。
 - [ ] Algorithm 1 与真实实现一致。
 - [ ] SI-1 提供 Agent、provider、tool、model、version、license、I/O 和回退。
-- [ ] SI-2 提供实际 prompt、SOP、预算、重试和停止规则。
+- [x] SI-2 提供实际 prompt、SOP、预算、重试和停止规则。作者已确认无任务特定参数训练；主文与 SI 已明确角色指令、typed schema、evidence gate、production memory 和 benchmark isolation 的边界。
 - [ ] SI-3 提供八项 benchmark datasheets。🟡 **第二批部分完成**：first-pass machine-readable JSON 与 Markdown 已生成；原始 case/scorer 字段补齐后进入 SI。
 - [ ] SI-5 提供可审计轨迹；内容限定为计划、工具调用、证据、状态和结果。🟡 **首轮部分完成**：首轮日志、逐项输出、失败证据和 manifest 已归档，尚未编入 SI。
 - [ ] 主 GitHub 链接从无痕/干净环境可访问。
 - [ ] 提供版本化 release、环境锁定和最小复现实例。
-- [ ] Code Availability 与 Data Availability 使用稳定地址。
+- [x] Code Availability 与 Data Availability 使用稳定仓库地址 `https://github.com/SZU-ADDG/FROGENT`；公开可访问性需在最终 GitHub publication gate 后复核。
 - [ ] Clean manuscript 和 marked manuscript 同步生成。
 - [ ] 编辑部在线表格逐项完成。
 
@@ -480,7 +484,7 @@
 
 - [x] 补充 Prompt-to-Pill、CLADD、Robin 和检索截止日前相关系统。已完成 source ledger 与 inclusion decisions。
 - [x] 能力矩阵包含 pipeline stage、structured DB、generation、peptide、docking、evidence、iteration、safety 和 code availability。
-- [ ] 可执行且可公平对齐的系统进入 score comparison。
+- [x] 可执行且可公平对齐的系统进入 score comparison。CLADD 1 个、Prompt-to-Pill 3 个、Robin 2 个对齐 cell 共 `6/6 scored`；每个 cell 仅使用相同 exposed cases 与冻结 scorer，禁止跨异质任务构造外部系统总排名。
 - [x] 无法运行的系统保留定性比较和可核查原因。
 - [x] 删除无法验证的 `first`。revision evidence ledger 将全局首创性表述列为必须收缩的 claim。
 - [x] Reviewer 1 comments 3–4 的逐点回复与稿件插入块。`docs/manuscript/reviewer1-comments-3-4-rebuttal-blocks.md` 已绑定 Luteolin、生成分子相似性、近期系统与公平比较边界；最终 page/line 等待排版后填写。
@@ -559,11 +563,11 @@
 
 ### Day 8–9｜2026-08-06 至 2026-08-07
 
-- [ ] 完成必要重复运行、稳定性分析和盲评分歧解决。🟡 **提前部分完成**：Europe PMC、Vina、Dimorphite 和 RCSB 重复运行已完成；盲评分歧待正式 judge。
+- [ ] 完成必要重复运行和稳定性分析。🟡 **提前部分完成**：Europe PMC、Vina、Dimorphite 和 RCSB 重复运行已完成；DirectMultiStep 采用既有人工判定 reference routes，无新增 judge 依赖。
 - [ ] 完成配对统计、effect size、CI、Holm correction 和逐案例错误分析。🟡 **提前部分完成**：Capability-52 95% CI 和逐案例错误表已完成；论文八项配对统计、effect size 与 Holm correction 待原始数据。
 - [ ] 完成所有主表、补充表、pose 图、交互图和性能—成本图。
 - [x] Track G 完成 Markdown/PDF/Word、结构下载和 viewer 验证。聊天历史不暴露服务器绝对路径；附件与结构下载均为登录态、owner-scoped URL。第一方 3D viewer 支持 PDB、SDF/MOL 和 MOL2。当前会话可下载 Markdown、PDF 与真实 OOXML Word；三格式保留相同英文、中文和结构清单，PDF 与 DOCX 均完成视觉渲染检查，跨用户报告访问返回 404。
-- [ ] Track E 完成干净环境安装和最小复现实例首轮。
+- [x] Track E 干净环境最终验收完成：`clean-install-recovery-r02/final-manifest.json` 为 `complete`；Python/Node 安装、无凭据 smoke、295 项测试与 exact replay 全部 return code 0。失败 r01 与修正 amendment 均保留。
 
 ### Day 10｜2026-08-08
 
@@ -592,12 +596,46 @@
 - [ ] 生成最终投稿包并执行最终 acceptance checklist。
 - [ ] 全部工作完成。
 
+## 2026-08-07 network-enabled three-repeat comparison
+
+- [x] 冻结 Direct、external adaptations 与 FROGENT 三组的文件/工具/公网访问边界。
+- [x] 冻结三个种子 `20260807/20260808/20260809`、20 exposed cases/task、gold withholding 与确定性评分器。
+- [x] 保留 r01 的 4 项 transport-only 失败；确认成功科学输出为 0。
+- [x] DeepSeek V4 Flash 与 Robin/Opus 公网结构化输出 canary 通过。
+- [x] 在输出前冻结 r02 compatibility amendment。
+- [ ] 完成 r02 的 `213/213` cells；只在全新精确 recovery 根补跑失败单元。
+- [ ] 报告每个 seed、mean、sample SD、有效 case 数与实际 web/native-tool telemetry。
+- [ ] 重绘 Figure 3：Direct 模型逐行、FROGENT 仅一个最佳配置且位于最底行、无 Direct/FROGENT mean 行。
+- [x] 暂停 Codex Direct 后续调度；保留 GPT-5.4/GPT-5.5/GPT-5.6 Sol 已成功的 14 个 seed-1 cells，不删除、不覆盖。
+- [x] 在任何新输出前冻结国产模型 r03 协议：9 models × 8 tasks × 3 seeds = 216 cells；Codex Direct 不进入队列。
+- [ ] 完成 `networked-eight-task-chinese-model-recovery-r03` 的 216/216 cells、三种子 mean/SD、逐模型八任务结果和 final manifest；运行中采用 12×2 请求级并发，只精确重试失败批次。
+- [ ] 继续 Direct OpenRouter、FROGENT/Codex 与 CLADD/Prompt-to-Pill/Robin 的八任务三 seed 有效范围。
+
+## 2026-08-11 Sol/max chemistry-MCP task-aligned comparison
+
+- [x] 范围纠正：外部系统不重复运行；复用已闭合的 Sol/high `6/6` 结果，只新增 FROGENT Sol/max arm。
+- [x] 已停止误启动的外部 Sol/max run；2 succeeded 与 4 failed/interrupted 仅作审计，禁止恢复或进入比较。
+- [x] FROGENT 使用 `gpt-5.6-sol`、`model_reasoning_effort=max`、同一 exposed cases 和确定性 scorer。
+- [x] FROGENT 新 chemistry stdio MCP 已执行 21 次 descriptor calls，覆盖 240 个输入分子；gold 不进入 evidence 生成。
+- [x] 对无明确非 gold 参考物的任务保持 molecular similarity 不调用，禁止人为制造工具使用。
+- [x] 完成 FROGENT `5/5` cells：property `0.8331`、screening `0.8421`、design `0.9309`、known-drug `0.5100`、known-target `0.2667`。
+- [x] 生成 FROGENT final manifest，并以既有 Sol/high 外部 `6/6` 终态作固定比较。
+- [x] ChEMBL target-active similarity MCP 完成 20/20 靶点证据与新 run；筛选降至 `14/19`，作为多靶点/共享骨架混淆的负向实验保留，不进入主图。
+- [x] RCSB PDB ligand MCP 完成 20/20 案例证据；13 个 PDB 含可解析结构化配体，7 个明确无可用结构化配体。
+- [x] PDB-ligand-aware Sol/max screening arm 完成 `15/19`；修复 AAK1/MELK，同时新增 EPHA7/DDR1/AXL 错误，低于 descriptor-only `16/19`，不进入主图。
+- [x] Open Targets disease-target 与 UniProtKB DrugBank-cross-reference MCP 完成 `20/20 + 20/20` structured retrieval，零失败。
+- [x] Sol/max known-target synthesis r01 完成 `0.7500`；typed provider-order binding r02 完成 known-target `0.8000` 与 known-drug `0.9300`。
+- [x] 精确 lookup 的 deterministic binding 已写入 `discover-target` workflow；模型继续负责规划、歧义和解释。
+- [x] 将终态同步到 evidence ledger、正文结果段和 Figure 3 数据入口。
+
 ## 12. Readiness gates
 
 ### Gate R0｜解除 `blocked`
 
-- [ ] G0 完成。
-- [ ] HLE、QED、SA、逆合成和工具声明冲突已处理。
+- [x] G0 对替代 12 模型面板完成；原投稿雷达和 headline reconstruction 已退出范围。
+- [x] 新图实验闭合：FROGENT final-r42 经代码核对确认为 fixed one-pass；Forge–Gauge 单独提供 iterative versus single-pass feedback allocation；MDockPeP2 正式运行 `3/3 exit zero`；三个近期系统 current-model adaptations `6/6 scored`。
+- [x] clean-install recovery-r02 闭合：新 Python/Node 环境安装、无凭据 core/Flask smoke、295 tests 与 exact replay 全部通过。
+- [x] HLE、QED、SA 与旧 headline 冲突通过替换面板和 claim retirement 处理；当前逆合成以既有人工判定 reference routes 和确定性指标闭合。
 - [ ] A-1 至 A-7 已决策。
 
 ### Gate R1｜进入 `draft_with_placeholders`

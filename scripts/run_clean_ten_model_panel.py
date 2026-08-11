@@ -9,6 +9,7 @@ import csv
 import hashlib
 import json
 import os
+import random
 import re
 import subprocess
 import threading
@@ -89,7 +90,9 @@ def _pdb_excerpt(path: Path, radius: float = 6.0) -> str:
     return "\n".join(nearby + kept_hetero)
 
 
-def _task_payload(task: str) -> tuple[str, list[dict[str, Any]]]:
+def _task_payload(
+    task: str, *, allow_public_web: bool = False
+) -> tuple[str, list[dict[str, Any]]]:
     if task == "foundational_biomedical_knowledge":
         rows = _read_csv(TASK_FILES[task])
         cases = [
@@ -113,7 +116,12 @@ def _task_payload(task: str) -> tuple[str, list[dict[str, Any]]]:
         ]
         instruction = (
             "For each protein, return up to five known targeting drugs as DrugBank IDs and the "
-            "corresponding canonical or isomeric SMILES when known. Use internal knowledge only."
+            "corresponding canonical or isomeric SMILES when known. "
+            + (
+                "You may verify candidates with general public web search."
+                if allow_public_web
+                else "Use internal knowledge only."
+            )
         )
     elif task == "retrieve_known_targets":
         rows = _read_csv(TASK_FILES[task])
@@ -123,7 +131,11 @@ def _task_payload(task: str) -> tuple[str, list[dict[str, Any]]]:
         ]
         instruction = (
             "For each disease, return the three most strongly associated human gene symbols. "
-            "Use internal knowledge only."
+            + (
+                "You may verify candidates with general public web search."
+                if allow_public_web
+                else "Use internal knowledge only."
+            )
         )
     elif task == "molecular_property_prediction":
         rows = _read_csv(TASK_FILES[task])
@@ -292,14 +304,30 @@ def _schema(task: str, case_count: int = 20) -> dict[str, Any]:
     }
 
 
-def _prompt(task: str, case_indices: set[int] | None = None) -> str:
-    instruction, cases = _task_payload(task)
+def _prompt(
+    task: str,
+    case_indices: set[int] | None = None,
+    *,
+    allow_public_web: bool = False,
+    case_order_seed: int | None = None,
+) -> str:
+    instruction, cases = _task_payload(task, allow_public_web=allow_public_web)
     if case_indices is not None:
         cases = [case for case in cases if int(case["case_index"]) in case_indices]
+    if case_order_seed is not None:
+        task_offset = int(hashlib.sha256(task.encode("utf-8")).hexdigest()[:8], 16)
+        random.Random(case_order_seed + task_offset).shuffle(cases)
     payload = {"task": task, "instruction": instruction, "cases": cases}
+    resource_contract = (
+        "General public live web search is available and may be used. Do not use local files, "
+        "shell, MCP, skills, plugins, persistent memory, prior benchmark outputs, hidden "
+        "answers, FROGENT initialization, or FROGENT/user tools."
+        if allow_public_web
+        else "Do not use tools, web search, files, persistent memory, hidden answers or prior "
+        "FROGENT instructions."
+    )
     return (
-        "Complete this benchmark cell independently. Do not use tools, web search, files, "
-        "persistent memory, hidden answers or prior FROGENT instructions. Return exactly the "
+        "Complete this benchmark cell independently. " + resource_contract + " Return exactly the "
         "JSON object required by the supplied schema. Preserve every case_index exactly.\n"
         + json.dumps(payload, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
     )
@@ -320,6 +348,148 @@ def _validate_result(
     required = set(_item_schema(task)["required"])
     if any(not isinstance(item, dict) or set(item) != required for item in results):
         raise ValueError("response items do not match the frozen field set")
+
+
+def _json_candidates(content: str) -> list[Any]:
+    """Decode every complete JSON value without trusting provider prose/fence order."""
+    candidates: list[Any] = []
+    stripped = content.strip()
+    try:
+        candidates.append(json.loads(stripped))
+    except json.JSONDecodeError:
+        pass
+    for match in re.finditer(r"```(?:json)?\s*(.*?)```", content, flags=re.DOTALL | re.I):
+        try:
+            candidates.append(json.loads(match.group(1).strip()))
+        except json.JSONDecodeError:
+            continue
+    decoder = json.JSONDecoder()
+    for position, character in enumerate(content):
+        if character not in "[{":
+            continue
+        try:
+            value, _ = decoder.raw_decode(content[position:])
+        except json.JSONDecodeError:
+            continue
+        candidates.append(value)
+    return candidates
+
+
+def _normalized_item(task: str, item: Any) -> dict[str, Any] | None:
+    if not isinstance(item, dict):
+        return None
+    case_index = item.get("case_index", item.get("caseIndex"))
+    try:
+        case_index = int(case_index)
+    except (TypeError, ValueError):
+        return None
+    out: dict[str, Any] = {"case_index": case_index}
+    if task == "molecular_property_prediction":
+        aliases = {
+            "qed": ("qed", "QED"),
+            "caco2": ("caco2", "Caco-2 Permeability", "caco_2"),
+            "bbbp": ("bbbp", "BBBP"),
+            "cyp2d6_sub": ("cyp2d6_sub", "CYP2D6-sub", "CYP2D6_sub"),
+            "sr_p53": ("sr_p53", "SR-p53", "SR_p53"),
+        }
+        for target, names in aliases.items():
+            value = next((item[name] for name in names if name in item), None)
+            if value is None:
+                return None
+            out[target] = value
+    elif task == "retrieve_known_targets":
+        targets = next(
+            (item[name] for name in ("targets", "genes", "gene_symbols") if name in item),
+            None,
+        )
+        if not isinstance(targets, list):
+            return None
+        out["targets"] = targets[:3]
+    elif task == "retrieve_known_drugs":
+        ids = item.get("drugbank_ids")
+        smiles = item.get("smiles")
+        if (not isinstance(ids, list) or not isinstance(smiles, list)) and isinstance(
+            item.get("drugs"), list
+        ):
+            pairs = [
+                (drug.get("drugbank_id") or drug.get("drugbankId"), drug.get("smiles"))
+                for drug in item["drugs"]
+                if isinstance(drug, dict)
+            ]
+            ids = [drug_id for drug_id, _ in pairs if isinstance(drug_id, str)][:5]
+            smiles = [value for _, value in pairs if isinstance(value, str) and value][:5]
+        if not isinstance(ids, list) or not isinstance(smiles, list):
+            return None
+        out["drugbank_ids"] = ids[:5]
+        out["smiles"] = smiles[:5]
+    elif task == "molecular_design":
+        smiles = next(
+            (item[name] for name in ("smiles", "smiles_list", "molecules") if name in item),
+            None,
+        )
+        if not isinstance(smiles, list) or len(smiles) < 5:
+            return None
+        out["smiles"] = smiles[:5]
+    else:
+        required = set(_item_schema(task)["required"]) - {"case_index"}
+        if not required.issubset(item):
+            return None
+        out.update({name: item[name] for name in required})
+    return out
+
+
+def _normalize_provider_value(task: str, value: Any) -> dict[str, Any] | None:
+    if isinstance(value, dict) and "case_index" in value:
+        raw_items = [value]
+    elif isinstance(value, list):
+        raw_items = value
+    elif isinstance(value, dict):
+        raw_items = next(
+            (
+                value[name]
+                for name in ("results", "predictions", "cases", "answers", "data")
+                if isinstance(value.get(name), list)
+            ),
+            None,
+        )
+    else:
+        raw_items = None
+    if not isinstance(raw_items, list):
+        return None
+    items = [_normalized_item(task, item) for item in raw_items]
+    return {"results": [item for item in items if item is not None]}
+
+
+def _decode_provider_content(
+    task: str, content: str, expected_indices: list[int]
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Normalize provider packaging only; semantic answer values remain unchanged."""
+    candidates = _json_candidates(content)
+    normalized = [
+        value for candidate in candidates
+        if (value := _normalize_provider_value(task, candidate)) is not None
+    ]
+    for value in reversed(normalized):
+        try:
+            _validate_result(task, value, expected_indices)
+        except ValueError:
+            continue
+        return value, {
+            "json_candidates": len(candidates),
+            "provider_format_normalized": value not in candidates,
+        }
+    by_index: dict[int, dict[str, Any]] = {}
+    for value in normalized:
+        for item in value["results"]:
+            if item["case_index"] in expected_indices:
+                by_index[item["case_index"]] = item
+    combined = {"results": [by_index[index] for index in expected_indices if index in by_index]}
+    _validate_result(task, combined, expected_indices)
+    return combined, {
+        "json_candidates": len(candidates),
+        "provider_format_normalized": True,
+        "combined_json_fragments": True,
+    }
 
 
 def _collapse_single_case_repetitions(
@@ -359,6 +529,7 @@ def _codex_call(model: dict[str, Any], task: str, prompt: str, schema: dict[str,
         json.dumps(schema, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    allow_public_web = bool(model.get("allow_public_web", False))
     args = [
         str(CODEX_EXECUTABLE),
         "exec",
@@ -376,8 +547,6 @@ def _codex_call(model: dict[str, Any], task: str, prompt: str, schema: dict[str,
         "--strict-config",
         "--sandbox",
         "read-only",
-        "--disable",
-        "web_search",
         "--skip-git-repo-check",
         "--cd",
         str(workdir),
@@ -388,6 +557,25 @@ def _codex_call(model: dict[str, Any], task: str, prompt: str, schema: dict[str,
         "--json",
         "-",
     ]
+    if allow_public_web:
+        isolation_args = [
+            "-c", 'web_search="live"',
+            "-c", "skills.include_instructions=false",
+            "-c", "skills.bundled.enabled=false",
+        ]
+        disabled_features = [
+            "plugins", "apps", "memories", "multi_agent", "computer_use",
+            "in_app_browser", "browser_use", "browser_use_external", "shell_tool",
+            "shell_zsh_fork", "shell_snapshot", "unified_exec", "skill_search",
+            "skill_mcp_dependency_install",
+        ]
+        for feature in disabled_features:
+            isolation_args.extend(("--disable", feature))
+        args[args.index("--skip-git-repo-check"):args.index("--skip-git-repo-check")] = isolation_args
+    else:
+        args[args.index("--skip-git-repo-check"):args.index("--skip-git-repo-check")] = [
+            "--disable", "web_search"
+        ]
     started = time.monotonic()
     completed = subprocess.run(
         args,
@@ -405,13 +593,33 @@ def _codex_call(model: dict[str, Any], task: str, prompt: str, schema: dict[str,
             f"Codex exit {completed.returncode}: {completed.stderr.strip()[-1200:]}"
         )
     value = json.loads(last_path.read_text(encoding="utf-8"))
-    tool_events = [
-        line
-        for line in completed.stdout.splitlines()
-        if any(token in line for token in ('"command_execution"', '"mcp_tool_call"', '"web_search"'))
+    event_objects = []
+    for line in completed.stdout.splitlines():
+        try:
+            event_objects.append(json.loads(line))
+        except json.JSONDecodeError:
+            continue
+    event_types = [
+        str(event.get("item", {}).get("type", ""))
+        for event in event_objects
+        if isinstance(event, dict) and isinstance(event.get("item"), dict)
     ]
-    if tool_events:
-        raise RuntimeError("Codex emitted a prohibited tool event")
+    prohibited = [
+        event_type for event_type in event_types
+        if event_type in {"command_execution", "mcp_tool_call", "file_change"}
+        or (event_type == "web_search" and not allow_public_web)
+    ]
+    if prohibited:
+        raise RuntimeError(f"Codex emitted prohibited tool events: {sorted(set(prohibited))}")
+    web_events = sum(event_type == "web_search" for event_type in event_types)
+    skill_instruction_events = sum(
+        "Skill descriptions" in str(event.get("message", ""))
+        or "<skills_instructions>" in str(event)
+        for event in event_objects
+        if isinstance(event, dict)
+    )
+    if allow_public_web and skill_instruction_events:
+        raise RuntimeError("Codex clean Direct context contained skill instructions")
     return {
         "response": value,
         "wall_seconds": wall,
@@ -419,18 +627,23 @@ def _codex_call(model: dict[str, Any], task: str, prompt: str, schema: dict[str,
             "returncode": completed.returncode,
             "event_lines": len(completed.stdout.splitlines()),
             "prohibited_tool_events": 0,
+            "web_search_events": web_events,
+            "skill_instruction_events": skill_instruction_events,
+            "global_skill_scan_warning": "failed to load skill" in completed.stderr,
+            "provider_sampling_seed_supported": False,
+            "replicate_seed": model.get("seed"),
         },
     }
 
 
 def _openrouter_call(model: dict[str, Any], task: str, prompt: str, schema: dict[str, Any],
-                     cell_root: Path) -> dict[str, Any]:
+                     cell_root: Path, expected_indices: list[int] | None = None) -> dict[str, Any]:
     key = os.environ.get("OPENROUTER_API_KEY", "")
     if not key:
         raise RuntimeError("OPENROUTER_API_KEY is missing")
     provider = {
         "allow_fallbacks": bool(model.get("allow_provider_fallbacks", False)),
-        "require_parameters": True,
+        "require_parameters": bool(model.get("require_parameters", True)),
         "data_collection": "deny",
     }
     if model.get("provider_order"):
@@ -440,7 +653,6 @@ def _openrouter_call(model: dict[str, Any], task: str, prompt: str, schema: dict
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0,
         "max_tokens": int(model.get("max_tokens", 12000)),
-        "reasoning": model.get("reasoning", {"effort": "low"}),
         "response_format": {
             "type": "json_schema",
             "json_schema": {
@@ -451,8 +663,14 @@ def _openrouter_call(model: dict[str, Any], task: str, prompt: str, schema: dict
         },
         "provider": provider,
     }
+    if not model.get("omit_reasoning", False):
+        request_body["reasoning"] = model.get("reasoning", {"effort": "low"})
+    if model.get("omit_response_format", False):
+        request_body.pop("response_format")
     if model.get("include_seed", True):
-        request_body["seed"] = 20260805
+        request_body["seed"] = int(model.get("seed", 20260805))
+    if model.get("allow_public_web", False):
+        request_body["tools"] = [{"type": "openrouter:web_search"}]
     (cell_root / "request.json").write_text(
         json.dumps(request_body, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
@@ -483,7 +701,10 @@ def _openrouter_call(model: dict[str, Any], task: str, prompt: str, schema: dict
     content = message.get("content")
     if not isinstance(content, str):
         raise ValueError("OpenRouter response content is not a string")
-    value = json.loads(content)
+    if expected_indices is None:
+        case_count = int(schema["properties"]["results"]["minItems"])
+        expected_indices = list(range(1, case_count + 1))
+    value, format_metadata = _decode_provider_content(task, content, expected_indices)
     return {
         "response": value,
         "wall_seconds": wall,
@@ -493,6 +714,14 @@ def _openrouter_call(model: dict[str, Any], task: str, prompt: str, schema: dict
             "provider": envelope.get("provider"),
             "usage": envelope.get("usage"),
             "finish_reason": envelope["choices"][0].get("finish_reason"),
+            "web_annotations": message.get("annotations", []),
+            "web_search_requests": (
+                envelope.get("usage", {})
+                .get("server_tool_use", {})
+                .get("web_search_requests", 0)
+            ),
+            "replicate_seed": request_body.get("seed"),
+            **format_metadata,
         },
     }
 
@@ -525,9 +754,15 @@ def _openrouter_batched_call(
                 outcome = _openrouter_call(
                     model,
                     task,
-                    _prompt(task, set(indices)),
+                    _prompt(
+                        task,
+                        set(indices),
+                        allow_public_web=bool(model.get("allow_public_web", False)),
+                        case_order_seed=model.get("seed"),
+                    ),
                     _schema(task, len(indices)),
                     attempt_root,
+                    indices,
                 )
                 outcome["transport_metadata"]["request_attempts"] = attempt
                 break
@@ -592,7 +827,12 @@ def _codex_batched_call(
         outcome = _codex_call(
             model,
             task,
-            _prompt(task, set(indices)),
+            _prompt(
+                task,
+                set(indices),
+                allow_public_web=bool(model.get("allow_public_web", False)),
+                case_order_seed=model.get("seed"),
+            ),
             _schema(task, len(indices)),
             batch_root,
         )
@@ -625,7 +865,11 @@ def _run_cell(run_root: Path, model: dict[str, Any], task: str) -> dict[str, Any
             return {"model_id": model["model_id"], "task": task, "status": existing["status"],
                     "existing": True}
         cell_root.mkdir(parents=True, exist_ok=False)
-    prompt = _prompt(task)
+    prompt = _prompt(
+        task,
+        allow_public_web=bool(model.get("allow_public_web", False)),
+        case_order_seed=model.get("seed"),
+    )
     schema = _schema(task)
     prompt_hash = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
     schema_hash = hashlib.sha256(

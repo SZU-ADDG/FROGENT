@@ -75,10 +75,14 @@ their own versioned runs pass.
 ### R1-0b / fine-tuning, few-shot and in-context terminology
 
 **Response.** The model-selection evidence establishes runtime configuration only. It does not
-establish whether the submitted experiments used parameter fine-tuning, few-shot examples,
-in-context examples, cache reuse or persistent memory. We therefore retain those facts as an
-author-input requirement and will use the corresponding term only after the training, prompt and
-test-isolation record is supplied.
+represent task-specific parameter training. The authors confirm that FROGENT uses pretrained base
+models without fine-tuning. Active role contracts specialize behavior through role instructions,
+typed schemas, evidence admission, memory policy and tool access and contain no benchmark-specific
+few-shot demonstrations. We also separated production memory from evaluation isolation: direct
+cells are stateless and have no FROGENT prompt, tools, files, persistent memory, prior outputs or
+gold answers; paired FROGENT cells receive a frozen gold-blind evidence bundle, and gold is read
+only by the post-inference scorer. Because the cases are exposed, we frame the result as a fixed
+panel system comparison rather than a held-out generalization estimate.
 
 ## Required claim changes
 
@@ -90,7 +94,7 @@ test-isolation record is supplied.
   any implication that the local policy rewrote the production deployment.
 - `not_measured`: DeepSeek inference/tool acceptance after the two HTTP 503 failures; comparative
   task performance between DeepSeek and Luna; production model identity not bound to a versioned
-  run; fine-tuning, few-shot, cache and test-overlap history.
+  run; hidden held-out generalization.
 
 ## Frozen evidence sources
 
