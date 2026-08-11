@@ -11,8 +11,8 @@ Checked: 2026-08-11
 - [x] Direct/FROGENT prompt, gold, cache and memory isolation stated explicitly.
 - [x] Data Availability and Code Availability added.
 - [x] Main manuscript compiles with visible line numbers: 35 pages.
-- [x] Marked manuscript generated with `latexdiff` and visible line numbers: 37 pages.
-- [x] Supplementary Information compiles independently: 8 pages.
+- [x] Marked manuscript generated with `latexdiff` and visible line numbers: 36 pages.
+- [x] Supplementary Information compiles independently: 9 pages.
 - [x] Current project runtime: 318 tests passed.
 - [x] Repository structural audit passed.
 - [x] High-confidence credential/private-key scan: 0 matches.

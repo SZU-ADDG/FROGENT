@@ -10,7 +10,7 @@ This index uses the visible line numbers in the final clean PDF. The marked PDF 
 | --- | --- |
 | Research problem, contribution, core result and significance | Page 1, lines 9–21 (Abstract) |
 | Architecture and agent responsibilities | Pages 3–6, lines 49–122 (Results: Architecture Design) |
-| Eight-task benchmark and task-aligned external comparison | Pages 6–10, lines 123–190 (Results: Evaluation; Figure 3 on page 9) |
+| Eight-task paired benchmark and task-aligned external comparison | Pages 5–9 (Results: Evaluation; full eight-task Figures 3 and 4 on pages 7 and 9) |
 | Known-candidate recovery and Luteolin claim boundary | Pages 10–11, cardiomegaly/heart-failure case study |
 | Peptide and small-molecule case-study boundaries | Pages 11–15, remaining case studies |
 | Novelty boundary and relation to Prompt-to-Pill, CLADD and Robin | Pages 15–16, lines 277–299 (Discussion) |

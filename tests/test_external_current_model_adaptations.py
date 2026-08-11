@@ -5,9 +5,26 @@ import json
 
 from scripts import run_external_current_model_adaptations as runner
 from scripts import run_external_current_model_recovery as recovery
+from scripts import plot_external_current_model_adaptations as plotter
 
 
 class ExternalCurrentModelAdaptationTests(unittest.TestCase):
+    def test_main_comparison_preserves_all_eight_tasks(self) -> None:
+        self.assertEqual(
+            [task for task, _ in plotter.TASKS],
+            [
+                "foundational_biomedical_knowledge",
+                "retrieve_known_drugs",
+                "retrieve_known_targets",
+                "molecular_property_prediction",
+                "virtual_screening",
+                "binding_mechanism",
+                "molecular_design",
+                "retrosynthesis_planning",
+            ],
+        )
+        self.assertEqual(set(plotter._selected_frogent_scores()), set(dict(plotter.TASKS)))
+
     def test_cladd_does_not_claim_disease_target_alignment(self) -> None:
         protocol = runner._load_protocol(runner.DEFAULT_RUN_ROOT)
         cladd = next(item for item in protocol["systems"] if item["name"] == "CLADD")

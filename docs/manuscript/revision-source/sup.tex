@@ -71,6 +71,8 @@ The exposed retrosynthesis panel contains 20 author-supplied targets and referen
 
 We froze CLADD commit \texttt{a7ee2e5}, Prompt-to-Pill commit \texttt{817e177}, and Robin commit \texttt{4a5cce3} and installed their public dependency surfaces in isolated environments. All three current-model adaptations used GPT-5.6 Sol with high reasoning effort. Each adapter could read only its own frozen public source and isolated environment, execute available native components in a cell-local work directory, and use public web search; FROGENT initialization, private tools and files, persistent memory, previous outputs, and gold answers were excluded. The first resource-enabled run returned all six cells. Post-run command audit rejected two cells that accessed private/cache paths, and a preregistered recovery reran only those cells under a hardened filesystem contract. The combined resource-audited panel completed 6/6 scored cells. These runs adapt the released workflows to a single current model and do not reconstruct the original paper-era models or scores.
 
+The main-text comparison retains all eight benchmark tasks. Direct-model values come from the completed 12-model direct panel. The FROGENT row reports the verified task-selected GPT-5.6 Sol endpoints: the paired Sol panel supplies foundational knowledge, binding mechanism, and retrosynthesis, while the current chemistry-MCP and structured-retrieval runs supply property prediction, virtual screening, molecular design, known-drug retrieval, and known-target retrieval. External-system cells are shown only for the six implemented, scorer-aligned contracts listed below; the remaining cells are marked as absent from the public workflow rather than assigned a score.
+
 \begin{table}[htbp]
 \centering
 \small
