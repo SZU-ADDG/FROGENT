@@ -10698,3 +10698,28 @@ suppression to `/dev/null`; no additional temporary build logs are created outsi
 - Related Files: docs/manuscript/revision-source/sup.log
 
 ---
+
+## [ERR-20260811-005] pull-request body backticks triggered shell command substitution
+
+**Logged**: 2026-08-11T22:55:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: version control
+
+### Summary
+
+The first `gh pr create` invocation supplied a Markdown body in a double-quoted shell argument.
+Backticked validation commands were interpreted by the shell, producing one failed read-only
+`latexmk` invocation from the repository root and omitting the commands from the PR description.
+
+### Resolution
+
+Store Markdown PR text in a project-local body file and pass it with `gh pr edit --body-file`.
+This preserves literal backticks and avoids shell interpolation.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: docs/manuscript/revision-source/sup.tex
+
+---
