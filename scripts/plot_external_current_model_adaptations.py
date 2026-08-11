@@ -20,12 +20,54 @@ DEFAULT_RUN_ROOT = ROOT / (
 DEFAULT_OUTPUT_ROOT = ROOT / "docs/manuscript/revision-source/figures"
 EXTERNAL_SYSTEMS = ["CLADD", "Prompt-to-Pill", "Robin"]
 TASKS = [
-    ("molecular_property_prediction", "Property\nprediction"),
-    ("virtual_screening", "Virtual\nscreening"),
-    ("molecular_design", "Molecular\ndesign"),
+    ("foundational_biomedical_knowledge", "Foundational\nknowledge"),
     ("retrieve_known_drugs", "Known-drug\nretrieval"),
     ("retrieve_known_targets", "Known-target\nretrieval"),
+    ("molecular_property_prediction", "Property\nprediction"),
+    ("virtual_screening", "Virtual\nscreening"),
+    ("binding_mechanism", "Binding\nmechanism"),
+    ("molecular_design", "Molecular\ndesign"),
+    ("retrosynthesis_planning", "Retrosynthesis"),
 ]
+
+
+def _selected_frogent_scores() -> dict[str, float]:
+    """Load the verified current FROGENT endpoint for all eight tasks."""
+
+    paired = json.loads((ROOT / (
+        "runtime/evaluation/revision-20260805/"
+        "paired-twelve-model-frogent-final-r42/analysis/summary.json"
+    )).read_text(encoding="utf-8"))
+    scores = {
+        cell["task"]: float(cell["frogent_score"])
+        for cell in paired["paired_cells"]
+        if cell["model_id"] == "gpt-5.6-sol"
+    }
+    chemistry = json.loads((ROOT / (
+        "runtime/evaluation/revision-20260811/frogent-sol-max-chemistry-mcp-r01/"
+        "analysis/summary.json"
+    )).read_text(encoding="utf-8"))
+    scores.update({
+        row["task"]: float(row["score"])
+        for row in chemistry["cells"]
+        if row["status"] == "scored"
+    })
+    retrieval_runs = {
+        "retrieve_known_drugs": "frogent-structured-binding-known-drug-r02",
+        "retrieve_known_targets": "frogent-structured-binding-known-target-r02",
+    }
+    for task, run_name in retrieval_runs.items():
+        result = json.loads((
+            ROOT / "runtime/evaluation/revision-20260811" / run_name /
+            "analysis/summary.json"
+        ).read_text(encoding="utf-8"))
+        if result.get("status") != "complete":
+            raise ValueError(f"FROGENT retrieval result is incomplete: {task}")
+        scores[task] = float(result["score"])
+    missing = [task for task, _ in TASKS if task not in scores]
+    if missing:
+        raise ValueError(f"missing selected FROGENT scores: {missing}")
+    return scores
 
 
 def main() -> int:
@@ -68,26 +110,14 @@ def main() -> int:
 
     external_start_index = len(direct_models)
     frogent_row_index = external_start_index + len(EXTERNAL_SYSTEMS)
-    chemistry_summary = json.loads((ROOT / (
-        "runtime/evaluation/revision-20260811/frogent-sol-max-chemistry-mcp-r01/"
-        "analysis/summary.json")).read_text(encoding="utf-8"))
-    frogent_scores = {row["task"]: float(row["score"])
-                       for row in chemistry_summary["cells"] if row["status"] == "scored"}
-    retrieval_runs = {
-        "retrieve_known_drugs": "frogent-structured-binding-known-drug-r02",
-        "retrieve_known_targets": "frogent-structured-binding-known-target-r02",
-    }
-    for task, run_name in retrieval_runs.items():
-        result = json.loads((ROOT / "runtime/evaluation/revision-20260811" / run_name /
-                             "analysis/summary.json").read_text(encoding="utf-8"))
-        if result.get("status") != "complete":
-            raise ValueError(f"FROGENT retrieval result is incomplete: {task}")
-        frogent_scores[task] = float(result["score"])
+    frogent_scores = _selected_frogent_scores()
     for column, (task, _) in enumerate(TASKS):
         if task not in frogent_scores:
             raise ValueError(f"missing selected FROGENT score for {task}")
         values[frogent_row_index, column] = frogent_scores[task]
-        denominators[frogent_row_index, column] = "n=19" if task == "virtual_screening" else "n=20"
+        denominators[frogent_row_index, column] = (
+            "n=19" if task == "virtual_screening" else "n=20"
+        )
 
     for row, system in enumerate(EXTERNAL_SYSTEMS, start=external_start_index):
         for column, (task, _) in enumerate(TASKS):
@@ -131,7 +161,7 @@ def main() -> int:
             "pdf.fonttype": 42,
         }
     )
-    fig, ax = plt.subplots(figsize=(7.15, 7.0), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(10.8, 7.0), constrained_layout=True)
     ax.set_xlim(-0.5, len(TASKS) - 0.5)
     ax.set_ylim(len(systems) - 0.5, -0.5)
     ax.set_xticks(range(len(TASKS)), [label for _, label in TASKS])

@@ -10621,3 +10621,31 @@ analysis from existing terminals without invoking either model cell again.
 - Related Files: scripts/run_external_sol_resource_recovery.py
 
 ---
+
+## [ERR-20260811-002] unscoped pytest collected archived runtime source trees
+
+**Logged**: 2026-08-11T20:20:00+08:00
+**Priority**: low
+**Status**: resolved
+**Area**: test invocation
+
+### Summary
+
+Running `python -m pytest -q` from the repository root recursively collected third-party OpenFold
+tests and Python 2.3 source tests preserved under `runtime/evaluation/`, producing 577 collection
+errors unrelated to the active project. Restricting collection to `tests/` then exposed that the
+current Conda interpreter lacks the optional `admet_ai` package required by one existing test.
+
+### Resolution
+
+Use the active project test root explicitly. The current change passed 316 tests and 118 subtests
+with the single ADMET dependency-bound test excluded; the six directly affected external-panel
+tests passed separately. The previously recorded clean-environment gate remains the evidence for
+the full dependency-installed suite.
+
+### Metadata
+
+- Reproducible: yes
+- Related Files: tests/test_external_current_model_adaptations.py, tests/test_eight_task_property_admet.py
+
+---

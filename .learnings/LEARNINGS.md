@@ -196,6 +196,8 @@ The networked three-repeat protocol incorrectly reduced the whole comparison to 
 union covered by CLADD, Prompt-to-Pill, and Robin. The author-supplied benchmark and the revised
 Direct/FROGENT comparison contain eight tasks. External workflow coverage determines which
 external cells are measured; it does not remove dimensions from the Direct/FROGENT panel.
+The same scope error later reached the main manuscript figure, where the external-system subset
+replaced the complete eight-task scientific comparison.
 
 ### Rule
 
@@ -217,7 +219,37 @@ seeds, and 18 aligned external cells, the complete networked matrix contains 330
 - Source: user_feedback
 - See Also: LRN-20260807-014, LRN-20260807-015, LRN-20260807-016
 - Pattern-Key: evaluation.preserve_global_dimensions_with_partial_comparators
-- Recurrence-Count: 1
+- Recurrence-Count: 2
+- First-Seen: 2026-08-07
+- Last-Seen: 2026-08-11
+
+---
+
+## [LRN-20260811-008] keep audit ledgers out of the main scientific argument
+
+**Type:** correction
+**Priority:** critical
+**Status:** active
+**Scope:** journal manuscript Results and display-item design
+
+### Observation
+
+A three-column table of reproduced evidence, implementation status, and interpretation boundaries
+made the main Results read like an engineering audit. It also compressed two retrieval tasks into
+one row, obscuring the eight-task scientific design.
+
+### Rule
+
+Write the main Results as a scientific argument around the complete task structure and the
+capability established by each result. Use a main figure for the full eight-task comparison. Move
+run provenance, missing-record history, schema gaps, and detailed claim boundaries to Methods,
+Supplementary Information, or the internal evidence ledger.
+
+### Related Files
+
+- `docs/manuscript/revision-source/main.tex`
+- `docs/manuscript/revision-source/sup.tex`
+- `docs/manuscript/revision-source/figures/paired-model-frogent-effect.pdf`
 
 ---
 

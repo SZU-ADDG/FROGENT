@@ -161,7 +161,9 @@ system evaluation.
 ### R1-4c — Benchmarking recent systems
 
 We report six aligned current-model cells: one for CLADD, three for Prompt-to-Pill and two for
-Robin. Unaligned tasks remain unmeasured rather than being assigned zero or inferred scores.
+Robin. The comparison figure retains the full eight-task axis for Direct LLMs and FROGENT;
+unaligned external-system cells remain unmeasured rather than being assigned zero or inferred
+scores.
 
 ### R1-5a — Generation of small-molecule and peptide conformations
 
