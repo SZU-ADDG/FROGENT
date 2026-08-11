@@ -325,8 +325,9 @@ and SI and included in the release package where licensing permits.
 
 ### R2-9a — Broken code link
 
-The stable repository is `https://github.com/SZU-ADDG/FROGENT`; Code Availability now uses this
-address. Public visibility is checked in the final release gate.
+The public repository is `https://github.com/SZU-ADDG/FROGENT`, and the immutable revision release
+is `https://github.com/SZU-ADDG/FROGENT/releases/tag/commsbio-revision-20260811`; Code Availability
+now records both locations.
 
 ### R2-9b — Anonymous link under single-blind review
 

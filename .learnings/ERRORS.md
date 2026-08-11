@@ -1,5 +1,23 @@
 # Errors
 
+## [ERR-20260811-010] `gh pr view` does not support the `--head` selector
+
+**Logged**: 2026-08-11T16:50:00+08:00
+**Status**: resolved
+**Scope**: public-release finalization
+
+### Failure
+
+The release follow-up PR was created successfully, but the chained inspection command used
+`gh pr view --head`, which is not supported by the installed GitHub CLI version.
+
+### Resolution
+
+Inspect the created pull request by its returned PR number or URL. Use `gh pr list --head` only
+when branch-based filtering is required.
+
+---
+
 ## [ERR-20260811-009] marked-copy command mixed repository-root paths with a source-directory cwd
 
 **Logged**: 2026-08-11T17:10:00+08:00
