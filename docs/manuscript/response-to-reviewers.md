@@ -26,17 +26,18 @@ contribution is evidence-controlled orchestration across retrieval, molecular an
 evaluation and retrosynthesis.
 
 **Changed in:** Abstract; Introduction; Results, “Evaluation of FROGENT”; Discussion; SI,
-“Benchmark Construction and Evaluation Details”.
+“Benchmark Construction and Evaluation Details” and Supplementary Tables 3--8.
 
 ### E-2 — Method transparency and reproducibility
 
-We added explicit model, prompt, memory, tool, retry and isolation boundaries. FROGENT performs no
+We added explicit model, prompt, memory, tool, failure-recovery and isolation boundaries. FROGENT performs no
 task-specific parameter training; its roles are specialized at inference time through instructions,
 typed schemas, evidence gates and tool access. Code, tests, evaluation entry points and manuscript
 assets are prepared for release at `https://github.com/SZU-ADDG/FROGENT`.
 
 **Changed in:** Methods, “Prompt Engineering Strategy”, “Implementation Details” and
-“Agent--Tool Interaction”; Code Availability; SI model-adaptation and provider sections.
+“Agent--Tool Interaction”; Code Availability; SI, “Agent Role Contracts and Scientific Action
+Space”, Supplementary Table 1 and “Clean-install Validation”.
 
 ### E-3 — Definition and validation of the eight benchmarks
 
@@ -45,8 +46,8 @@ denominators and invalid cases. The panels are explicitly described as exposed r
 held-out tests. We retired the unavailable submitted headline scores and replaced them with
 versioned sample-level outputs and reproducible scorers.
 
-**Changed in:** Results evaluation table; Methods, “Evaluation Benchmarks Details”; SI benchmark
-subsections.
+**Changed in:** Results, “Evaluation of FROGENT”; Methods, “Evaluation Benchmarks Details”; SI,
+Supplementary Tables 2--4 and the eight benchmark subsections.
 
 ### E-4 — Baseline fairness and ablation
 
@@ -55,8 +56,8 @@ component-level evidence and tool effects, and one feedback allocation versus un
 All claims are limited to the matched conditions tested. We do not interpret the fixed one-pass
 paired arm as a ReAct ablation or an adaptive loop.
 
-**Changed in:** Results evaluation and generation subsections; Discussion; SI benchmark and
-ablation descriptions.
+**Changed in:** Results evaluation and generation subsections; Discussion; SI, Supplementary
+Tables 3--6.
 
 ### E-5 — Consistency between the manuscript and executable Agent behavior
 
@@ -64,8 +65,8 @@ We audited every retained provider and assigned it a measured, deferred, case-st
 status. Unverified generators and docking providers were removed from active claims. Historical
 endpoint failures, schema gaps and provider disagreement remain visible.
 
-**Changed in:** Methods, Retrieve/Forge/Gauge Agent descriptions; Discussion, “Limitations”; SI
-database, tool and model inventory.
+**Changed in:** Methods, Retrieve/Forge/Gauge Agent descriptions; Discussion, “Limitations”; SI,
+Supplementary Tables 1, 9 and 10 and the database, tool and model inventory.
 
 ### E-6 — Repetition
 
@@ -123,6 +124,7 @@ The figure references and directional wording were synchronized with the final f
 We no longer attach one significance claim to heterogeneous task metrics. The paired panel reports
 case-level paired estimates and a model-level macro summary; individual task results retain their
 own denominators and uncertainty. Descriptive external cells are not converted into a global rank.
+The complete task- and model-level values are reported in Supplementary Tables 3 and 4.
 
 ### R1-3a — Luteolin is a known DrugBank candidate
 
@@ -139,7 +141,7 @@ not describe the evidence as clinical efficacy.
 We analyzed 9,767 parsed generated molecules against a frozen ChEMBL 37 target-active collection
 and a versioned CrossDocked training proxy using ECFP4 similarity and scaffold overlap. The revised
 text reports low identity and generally low similarity together with model-specific scaffold reuse
-and the exact reference-collection boundary.
+and the exact reference-collection boundary (Supplementary Table 5).
 
 ### R1-3d — DrugBank-free literature-driven repositioning
 
@@ -163,12 +165,13 @@ system evaluation.
 We report six aligned current-model cells: one for CLADD, three for Prompt-to-Pill and two for
 Robin. The comparison figure retains the full eight-task axis for Direct LLMs and FROGENT;
 unaligned external-system cells remain unmeasured rather than being assigned zero or inferred
-scores.
+scores. Supplementary Tables 7 and 8 report the accepted cell values and aligned FROGENT endpoints.
 
 ### R1-5a — Generation of small-molecule and peptide conformations
 
 Methods and SI now distinguish generator coordinates, receptor-frame docking poses, structure
-prediction and post-hoc geometry analysis, including the exact tools and evaluated providers.
+prediction and post-hoc geometry analysis, including the exact tools and evaluated providers
+(Supplementary Table 9 and Supplementary Figure 1).
 
 ### R1-5b — Source and validation of the glucagon secondary structure
 
@@ -185,7 +188,8 @@ are reported.
 ### R1-6 — Resource, tool and model inventory for each Agent
 
 The revised Methods and SI bind each retained Agent capability to a provider, model/tool version,
-input/output contract and measured status. Deferred entries are explicitly identified.
+input/output contract and measured status. Supplementary Table 1 gives the verified role-specific
+action space, and deferred entries are explicitly identified.
 
 ### R1-7 — Memory and synthesis in Algorithm 1
 
@@ -240,7 +244,7 @@ provenance and synthetic-secret leakage boundaries.
 
 The revision reports ESMFold, AlphaFold3, ADCP and licensed MDockPeP2 results, including timing,
 top-1/top-$k$ behavior and provider disagreement. Claims are limited to computational
-prioritization.
+prioritization (Supplementary Table 9 and Supplementary Figure 1).
 
 ### R1-9e — MDockPeP2/ADCP consistency
 
@@ -283,7 +287,8 @@ reported separately from orchestration or scientific quality.
 
 Failures are attributed to planning/routing, tool/provider, parsing/schema, entity alignment,
 evidence support and synthesis/format categories where the evidence permits. Preserved provider and
-parser failures are not counted as model reasoning errors.
+parser failures are not counted as model reasoning errors. Supplementary Table 10 reports the
+denominator, failure location, handling rule and supported scope for each retained layer.
 
 ### R2-3c — Maximum and absolute task scores
 
@@ -293,7 +298,7 @@ metrics are not treated as one absolute performance scale.
 ### R2-4 — Time, resources, cost and energy
 
 We report component-level telemetry from the available records and explicitly mark unavailable
-token, queue and energy fields as unmeasured.
+token, queue and energy fields as unmeasured (Supplementary Table 11).
 
 ### R2-5 — Fixed SOP versus dynamic planning
 
@@ -322,8 +327,9 @@ are placed in SI without requiring repeated figure hopping.
 
 ### R2-8b — Missing SOPs and prompts
 
-Role contracts, SOPs, budgets, retry/stop rules and benchmark isolation are now described in Methods
-and SI and included in the release package where licensing permits.
+Role contracts, SOPs, budgets, recovery and stopping rules and benchmark isolation are now described in Methods
+and SI. Supplementary Table 1 summarizes the role-specific scientific action spaces, and the full
+prompt/SOP assets are included in the release package where licensing permits.
 
 ### R2-9a — Broken code link
 
@@ -356,7 +362,7 @@ admission, conflicts, provenance and memory eligibility.
 ### R3-M3 — Retrieval reliability, uncertainty and conflict handling
 
 Repeated live-evidence tests retain provider failures, counterevidence and revoked records. The
-ACTT-1 temporal-version failure remains reported rather than being hidden by aggregate success.
+The temporal-version failure remains reported rather than being hidden by aggregate success.
 
 ### R3-M4 — Orchestration versus tools and databases
 
@@ -377,7 +383,7 @@ claim is correspondingly limited.
 
 The matched-budget 15-cell panel shows that one feedback allocation improved validity and top-50
 score over uniform single pass. Fixed-best TargetDiff retained a validity advantage, and iterative
-top-50 superiority over fixed-best was unsupported.
+top-50 superiority over fixed-best was unsupported (Supplementary Table 6).
 
 ### R3-M5d — Global-context ablation
 
@@ -388,7 +394,7 @@ and worker differences and do not claim broad multi-agent superiority.
 
 TargetDiff, DiffSBDD and Pocket2Mol were evaluated across pockets and six seeds. We report
 model-specific validity, QED/SA, novelty, scaffold reuse and clash behavior; generator identity is
-therefore not hidden behind a single FROGENT score.
+therefore not hidden behind a single FROGENT score (Supplementary Tables 5 and 6).
 
 ### R3-m1 — Randomness in task decomposition
 

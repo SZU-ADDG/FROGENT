@@ -16,8 +16,6 @@
 \usepackage{threeparttable}
 \usepackage{pdflscape}
 \usepackage{array}
-\captionsetup[algorithm]{skip=14pt}
-
 \newcommand{\name}{Frogent}
 
 \begin{document}
@@ -35,6 +33,102 @@ The submitted evaluation comprised eight 20-case task categories. The revision r
 FROGENT does not train or fine-tune the language-model parameters. Agent specialization is implemented at inference time through role instructions, typed schemas, evidence-admission rules, and access to the scientific tools assigned to each role. The active role contracts contain no task-specific benchmark demonstrations. Production conversations may use project-scoped persistent memory, but benchmark cells are isolated from production conversation stores and do not reuse outputs between cases.
 
 The direct-model panel and paired FROGENT panel use the same exposed case definitions and post-inference scorers. Each direct cell begins as a stateless request without FROGENT initialization, tools, project files, persistent memory, previous benchmark outputs, or reference answers. Each paired FROGENT cell receives a frozen tool-evidence bundle constructed without access to the reference answer; this is an evidence-conditioned fixed one-pass comparison rather than a live autonomous tool-selection experiment. Reference answers are read only by the scorer after inference. The eight categories are therefore suitable for within-panel system comparison and error analysis, but they do not constitute a hidden held-out estimate of generalization.
+
+\subsection{Agent Role Contracts and Scientific Action Space}
+
+The role prompts define scientific responsibilities, allowed actions, output schemas and stopping conditions. They contain no benchmark examples. The Orchestrate Agent maintains the campaign state and delegates scientific operations; Retrieve admits versioned evidence; Forge proposes structures and routes; Gauge returns task-specific measurements and ranked feedback. Tool observations enter the shared working context only after schema and provenance checks. A later conflict or retraction can revoke an admitted observation before final synthesis. Supplementary Table~\ref{tab:sup-agent-contracts} gives the manuscript-scope action space rather than an exhaustive inventory of every optional connector.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Role contracts and verified scientific action spaces. Deferred providers are excluded from the active action space.}
+\label{tab:sup-agent-contracts}
+\begin{tabular}{lp{3.1cm}p{4.0cm}p{3.2cm}}
+\toprule
+Agent & Scientific responsibility & Verified resources used in this study & Structured output \\
+\midrule
+Orchestrate & Decompose goals, select roles, maintain campaign state and synthesize decisions & Evidence-gated working context and typed inter-agent actions & Plan, delegated task, state transition and final synthesis \\
+Retrieve & Acquire and reconcile literature, database and structure evidence & PubMed/Europe PMC, bioRxiv, arXiv, UniProt, Open Targets, RCSB PDB, configured web search & Source-bound evidence records, identifiers, conflicts and revocations \\
+Forge & Define pockets, generate or edit candidates and propose synthetic routes & P2Rank, SAFE, TargetDiff, DiffSBDD, Pocket2Mol and DirectMultiStep & Coordinate-bearing candidates, route sets and provenance \\
+Gauge & Calculate properties, rank candidates and characterize structural interactions & RDKit, ADMET-AI, Vina, PLIP, ADCP, MDockPeP2, ESMFold and AlphaFold 3 & Typed descriptors, rankings, interactions, structural comparisons and feedback \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Definitions and scoring units for the complete eight-task benchmark. Every category contains 20 exposed cases, except that one virtual-screening case lacks an exact isomeric reference and is excluded from exact-valid analyses.}
+\label{tab:sup-eight-task-definitions}
+\begin{tabular}{p{2.7cm}p{3.2cm}p{3.4cm}p{3.0cm}}
+\toprule
+Task & Input & Required output & Frozen score \\
+\midrule
+Foundational biomedical knowledge & Biomedical question, including 16 multiple-choice and 4 exact-response items & One selected option or concise exact answer & Exact accuracy \\
+Known-drug retrieval & Protein identifier or name & Ranked identifiers or structures for known associated drugs & Mean case-level precision and recall composite \\
+Known-target retrieval & Disease name & Ranked protein identifiers & Mean case-level precision and recall composite \\
+Molecular properties & Molecular structure & QED and endpoint-specific ADMET values & Endpoint-normalized composite; descriptors and learned endpoints retained separately \\
+Virtual screening & Protein target and ten candidate molecules & Ranked candidate list & Top-candidate agreement over 19 exact-valid cases \\
+Binding mechanism & Protein--ligand complex & Typed interaction records & Supported-field exact agreement \\
+Molecular design & Protein pocket and design request & Valid coordinate-bearing molecules & Validity, QED, synthetic accessibility, diversity and pocket geometry composite \\
+Retrosynthesis & Target molecule & Target-rooted multistep route & Exact-reference reaction match and top-5 reaction recall composite \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Paired Base-model Evaluation Across Eight Tasks}
+
+The paired panel contained 12 current base models and 96 model--task pairs. For each exposed case, the direct and FROGENT outputs were scored by the same frozen task-specific function. Case-level differences were averaged across the fixed model panel before uncertainty estimation. We resampled target or pocket clusters within each task 10,000 times (seed 20260805) and then formed an equal-weight macro mean across the eight task categories. The observed macro difference was 0.0946 (95\% CI, 0.0678--0.1201). The task profile was heterogeneous: property prediction, binding mechanism and retrosynthesis had confidence intervals above zero, while the other five task intervals crossed zero (Supplementary Table~\ref{tab:sup-task-effects}).
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Task-level paired effects across the fixed 12-model panel. Direct and FROGENT columns are descriptive means across models. Confidence intervals use case-level target- or pocket-cluster bootstrap resampling.}
+\label{tab:sup-task-effects}
+\begin{tabular}{lrrrr}
+\toprule
+Task & Cases & Direct & FROGENT & Difference (95\% CI) \\
+\midrule
+Foundational knowledge & 20 & 0.1375 & 0.1333 & $-0.0042$ ($-0.0375$, 0.0292) \\
+Known-drug retrieval & 20 & 0.2773 & 0.3192 & 0.0419 ($-0.0165$, 0.0975) \\
+Known-target retrieval & 20 & 0.2886 & 0.2506 & $-0.0381$ ($-0.0769$, 0.0050) \\
+Molecular properties & 20 & 0.6321 & 0.8315 & 0.1994 (0.1429, 0.2551) \\
+Virtual screening & 19 & 0.2105 & 0.1974 & $-0.0132$ ($-0.0833$, 0.0658) \\
+Binding mechanism & 20 & 0.2475 & 0.6100 & 0.3625 (0.2192, 0.5058) \\
+Molecular design & 20 & 0.8892 & 0.8985 & 0.0093 ($-0.0053$, 0.0243) \\
+Retrosynthesis & 20 & 0.2885 & 0.4880 & 0.1995 (0.1073, 0.2899) \\
+\midrule
+Equal-task macro mean & 159 units & 0.3714 & 0.4660 & 0.0946 (0.0678, 0.1201) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Every model had a higher descriptive eight-task macro mean with FROGENT (Supplementary Table~\ref{tab:sup-model-effects}). These macro means summarize task profiles with distinct scientific units and should not be interpreted as a universal model ranking. Model-specific task effects, including negative cells, are retained in the signed heat map in the main text and in the released source data.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Model-level macro means across all eight tasks. The two arms use the same exact base model and frozen scorer; each macro mean gives equal weight to the eight task categories.}
+\label{tab:sup-model-effects}
+\begin{tabular}{lrrr}
+\toprule
+Base model & Direct & FROGENT & Difference \\
+\midrule
+GPT-5.4 & 0.3440 & 0.5335 & 0.1895 \\
+GPT-5.5 & 0.4494 & 0.5807 & 0.1313 \\
+GPT-5.6 Sol & 0.4453 & 0.5574 & 0.1121 \\
+DeepSeek V4 Flash & 0.3294 & 0.3761 & 0.0467 \\
+DeepSeek V4 Pro & 0.3419 & 0.4462 & 0.1043 \\
+Kimi K2.5 & 0.3516 & 0.4149 & 0.0633 \\
+Qwen3.7 Plus & 0.3244 & 0.4139 & 0.0895 \\
+GLM 5.2 & 0.3302 & 0.3819 & 0.0516 \\
+MiniMax M3 & 0.4048 & 0.4840 & 0.0793 \\
+MiMo V2.5 & 0.3262 & 0.4023 & 0.0761 \\
+Kimi K3 & 0.4640 & 0.5350 & 0.0710 \\
+Qwen3.8 Max & 0.3455 & 0.4664 & 0.1209 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Foundational Biomedical Knowledge}
 
@@ -62,6 +156,64 @@ This panel evaluates preservation of supported PLIP interaction fields. Direct a
 \subsection{Molecular Design}
 
 The revision compares TargetDiff, DiffSBDD, and Pocket2Mol on five CrossDocked pockets with fixed model--pocket--seed attempt budgets. Metrics include valid rate, QED, SA, structural diversity, same-pocket reference similarity, and pocket/clash geometry. Lower SA denotes easier predicted synthesis. These metrics describe computational design quality and geometry; they do not establish biological activity.
+
+\subsubsection{Generation stability and structural novelty}
+
+The primary three-seed matrix, independent three-seed extension and pooled six-seed matrix completed 45/45, 45/45 and 90/90 model--pocket--seed jobs. TargetDiff retained the highest valid rate and QED in each analysis, while Pocket2Mol retained the most favorable synthetic-accessibility score. Primary-to-pooled model--pocket rank correlations were 0.993 for valid rate, 0.971 for QED and 0.704 for synthetic accessibility. TargetDiff QED changed from 0.458 to 0.408 and valid rate from 0.968 to 0.949; the corresponding extension-minus-primary pocket-cluster 95\% CIs were $[-0.188,-0.004]$ and $[-0.073,-0.006]$. The stable model order therefore coexisted with seed-sensitive absolute values.
+
+We next tested whether generated molecules reproduced the reference ligand, target-matched known actives or the declared training corpus. The primary analysis parsed 9,767 of 9,825 SDFs. No parsed molecule had exact identity to its same-pocket reference ligand, the reference scaffold or ECFP4 Tanimoto similarity of at least 0.5. Against ChEMBL 37 target-matched strong actives, every nearest-neighbour similarity was below 0.5 and exact active-scaffold overlap occurred in 3/9,767 molecules. Against a versioned CrossDocked training proxy containing 10,404 unique canonical molecules, no generated molecule had exact identity; one DiffSBDD molecule reached similarity of at least 0.5 and none reached 0.7. Scaffold reuse was model dependent (Supplementary Table~\ref{tab:sup-generation-novelty}).
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Structural diversity and nearest-neighbour analyses for the primary generated-molecule collection. Similarity is ECFP4 Tanimoto. The CrossDocked set is the executable declared-training-corpus proxy, rather than checkpoint-exact training membership.}
+\label{tab:sup-generation-novelty}
+\begin{tabular}{lrrr}
+\toprule
+Measure & TargetDiff & DiffSBDD & Pocket2Mol \\
+\midrule
+Parsed molecules & 7,253 & 1,771 & 743 \\
+Identity uniqueness & 1.000 & 1.000 & 0.965 \\
+Unique-scaffold density & 0.997 & 0.866 & 0.458 \\
+Mean nearest same-pocket reference similarity & 0.093 & 0.065 & 0.055 \\
+Mean nearest ChEMBL active similarity & 0.176 & 0.143 & 0.120 \\
+Maximum nearest ChEMBL active similarity & 0.405 & 0.256 & 0.217 \\
+Exact ChEMBL active-scaffold overlap & 2 (0.028\%) & 0 & 1 (0.135\%) \\
+Mean nearest training-proxy similarity & 0.216 & 0.189 & 0.203 \\
+Maximum nearest training-proxy similarity & 0.453 & 0.682 & 0.474 \\
+Exact training-proxy scaffold overlap & 56 (0.772\%) & 133 (7.510\%) & 116 (15.612\%) \\
+Severe-clash-free rate & 1.000 & 0.942 & 0.996 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Matched-budget Forge--Gauge feedback allocation}
+
+We separated generator quality from allocation policy in five pockets and three prospectively selected seeds. Every condition received 1,500 attempts per pocket--seed cell. Fixed-best assigned all attempts to TargetDiff; uniform single-pass divided attempts equally among TargetDiff, DiffSBDD and Pocket2Mol; feedback allocation first assigned 250 attempts to each model and used validity, QED and favorable synthetic accessibility to allocate the remaining 750 attempts. Gauge selected TargetDiff in all 15 cells. Feedback allocation improved valid rate and top-50 selection score relative to uniform allocation (Supplementary Table~\ref{tab:sup-forge-gauge}). Fixed-best retained the highest valid rate, and the feedback-versus-fixed top-50 difference lacked statistical support. Geometry analysis completed 45/45 cells and 2,250 selected candidates. Pocket compatibility was 1.000 in all conditions, and severe-clash-free rates were 0.9987, 1.0000 and 0.9987 for fixed-best, uniform and feedback allocation, respectively.
+
+\begin{table}[htbp]
+\begingroup
+\setlength{\tabcolsep}{3pt}
+\centering
+\scriptsize
+\caption{Matched-budget comparison of generator allocation policies. Paired tests use the 15 pocket--seed cells; confidence intervals use pocket-cluster bootstrap resampling.}
+\label{tab:sup-forge-gauge}
+\begin{tabular}{lp{3.5cm}rrr}
+\toprule
+Condition & Allocation & Valid rate & Unique-valid rate & Mean top-50 score \\
+\midrule
+Fixed-best & 1,500 TargetDiff attempts & 0.956 & 0.955 & 0.661 \\
+Uniform single-pass & 500 attempts per model & 0.444 & 0.440 & 0.620 \\
+Feedback allocation & 250 attempts per model plus 750 selected attempts & 0.704 & 0.702 & 0.686 \\
+\midrule
+\multicolumn{2}{l}{Feedback minus uniform: valid rate} & \multicolumn{3}{l}{+0.260; 15/15 positive; $P=6.10\times10^{-5}$; 95\% CI, 0.231--0.276} \\
+\multicolumn{2}{l}{Feedback minus uniform: top-50 score} & \multicolumn{3}{l}{+0.066; 13/15 positive; $P=0.0020$; 95\% CI, 0.029--0.106} \\
+\multicolumn{2}{l}{Feedback minus fixed-best: valid rate} & \multicolumn{3}{l}{$-0.252$; 0/15 positive; $P=6.10\times10^{-5}$; 95\% CI, $-0.274$ to $-0.225$} \\
+\multicolumn{2}{l}{Feedback minus fixed-best: top-50 score} & \multicolumn{3}{l}{+0.026; 6/15 positive; $P=0.978$; 95\% CI, $-0.015$ to 0.068} \\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{table}
 
 \subsection{Retrosynthesis Planning}
 
@@ -91,6 +243,27 @@ Robin & GPT-5.6 Sol & Known-target retrieval & 20 & 0.2833 \\
 \end{tabular}
 \end{table}
 
+For each aligned external cell, Supplementary Table~\ref{tab:sup-external-paired} reports the accepted current-model adaptation beside the current FROGENT endpoint. Comparisons are interpreted within a task because the external workflows expose different scientific operations. FROGENT exceeded the adapted workflow on molecular design and both structured-retrieval tasks; Prompt-to-Pill had higher values on property prediction and virtual screening, and CLADD had a slightly lower property value than FROGENT.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Task-aligned current-model comparison. External systems retained their own public files, native components and public network access. FROGENT values are the verified current task endpoints.}
+\label{tab:sup-external-paired}
+\begin{tabular}{llrrr}
+\toprule
+External workflow & Aligned task & External & FROGENT & Difference \\
+\midrule
+CLADD & Molecular properties & 0.8239 & 0.8331 & 0.0092 \\
+Prompt-to-Pill & Molecular properties & 0.8540 & 0.8331 & $-0.0209$ \\
+Prompt-to-Pill & Virtual screening & 0.8947 & 0.8421 & $-0.0526$ \\
+Prompt-to-Pill & Molecular design & 0.8383 & 0.9309 & 0.0926 \\
+Robin & Known-drug retrieval & 0.6650 & 0.9300 & 0.2650 \\
+Robin & Known-target retrieval & 0.2833 & 0.8000 & 0.5167 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Licensed MDockPeP2 Reference Redocking}
 
 MDockPeP2 v0.1 was invoked directly from the read-only third-party installation with licensed Modeller 9.13. Three public reference complexes (3GBQ, 1CKB and 1ABO) were run in isolated work directories with 20 peptide conformers, eight CPUs and 100 requested clustered modes. All 3/3 jobs exited zero and produced 2,000 sampling records and 100 clustered poses per complex. Receptor-frame peptide CA RMSD was scored independently against the deposited peptide coordinates. The top-ranked RMSD was 2.479/13.546/17.123~\AA, while best-of-100 RMSD was 2.225/2.336/4.564~\AA; runtimes were 575.86/455.41/515.20~s. Partial PC-align subcomparisons aborted for 3GBQ and 1CKB and are retained in stderr, although the parent jobs completed. These results support direct executability and limited top-$k$ pose recovery, with inconsistent top-1 ranking.
@@ -102,62 +275,106 @@ MDockPeP2 v0.1 was invoked directly from the read-only third-party installation 
 \label{fig:mdockpep2-reference-redocking}
 \end{figure}
 
+\subsection{Peptide Structure Prediction and Docking Comparators}
+
+The peptide branch separates candidate sequence definition, sequence-to-complex prediction, peptide docking and coordinate-grounded evaluation. ESMFold and AlphaFold 3 were treated as structure-prediction comparators, while ADCP and MDockPeP2 were treated as peptide-docking methods. ADCP completed three public complexes with three seeds each and 100 poses per task. ESMFold completed 24 candidate predictions and nine reference-complex runs. AlphaFold 3 completed eight GLP1R extracellular-domain--peptide predictions; Semaglutide was the sole candidate with a sequence-mapped 4ZGM coordinate reference. Supplementary Table~\ref{tab:sup-peptide-comparators} reports the coordinate-grounded results and preserves cross-provider disagreement.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Coordinate-grounded peptide structure and docking evidence. RMSD values are in \AA. Confidence outputs are treated as prioritization signals and are not binding-affinity measurements.}
+\label{tab:sup-peptide-comparators}
+\begin{tabular}{lp{2.5cm}p{4.0cm}p{3.6cm}}
+\toprule
+Provider & Denominator & Structural result & Interpretation \\
+\midrule
+ADCP & 3 complexes $\times$ 3 seeds; 100 poses/task & Mean top-1/top-5/top-10 RMSD 11.262/5.840/4.690; contact recovery 0.271/0.564/0.593 & Partial top-$k$ interface recovery with weak top-1 ranking \\
+MDockPeP2 & 3 direct reference complexes & Top-1 RMSD 2.479/13.546/17.123; best-of-100 2.225/2.336/4.564 & Licensed direct execution and limited top-$k$ recovery; ranking varies across complexes \\
+ESMFold & 24 candidate and 9 reference runs & Reference mean RMSD 6.526; 1/3 complexes within 2~\AA & Sequence-based comparative structural signal \\
+AlphaFold 3 & 8 GLP1R--peptide jobs & Mean pair-ipTM 0.755; Semaglutide RMSD 8.133; contact recall/precision 0.882/0.732 & Limited confidence/contact-based prioritization \\
+AF3 versus ESMFold & 8 matched peptide sequences & Mean receptor-aligned peptide-pose difference 31.513; confidence-rank $\rho=-0.119$ & Cross-provider disagreement reduces confidence in a single predicted pose \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Clean-install Validation}
 
 After all revision experiments and interface changes were frozen, we created a new Python 3.12.13 virtual environment and installed the committed \texttt{requirements.txt}. We also ran \texttt{npm ci --ignore-scripts} from the committed lockfile in an empty Node root; 22 packages were installed and the npm audit reported zero vulnerabilities. Validation child processes removed API-key, token, secret, and password environment variables. A core-harness state-transition smoke, a Flask registration/login/chat/file round-trip smoke, all 295 repository tests, and the frozen exact evaluation replay returned zero. The failed first validation root, the correction-only amendment, commands, return codes, dependency inventories, and log hashes are retained. This gate establishes the tested credential-free local path for the current repository tree; it does not establish live-provider availability or portability of third-party services.
 
-\section{Database, Tool and Model}\label{secB}
+\section{Failure Localization, Recovery and Resource Measurements}\label{secFailure}
 
-\subsection{Database}
-The database is designed to be dynamic and extensible, allowing for integrating new data sources to keep the agent at the forefront of scientific knowledge. The employed databases can be broadly classified into scientific literature archives and structured biochemical data repositories.
+\subsection{Failure localization across scientific operations}
 
-\subsubsection{PubMed}
-PubMed is the foremost repository of biomedical literature, providing access to millions of abstracts and full-text articles from scientific journals. \name \ utilizes PubMed as its primary tool for evidence-based reasoning, automatically searching and synthesizing the latest scientific findings to validate target-disease associations and investigate mechanisms of action.
+We recorded the attempted denominator, failure location, retained evidence, handling rule and consequence for each evaluated layer. This separation prevents successful program termination from being interpreted as a correct scientific result. Retrieval errors were assessed independently from synthesis omissions; direct tool output was separated from typed-schema coverage; docking execution was separated from native-pose recovery; and unreadable generated structures remained in the source denominators (Supplementary Table~\ref{tab:sup-failure-localization}).
 
-\subsubsection{BioRxiv}
-BioRxiv is the leading open-access preprint server for the biological and life sciences, hosting unpublished research manuscripts before they undergo formal peer review. For \name, it is an essential resource for monitoring cutting-edge developments, allowing the agent to access the latest biological discoveries and experimental techniques before they are published in peer-reviewed journals.
+\begin{table}[htbp]
+\centering
+\scriptsize
+\caption{Failure localization and scientific consequence in retained evaluation panels.}
+\label{tab:sup-failure-localization}
+\begin{tabular}{p{2.1cm}p{2.1cm}p{3.6cm}p{3.6cm}}
+\toprule
+Layer & Denominator & Observed failure or variation & Handling and supported scope \\
+\midrule
+Live retrieval and synthesis & 8 tasks & 3 pass, 4 partial and 1 fail; the temporal-update distinction was absent from the observable canonical evidence pool & Failure retained; supports named source-gating and recovery cases, without a broad biomedical-answer-accuracy claim \\
+Evidence propagation & 4 fixtures & Conflict or revocation changed candidate order in 2/4; revoked-evidence leakage was 0/4 & Revoked evidence removed before recalibration and rendering \\
+PLIP typed adapter & 12 complexes & 8/12 typed end-to-end exact; metal and water identity fields were outside the schema & Direct XML retained and unsupported typed records rejected \\
+Small-molecule redocking & 15 seed runs & 12/15 within 2~\AA; all three 1M17 runs converged to an alternate pose family & Pose-family failure retained; scoring consistency alone does not establish native-pose recovery \\
+Vina affinity ranking & 10 ABL1 ligands & Spearman $\rho=0.115$, $P=0.751$ versus DAVIS & No score recalibration; supports invocation fidelity, not affinity discrimination \\
+Primary generator parsing & 9,825 SDFs & 58 unreadable molecule files & Molecule-level exclusion with all 45 jobs retained \\
+Forge--Gauge geometry & 47,333 source SDFs; 45 cells & 157 unreadable SDFs & Parse failures recorded per job; all frozen top-50 candidate sets retained \\
+MDockPeP2 & 3 direct reference complexes & Partial PC-align subcomparisons aborted for 3GBQ and 1CKB & Parent outputs retained; conclusions use independently scored receptor-frame RMSD \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsubsection{arXiv}
-ArXiv is an open-access archive for scholarly articles, serving as the primary distribution platform for pre-print papers in computer science and artificial intelligence. For \name, Arxiv serves as a vital technical library, where the agent can retrieve foundational papers and recent advancements on specific computational algorithms.
+\subsection{Measured computational resources}
 
-\subsubsection{E-TSN}
-Target Significance and Novelty Explorer(E-TSN) is a bioinformatics platform that leverages text mining to automatically analyze scientific literature, identifying and ranking potential drug targets based on their significance and novelty related to specific diseases. For \name, it enables the agent to autonomously survey the vast landscape of scientific research and prioritize promising or underexplored targets for a new therapeutic campaign.
+Resource summaries include successful executions with a valid context and at least one measured field. Of 70 retained per-run telemetry records, 49 entered the summary. Wall time was available for 50 records, total central processing unit (CPU) time for 32 and peak resident memory for 19. Local processes were measured with system time utilities; live-provider panels used stored monotonic elapsed times. Missing fields were left unestimated. Supplementary Table~\ref{tab:sup-resources} characterizes representative executed components and does not define a hardware-matched comparison with external systems.
 
-\subsubsection{RCSB PDB}
-The RCSB Protein Data Bank(RCSB PDB) is the world's primary repository for the three-dimensional structural data of biological macromolecules. For \name, the RCSB PDB is an indispensable resource, providing the essential 3D structural inputs required for critical downstream tasks.
+\begin{table}[htbp]
+\centering
+\small
+\caption{Measured component-level resources. Values are medians across valid runs. A dash denotes a field that was not measured by the executed interface.}
+\label{tab:sup-resources}
+\begin{tabular}{lrrrr}
+\toprule
+Panel & Runs & Wall time (s) & CPU time (s) & Peak RSS (KiB) \\
+\midrule
+Evidence functional tests (63 tests) & 5 & 0.47 & 0.46 & 75,296 \\
+Molecular tests (89 tests) & 5 & 1.15 & 1.12 & 169,088 \\
+Web optional tests & 5 & 0.65 & 0.63 & 92,208 \\
+Vina 1IEP seed stability & 5 & 20.01 & 43.27 & -- \\
+PDB2PQR 1IEP pH panel & 3 & 0.73 & 0.66 & -- \\
+Live RCSB target-pocket retrieval & 3 & 3.427 & -- & -- \\
+Live Europe PMC queries & 3/query & 1.710--2.481 & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsubsection{Uniprot}
-The UniProt Knowledgebase is a comprehensive and high-quality resource for protein sequence and functional information, including annotations on function, domain structure, and biological pathways. \name \ leverages UniProt during the target identification phase to retrieve essential functional context, such as a protein's known biological roles and pathway associations, thereby validating its relevance to a specific disease.
+Tokens, private-provider queue time, closed-provider prices and cloud energy were not exposed by these interfaces and were not inferred from wall time or call counts.
 
-\subsubsection{DrugBank}
-DrugBank integrates drug and target records and can provide known-candidate context. Direct DrugBank access returned HTTP 403 in the revision environment; DrugBank-specific execution and performance are therefore not evaluated. The Luteolin case is reported as exposed known-candidate evidence recovery.
+\section{Data Resources and Executable Scientific Providers}\label{secB}
 
-\subsubsection{Building Blocks}
-Enamine's Building Blocks provide a vast collection of commercially available reagents and scaffolds designed specifically for medicinal chemistry and combinatorial synthesis. For \name, it critically simplifies the retrosynthesis task, as the agent only needs to design synthetic pathways back to these purchasable compounds rather than to basic industrial chemicals.
+\subsection{Literature and structured data resources}
 
-\subsection{Tool}
-Although \name \ uses a limited toolset, it is important to note that the toolset can be easily extended based on demand and availability. The toolset can be classified into molecular tools and general tools.
+The retrieval layer distinguishes literature records from structured biochemical records. PubMed and Europe PMC provide biomedical citations and accessible abstracts or full text; bioRxiv supplies biology preprints; arXiv supplies computational-method preprints. Literature records retain title, authorship, year, persistent identifier, retrieval source and the passage used by the synthesis step. Preprints remain labelled separately from peer-reviewed articles.
 
-\subsubsection{Molecular Tools}
-The molecular tools use RDKit for molecular parsing and descriptor calculation, QVina/Vina as a small-molecule ranking and pose-generation signal, and PLIP for supported structural-interaction fields. The formal peptide reference-redocking evidence uses ADCP and direct licensed MDockPeP2. The historical MDockPeP2 endpoint failure remains an operational boundary. Docking scores are not interpreted as measured binding affinity.
+UniProt supplies protein identity, sequence, reviewed annotations and database cross-references. Open Targets supplies disease--target associations. RCSB PDB supplies deposited macromolecular coordinates, ligand identifiers and structure metadata. E-TSN supplies literature-derived target-significance and novelty context when configured. Enamine Building Blocks provides a purchasable starting-material constraint for synthesis planning. DrugBank integrates drug and target records, although direct access returned HTTP 403 in the revision environment; DrugBank-specific execution is excluded from the measured provider results, and the Luteolin case is treated as known-candidate evidence recovery.
 
-\subsubsection{General Tool}
-The general tools provide \name \ with dynamic reasoning and information retrieval capabilities essential for solving complex scientific problems. It features a Code Interpreter that offers a secure sandbox for executing custom Python scripts to perform novel data analysis and scientific computations. To access external knowledge, the agent is equipped with both web search tools powered by Tavily for real-time information gathering and specialized literature search tools that query the arXiv repository and PubMed repository. Together, these tools enable the agent to solve unforeseen problems, validate its findings against the broader web, and stay current with the latest scientific literature.
+\subsection{Molecular calculation and structural analysis}
 
-\subsection{Model}
-The Model consists of four modules, including Binding Sites Discovery, ADMET Prediction, Molecule Generation, and Retrosynthesis.
+RDKit provides molecular parsing, canonicalization, fingerprints, scaffold extraction and deterministic descriptors. ADMET-AI supplies learned property estimates for the endpoint-specific panel. P2Rank proposes protein pockets. Vina supplies small-molecule poses and ranking scores, and PLIP converts protein--ligand complexes into supported typed interaction records. The direct-versus-wrapper and reference-pose experiments define the interpretation of these outputs: Vina is used as a docking signal rather than an affinity measurement, and unsupported PLIP schema classes fail closed.
 
-\subsubsection{Binding Sites Discovery}
-The discovery of viable binding sites is a foundational step in any structure-based drug design campaign, as it defines the precise 3D cavity on the target protein where a drug can bind. This identification is critical because it provides the essential geometric and chemical constraints that guide all subsequent tasks, including molecular docking and de novo generation. To accomplish this, \name \ utilizes P2Rank, a machine learning-based tool to predict druggable pockets from the protein's structure, thereby providing a validated starting point for the molecule design phase.
+ADCP and licensed MDockPeP2 provide peptide-docking poses. ESMFold and AlphaFold 3 provide sequence-to-complex structural predictions. These providers are evaluated independently because a predicted complex, a docked pose and a confidence score represent different scientific objects. Their coordinate-grounded results are reported in Supplementary Table~\ref{tab:sup-peptide-comparators}.
 
-\subsubsection{ADMET Prediction}
-A leading cause of late-stage clinical trial failures is not a lack of potency, but poor ADMET (Absorption, Distribution, Metabolism, Excretion, and Toxicity) properties. The early prediction of these properties is therefore a critical step, enabling researchers to filter out compounds that are likely to fail due to undesirable pharmacokinetics or toxicity, thereby saving significant time and resources. To address this, \name \ integrates ADMET-ai, a machine learning model designed to predict a wide range of these essential properties accurately. This capability is essential for the agent's autonomous decision-making, allowing it to de-risk the pipeline by ensuring that only candidates with a promising balance of both high potency and favorable drug-like characteristics are prioritized for further development.
+\subsection{Candidate generation and synthesis planning}
 
-\subsubsection{Molecule Generation}
-Molecule generation supports lead-editing and structure-based candidate generation. SAFE is used for compatible lead-editing tasks. The evaluated structure-based providers are TargetDiff, Pocket2Mol, and DiffSBDD; their comparative results are reported across model, pocket, seed, and metric strata. DiffBP, MolCRAFT, DecompDiff, and PocketFlow lacked verified executable checkpoints in the audited production roots and remain deferred.
+SAFE supports compatible lead-editing tasks. TargetDiff, Pocket2Mol and DiffSBDD form the executable structure-based generation portfolio evaluated across models, pockets, seeds and metrics. DiffBP, MolCRAFT, DecompDiff and PocketFlow lacked verified executable checkpoints in the audited production roots and remain outside the active portfolio. DirectMultiStep produces candidate multistep retrosynthesis routes. Route evaluation reports target rooting, molecular parse validity and overlap with the supplied human-selected reference reactions; an exact mismatch is not used as evidence that an alternative route is chemically impossible.
 
-\subsubsection{Retrosynthesis}
-A computationally designed drug candidate is only valuable if it can be synthesized in a laboratory, making retrosynthesis the critical final step that bridges in silico design with real-world chemistry. This process involves working backward from the final molecule to devise a step-by-step pathway from commercially available starting materials. To automate this complex planning task, \name \ employs DirectMultiStep, a novel deep learning framework uniquely capable of generating a complete, multi-step synthetic route in a single pass, ensuring the overall feasibility and efficiency of the proposed pathway.
+\subsection{General computation and web retrieval}
+
+The runtime exposes sandboxed Python execution for task-specific analysis and configured web search for public information retrieval. Literature and web results enter the same provenance and evidence-admission path as structured-provider results. Availability of a connector is recorded separately from successful execution, and provider-dependent claims require a completed versioned call under the reported access conditions.
 
 \clearpage
 
