@@ -1,12 +1,12 @@
 # FROGENT（COMMSBIO-26-4686-T）大修与逐条回复计划
 
-- 2026-08-11 投稿封装与模型方法口径：作者确认 FROGENT 不进行任务特定参数训练。代码核对确认 active role contracts 通过角色指令、typed schema、evidence gate、memory policy 与工具访问完成推理期适配，未包含八任务 benchmark demonstrations；Direct cells 为 stateless 且排除 FROGENT 初始化、工具、文件、persistent memory、历史输出与 gold，paired FROGENT cells 使用冻结的 gold-blind evidence，gold 仅供推理后 scorer 读取。主文 Abstract 已按 Communications Biology 建议的 150-word 上限重写为问题—方法—核心发现—意义的学术叙事，venue auditor 计数为 150 words，未堆叠统计量；Methods、SI、evidence ledger、author-input request 与 closure matrix 已同步。公开仓库目标固定为 `https://github.com/SZU-ADDG/FROGENT`，下一 gate 为敏感信息审计、clean/marked build、回复信定位、commit/push/public release。
+- 2026-08-11 投稿封装终态：作者确认 FROGENT 不进行任务特定参数训练。代码核对确认 active role contracts 通过角色指令、typed schema、evidence gate、memory policy 与工具访问完成推理期适配，未包含八任务 benchmark demonstrations；Direct cells 为 stateless 且排除 FROGENT 初始化、工具、文件、persistent memory、历史输出与 gold，paired FROGENT cells 使用冻结的 gold-blind evidence，gold 仅供推理后 scorer 读取。主文 Abstract 已按 Communications Biology 建议的 150-word 上限重写为问题—方法—核心发现—意义的学术叙事，venue auditor 计数为 150 words，未堆叠统计量；Methods、SI、evidence ledger、author-input request 与 closure matrix 已同步。Clean 35 页、marked 37 页和 SI 8 页均带最终内容并成功构建；318/318 tests、repository audit、credential scan、引用检查和最终图件视觉检查通过。公开仓库 `https://github.com/SZU-ADDG/FROGENT` 已由 PR #2–#4 合并到 `main` 并经匿名请求验证，版本化 release 为 `https://github.com/SZU-ADDG/FROGENT/releases/tag/commsbio-revision-20260811`。本地投稿包、逐条回复、页码/行号索引和 cover letter 已生成；剩余仅为作者/portal 确认与上传。
 
 ## 1. 文件状态
 
 - 用途：内部修订控制、逐条回复起草和稿件同步。
-- 当前 readiness：`blocked`。
-- 解除阻塞的条件：完成训练/提示事实确认、稿件证据同步和最终 response-package QA。替代雷达、显式 feedback allocation、三个近期系统的统一 Sol 当前模型适配、MDockPeP2 正式运行与 clean-environment gate 均已完成；不再等待已取消的全模型联网三重复扩展。
+- 当前 readiness：`submission_package_ready`；仅等待作者/portal 确认和上传。
+- 技术闭合条件已满足：训练/提示事实、稿件证据同步、response-package QA、替代雷达、显式 feedback allocation、三个近期系统的统一 Sol 当前模型适配、MDockPeP2 正式运行与 clean-environment gate 均已完成；不再等待已取消的全模型联网三重复扩展。
 - 回复原则：每条审稿意见都以一个明确结果结束：
   - `clarified_in_response_only`
   - `revised_in_manuscript`
