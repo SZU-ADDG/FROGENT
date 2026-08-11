@@ -18,7 +18,7 @@
 
 ## 交付建议
 
-1. 提供最终公开 release、data、prompts/SOP 和最小示例地址；仓库目标地址已确定为 `https://github.com/SZU-ADDG/FROGENT`。
+1. 最终公开仓库为 `https://github.com/SZU-ADDG/FROGENT`，版本化 release 为 `https://github.com/SZU-ADDG/FROGENT/releases/tag/commsbio-revision-20260811`；如需保留额外的受限 data、prompts/SOP 或最小示例，再提供其公开或受控访问地址。
 2. 如有必须保留、但尚未绑定 versioned run 的生产 provider 主张，再提供对应脱敏配置和 manifest。
 3. MDockPeP2 已确认使用现成安装和许可证，无需再次提供许可证或安排额外授权说明。
 

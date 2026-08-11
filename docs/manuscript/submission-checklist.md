@@ -26,9 +26,9 @@ Checked: 2026-08-11
 - [x] Confirm no undefined citations or references in clean manuscript logs.
 - [x] Visually inspect the revised task comparison, paired-model and MDockPeP2 figures at final export resolution.
 - [x] Generate a page/line index for response locations from the final line-numbered copy.
-- [ ] Commit the audited source tree and manuscript assets.
-- [ ] Push to `SZU-ADDG/FROGENT`, make the repository public and verify in an unauthenticated request.
-- [ ] Create a versioned GitHub release and record its immutable URL in Code Availability/SI.
+- [x] Commit the audited source tree and manuscript assets.
+- [x] Push to `SZU-ADDG/FROGENT`, make the repository public and verify in an unauthenticated request.
+- [x] Create a versioned GitHub release and record its immutable URL in Code Availability.
 
 ## Author/portal actions
 
