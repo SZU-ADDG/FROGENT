@@ -1,0 +1,10 @@
+{
+  "answer_type": "multipleChoice",
+  "case_index": 12,
+  "response": {
+    "confidence": "high",
+    "final_answer": "F",
+    "rationale": "Removal at sampling prevents sampled ancestors, so fossil tips alone do not resolve the time-varying birth-death identifiability problem."
+  },
+  "status": "succeeded"
+}

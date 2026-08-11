@@ -1,0 +1,38 @@
+{
+  "schema_version": "frogent-cbgbench-known-active-neighbors-preregistration-v1",
+  "frozen_at": "2026-08-02T01:56:02+08:00",
+  "amendment": "The r01 copied protocol contained a clerical frozen_at value of 02:05, later than its execution. Its outputs are retained but excluded from evidence. This corrected timestamp comes from the source protocol file mtime and is frozen before the clean r02 repetition; all targets, filters, metrics and interpretation boundaries are unchanged.",
+  "r03_correction_amendment": "The r02 row-level active_scaffold_match values are valid, but its aggregate summarizer compared native Booleans with the string True and therefore reported every scaffold-hit rate as zero. Similarities and thresholds remain valid. The typed-Boolean correction is frozen before r03; r03 repeats the unchanged collection, mappings and metrics and supersedes r02 for all aggregate evidence.",
+  "question": "How similar are the 9,767 parsed CBGBench primary generated molecules to a versioned, target-matched collection of known active molecules?",
+  "input": "/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-followup-20260801/cbgbench-novelty-pocket-r01/output/molecule-metrics.csv",
+  "pocket_target_mapping": {
+    "1IEP": {"target": "ABL1", "target_chembl_id": "CHEMBL1862", "uniprot": "P00519"},
+    "2HYY": {"target": "ABL1", "target_chembl_id": "CHEMBL1862", "uniprot": "P00519"},
+    "3CS9": {"target": "ABL1", "target_chembl_id": "CHEMBL1862", "uniprot": "P00519"},
+    "4WA9": {"target": "ABL1", "target_chembl_id": "CHEMBL1862", "uniprot": "P00519"},
+    "1M17": {"target": "EGFR", "target_chembl_id": "CHEMBL203", "uniprot": "P00533"}
+  },
+  "known_active_collection": {
+    "source": "ChEMBL REST API",
+    "database_version_recorded_from": "https://www.ebi.ac.uk/chembl/api/data/status.json",
+    "filters": {
+      "target_chembl_id": "exact pocket-mapped single-protein target",
+      "assay_type": "B",
+      "standard_type": "IC50",
+      "standard_units": "nM",
+      "standard_relation": "=",
+      "standard_flag": 1,
+      "pchembl_value__gte": 6,
+      "canonical_smiles": "parseable by RDKit"
+    },
+    "deduplication": "canonical isomeric SMILES; preserve all molecule ChEMBL IDs, activity count, and maximum pChEMBL"
+  },
+  "fingerprint": {"type": "Morgan", "radius": 2, "bits": 2048, "similarity": "Tanimoto"},
+  "metrics": [
+    "nearest-known-active Tanimoto per parsed generated molecule",
+    "mean, median, p90 and maximum by model and pocket",
+    "fractions with nearest-known-active Tanimoto >= 0.5, >= 0.7 and >= 0.8",
+    "exact Bemis-Murcko scaffold overlap with the target-matched active collection"
+  ],
+  "interpretation_boundary": "The experiment measures distance to the frozen ChEMBL 37 activity collection under the declared filters. Generator training-set novelty and exhaustive novelty across other databases or assay types remain not_measured."
+}

@@ -110,6 +110,31 @@ def route_molecular_tools(intent: str, identity: MolecularIdentity, *, target_id
     if _has(text, "admet", "property", "properties", "toxicity", "safety"):
         specs.append(("admet.compare" if comparison else "admet.predict", "ready",
                       "computational ADMET prediction"))
+    if _has(text, "physchem", "descriptor", "drug-like", "drug likeness", "lipinski",
+            "veber", "qed"):
+        specs.append(("molecule.describe", "ready", "deterministic molecular descriptors"))
+    if _has(text, "similarity", "tanimoto", "novelty"):
+        status = "ready" if baseline is not None else "blocked"
+        if status == "blocked":
+            blockers.append("molecular similarity requires an explicit reference molecule")
+        specs.append(("molecule.similarity", status, "fingerprint similarity to reference"))
+    if _has(text, "virtual screening", "known active", "target ligand", "target-aware"):
+        pdb_status = "ready" if pocket_id.strip() else "blocked"
+        if pdb_status == "blocked":
+            blockers.append("PDB-ligand similarity requires an explicit PDB or pocket ID")
+        specs.append((
+            "screening.pdb-ligand-similarity",
+            pdb_status,
+            "candidate similarity to structured PDB ligands",
+        ))
+        status = "ready" if target_id.strip() else "blocked"
+        if status == "blocked":
+            blockers.append("target-active similarity requires an explicit target")
+        specs.append((
+            "screening.target-active-similarity",
+            status,
+            "candidate similarity to curated target actives",
+        ))
     if _has(text, "dock", "docking", "pose"):
         status = "ready" if target_id.strip() and pocket_id.strip() else "blocked"
         if status == "blocked":

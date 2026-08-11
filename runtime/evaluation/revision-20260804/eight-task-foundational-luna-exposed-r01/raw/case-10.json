@@ -1,0 +1,10 @@
+{
+  "answer_type": "multipleChoice",
+  "case_index": 10,
+  "response": {
+    "confidence": "high",
+    "final_answer": "C",
+    "rationale": "RGDLTTP is the integrin-associated motif experimentally linked to MyoAAV 1A transduction, which depends on RGD-binding integrin heterodimers ([primary study](https://pmc.ncbi.nlm.nih.gov/articles/PMC9344975/))."
+  },
+  "status": "succeeded"
+}

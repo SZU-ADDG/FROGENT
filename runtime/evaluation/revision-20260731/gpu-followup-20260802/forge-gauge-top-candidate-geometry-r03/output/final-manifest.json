@@ -1,0 +1,16 @@
+{
+  "claim_boundary": "Coordinate-bearing top-50 QED/favorable-SA conditioned geometry and model-composition analysis, separate from unlinked source property-CSV top-50 sets; no binding-affinity claim.",
+  "completed_cells": 45,
+  "created_at": "2026-08-03T16:52:17+08:00",
+  "expected_cells": 45,
+  "molecule_metrics": "/var/lib/docker/my_workspace/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-top-candidate-geometry-r03/output/selected-molecule-geometry.csv",
+  "protocol_id": "forge-gauge-top-candidate-geometry-r03",
+  "selected_molecules": 2250,
+  "source_exit_zero_jobs": 120,
+  "source_expected_jobs": 120,
+  "source_parse_failures": 157,
+  "source_protocol_id": "forge-gauge-matched-budget-prospective-r02",
+  "status": "complete",
+  "summary": "/var/lib/docker/my_workspace/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-top-candidate-geometry-r03/output/summary.json",
+  "top_k_per_cell": 50
+}

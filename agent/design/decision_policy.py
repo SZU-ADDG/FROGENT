@@ -34,6 +34,8 @@ KNOWLEDGE_BASES = frozenset({
 })
 CALIBRATION_CAPABILITIES = frozenset({
     "molecular.identity",
+    "molecule.describe",
+    "molecule.similarity",
     "literature.research",
     "admet.predict",
     "admet.compare",

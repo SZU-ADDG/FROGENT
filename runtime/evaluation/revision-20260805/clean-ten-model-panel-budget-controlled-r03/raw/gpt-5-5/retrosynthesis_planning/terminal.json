@@ -1,0 +1,100 @@
+{
+  "display_name": "GPT-5.5",
+  "model_id": "gpt-5.5",
+  "prompt_sha256": "bc0f7e4759411866c826f61030cbcfb73f6621b93cdd8cb7ebe3db42bf2de62d",
+  "response": {
+    "results": [
+      {
+        "case_index": 1,
+        "route": "CCCCOc1ccc(CBr)cc1.c1ccc(-c2ccon2)nc1N -> CCCCOc1ccc(Cc2cc(-c3cccnc3N)on2)cc1"
+      },
+      {
+        "case_index": 2,
+        "route": "N=C(NC)c1cccs1.ClCCN1CCCC1.Nc1ccc2c(c1)SCCN2 -> N=C(Nc1ccc2c(c1)SCCN2CCN1CCCC1)c1cccs1"
+      },
+      {
+        "case_index": 3,
+        "route": "CCOc1cc(CN2CCC(N)CC2)cc(OCC)c1F.Ic1cccc2oc(N)nc12 -> CCOc1cc(CN2CCC(Nc3nc4c(I)cccc4o3)CC2)cc(OCC)c1F"
+      },
+      {
+        "case_index": 4,
+        "route": "C[C@@H]1CCCN1CCBr.Oc1cc2cc(-c3cccc(C(C)(C)O)c3)ccc2c1 -> C[C@@H]1CCCN1CCc1cc2cc(-c3cccc(C(C)(C)O)c3)ccc2o1"
+      },
+      {
+        "case_index": 5,
+        "route": "COC(=O)C1(N)c2ccccc2CC1.O=C(Cl)c1ccc(C(F)(F)F)c(OC(C)=O)c1 -> COC(=O)C1(NC(=O)c2ccc(C(F)(F)F)c(OC(C)=O)c2)Cc2ccccc2C1"
+      },
+      {
+        "case_index": 6,
+        "route": "COC(=O)Cc1ccc(OCC(O)CBr)cc1.Cc1noc(C)c1 -> COC(=O)Cc1ccc(OCC(O)c2c(C)noc2C)cc1"
+      },
+      {
+        "case_index": 7,
+        "route": "CCOc1cccnc1CSCCN.CN=C(NC#N)Cl -> CCOc1cccnc1CSCCN=C(NC)NC#N"
+      },
+      {
+        "case_index": 8,
+        "route": "O=C1OCCN1CCBr.OCCOc1cncc(-c2cnc3c(c2)CCCN3)c1 -> O=C1OCCN1CCOc1cncc(-c2cnc3c(c2)CCCN3)c1"
+      },
+      {
+        "case_index": 9,
+        "route": "COC(=O)n1c(=O)c2c(n1C)NC1=C(C(=O)CC1)C2Br.Fc1ccc(Br)c(Br)c1 -> COC(=O)n1c(=O)c2c(n1C)NC1=C(C(=O)CC1)C2c1ccc(F)c(Br)c1"
+      },
+      {
+        "case_index": 10,
+        "route": "CCCCNc1ccc(C(=O)C(=O)Nc2nccs2)cc1.COc1ccc(C(N)=O)cc1 -> CCCCNc1ccc(-c2nc(C(=O)Nc3nccs3)c(-c3ccc(OC)cc3)[nH]2)cc1"
+      },
+      {
+        "case_index": 11,
+        "route": "COC(=O)[C@H](CCCCN)N=C=O.Nc1cc(OC)cc(C(C)(C)C)c1O -> COC(=O)[C@H](CCCCN)NC(=O)Nc1cc(OC)cc(C(C)(C)C)c1O"
+      },
+      {
+        "case_index": 12,
+        "route": "CC1(C)CCC(CN2CCN(c3ccc(C(=O)NS(=O)(=O)c4ccc(N)c([N+](=O)[O-])c4)c(Oc4cnc5[nH]ccc5c4)c3)CC2)=C(c2ccc(Cl)cc2)C1.FC(CN1CC(CN)C1)CF -> CC1(C)CCC(CN2CCN(c3ccc(C(=O)NS(=O)(=O)c4ccc(NCC5CN(C(CF)CF)C5)c([N+](=O)[O-])c4)c(Oc4cnc5[nH]ccc5c4)c3)CC2)=C(c2ccc(Cl)cc2)C1"
+      },
+      {
+        "case_index": 13,
+        "route": "COC(=O)CN.CC(C)[C@H](NC(=O)CNC(=O)[C@@H]1CCCN1C(=O)[C@@H](NC(=O)OCc1ccccc1)C(C)C)C(=O)Cl -> COC(=O)CNC(=O)[C@@H](NC(=O)CNC(=O)[C@@H]1CCCN1C(=O)[C@@H](NC(=O)OCc1ccccc1)C(C)C)C(C)C"
+      },
+      {
+        "case_index": 14,
+        "route": "Oc1ccc(O)c(Br)c1.ClCc1ccccc1 -> Oc1ccc(OCc2ccccc2)c(Br)c1"
+      },
+      {
+        "case_index": 15,
+        "route": "COC(=O)C(C)(C)CN1CCNCC1.ClC1=Nc2ccc(Cl)cc2Cn2cc(C)cc21 -> COC(=O)C(C)(C)CN1CCN(C2=Nc3ccc(Cl)cc3Cn3cc(C)cc32)CC1"
+      },
+      {
+        "case_index": 16,
+        "route": "CC(C)SNa.Fc1cccc(Cl)n1 -> CC(C)Sc1ncccc1F"
+      },
+      {
+        "case_index": 17,
+        "route": "O=C1NC(=O)C(=O)N1.NC4CC4.NC4CCCC4.O=Cc1cnn2c(Cl)cc(Cl)nc12 -> O=C1NC(=O)/C(=C/c2cnn3c(NC4CC4)cc(NC4CCCC4)nc23)N1"
+      },
+      {
+        "case_index": 18,
+        "route": "O=[N+]([O-])c1cccc(CBr)c1.N -> NCc1cccc([N+](=O)[O-])c1"
+      },
+      {
+        "case_index": 19,
+        "route": "Cc1ccc(C(C)(C)C)cc1[N+](=O)[O-].[H][H] -> Cc1ccc(C(C)(C)C)cc1N"
+      },
+      {
+        "case_index": 20,
+        "route": "O=C(O)c1ccc(CO)c(F)c1.PBr3 -> O=C(O)c1ccc(CBr)c(F)c1"
+      }
+    ]
+  },
+  "schema_sha256": "98c592b4db994ae2b23d3b8e5c833ce4d4a3f23d4b3e0500a2b7d35c2d781502",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "retrosynthesis_planning",
+  "transport": "codex",
+  "transport_metadata": {
+    "event_lines": 11,
+    "prohibited_tool_events": 0,
+    "returncode": 0
+  },
+  "wall_seconds": 144.1888420409523
+}

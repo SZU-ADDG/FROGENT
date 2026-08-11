@@ -1,0 +1,9 @@
+{
+  "name": "frogent-report-exports",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Deterministic Word export support for the FROGENT web surface",
+  "dependencies": {
+    "docx": "9.6.1"
+  }
+}

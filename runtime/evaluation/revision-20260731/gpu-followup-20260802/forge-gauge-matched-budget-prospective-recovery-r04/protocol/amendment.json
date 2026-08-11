@@ -1,0 +1,12 @@
+{
+  "protocol_id": "forge-gauge-matched-budget-prospective-recovery-r04",
+  "amends": [
+    "forge-gauge-matched-budget-prospective-r02",
+    "forge-gauge-matched-budget-prospective-retry-r02",
+    "forge-gauge-matched-budget-prospective-recovery-r03"
+  ],
+  "frozen_at": "2026-08-02T18:32:00+08:00",
+  "reason": "Recovery-r03 depended on the prelaunch-aborted batch-32 retry-r01. Recovery-r04 consumes the executable batch-8 retry-r02 instead.",
+  "merge_rule": "For each of 105 phase-1 tags, use r02 when exit zero and retry-r02 when r02 is nonzero. Require complete coverage before Gauge decisions.",
+  "phase_2": "Preserve the original Gauge policy, 15 round-2 allocations and matched attempt budgets."
+}

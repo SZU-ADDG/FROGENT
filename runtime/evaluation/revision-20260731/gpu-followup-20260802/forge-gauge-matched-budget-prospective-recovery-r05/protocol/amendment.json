@@ -1,0 +1,13 @@
+{
+  "protocol_id": "forge-gauge-matched-budget-prospective-recovery-r05",
+  "amends": [
+    "forge-gauge-matched-budget-prospective-r02",
+    "forge-gauge-matched-budget-prospective-retry-r03",
+    "forge-gauge-matched-budget-prospective-recovery-r04"
+  ],
+  "frozen_at": "2026-08-02T19:25:00+08:00",
+  "reason": "Recovery-r04 depended on retry-r02, whose failure-freeze helper stopped before retry inference. Recovery-r05 consumes the frozen five-job batch-8 retry-r03 result.",
+  "merge_rule": "After all 105 source phase-1 jobs are terminal, use r02 for exit-zero jobs and retry-r03 for covered r02 failures. Abort before merge and Gauge selection if any failed source tag lacks an exit-zero replacement.",
+  "future_failure_rule": "Any r02 failure appearing after the 19:25 snapshot requires a fresh exact retry and fresh recovery amendment; no source or retry run is overwritten.",
+  "phase_2": "Preserve the original Gauge policy, 15 round-2 allocations and matched attempt budgets."
+}

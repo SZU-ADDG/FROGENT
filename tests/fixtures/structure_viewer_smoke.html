@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>FROGENT structure viewer smoke test</title>
+  <link rel="stylesheet" href="../../app/assets/styles.css">
+  <script defer src="../../app/assets/app.js"></script>
+</head>
+<body>
+  <main id="smoke-root" style="max-width:720px;margin:32px auto"></main>
+  <div hidden>
+    <main id="login-view"></main><main id="register-view"></main><main id="chat-view"></main>
+    <form id="login-form"></form><input id="login-username"><input id="login-password">
+    <div id="login-status"></div><button id="show-register"></button>
+    <form id="register-form"></form><input id="register-username"><input id="register-email">
+    <input id="register-password"><input id="register-confirm"><div id="register-status"></div>
+    <button id="show-login"></button><div id="sidebar"></div><button id="close-sidebar"></button>
+    <button id="open-sidebar"></button><button id="new-chat"></button><div id="chat-history"></div>
+    <div id="account-name"></div><button id="logout"></button><div id="messages"></div>
+    <div id="chat-status"></div><div id="attachment-status"></div>
+    <input id="file-input" type="file"><button id="attach"></button>
+    <textarea id="message-input"></textarea><button id="send"></button>
+  </div>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const molecule = {
+        filename: "representative-complex.pdb",
+        format: "pdb",
+        data: [
+          "ATOM      1  C   LIG A   1       0.000   0.000   0.000  1.00  0.00           C",
+          "ATOM      2  O   LIG A   1       1.200   0.000   0.300  1.00  0.00           O",
+          "ATOM      3  N   LIG A   1      -1.200   0.000  -0.300  1.00  0.00           N",
+          "ATOM      4  S   LIG A   1       0.000   1.500   0.000  1.00  0.00           S"
+        ].join("\n")
+      };
+      document.getElementById("smoke-root").append(structureViewer(molecule));
+    });
+  </script>
+</body>
+</html>

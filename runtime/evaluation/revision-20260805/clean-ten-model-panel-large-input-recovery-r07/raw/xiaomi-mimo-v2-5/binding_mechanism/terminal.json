@@ -1,0 +1,324 @@
+{
+  "display_name": "MiMo V2.5",
+  "model_id": "xiaomi/mimo-v2.5",
+  "prompt_sha256": "a265940b39e7cbf2933d4eb34936e66d84b4b988935934b308f22bac6cca35db",
+  "response": {
+    "results": [
+      {
+        "case_index": 1,
+        "hydrogen_bonds": 5,
+        "hydrophobic_contacts": 12,
+        "pi_stacking": 2,
+        "salt_bridges": 1,
+        "water_bridges": 3
+      },
+      {
+        "case_index": 2,
+        "hydrogen_bonds": 4,
+        "hydrophobic_contacts": 10,
+        "pi_stacking": 1,
+        "salt_bridges": 2,
+        "water_bridges": 2
+      },
+      {
+        "case_index": 3,
+        "hydrogen_bonds": 3,
+        "hydrophobic_contacts": 8,
+        "pi_stacking": 1,
+        "salt_bridges": 1,
+        "water_bridges": 2
+      },
+      {
+        "case_index": 4,
+        "hydrogen_bonds": 4,
+        "hydrophobic_contacts": 11,
+        "pi_stacking": 2,
+        "salt_bridges": 1,
+        "water_bridges": 3
+      },
+      {
+        "case_index": 5,
+        "hydrogen_bonds": 3,
+        "hydrophobic_contacts": 6,
+        "pi_stacking": 1,
+        "salt_bridges": 1,
+        "water_bridges": 2
+      },
+      {
+        "case_index": 6,
+        "hydrogen_bonds": 2,
+        "hydrophobic_contacts": 12,
+        "pi_stacking": 1,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 7,
+        "hydrogen_bonds": 3,
+        "hydrophobic_contacts": 10,
+        "pi_stacking": 2,
+        "salt_bridges": 1,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 8,
+        "hydrogen_bonds": 2,
+        "hydrophobic_contacts": 5,
+        "pi_stacking": 0,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 9,
+        "hydrogen_bonds": 2,
+        "hydrophobic_contacts": 8,
+        "pi_stacking": 1,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 10,
+        "hydrogen_bonds": 4,
+        "hydrophobic_contacts": 10,
+        "pi_stacking": 1,
+        "salt_bridges": 1,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 11,
+        "hydrogen_bonds": 0,
+        "hydrophobic_contacts": 0,
+        "pi_stacking": 0,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 12,
+        "hydrogen_bonds": 0,
+        "hydrophobic_contacts": 0,
+        "pi_stacking": 0,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 13,
+        "hydrogen_bonds": 0,
+        "hydrophobic_contacts": 0,
+        "pi_stacking": 0,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 14,
+        "hydrogen_bonds": 0,
+        "hydrophobic_contacts": 0,
+        "pi_stacking": 0,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 15,
+        "hydrogen_bonds": 0,
+        "hydrophobic_contacts": 0,
+        "pi_stacking": 0,
+        "salt_bridges": 0,
+        "water_bridges": 0
+      },
+      {
+        "case_index": 16,
+        "hydrogen_bonds": 4,
+        "hydrophobic_contacts": 12,
+        "pi_stacking": 2,
+        "salt_bridges": 1,
+        "water_bridges": 3
+      },
+      {
+        "case_index": 17,
+        "hydrogen_bonds": 6,
+        "hydrophobic_contacts": 8,
+        "pi_stacking": 1,
+        "salt_bridges": 2,
+        "water_bridges": 4
+      },
+      {
+        "case_index": 18,
+        "hydrogen_bonds": 5,
+        "hydrophobic_contacts": 15,
+        "pi_stacking": 3,
+        "salt_bridges": 2,
+        "water_bridges": 2
+      },
+      {
+        "case_index": 19,
+        "hydrogen_bonds": 5,
+        "hydrophobic_contacts": 7,
+        "pi_stacking": 1,
+        "salt_bridges": 2,
+        "water_bridges": 3
+      },
+      {
+        "case_index": 20,
+        "hydrogen_bonds": 4,
+        "hydrophobic_contacts": 14,
+        "pi_stacking": 2,
+        "salt_bridges": 1,
+        "water_bridges": 2
+      }
+    ]
+  },
+  "schema_sha256": "ea915c3383e866a45603dc999c27da0cce01be388cd3b1477c2d79f4f1373065",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "binding_mechanism",
+  "transport": "openrouter",
+  "transport_metadata": {
+    "batch_size": 5,
+    "batches": [
+      {
+        "case_indices": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "finish_reason": "stop",
+        "provider": "Parasail",
+        "response_id": "gen-1785904705-BzJej003obLMAR376WyA",
+        "returned_model": "xiaomi/mimo-v2.5",
+        "usage": {
+          "completion_tokens": 318,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0
+          },
+          "cost": 0.02438918,
+          "cost_details": {
+            "upstream_inference_completions_cost": 8.904e-05,
+            "upstream_inference_cost": 0.02438918,
+            "upstream_inference_prompt_cost": 0.02430014
+          },
+          "is_byok": false,
+          "prompt_tokens": 173620,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 74,
+            "video_tokens": 0
+          },
+          "total_tokens": 173938
+        }
+      },
+      {
+        "case_indices": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "finish_reason": "stop",
+        "provider": "DeepInfra",
+        "response_id": "gen-1785904722-tliDkdoI5jdkxzOt2okl",
+        "returned_model": "xiaomi/mimo-v2.5",
+        "usage": {
+          "completion_tokens": 319,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0
+          },
+          "cost": 0.06681792,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0.000638,
+            "upstream_inference_cost": 0.06681792,
+            "upstream_inference_prompt_cost": 0.06617992
+          },
+          "is_byok": false,
+          "prompt_tokens": 165501,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 64,
+            "video_tokens": 0
+          },
+          "total_tokens": 165820
+        }
+      },
+      {
+        "case_indices": [
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "finish_reason": "stop",
+        "provider": "DeepInfra",
+        "response_id": "gen-1785904736-IYoftsUzE4kFkn0XU1v3",
+        "returned_model": "xiaomi/mimo-v2.5",
+        "usage": {
+          "completion_tokens": 320,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0
+          },
+          "cost": 0.02388832,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0.00064,
+            "upstream_inference_cost": 0.02388832,
+            "upstream_inference_prompt_cost": 0.02324832
+          },
+          "is_byok": false,
+          "prompt_tokens": 58172,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 64,
+            "video_tokens": 0
+          },
+          "total_tokens": 58492
+        }
+      },
+      {
+        "case_indices": [
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "finish_reason": "stop",
+        "provider": "Parasail",
+        "response_id": "gen-1785904746-drU6R05snrPvuZLaJVu1",
+        "returned_model": "xiaomi/mimo-v2.5",
+        "usage": {
+          "completion_tokens": 323,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0
+          },
+          "cost": 0.01201132,
+          "cost_details": {
+            "upstream_inference_completions_cost": 9.044e-05,
+            "upstream_inference_cost": 0.01201132,
+            "upstream_inference_prompt_cost": 0.01192088
+          },
+          "is_byok": false,
+          "prompt_tokens": 85162,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 20,
+            "video_tokens": 0
+          },
+          "total_tokens": 85485
+        }
+      }
+    ]
+  },
+  "wall_seconds": 44.05085883429274
+}

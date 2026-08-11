@@ -215,6 +215,46 @@ class MolecularToolTests(unittest.TestCase):
         self.assertEqual(("P12345", "pocket-1"),
                          (step.tool_input.target_id, step.tool_input.pocket_id))
 
+    def test_physchem_and_similarity_route_to_local_chemistry_tools(self):
+        source = identity()
+        baseline = identity(original="CCN", canonical="CCN",
+                            inchikey="QUSNBJAOOMFDIB-UHFFFAOYSA-N")
+        described = prepare_molecular_request(
+            "CCO", "calculate QED and Lipinski descriptors", FakeNormalizer(source)
+        )
+        self.assertEqual(
+            ("molecule.describe",),
+            tuple(step.capability_id for step in described.tool_plan.steps),
+        )
+        compared = prepare_molecular_request(
+            "CCO",
+            "calculate Tanimoto similarity to the baseline",
+            FakeNormalizer({"CCO": source, "CCN": baseline}),
+            baseline_smiles="CCN",
+        )
+        self.assertEqual("molecule.similarity", compared.tool_plan.steps[0].capability_id)
+        self.assertEqual("ready", compared.tool_plan.steps[0].status)
+        blocked = prepare_molecular_request(
+            "CCO", "calculate molecular similarity", FakeNormalizer(source)
+        )
+        self.assertEqual("blocked", blocked.tool_plan.steps[0].status)
+        self.assertTrue(any("reference" in item for item in blocked.tool_plan.blockers))
+
+    def test_target_aware_screening_routes_to_known_active_evidence(self):
+        source = identity()
+        result = prepare_molecular_request(
+            "CCO",
+            "target-aware virtual screening against known actives",
+            FakeNormalizer(source),
+            target_id="EGFR",
+        )
+        self.assertEqual(
+            "screening.target-active-similarity",
+            result.tool_plan.steps[1].capability_id,
+        )
+        self.assertEqual("ready", result.tool_plan.steps[1].status)
+        self.assertEqual("blocked", result.tool_plan.steps[0].status)
+
     def test_selection_must_name_an_executable_fragment_and_baseline_scope(self):
         parent = DerivedMoleculeCandidate("CCO", "CCO", "InChI=1S/C2H6O",
             "LFQSCWFLJHTTHZ-UHFFFAOYSA-N", "C2H6O", ("CCN",))

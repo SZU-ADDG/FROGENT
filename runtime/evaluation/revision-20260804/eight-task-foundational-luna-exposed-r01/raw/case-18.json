@@ -1,0 +1,10 @@
+{
+  "answer_type": "multipleChoice",
+  "case_index": 18,
+  "response": {
+    "confidence": "high",
+    "final_answer": "C",
+    "rationale": "The cited meta-analysis reports prolonged overall survival with PD-1 inhibitors in both the intention-to-treat and PD-L1-positive populations: [BMC Cancer meta-analysis](https://link.springer.com/article/10.1186/s12885-024-13105-9)."
+  },
+  "status": "succeeded"
+}

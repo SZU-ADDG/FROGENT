@@ -94,9 +94,11 @@ def split_files(models, user_id, chat_id, uploads):
     result = {"files": [], "molecules": []}
     for record in models.ChatFiles.get_by_conversation_id(user_id, chat_id) or ():
         item = record.to_dict()
+        path = Path(file_path(item, uploads))
+        item.pop("path", None)
+        item.update(file_id=item["id"], download_url=f"/api/files/{item['id']}/download")
         if item["is_molecular"]:
-            path = Path(file_path(item, uploads))
-            item.update(data=path.read_text(encoding="utf-8"), file_id=item["id"])
+            item["data"] = path.read_text(encoding="utf-8", errors="replace")
             result["molecules"].append(item)
         else:
             result["files"].append(item)

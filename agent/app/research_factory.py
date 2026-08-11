@@ -8,7 +8,7 @@ from pathlib import Path
 from agent.research.biomedical_providers import (
     EuropePMCProvider, NCBIConfig, OpenAlexProvider, PubMedProvider, UnpaywallFallback,
 )
-from agent.llm.codex_client import CodexClient
+from agent.llm.client_factory import build_llm_client, llm_settings_from_env
 from agent.research.clinical_trials import ClinicalTrialsResolver
 from agent.llm.codex_roles import CodexPlanner, CodexReader, CodexScreener, CodexSynthesizer
 from agent.app.conversation_memory import ConversationMemoryStore
@@ -52,7 +52,7 @@ class RuntimeConfig:
     max_readers: int = 4
     max_queries: int = 12
     max_expansion_queries: int = 6
-    codex_executable: str = "codex"
+    codex_executable: str = "/Applications/ChatGPT.app/Contents/Resources/codex"
     max_results_per_query: int = 10
     max_reader_documents: int = 6
     max_memory_hits: int = 8
@@ -61,6 +61,15 @@ class RuntimeConfig:
     dynamic_plip: DynamicPLIPConfig | None = None
     ligand_states: DimorphiteConfig | None = None
     receptor_states: PDB2PQRConfig | None = None
+    llm_backend: str = "deepseek"
+    deepseek_model: str = "deepseek-v4-flash"
+    deepseek_base_url: str = "https://api.deepseek.com"
+    deepseek_timeout: float | None = None
+    codex_model: str = "gpt-5.6-luna"
+    codex_reasoning_effort: str = "max"
+    openrouter_model: str = ""
+    openrouter_base_url: str = "https://openrouter.ai/api/v1"
+    openrouter_timeout: float | None = None
 
     @classmethod
     def from_env(cls, project_root: Path):
@@ -69,17 +78,25 @@ class RuntimeConfig:
             raise ValueError("FROGENT_MEMORY_DB must explicitly configure persistent memory")
         path = Path(value)
         path = path if path.is_absolute() else project_root / path
-        return cls(project_root, path, _optional_timeout(os.getenv("FROGENT_CODEX_TIMEOUT", "")),
-                   int(os.getenv("FROGENT_MAX_READERS", "4")),
-                   int(os.getenv("FROGENT_MAX_QUERIES", "12")),
-                   int(os.getenv("FROGENT_MAX_EXPANSION_QUERIES", "6")),
-                   os.getenv("FROGENT_CODEX_EXECUTABLE", "codex").strip() or "codex",
-                   int(os.getenv("FROGENT_MAX_RESULTS_PER_QUERY", "10")),
-                   int(os.getenv("FROGENT_MAX_READER_DOCUMENTS", "6")),
-                   int(os.getenv("FROGENT_MAX_MEMORY_HITS", "8")),
-                   int(os.getenv("FROGENT_MAX_MEMORY_PROMPT_CHARS", "8000")),
-                   dynamic_vina_from_env(project_root), dynamic_plip_from_env(project_root),
-                   ligand_states_from_env(project_root), receptor_states_from_env(project_root))
+        return cls(
+            project_root=project_root,
+            memory_path=path,
+            codex_timeout=_optional_timeout(os.getenv("FROGENT_CODEX_TIMEOUT", "")),
+            max_readers=int(os.getenv("FROGENT_MAX_READERS", "4")),
+            max_queries=int(os.getenv("FROGENT_MAX_QUERIES", "12")),
+            max_expansion_queries=int(os.getenv("FROGENT_MAX_EXPANSION_QUERIES", "6")),
+            max_results_per_query=int(os.getenv("FROGENT_MAX_RESULTS_PER_QUERY", "10")),
+            max_reader_documents=int(os.getenv("FROGENT_MAX_READER_DOCUMENTS", "6")),
+            max_memory_hits=int(os.getenv("FROGENT_MAX_MEMORY_HITS", "8")),
+            max_memory_prompt_chars=int(os.getenv("FROGENT_MAX_MEMORY_PROMPT_CHARS", "8000")),
+            dynamic_vina=dynamic_vina_from_env(project_root),
+            dynamic_plip=dynamic_plip_from_env(project_root),
+            ligand_states=ligand_states_from_env(project_root),
+            receptor_states=receptor_states_from_env(project_root),
+            deepseek_timeout=_optional_timeout(os.getenv("FROGENT_DEEPSEEK_TIMEOUT", "")),
+            openrouter_timeout=_optional_timeout(os.getenv("FROGENT_OPENROUTER_TIMEOUT", "")),
+            **llm_settings_from_env(),
+        )
 
 
 def _optional_timeout(raw: str) -> float | None:
@@ -149,12 +166,19 @@ def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=
                            interaction_provider=None, rcsb_transport=None,
                            docking_runner=None, docking_conformer=None,
                            plip_runner=None, plip_ligand_builder=None,
-                           design_calibrator=None) -> ResearchService:
+                           design_calibrator=None, llm_client=None) -> ResearchService:
     root = config.project_root.resolve()
-    client_args = {"timeout": config.codex_timeout, "executable": config.codex_executable}
-    if runner is not None:
-        client_args["runner"] = runner
-    client = CodexClient(root, **client_args)
+    client = llm_client
+    if client is None:
+        client = build_llm_client(
+            root, backend=config.llm_backend, deepseek_model=config.deepseek_model,
+            deepseek_base_url=config.deepseek_base_url, deepseek_timeout=config.deepseek_timeout,
+            codex_model=config.codex_model, codex_reasoning_effort=config.codex_reasoning_effort,
+            codex_executable=config.codex_executable,
+            codex_timeout=config.codex_timeout, runner=runner,
+            openrouter_model=config.openrouter_model,
+            openrouter_base_url=config.openrouter_base_url,
+            openrouter_timeout=config.openrouter_timeout)
     europe = EuropePMCProvider()
     providers, routes, gaps = {"europe-pmc.search": europe}, ["europe_pmc"], []
     email = os.getenv("FROGENT_PUBMED_EMAIL", "").strip()
@@ -219,7 +243,6 @@ def build_research_service(config: RuntimeConfig, *, runner=None, pdf_extractor=
                            max_memory_prompt_chars=config.max_memory_prompt_chars,
                            design_handler=design, molecular_handler=molecular,
                            docking_handler=docking)
-
 
 def build_local_docking_adapters(config: RuntimeConfig, *, vina_executable: Path,
                                  plip_executable: Path, vina_preparer, plip_preparer,

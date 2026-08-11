@@ -1,0 +1,36 @@
+{
+  "schema_version": "frogent-clean-ten-model-panel-compatibility-v1",
+  "frozen_at": "2026-08-05T15:16:00+08:00",
+  "status": "preregistered_before_retry_outputs",
+  "amends": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+  "reason": "GPT-5.6 Sol binding_mechanism exhausted five Codex streaming retries and the HTTP fallback timed out without an answer.",
+  "scope": "Only the failed GPT-5.6 Sol binding_mechanism cell is eligible. All successful cells remain authoritative.",
+  "models": [
+    {
+      "display_name": "GPT-5.6 Sol",
+      "transport": "codex",
+      "model_id": "gpt-5.6-sol",
+      "reasoning_effort": "low",
+      "batch_size": 5
+    }
+  ],
+  "tasks": [
+    "binding_mechanism"
+  ],
+  "case_count_per_task": 20,
+  "request_grain": "four isolated five-case Codex executions",
+  "gold_visibility": "withheld_during_inference",
+  "tools": "disabled",
+  "web": "disabled",
+  "memory": "none",
+  "retries": 0,
+  "codex": {
+    "executable": "/Applications/ChatGPT.app/Contents/Resources/codex",
+    "ephemeral": true,
+    "ignore_user_config": true,
+    "project_doc_max_bytes": 0,
+    "sandbox": "read-only",
+    "web_search": false
+  },
+  "claim_boundary": "request-grain transport recovery only; prompts, cases, schemas, gold data and scoring are unchanged"
+}

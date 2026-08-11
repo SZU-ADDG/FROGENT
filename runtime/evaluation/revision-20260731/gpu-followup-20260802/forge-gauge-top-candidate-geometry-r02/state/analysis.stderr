@@ -1,0 +1,32 @@
+concurrent.futures.process._RemoteTraceback:
+"""
+Traceback (most recent call last):
+  File "/work/doomx/anaconda3/envs/mlm/lib/python3.10/concurrent/futures/process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/work/doomx/anaconda3/envs/mlm/lib/python3.10/concurrent/futures/process.py", line 205, in _process_chunk
+    return [fn(*args) for args in chunk]
+  File "/work/doomx/anaconda3/envs/mlm/lib/python3.10/concurrent/futures/process.py", line 205, in <listcomp>
+    return [fn(*args) for args in chunk]
+  File "/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-top-candidate-geometry-r02/scripts/analyze.py", line 123, in scan_job
+    raise ValueError(f"{tag}: {parse_failures} generated SDF files failed RDKit parsing")
+ValueError: fixed-best-targetdiff-1iep-s97-n1500-r02: 4 generated SDF files failed RDKit parsing
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-top-candidate-geometry-r02/scripts/analyze.py", line 316, in <module>
+    raise SystemExit(main())
+  File "/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-top-candidate-geometry-r02/scripts/analyze.py", line 208, in main
+    job_results = list(pool.map(scan_job, payloads))
+  File "/work/doomx/anaconda3/envs/mlm/lib/python3.10/concurrent/futures/process.py", line 575, in _chain_from_iterable_of_lists
+    for element in iterable:
+  File "/work/doomx/anaconda3/envs/mlm/lib/python3.10/concurrent/futures/_base.py", line 621, in result_iterator
+    yield _result_or_cancel(fs.pop())
+  File "/work/doomx/anaconda3/envs/mlm/lib/python3.10/concurrent/futures/_base.py", line 319, in _result_or_cancel
+    return fut.result(timeout)
+  File "/work/doomx/anaconda3/envs/mlm/lib/python3.10/concurrent/futures/_base.py", line 451, in result
+    return self.__get_result()
+  File "/work/doomx/anaconda3/envs/mlm/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+ValueError: fixed-best-targetdiff-1iep-s97-n1500-r02: 4 generated SDF files failed RDKit parsing

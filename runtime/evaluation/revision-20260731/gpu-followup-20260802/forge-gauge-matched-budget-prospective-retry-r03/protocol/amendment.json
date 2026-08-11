@@ -1,0 +1,23 @@
+{
+  "protocol_id": "forge-gauge-matched-budget-prospective-retry-r03",
+  "amends": [
+    "forge-gauge-matched-budget-prospective-r02",
+    "forge-gauge-matched-budget-prospective-retry-r02"
+  ],
+  "frozen_at": "2026-08-02T19:25:00+08:00",
+  "reason": "Retry-r02 stopped before creating retry job state because its freeze helper incorrectly required every Pocket2Mol job to be terminal after two worker shards exited. Phase-1 jobs are distributed by job index across all twelve workers.",
+  "prelaunch_disposition": "Retry-r02 produced no retry inference or result. Recovery-r04 was stopped before phase-1 merge, Gauge selection or phase-2 inference.",
+  "failed_job_freeze_rule": "Include all and only the five r02 jobs with a terminal nonzero exit code at the 2026-08-02T19:25:00+08:00 snapshot.",
+  "invariants": {
+    "protein_and_ligand_inputs": "unchanged",
+    "method": "pocket2mol",
+    "seeds": "unchanged",
+    "attempt_counts": "unchanged",
+    "batch_size": 8,
+    "threshold": -1,
+    "threshold_ratio": 0.8,
+    "gpu_policy": "physical GPU 6 must have no compute process before launch; retries run sequentially",
+    "successful_r02_jobs": "never rerun"
+  },
+  "scientific_effect": "The amendment changes execution memory only. Pocket, seed, total attempt budget, generator, evaluator and analysis remain unchanged. Later r02 failures require a separate exact retry root."
+}

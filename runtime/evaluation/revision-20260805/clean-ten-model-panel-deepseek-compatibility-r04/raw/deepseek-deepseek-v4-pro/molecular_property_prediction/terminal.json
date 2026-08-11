@@ -1,0 +1,204 @@
+{
+  "display_name": "DeepSeek V4 Pro",
+  "model_id": "deepseek/deepseek-v4-pro",
+  "prompt_sha256": "a5418f0a6b90e929c4c511189936469bf0286651c95de8254a26cf872c6a522b",
+  "response": {
+    "results": [
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 1,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 2,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 3,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 4,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 5,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 6,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 7,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 8,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 9,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 10,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 11,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 12,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 13,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 14,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 15,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 16,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 17,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 18,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 19,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      },
+      {
+        "bbbp": 0,
+        "caco2": 0.0,
+        "case_index": 20,
+        "cyp2d6_sub": 0,
+        "qed": 0.0,
+        "sr_p53": 0
+      }
+    ]
+  },
+  "schema_sha256": "b53f7d3ae4888cc33cd032c550b64db4e404f8b25f74a2058f9e6e97eca80462",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "molecular_property_prediction",
+  "transport": "openrouter",
+  "transport_metadata": {
+    "finish_reason": "stop",
+    "provider": "Ionstream",
+    "response_id": "gen-1785904597-CmTdiRNOqiT5L9QsuiQM",
+    "returned_model": "deepseek/deepseek-v4-pro",
+    "usage": {
+      "completion_tokens": 1250,
+      "completion_tokens_details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "reasoning_tokens": 0
+      },
+      "cost": 0.004236726,
+      "cost_details": {
+        "upstream_inference_completions_cost": 0.0028275,
+        "upstream_inference_cost": 0.004236726,
+        "upstream_inference_prompt_cost": 0.001409226
+      },
+      "is_byok": false,
+      "prompt_tokens": 1246,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 0,
+        "cached_tokens": 0,
+        "video_tokens": 0
+      },
+      "total_tokens": 2496
+    }
+  },
+  "wall_seconds": 74.24193783383816
+}

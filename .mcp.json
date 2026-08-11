@@ -36,6 +36,20 @@
       "type": "http",
       "url": "http://127.0.0.1:9006/mcp"
     },
+    "chemistry": {
+      "command": "python3",
+      "args": [
+        "./scripts/launch_chemistry_mcp.py"
+      ],
+      "cwd": "."
+    },
+    "structured-retrieval": {
+      "command": "python3",
+      "args": [
+        "./mcp/structured_retrieval_mcp.py"
+      ],
+      "cwd": "."
+    },
     "trio-workspace": {
       "command": "python3",
       "args": [

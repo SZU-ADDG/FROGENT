@@ -1,16 +1,16 @@
 """Maintained Flask surface for the FROGENT Agent."""
-
 import importlib
 import logging
+from io import BytesIO
 from datetime import datetime
 from pathlib import Path
 from uuid import uuid4
-
-from flask import Flask, Response, jsonify, request, send_from_directory, session
+from flask import Flask, Response, jsonify, request, send_file, send_from_directory, session
 from flask import stream_with_context
 from werkzeug.utils import secure_filename
 
 from app.chat import (
+    file_path,
     load_chat_sessions,
     new_chat,
     require_text,
@@ -18,6 +18,7 @@ from app.chat import (
     stream_chat,
     user_content,
 )
+from app.report_export import EXPORTS, export_report
 
 ALLOWED_EXTENSIONS = {
     "csv", "docx", "fa", "fasta", "html", "pdf", "pptx", "tsv", "txt",
@@ -53,11 +54,9 @@ def _register_routes(web, state, app_root):
     @web.get("/")
     def index():
         return (app_root / "templates" / "index.html").read_text(encoding="utf-8")
-
     @web.get("/assets/<path:filename>")
     def assets(filename):
         return send_from_directory(app_root / "assets", filename)
-
     @web.post("/api/register")
     def register():
         payload = _payload()
@@ -74,7 +73,6 @@ def _register_routes(web, state, app_root):
             LOGGER.exception("user registration failed")
             return jsonify(success=False, message="注册失败")
         return jsonify(success=True, message="注册成功")
-
     @web.post("/api/login")
     def login():
         payload = _payload()
@@ -97,7 +95,6 @@ def _register_routes(web, state, app_root):
             user_id=user_id,
             chat_sessions=chats,
         )
-
     @web.post("/api/logout")
     def logout():
         user_id = session.get("user_id")
@@ -105,7 +102,6 @@ def _register_routes(web, state, app_root):
             sessions.pop(user_id, None)
         session.clear()
         return jsonify(success=True, message="已成功注销")
-
     @web.post("/api/chat_history")
     def chat_history():
         payload, user_id = _payload(), _session_user(sessions)
@@ -118,7 +114,6 @@ def _register_routes(web, state, app_root):
         result = dict(chat)
         result.update(split_files(models, user_id, chat_id, state["uploads"]))
         return jsonify(success=True, messages="获取消息成功", chat_session=result)
-
     @web.post("/api/chat")
     def chat():
         user_id = _session_user(sessions)
@@ -147,7 +142,6 @@ def _register_routes(web, state, app_root):
             mimetype="text/event-stream",
             headers={"Cache-Control": "no-cache"},
         )
-
     @web.post("/api/upload")
     def upload():
         user_id = _session_user(sessions)
@@ -174,7 +168,6 @@ def _register_routes(web, state, app_root):
                 }
             )
         return jsonify(success=True, message="文件上传成功", files=uploaded)
-
     @web.post("/api/change_chat_file")
     def change_chat_file():
         payload, user_id = _payload(), _session_user(sessions)
@@ -185,6 +178,45 @@ def _register_routes(web, state, app_root):
             is_clear=payload.get("is_clear"), is_visible=payload.get("is_visible")
         )
         return jsonify(success=bool(changed), message="更新成功" if changed else "更新失败")
+    @web.get("/api/files/<int:file_id>/download")
+    def download_chat_file(file_id):
+        user_id = _session_user(sessions)
+        record = models.ChatFiles.get_by_id(file_id)
+        if (
+            record is None
+            or record.user_id != user_id
+            or bool(getattr(record, "is_clear", False))
+        ):
+            return jsonify(success=False, message="文件不存在"), 404
+        path = Path(file_path(record.to_dict(), state["uploads"]))
+        download_name = secure_filename(record.filename) or path.name
+        return send_file(
+            path,
+            as_attachment=True,
+            download_name=download_name,
+            max_age=0,
+        )
+    @web.get("/api/chats/<path:chat_id>/report.<format_name>")
+    def download_chat_report(chat_id, format_name):
+        user_id = _session_user(sessions)
+        chat = sessions[user_id]["chat_sessions"].get(chat_id)
+        if chat is None:
+            return jsonify(success=False, message="聊天不存在"), 404
+        if format_name not in EXPORTS:
+            raise ValueError("report format must be md, pdf, or docx")
+        report = dict(chat)
+        report.update(split_files(models, user_id, chat_id, state["uploads"]))
+        try:
+            content = export_report(report, format_name, app_root.parent)
+        except Exception:
+            LOGGER.exception("report export failed")
+            return jsonify(success=False, message="报告导出依赖不可用"), 503
+        media_type, extension = EXPORTS[format_name]
+        return send_file(
+            BytesIO(content), mimetype=media_type, as_attachment=True,
+            download_name=f"frogent-report-{secure_filename(chat_id) or 'conversation'}.{extension}",
+            max_age=0,
+        )
 
 
 def _payload():

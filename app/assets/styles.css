@@ -221,3 +221,69 @@ button:disabled { opacity: .55; cursor: wait; }
     .composer { padding: 8px 12px 14px; }
     .message-content { max-width: 88%; }
 }
+.molecule-downloads {
+    align-self: stretch;
+    background: var(--surface, #fff);
+    border: 1px solid var(--border, #d8dee8);
+    border-radius: 12px;
+    display: grid;
+    gap: 8px;
+    padding: 12px 14px;
+}
+
+.molecule-downloads h3 {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.molecule-download {
+    color: var(--accent, #315fd5);
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+}
+
+.molecule-card {
+    display: grid;
+    gap: 8px;
+}
+
+.structure-viewer {
+    display: grid;
+    gap: 4px;
+}
+
+.structure-viewer canvas {
+    aspect-ratio: 2 / 1;
+    background: #f7faf8;
+    border: 1px solid var(--border, #d8dee8);
+    border-radius: 9px;
+    cursor: grab;
+    max-height: 260px;
+    touch-action: none;
+    width: 100%;
+}
+
+.structure-viewer canvas:active { cursor: grabbing; }
+.structure-viewer span, .structure-viewer p {
+    color: var(--muted, #66736d);
+    font-size: 0.75rem;
+    margin: 0;
+}
+
+.report-exports {
+    align-items: center;
+    align-self: stretch;
+    background: var(--panel, #fff);
+    border: 1px solid var(--border, #d8dee8);
+    border-radius: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 14px;
+}
+
+.report-exports strong { margin-right: auto; }
+.report-exports a {
+    color: var(--accent, #315fd5);
+    font-size: 0.84rem;
+}

@@ -1,0 +1,124 @@
+{
+  "display_name": "Kimi K2.5",
+  "model_id": "moonshotai/kimi-k2.5",
+  "prompt_sha256": "07220602ba1c9c09e0a2541a2e3cd1ccb6c89090ccc60ea4a0a1cb69290f82d6",
+  "response": {
+    "results": [
+      {
+        "case_index": 1,
+        "selected_smiles": "CNC(=O)c1ccccc1Sc1ccc2c(C=Cc3ccccn3)n[nH]c2c1"
+      },
+      {
+        "case_index": 2,
+        "selected_smiles": "C=CC(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1OCCCN1CCOCC1"
+      },
+      {
+        "case_index": 3,
+        "selected_smiles": "C=CC(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1OCCCN1CCOCC1"
+      },
+      {
+        "case_index": 4,
+        "selected_smiles": "CC(C)(C)c1cc(NC(=O)Nc2ccc(-c3cn4c(n3)sc3cc(OCCN5CCOCC5)ccc34)cc2)no1"
+      },
+      {
+        "case_index": 5,
+        "selected_smiles": "C=CC(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1OCCCN1CCOCC1"
+      },
+      {
+        "case_index": 6,
+        "selected_smiles": "C=CC(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1OCCCN1CCOCC1"
+      },
+      {
+        "case_index": 7,
+        "selected_smiles": "C=CC(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1OCCCN1CCOCC1"
+      },
+      {
+        "case_index": 8,
+        "selected_smiles": "C=CC(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1OCCCN1CCOCC1"
+      },
+      {
+        "case_index": 9,
+        "selected_smiles": "C=CC(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1OCCCN1CCOCC1"
+      },
+      {
+        "case_index": 10,
+        "selected_smiles": "C=CC(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1OCCCN1CCOCC1"
+      },
+      {
+        "case_index": 11,
+        "selected_smiles": "C=CC(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1OCCCN1CCOCC1"
+      },
+      {
+        "case_index": 12,
+        "selected_smiles": "C=CC(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1OCCCN1CCOCC1"
+      },
+      {
+        "case_index": 13,
+        "selected_smiles": "C=CC(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1OCCCN1CCOCC1"
+      },
+      {
+        "case_index": 14,
+        "selected_smiles": "C=CC(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1OCCCN1CCOCC1"
+      },
+      {
+        "case_index": 15,
+        "selected_smiles": "CNC(=O)c1ccccc1Sc1ccc2c(C=Cc3ccccn3)n[nH]c2c1"
+      },
+      {
+        "case_index": 16,
+        "selected_smiles": "C=CC(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1OCCCN1CCOCC1"
+      },
+      {
+        "case_index": 17,
+        "selected_smiles": "C=CC(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1OCCCN1CCOCC1"
+      },
+      {
+        "case_index": 18,
+        "selected_smiles": "CNC(=O)c1ccccc1Sc1ccc2c(C=Cc3ccccn3)n[nH]c2c1"
+      },
+      {
+        "case_index": 19,
+        "selected_smiles": "C=CC(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1OCCCN1CCOCC1"
+      },
+      {
+        "case_index": 20,
+        "selected_smiles": "C=CC(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1OCCCN1CCOCC1"
+      }
+    ]
+  },
+  "schema_sha256": "faad9b1ecc65d035b087b80c0202b08a6cd22b2b70d7858f2574dfe0b146d714",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "virtual_screening",
+  "transport": "openrouter",
+  "transport_metadata": {
+    "finish_reason": "stop",
+    "provider": "AtlasCloud",
+    "response_id": "gen-1785904515-6rZ5FaaW86ejzdZGH5l6",
+    "returned_model": "moonshotai/kimi-k2.5",
+    "usage": {
+      "completion_tokens": 1121,
+      "completion_tokens_details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "reasoning_tokens": 0
+      },
+      "cost": 0.00709539,
+      "cost_details": {
+        "upstream_inference_completions_cost": 0.0028025,
+        "upstream_inference_cost": 0.00709539,
+        "upstream_inference_prompt_cost": 0.00429289
+      },
+      "is_byok": false,
+      "prompt_tokens": 8761,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 0,
+        "cached_tokens": 0,
+        "video_tokens": 0
+      },
+      "total_tokens": 9882
+    }
+  },
+  "wall_seconds": 30.73369395919144
+}

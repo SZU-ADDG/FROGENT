@@ -1,0 +1,10 @@
+{
+  "answer_type": "exactMatch",
+  "case_index": 1,
+  "response": {
+    "confidence": "high",
+    "final_answer": "False",
+    "rationale": "A polygenic score can equal SNP heritability in the ideal limit, and in-sample overfitting can make observed variance explained exceed the estimate."
+  },
+  "status": "succeeded"
+}

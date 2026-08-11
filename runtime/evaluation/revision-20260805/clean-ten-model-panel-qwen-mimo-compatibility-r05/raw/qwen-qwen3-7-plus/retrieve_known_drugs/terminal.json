@@ -1,0 +1,144 @@
+{
+  "display_name": "Qwen3.7 Plus",
+  "model_id": "qwen/qwen3.7-plus",
+  "prompt_sha256": "849c872012883ed48bcf0dfc314a97a7c8ce129383085402b4196553999c5ae6",
+  "response": {
+    "results": [
+      {
+        "case_index": 1,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 2,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 3,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 4,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 5,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 6,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 7,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 8,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 9,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 10,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 11,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 12,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 13,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 14,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 15,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 16,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 17,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 18,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 19,
+        "drugbank_ids": [],
+        "smiles": []
+      },
+      {
+        "case_index": 20,
+        "drugbank_ids": [],
+        "smiles": []
+      }
+    ]
+  },
+  "schema_sha256": "a98a48013a07fbe08307d02b07d1c6b9e5d1a869eaacc2217d77b1fe522c0bc0",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "retrieve_known_drugs",
+  "transport": "openrouter",
+  "transport_metadata": {
+    "finish_reason": "stop",
+    "provider": "Alibaba",
+    "response_id": "gen-1785904368-oeQYF96y82GHRjOGwRX0",
+    "returned_model": "qwen/qwen3.7-plus",
+    "usage": {
+      "completion_tokens": 744,
+      "completion_tokens_details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "reasoning_tokens": 0
+      },
+      "cost": 0.00105664,
+      "cost_details": {
+        "upstream_inference_completions_cost": 0.00095232,
+        "upstream_inference_cost": 0.00105664,
+        "upstream_inference_prompt_cost": 0.00010432
+      },
+      "is_byok": false,
+      "prompt_tokens": 326,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 0,
+        "cached_tokens": 0,
+        "video_tokens": 0
+      },
+      "total_tokens": 1070
+    }
+  },
+  "wall_seconds": 14.070074332877994
+}

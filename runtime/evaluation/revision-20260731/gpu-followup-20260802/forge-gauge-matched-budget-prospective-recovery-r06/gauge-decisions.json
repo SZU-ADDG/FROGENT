@@ -1,0 +1,499 @@
+{
+  "decisions": [
+    {
+      "pocket": "1IEP",
+      "seed": 83,
+      "method_metrics": [
+        {
+          "method": "targetdiff",
+          "valid_rate": 0.968,
+          "mean_qed": 0.4195953619482643,
+          "mean_favorable_sa": 0.5597520661157025,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.7218290218076198
+        },
+        {
+          "method": "pocket2mol",
+          "valid_rate": 0.084,
+          "mean_qed": 0.0894389203215604,
+          "mean_favorable_sa": 0.48578947368421055,
+          "unique_valid_ratio": 0.9047619047619048,
+          "gauge_score": 0.16598957083331023
+        },
+        {
+          "method": "diffsbdd",
+          "valid_rate": 0.152,
+          "mean_qed": 0.21699541792100682,
+          "mean_favorable_sa": 0.5113513513513513,
+          "unique_valid_ratio": 0.9736842105263158,
+          "gauge_score": 0.2433688956465723
+        }
+      ],
+      "selected_method": "targetdiff",
+      "feedback": "Preserve targetdiff and prioritize improvement of mean_qed within the remaining budget.",
+      "stop_rule": "One additional round; stop when the matched 1500-attempt budget is exhausted."
+    },
+    {
+      "pocket": "1IEP",
+      "seed": 97,
+      "method_metrics": [
+        {
+          "method": "targetdiff",
+          "valid_rate": 0.968,
+          "mean_qed": 0.36011844678627497,
+          "mean_favorable_sa": 0.5545416666666667,
+          "unique_valid_ratio": 0.9917355371900827,
+          "gauge_score": 0.7029438673692159
+        },
+        {
+          "method": "pocket2mol",
+          "valid_rate": 0.088,
+          "mean_qed": 0.0999033062688923,
+          "mean_favorable_sa": 0.46058823529411763,
+          "unique_valid_ratio": 0.7727272727272727,
+          "gauge_score": 0.16608863893949122
+        },
+        {
+          "method": "diffsbdd",
+          "valid_rate": 0.176,
+          "mean_qed": 0.19069411296415106,
+          "mean_favorable_sa": 0.46837209302325583,
+          "unique_valid_ratio": 0.9772727272727273,
+          "gauge_score": 0.23888265249389648
+        }
+      ],
+      "selected_method": "targetdiff",
+      "feedback": "Preserve targetdiff and prioritize improvement of mean_qed within the remaining budget.",
+      "stop_rule": "One additional round; stop when the matched 1500-attempt budget is exhausted."
+    },
+    {
+      "pocket": "1IEP",
+      "seed": 109,
+      "method_metrics": [
+        {
+          "method": "targetdiff",
+          "valid_rate": 0.932,
+          "mean_qed": 0.2841407466760719,
+          "mean_favorable_sa": 0.47879828326180257,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.6470018806551822
+        },
+        {
+          "method": "pocket2mol",
+          "valid_rate": 0.068,
+          "mean_qed": 0.16814120303671548,
+          "mean_favorable_sa": 0.478125,
+          "unique_valid_ratio": 0.9411764705882353,
+          "gauge_score": 0.18006736091101466
+        },
+        {
+          "method": "diffsbdd",
+          "valid_rate": 0.192,
+          "mean_qed": 0.1333827264117347,
+          "mean_favorable_sa": 0.42391304347826086,
+          "unique_valid_ratio": 0.9583333333333334,
+          "gauge_score": 0.2207974266191726
+        }
+      ],
+      "selected_method": "targetdiff",
+      "feedback": "Preserve targetdiff and prioritize improvement of mean_qed within the remaining budget.",
+      "stop_rule": "One additional round; stop when the matched 1500-attempt budget is exhausted."
+    },
+    {
+      "pocket": "1M17",
+      "seed": 83,
+      "method_metrics": [
+        {
+          "method": "targetdiff",
+          "valid_rate": 0.984,
+          "mean_qed": 0.46091533066066387,
+          "mean_favorable_sa": 0.4321544715447155,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.7167054935071423
+        },
+        {
+          "method": "pocket2mol",
+          "valid_rate": 0.028,
+          "mean_qed": 0.14580052779260141,
+          "mean_favorable_sa": 0.4614285714285714,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.1500258726234947
+        },
+        {
+          "method": "diffsbdd",
+          "valid_rate": 0.292,
+          "mean_qed": 0.23241469891578403,
+          "mean_favorable_sa": 0.4684931506849315,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.30942303981172153
+        }
+      ],
+      "selected_method": "targetdiff",
+      "feedback": "Preserve targetdiff and prioritize improvement of mean_favorable_sa within the remaining budget.",
+      "stop_rule": "One additional round; stop when the matched 1500-attempt budget is exhausted."
+    },
+    {
+      "pocket": "1M17",
+      "seed": 97,
+      "method_metrics": [
+        {
+          "method": "targetdiff",
+          "valid_rate": 0.984,
+          "mean_qed": 0.4221882960253493,
+          "mean_favorable_sa": 0.41670731707317077,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.7019979522222388
+        },
+        {
+          "method": "pocket2mol",
+          "valid_rate": 0.04,
+          "mean_qed": 0.142407451087566,
+          "mean_favorable_sa": 0.48444444444444446,
+          "unique_valid_ratio": 0.9,
+          "gauge_score": 0.15961112421515872
+        },
+        {
+          "method": "diffsbdd",
+          "valid_rate": 0.292,
+          "mean_qed": 0.21849707159510912,
+          "mean_favorable_sa": 0.4708450704225352,
+          "unique_valid_ratio": 0.9726027397260274,
+          "gauge_score": 0.3057181355630398
+        }
+      ],
+      "selected_method": "targetdiff",
+      "feedback": "Preserve targetdiff and prioritize improvement of mean_favorable_sa within the remaining budget.",
+      "stop_rule": "One additional round; stop when the matched 1500-attempt budget is exhausted."
+    },
+    {
+      "pocket": "1M17",
+      "seed": 109,
+      "method_metrics": [
+        {
+          "method": "targetdiff",
+          "valid_rate": 0.976,
+          "mean_qed": 0.4619020059851813,
+          "mean_favorable_sa": 0.42790983606557376,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.7121525690086691
+        },
+        {
+          "method": "pocket2mol",
+          "valid_rate": 0.024,
+          "mean_qed": 0.13355398476645897,
+          "mean_favorable_sa": 0.5,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.1520661954299377
+        },
+        {
+          "method": "diffsbdd",
+          "valid_rate": 0.28,
+          "mean_qed": 0.23308790281900438,
+          "mean_favorable_sa": 0.4676470588235294,
+          "unique_valid_ratio": 0.9714285714285714,
+          "gauge_score": 0.3034557826104072
+        }
+      ],
+      "selected_method": "targetdiff",
+      "feedback": "Preserve targetdiff and prioritize improvement of mean_favorable_sa within the remaining budget.",
+      "stop_rule": "One additional round; stop when the matched 1500-attempt budget is exhausted."
+    },
+    {
+      "pocket": "2HYY",
+      "seed": 83,
+      "method_metrics": [
+        {
+          "method": "targetdiff",
+          "valid_rate": 0.952,
+          "mean_qed": 0.46402296611526306,
+          "mean_favorable_sa": 0.5704621848739496,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.7292993268093688
+        },
+        {
+          "method": "pocket2mol",
+          "valid_rate": 0.032,
+          "mean_qed": 0.0624517310991302,
+          "mean_favorable_sa": 0.475,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.12973551932973906
+        },
+        {
+          "method": "diffsbdd",
+          "valid_rate": 0.188,
+          "mean_qed": 0.22328577410047262,
+          "mean_favorable_sa": 0.4910869565217391,
+          "unique_valid_ratio": 0.9787234042553191,
+          "gauge_score": 0.2592031235344896
+        }
+      ],
+      "selected_method": "targetdiff",
+      "feedback": "Preserve targetdiff and prioritize improvement of mean_qed within the remaining budget.",
+      "stop_rule": "One additional round; stop when the matched 1500-attempt budget is exhausted."
+    },
+    {
+      "pocket": "2HYY",
+      "seed": 97,
+      "method_metrics": [
+        {
+          "method": "targetdiff",
+          "valid_rate": 0.928,
+          "mean_qed": 0.39205595059702714,
+          "mean_favorable_sa": 0.5684051724137931,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.6952978196618669
+        },
+        {
+          "method": "pocket2mol",
+          "valid_rate": 0.032,
+          "mean_qed": 0.04791707922635463,
+          "mean_favorable_sa": 0.5071428571428572,
+          "unique_valid_ratio": 0.875,
+          "gauge_score": 0.13180369519647783
+        },
+        {
+          "method": "diffsbdd",
+          "valid_rate": 0.244,
+          "mean_qed": 0.2215965341615833,
+          "mean_favorable_sa": 0.47423728813559324,
+          "unique_valid_ratio": 0.9672131147540983,
+          "gauge_score": 0.28332641787559365
+        }
+      ],
+      "selected_method": "targetdiff",
+      "feedback": "Preserve targetdiff and prioritize improvement of mean_qed within the remaining budget.",
+      "stop_rule": "One additional round; stop when the matched 1500-attempt budget is exhausted."
+    },
+    {
+      "pocket": "2HYY",
+      "seed": 109,
+      "method_metrics": [
+        {
+          "method": "targetdiff",
+          "valid_rate": 0.928,
+          "mean_qed": 0.2834116909313842,
+          "mean_favorable_sa": 0.48771551724137935,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.6465666107276912
+        },
+        {
+          "method": "pocket2mol",
+          "valid_rate": 0.028,
+          "mean_qed": 0.06757251433020929,
+          "mean_favorable_sa": 0.47500000000000003,
+          "unique_valid_ratio": 0.8571428571428571,
+          "gauge_score": 0.1292717542990628
+        },
+        {
+          "method": "diffsbdd",
+          "valid_rate": 0.256,
+          "mean_qed": 0.1396776424125663,
+          "mean_favorable_sa": 0.40920634920634924,
+          "unique_valid_ratio": 0.984375,
+          "gauge_score": 0.25174456256503974
+        }
+      ],
+      "selected_method": "targetdiff",
+      "feedback": "Preserve targetdiff and prioritize improvement of mean_qed within the remaining budget.",
+      "stop_rule": "One additional round; stop when the matched 1500-attempt budget is exhausted."
+    },
+    {
+      "pocket": "3CS9",
+      "seed": 83,
+      "method_metrics": [
+        {
+          "method": "targetdiff",
+          "valid_rate": 0.964,
+          "mean_qed": 0.45120473836379565,
+          "mean_favorable_sa": 0.557125,
+          "unique_valid_ratio": 0.995850622406639,
+          "gauge_score": 0.7287864215091386
+        },
+        {
+          "method": "pocket2mol",
+          "valid_rate": 0.132,
+          "mean_qed": 0.11297048431152774,
+          "mean_favorable_sa": 0.45870967741935487,
+          "unique_valid_ratio": 0.9393939393939394,
+          "gauge_score": 0.19163308077732932
+        },
+        {
+          "method": "diffsbdd",
+          "valid_rate": 0.176,
+          "mean_qed": 0.19579968515796872,
+          "mean_favorable_sa": 0.48613636363636364,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.24396717827466335
+        }
+      ],
+      "selected_method": "targetdiff",
+      "feedback": "Preserve targetdiff and prioritize improvement of mean_qed within the remaining budget.",
+      "stop_rule": "One additional round; stop when the matched 1500-attempt budget is exhausted."
+    },
+    {
+      "pocket": "3CS9",
+      "seed": 97,
+      "method_metrics": [
+        {
+          "method": "targetdiff",
+          "valid_rate": 0.932,
+          "mean_qed": 0.37346910889859186,
+          "mean_favorable_sa": 0.5465236051502146,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.6873454536996205
+        },
+        {
+          "method": "pocket2mol",
+          "valid_rate": 0.112,
+          "mean_qed": 0.11185379109936348,
+          "mean_favorable_sa": 0.4748148148148148,
+          "unique_valid_ratio": 0.9642857142857143,
+          "gauge_score": 0.18451910029277202
+        },
+        {
+          "method": "diffsbdd",
+          "valid_rate": 0.192,
+          "mean_qed": 0.2156806236380647,
+          "mean_favorable_sa": 0.4668085106382979,
+          "unique_valid_ratio": 0.9791666666666666,
+          "gauge_score": 0.254065889219079
+        }
+      ],
+      "selected_method": "targetdiff",
+      "feedback": "Preserve targetdiff and prioritize improvement of mean_qed within the remaining budget.",
+      "stop_rule": "One additional round; stop when the matched 1500-attempt budget is exhausted."
+    },
+    {
+      "pocket": "3CS9",
+      "seed": 109,
+      "method_metrics": [
+        {
+          "method": "targetdiff",
+          "valid_rate": 0.888,
+          "mean_qed": 0.2752423436045482,
+          "mean_favorable_sa": 0.488063063063063,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.6241853156939772
+        },
+        {
+          "method": "pocket2mol",
+          "valid_rate": 0.104,
+          "mean_qed": 0.09193354483823214,
+          "mean_favorable_sa": 0.4376,
+          "unique_valid_ratio": 0.9615384615384616,
+          "gauge_score": 0.16710006345146966
+        },
+        {
+          "method": "diffsbdd",
+          "valid_rate": 0.2,
+          "mean_qed": 0.13152157938262704,
+          "mean_favorable_sa": 0.3886,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.21717647381478813
+        }
+      ],
+      "selected_method": "targetdiff",
+      "feedback": "Preserve targetdiff and prioritize improvement of mean_qed within the remaining budget.",
+      "stop_rule": "One additional round; stop when the matched 1500-attempt budget is exhausted."
+    },
+    {
+      "pocket": "4WA9",
+      "seed": 83,
+      "method_metrics": [
+        {
+          "method": "targetdiff",
+          "valid_rate": 0.984,
+          "mean_qed": 0.43607896817875164,
+          "mean_favorable_sa": 0.5160162601626016,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.7260269424861459
+        },
+        {
+          "method": "pocket2mol",
+          "valid_rate": 0.5,
+          "mean_qed": 0.19707022157894966,
+          "mean_favorable_sa": 0.5373387096774194,
+          "unique_valid_ratio": 0.992,
+          "gauge_score": 0.41658880840916873
+        },
+        {
+          "method": "diffsbdd",
+          "valid_rate": 0.288,
+          "mean_qed": 0.21228808285553763,
+          "mean_favorable_sa": 0.4467605633802817,
+          "unique_valid_ratio": 0.9861111111111112,
+          "gauge_score": 0.29703853753271764
+        }
+      ],
+      "selected_method": "targetdiff",
+      "feedback": "Preserve targetdiff and prioritize improvement of mean_qed within the remaining budget.",
+      "stop_rule": "One additional round; stop when the matched 1500-attempt budget is exhausted."
+    },
+    {
+      "pocket": "4WA9",
+      "seed": 97,
+      "method_metrics": [
+        {
+          "method": "targetdiff",
+          "valid_rate": 0.996,
+          "mean_qed": 0.3610302512503652,
+          "mean_favorable_sa": 0.4821686746987952,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.7027428103148686
+        },
+        {
+          "method": "pocket2mol",
+          "valid_rate": 0.456,
+          "mean_qed": 0.20410855968104696,
+          "mean_favorable_sa": 0.5355263157894736,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.39633783106220877
+        },
+        {
+          "method": "diffsbdd",
+          "valid_rate": 0.312,
+          "mean_qed": 0.18780869149718443,
+          "mean_favorable_sa": 0.4505263157894737,
+          "unique_valid_ratio": 0.9743589743589743,
+          "gauge_score": 0.3024478706070501
+        }
+      ],
+      "selected_method": "targetdiff",
+      "feedback": "Preserve targetdiff and prioritize improvement of mean_qed within the remaining budget.",
+      "stop_rule": "One additional round; stop when the matched 1500-attempt budget is exhausted."
+    },
+    {
+      "pocket": "4WA9",
+      "seed": 109,
+      "method_metrics": [
+        {
+          "method": "targetdiff",
+          "valid_rate": 1.0,
+          "mean_qed": 0.7229366429901944,
+          "mean_favorable_sa": 0.6316799999999999,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.8432169928970583
+        },
+        {
+          "method": "pocket2mol",
+          "valid_rate": 0.452,
+          "mean_qed": 0.19874957294262527,
+          "mean_favorable_sa": 0.5330088495575221,
+          "unique_valid_ratio": 1.0,
+          "gauge_score": 0.392226641794292
+        },
+        {
+          "method": "diffsbdd",
+          "valid_rate": 0.316,
+          "mean_qed": 0.4550038018475176,
+          "mean_favorable_sa": 0.602948717948718,
+          "unique_valid_ratio": 0.9873417721518988,
+          "gauge_score": 0.41509088414399886
+        }
+      ],
+      "selected_method": "targetdiff",
+      "feedback": "Preserve targetdiff and prioritize improvement of mean_favorable_sa within the remaining budget.",
+      "stop_rule": "One additional round; stop when the matched 1500-attempt budget is exhausted."
+    }
+  ]
+}

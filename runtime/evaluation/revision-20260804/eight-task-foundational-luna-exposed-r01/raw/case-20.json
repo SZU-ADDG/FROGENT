@@ -1,0 +1,10 @@
+{
+  "answer_type": "exactMatch",
+  "case_index": 20,
+  "response": {
+    "confidence": "high",
+    "final_answer": "C16-dihydroceramide",
+    "rationale": "Its saturated sphingoid chain packs more tightly, producing the lower compressed molecular area."
+  },
+  "status": "succeeded"
+}

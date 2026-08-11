@@ -1,0 +1,2271 @@
+{
+  "cell_counts": {
+    "scored": 80
+  },
+  "cells": [
+    {
+      "display_name": "GPT-5.4",
+      "measured_cases": 20,
+      "model_id": "gpt-5.4",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.1,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "foundational_biomedical_knowledge",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 170.6543871248141
+    },
+    {
+      "display_name": "GPT-5.4",
+      "measured_cases": 20,
+      "model_id": "gpt-5.4",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.35,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "retrieve_known_drugs",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 190.61385195795447
+    },
+    {
+      "display_name": "GPT-5.4",
+      "measured_cases": 20,
+      "model_id": "gpt-5.4",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.3,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "retrieve_known_targets",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 144.75786708435044
+    },
+    {
+      "display_name": "GPT-5.4",
+      "measured_cases": 20,
+      "model_id": "gpt-5.4",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.5423733887811493,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "molecular_property_prediction",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 134.34296174999326
+    },
+    {
+      "display_name": "GPT-5.4",
+      "measured_cases": 19,
+      "model_id": "gpt-5.4",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.3157894736842105,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "virtual_screening",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 186.20030779205263
+    },
+    {
+      "display_name": "GPT-5.4",
+      "measured_cases": 20,
+      "model_id": "gpt-5.4",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.19,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "binding_mechanism",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 135.73763541691005
+    },
+    {
+      "display_name": "GPT-5.4",
+      "measured_cases": 20,
+      "model_id": "gpt-5.4",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.9037240614760321,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "molecular_design",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 169.26735429093242
+    },
+    {
+      "display_name": "GPT-5.4",
+      "measured_cases": 20,
+      "model_id": "gpt-5.4",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.05,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "retrosynthesis_planning",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 165.64440899994224
+    },
+    {
+      "display_name": "GPT-5.5",
+      "measured_cases": 20,
+      "model_id": "gpt-5.5",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.15,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "foundational_biomedical_knowledge",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 121.48229749966413
+    },
+    {
+      "display_name": "GPT-5.5",
+      "measured_cases": 20,
+      "model_id": "gpt-5.5",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.48,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "retrieve_known_drugs",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 180.1089480421506
+    },
+    {
+      "display_name": "GPT-5.5",
+      "measured_cases": 20,
+      "model_id": "gpt-5.5",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.2833333333333333,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "retrieve_known_targets",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 126.7881737081334
+    },
+    {
+      "display_name": "GPT-5.5",
+      "measured_cases": 20,
+      "model_id": "gpt-5.5",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.622795056434495,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "molecular_property_prediction",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 131.0116343749687
+    },
+    {
+      "display_name": "GPT-5.5",
+      "measured_cases": 19,
+      "model_id": "gpt-5.5",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.3684210526315789,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "virtual_screening",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 168.4241555831395
+    },
+    {
+      "display_name": "GPT-5.5",
+      "measured_cases": 20,
+      "model_id": "gpt-5.5",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.28,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-gpt55-large-input-recovery-r09",
+      "status": "scored",
+      "task": "binding_mechanism",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 517.414889540989
+    },
+    {
+      "display_name": "GPT-5.5",
+      "measured_cases": 20,
+      "model_id": "gpt-5.5",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.9356780907070135,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-gpt55-large-input-recovery-r09",
+      "status": "scored",
+      "task": "molecular_design",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 536.3129491670989
+    },
+    {
+      "display_name": "GPT-5.5",
+      "measured_cases": 20,
+      "model_id": "gpt-5.5",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.475,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "retrosynthesis_planning",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 144.1888420409523
+    },
+    {
+      "display_name": "GPT-5.6 Sol",
+      "measured_cases": 20,
+      "model_id": "gpt-5.6-sol",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.15,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "foundational_biomedical_knowledge",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 140.95771412504837
+    },
+    {
+      "display_name": "GPT-5.6 Sol",
+      "measured_cases": 20,
+      "model_id": "gpt-5.6-sol",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.15,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "retrieve_known_drugs",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 159.4527842081152
+    },
+    {
+      "display_name": "GPT-5.6 Sol",
+      "measured_cases": 20,
+      "model_id": "gpt-5.6-sol",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.31666666666666665,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "retrieve_known_targets",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 133.30399291589856
+    },
+    {
+      "display_name": "GPT-5.6 Sol",
+      "measured_cases": 20,
+      "model_id": "gpt-5.6-sol",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.7662723934957497,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "molecular_property_prediction",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 183.55919033428654
+    },
+    {
+      "display_name": "GPT-5.6 Sol",
+      "measured_cases": 19,
+      "model_id": "gpt-5.6-sol",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.42105263157894735,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "virtual_screening",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 179.9212780832313
+    },
+    {
+      "display_name": "GPT-5.6 Sol",
+      "measured_cases": 20,
+      "model_id": "gpt-5.6-sol",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.32999999999999996,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-gpt56-binding-recovery-r15",
+      "status": "scored",
+      "task": "binding_mechanism",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 610.7624791678973
+    },
+    {
+      "display_name": "GPT-5.6 Sol",
+      "measured_cases": 20,
+      "model_id": "gpt-5.6-sol",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.928502298476903,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "molecular_design",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 164.4599489159882
+    },
+    {
+      "display_name": "GPT-5.6 Sol",
+      "measured_cases": 20,
+      "model_id": "gpt-5.6-sol",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.5,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "retrosynthesis_planning",
+      "transport": "codex",
+      "usage": null,
+      "wall_seconds": 144.50987045885995
+    },
+    {
+      "display_name": "DeepSeek V4 Flash",
+      "measured_cases": 20,
+      "model_id": "deepseek/deepseek-v4-flash-0731",
+      "provider": "DeepInfra",
+      "returned_model": "deepseek/deepseek-v4-flash-0731",
+      "score": 0.15,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+      "status": "scored",
+      "task": "foundational_biomedical_knowledge",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 295,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.000156204,
+        "cost_details": {
+          "upstream_inference_completions_cost": 5.31e-05,
+          "upstream_inference_cost": 0.000156204,
+          "upstream_inference_prompt_cost": 0.000103104
+        },
+        "is_byok": false,
+        "prompt_tokens": 4832,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 4608,
+          "video_tokens": 0
+        },
+        "total_tokens": 5127
+      },
+      "wall_seconds": 3.7404737500473857
+    },
+    {
+      "display_name": "DeepSeek V4 Flash",
+      "measured_cases": 20,
+      "model_id": "deepseek/deepseek-v4-flash-0731",
+      "provider": "DeepInfra",
+      "returned_model": "deepseek/deepseek-v4-flash-0731",
+      "score": 0.16,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+      "status": "scored",
+      "task": "retrieve_known_drugs",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 5420,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.001000422,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0009756,
+          "upstream_inference_cost": 0.001000422,
+          "upstream_inference_prompt_cost": 2.4822e-05
+        },
+        "is_byok": false,
+        "prompt_tokens": 327,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 64,
+          "video_tokens": 0
+        },
+        "total_tokens": 5747
+      },
+      "wall_seconds": 36.2856017081067
+    },
+    {
+      "display_name": "DeepSeek V4 Flash",
+      "measured_cases": 20,
+      "model_id": "deepseek/deepseek-v4-flash-0731",
+      "provider": "DeepInfra",
+      "returned_model": "deepseek/deepseek-v4-flash-0731",
+      "score": 0.2833333333333333,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+      "status": "scored",
+      "task": "retrieve_known_targets",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 570,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.000131022,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0001026,
+          "upstream_inference_cost": 0.000131022,
+          "upstream_inference_prompt_cost": 2.8422e-05
+        },
+        "is_byok": false,
+        "prompt_tokens": 367,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 64,
+          "video_tokens": 0
+        },
+        "total_tokens": 937
+      },
+      "wall_seconds": 5.658305208198726
+    },
+    {
+      "display_name": "DeepSeek V4 Flash",
+      "measured_cases": 20,
+      "model_id": "deepseek/deepseek-v4-flash-0731",
+      "provider": "DeepInfra",
+      "returned_model": "deepseek/deepseek-v4-flash-0731",
+      "score": 0.5577079294552496,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+      "status": "scored",
+      "task": "molecular_property_prediction",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 1250,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.000332532,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.000225,
+          "upstream_inference_cost": 0.000332532,
+          "upstream_inference_prompt_cost": 0.000107532
+        },
+        "is_byok": false,
+        "prompt_tokens": 1246,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 64,
+          "video_tokens": 0
+        },
+        "total_tokens": 2496
+      },
+      "wall_seconds": 5.974421749822795
+    },
+    {
+      "display_name": "DeepSeek V4 Flash",
+      "measured_cases": 19,
+      "model_id": "deepseek/deepseek-v4-flash-0731",
+      "provider": "DeepInfra",
+      "returned_model": "deepseek/deepseek-v4-flash-0731",
+      "score": 0.0,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+      "status": "scored",
+      "task": "virtual_screening",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 810,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.000911232,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0001458,
+          "upstream_inference_cost": 0.000911232,
+          "upstream_inference_prompt_cost": 0.000765432
+        },
+        "is_byok": false,
+        "prompt_tokens": 8556,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 64,
+          "video_tokens": 0
+        },
+        "total_tokens": 9366
+      },
+      "wall_seconds": 5.671678832732141
+    },
+    {
+      "display_name": "DeepSeek V4 Flash",
+      "measured_cases": 20,
+      "model_id": "deepseek/deepseek-v4-flash-0731",
+      "provider": "DeepInfra",
+      "returned_model": "deepseek/deepseek-v4-flash-0731",
+      "score": 0.24,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+      "status": "scored",
+      "task": "binding_mechanism",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 1190,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.029276712,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0002142,
+          "upstream_inference_cost": 0.029276712,
+          "upstream_inference_prompt_cost": 0.029062512
+        },
+        "is_byok": false,
+        "prompt_tokens": 322968,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 64,
+          "video_tokens": 0
+        },
+        "total_tokens": 324158
+      },
+      "wall_seconds": 18.773567916825414
+    },
+    {
+      "display_name": "DeepSeek V4 Flash",
+      "measured_cases": 20,
+      "model_id": "deepseek/deepseek-v4-flash-0731",
+      "provider": "DeepInfra",
+      "returned_model": "deepseek/deepseek-v4-flash-0731",
+      "score": 0.7442885132094126,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+      "status": "scored",
+      "task": "molecular_design",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 2688,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.025767882,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.00048384,
+          "upstream_inference_cost": 0.025767882,
+          "upstream_inference_prompt_cost": 0.025284042
+        },
+        "is_byok": false,
+        "prompt_tokens": 280985,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 64,
+          "video_tokens": 0
+        },
+        "total_tokens": 283673
+      },
+      "wall_seconds": 34.76288720918819
+    },
+    {
+      "display_name": "DeepSeek V4 Flash",
+      "measured_cases": 20,
+      "model_id": "deepseek/deepseek-v4-flash-0731",
+      "provider": "DeepInfra",
+      "returned_model": "deepseek/deepseek-v4-flash-0731",
+      "score": 0.5,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+      "status": "scored",
+      "task": "retrosynthesis_planning",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 2075,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.000453852,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0003735,
+          "upstream_inference_cost": 0.000453852,
+          "upstream_inference_prompt_cost": 8.0352e-05
+        },
+        "is_byok": false,
+        "prompt_tokens": 944,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 64,
+          "video_tokens": 0
+        },
+        "total_tokens": 3019
+      },
+      "wall_seconds": 10.166627333965153
+    },
+    {
+      "display_name": "DeepSeek V4 Pro",
+      "measured_cases": 20,
+      "model_id": "deepseek/deepseek-v4-pro",
+      "provider": "Ionstream",
+      "returned_model": "deepseek/deepseek-v4-pro",
+      "score": 0.05,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+      "status": "scored",
+      "task": "foundational_biomedical_knowledge",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 212,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.005944536,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.000479544,
+          "upstream_inference_cost": 0.005944536,
+          "upstream_inference_prompt_cost": 0.005464992
+        },
+        "is_byok": false,
+        "prompt_tokens": 4832,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 5044
+      },
+      "wall_seconds": 22.418190834112465
+    },
+    {
+      "display_name": "DeepSeek V4 Pro",
+      "measured_cases": 20,
+      "model_id": "deepseek/deepseek-v4-pro",
+      "provider": "Ionstream",
+      "returned_model": "deepseek/deepseek-v4-pro",
+      "score": 0.6425,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+      "status": "scored",
+      "task": "retrieve_known_drugs",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 4306,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.010110009,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.009740172,
+          "upstream_inference_cost": 0.010110009,
+          "upstream_inference_prompt_cost": 0.000369837
+        },
+        "is_byok": false,
+        "prompt_tokens": 327,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 4633
+      },
+      "wall_seconds": 181.77928008371964
+    },
+    {
+      "display_name": "DeepSeek V4 Pro",
+      "measured_cases": 20,
+      "model_id": "deepseek/deepseek-v4-pro",
+      "provider": "Ionstream",
+      "returned_model": "deepseek/deepseek-v4-pro",
+      "score": 0.32333333333333336,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+      "status": "scored",
+      "task": "retrieve_known_targets",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 568,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.001699893,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.001284816,
+          "upstream_inference_cost": 0.001699893,
+          "upstream_inference_prompt_cost": 0.000415077
+        },
+        "is_byok": false,
+        "prompt_tokens": 367,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 935
+      },
+      "wall_seconds": 158.20711241709068
+    },
+    {
+      "display_name": "DeepSeek V4 Pro",
+      "measured_cases": 20,
+      "model_id": "deepseek/deepseek-v4-pro",
+      "provider": "Ionstream",
+      "returned_model": "deepseek/deepseek-v4-pro",
+      "score": 0.41,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+      "status": "scored",
+      "task": "molecular_property_prediction",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 1250,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.004236726,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0028275,
+          "upstream_inference_cost": 0.004236726,
+          "upstream_inference_prompt_cost": 0.001409226
+        },
+        "is_byok": false,
+        "prompt_tokens": 1246,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 2496
+      },
+      "wall_seconds": 74.24193783383816
+    },
+    {
+      "display_name": "DeepSeek V4 Pro",
+      "measured_cases": 19,
+      "model_id": "deepseek/deepseek-v4-pro",
+      "provider": "Ionstream",
+      "returned_model": "deepseek/deepseek-v4-pro",
+      "score": 0.10526315789473684,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+      "status": "scored",
+      "task": "virtual_screening",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 1107,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.01218087,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.002504034,
+          "upstream_inference_cost": 0.01218087,
+          "upstream_inference_prompt_cost": 0.009676836
+        },
+        "is_byok": false,
+        "prompt_tokens": 8556,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 9663
+      },
+      "wall_seconds": 81.97995349997655
+    },
+    {
+      "display_name": "DeepSeek V4 Pro",
+      "measured_cases": 20,
+      "model_id": "deepseek/deepseek-v4-pro",
+      "provider": "Ionstream",
+      "returned_model": "deepseek/deepseek-v4-pro",
+      "score": 0.27,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+      "status": "scored",
+      "task": "binding_mechanism",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 1190,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.367968588,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.00269178,
+          "upstream_inference_cost": 0.367968588,
+          "upstream_inference_prompt_cost": 0.365276808
+        },
+        "is_byok": false,
+        "prompt_tokens": 322968,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 324158
+      },
+      "wall_seconds": 100.0266882921569
+    },
+    {
+      "display_name": "DeepSeek V4 Pro",
+      "measured_cases": 20,
+      "model_id": "deepseek/deepseek-v4-pro",
+      "provider": "Ionstream",
+      "returned_model": "deepseek/deepseek-v4-pro",
+      "score": 0.9341557969623965,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+      "status": "scored",
+      "task": "molecular_design",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 2710,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.323924055,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.00613002,
+          "upstream_inference_cost": 0.323924055,
+          "upstream_inference_prompt_cost": 0.317794035
+        },
+        "is_byok": false,
+        "prompt_tokens": 280985,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 283695
+      },
+      "wall_seconds": 204.01286070793867
+    },
+    {
+      "display_name": "DeepSeek V4 Pro",
+      "measured_cases": 20,
+      "model_id": "deepseek/deepseek-v4-pro",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.0,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-pro-retro-recovery-r10",
+      "status": "scored",
+      "task": "retrosynthesis_planning",
+      "transport": "openrouter",
+      "usage": null,
+      "wall_seconds": 382.01944325026125
+    },
+    {
+      "display_name": "Kimi K2.5",
+      "measured_cases": 20,
+      "model_id": "moonshotai/kimi-k2.5",
+      "provider": "AtlasCloud",
+      "returned_model": "moonshotai/kimi-k2.5",
+      "score": 0.15,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-kimi-compatibility-r06",
+      "status": "scored",
+      "task": "foundational_biomedical_knowledge",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 294,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.00176439,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.000735,
+          "upstream_inference_cost": 0.00176439,
+          "upstream_inference_prompt_cost": 0.00102939
+        },
+        "is_byok": false,
+        "prompt_tokens": 5131,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 5120,
+          "video_tokens": 0
+        },
+        "total_tokens": 5425
+      },
+      "wall_seconds": 8.625199249945581
+    },
+    {
+      "display_name": "Kimi K2.5",
+      "measured_cases": 20,
+      "model_id": "moonshotai/kimi-k2.5",
+      "provider": "AtlasCloud",
+      "returned_model": "moonshotai/kimi-k2.5",
+      "score": 0.3,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-kimi-compatibility-r06",
+      "status": "scored",
+      "task": "retrieve_known_drugs",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 3520,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.00906313,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0088,
+          "upstream_inference_cost": 0.00906313,
+          "upstream_inference_prompt_cost": 0.00026313
+        },
+        "is_byok": false,
+        "prompt_tokens": 537,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 4057
+      },
+      "wall_seconds": 97.13541179103777
+    },
+    {
+      "display_name": "Kimi K2.5",
+      "measured_cases": 20,
+      "model_id": "moonshotai/kimi-k2.5",
+      "provider": "AtlasCloud",
+      "returned_model": "moonshotai/kimi-k2.5",
+      "score": 0.2833333333333333,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-kimi-compatibility-r06",
+      "status": "scored",
+      "task": "retrieve_known_targets",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 562,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.00166764,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.001405,
+          "upstream_inference_cost": 0.00166764,
+          "upstream_inference_prompt_cost": 0.00026264
+        },
+        "is_byok": false,
+        "prompt_tokens": 536,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 1098
+      },
+      "wall_seconds": 17.385634750127792
+    },
+    {
+      "display_name": "Kimi K2.5",
+      "measured_cases": 20,
+      "model_id": "moonshotai/kimi-k2.5",
+      "provider": "AtlasCloud",
+      "returned_model": "moonshotai/kimi-k2.5",
+      "score": 0.7539296447939093,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-kimi-compatibility-r06",
+      "status": "scored",
+      "task": "molecular_property_prediction",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 1250,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.00383599,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.003125,
+          "upstream_inference_cost": 0.00383599,
+          "upstream_inference_prompt_cost": 0.00071099
+        },
+        "is_byok": false,
+        "prompt_tokens": 1451,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 2701
+      },
+      "wall_seconds": 33.583456250373274
+    },
+    {
+      "display_name": "Kimi K2.5",
+      "measured_cases": 19,
+      "model_id": "moonshotai/kimi-k2.5",
+      "provider": "AtlasCloud",
+      "returned_model": "moonshotai/kimi-k2.5",
+      "score": 0.05263157894736842,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-kimi-compatibility-r06",
+      "status": "scored",
+      "task": "virtual_screening",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 1121,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.00709539,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0028025,
+          "upstream_inference_cost": 0.00709539,
+          "upstream_inference_prompt_cost": 0.00429289
+        },
+        "is_byok": false,
+        "prompt_tokens": 8761,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 9882
+      },
+      "wall_seconds": 30.73369395919144
+    },
+    {
+      "display_name": "Kimi K2.5",
+      "measured_cases": 20,
+      "model_id": "moonshotai/kimi-k2.5",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.24,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-large-input-recovery-r07",
+      "status": "scored",
+      "task": "binding_mechanism",
+      "transport": "openrouter",
+      "usage": null,
+      "wall_seconds": 57.30186291690916
+    },
+    {
+      "display_name": "Kimi K2.5",
+      "measured_cases": 20,
+      "model_id": "moonshotai/kimi-k2.5",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.9457836421781666,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-large-input-recovery-r07",
+      "status": "scored",
+      "task": "molecular_design",
+      "transport": "openrouter",
+      "usage": null,
+      "wall_seconds": 80.81455587502569
+    },
+    {
+      "display_name": "Kimi K2.5",
+      "measured_cases": 20,
+      "model_id": "moonshotai/kimi-k2.5",
+      "provider": "AtlasCloud",
+      "returned_model": "moonshotai/kimi-k2.5",
+      "score": 0.0875,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-kimi-compatibility-r06",
+      "status": "scored",
+      "task": "retrosynthesis_planning",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 3312,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.0088092,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.00828,
+          "upstream_inference_cost": 0.0088092,
+          "upstream_inference_prompt_cost": 0.0005292
+        },
+        "is_byok": false,
+        "prompt_tokens": 1080,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 4392
+      },
+      "wall_seconds": 89.87470212532207
+    },
+    {
+      "display_name": "Qwen3.7 Plus",
+      "measured_cases": 20,
+      "model_id": "qwen/qwen3.7-plus",
+      "provider": "Alibaba",
+      "returned_model": "qwen/qwen3.7-plus",
+      "score": 0.05,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-qwen-mimo-compatibility-r05",
+      "status": "scored",
+      "task": "foundational_biomedical_knowledge",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 330,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.00203936,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0004224,
+          "upstream_inference_cost": 0.00203936,
+          "upstream_inference_prompt_cost": 0.00161696
+        },
+        "is_byok": false,
+        "prompt_tokens": 5053,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 5383
+      },
+      "wall_seconds": 7.384939167182893
+    },
+    {
+      "display_name": "Qwen3.7 Plus",
+      "measured_cases": 20,
+      "model_id": "qwen/qwen3.7-plus",
+      "provider": "Alibaba",
+      "returned_model": "qwen/qwen3.7-plus",
+      "score": 0.0,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-qwen-mimo-compatibility-r05",
+      "status": "scored",
+      "task": "retrieve_known_drugs",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 744,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.00105664,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.00095232,
+          "upstream_inference_cost": 0.00105664,
+          "upstream_inference_prompt_cost": 0.00010432
+        },
+        "is_byok": false,
+        "prompt_tokens": 326,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 1070
+      },
+      "wall_seconds": 14.070074332877994
+    },
+    {
+      "display_name": "Qwen3.7 Plus",
+      "measured_cases": 20,
+      "model_id": "qwen/qwen3.7-plus",
+      "provider": "Alibaba",
+      "returned_model": "qwen/qwen3.7-plus",
+      "score": 0.25,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-qwen-mimo-compatibility-r05",
+      "status": "scored",
+      "task": "retrieve_known_targets",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 580,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.00086176,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0007424,
+          "upstream_inference_cost": 0.00086176,
+          "upstream_inference_prompt_cost": 0.00011936
+        },
+        "is_byok": false,
+        "prompt_tokens": 373,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 953
+      },
+      "wall_seconds": 12.525970874819905
+    },
+    {
+      "display_name": "Qwen3.7 Plus",
+      "measured_cases": 20,
+      "model_id": "qwen/qwen3.7-plus",
+      "provider": "Alibaba",
+      "returned_model": "qwen/qwen3.7-plus",
+      "score": 0.6897569251153952,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-qwen-mimo-compatibility-r05",
+      "status": "scored",
+      "task": "molecular_property_prediction",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 1402,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.00219008,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.00179456,
+          "upstream_inference_cost": 0.00219008,
+          "upstream_inference_prompt_cost": 0.00039552
+        },
+        "is_byok": false,
+        "prompt_tokens": 1236,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 2638
+      },
+      "wall_seconds": 25.40699675027281
+    },
+    {
+      "display_name": "Qwen3.7 Plus",
+      "measured_cases": 19,
+      "model_id": "qwen/qwen3.7-plus",
+      "provider": "Alibaba",
+      "returned_model": "qwen/qwen3.7-plus",
+      "score": 0.10526315789473684,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-qwen-mimo-compatibility-r05",
+      "status": "scored",
+      "task": "virtual_screening",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 1092,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.0042016,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.00139776,
+          "upstream_inference_cost": 0.0042016,
+          "upstream_inference_prompt_cost": 0.00280384
+        },
+        "is_byok": false,
+        "prompt_tokens": 8762,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 9854
+      },
+      "wall_seconds": 20.427141374908388
+    },
+    {
+      "display_name": "Qwen3.7 Plus",
+      "measured_cases": 20,
+      "model_id": "qwen/qwen3.7-plus",
+      "provider": "Alibaba",
+      "returned_model": "qwen/qwen3.7-plus",
+      "score": 0.3,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-qwen-mimo-compatibility-r05",
+      "status": "scored",
+      "task": "binding_mechanism",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 1084,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.46689024,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.00416256,
+          "upstream_inference_cost": 0.46689024,
+          "upstream_inference_prompt_cost": 0.46272768
+        },
+        "is_byok": false,
+        "prompt_tokens": 482008,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 483092
+      },
+      "wall_seconds": 42.74125966709107
+    },
+    {
+      "display_name": "Qwen3.7 Plus",
+      "measured_cases": 20,
+      "model_id": "qwen/qwen3.7-plus",
+      "provider": "Alibaba",
+      "returned_model": "qwen/qwen3.7-plus",
+      "score": 0.9498552718390298,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-qwen-mimo-compatibility-r05",
+      "status": "scored",
+      "task": "molecular_design",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 2482,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.41013696,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.00953088,
+          "upstream_inference_cost": 0.41013696,
+          "upstream_inference_prompt_cost": 0.40060608
+        },
+        "is_byok": false,
+        "prompt_tokens": 417298,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 419780
+      },
+      "wall_seconds": 61.685477499850094
+    },
+    {
+      "display_name": "Qwen3.7 Plus",
+      "measured_cases": 20,
+      "model_id": "qwen/qwen3.7-plus",
+      "provider": "Alibaba",
+      "returned_model": "qwen/qwen3.7-plus",
+      "score": 0.25,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-qwen-mimo-compatibility-r05",
+      "status": "scored",
+      "task": "retrosynthesis_planning",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 1579,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.00232384,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.00202112,
+          "upstream_inference_cost": 0.00232384,
+          "upstream_inference_prompt_cost": 0.00030272
+        },
+        "is_byok": false,
+        "prompt_tokens": 946,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 2525
+      },
+      "wall_seconds": 28.344071874860674
+    },
+    {
+      "display_name": "GLM 5.2",
+      "measured_cases": 20,
+      "model_id": "z-ai/glm-5.2",
+      "provider": "Decart",
+      "returned_model": "z-ai/glm-5.2",
+      "score": 0.1,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "foundational_biomedical_knowledge",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 191,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.0012845,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0002865,
+          "upstream_inference_cost": 0.0012845,
+          "upstream_inference_prompt_cost": 0.000998
+        },
+        "is_byok": false,
+        "prompt_tokens": 4990,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 3992,
+          "video_tokens": 0
+        },
+        "total_tokens": 5181
+      },
+      "wall_seconds": 2.0459900838322937
+    },
+    {
+      "display_name": "GLM 5.2",
+      "measured_cases": 20,
+      "model_id": "z-ai/glm-5.2",
+      "provider": "Decart",
+      "returned_model": "z-ai/glm-5.2",
+      "score": 0.05,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "retrieve_known_drugs",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 5181,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.0078338,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0077715,
+          "upstream_inference_cost": 0.0078338,
+          "upstream_inference_prompt_cost": 6.23e-05
+        },
+        "is_byok": false,
+        "prompt_tokens": 313,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 251,
+          "video_tokens": 0
+        },
+        "total_tokens": 5494
+      },
+      "wall_seconds": 34.114863249938935
+    },
+    {
+      "display_name": "GLM 5.2",
+      "measured_cases": 20,
+      "model_id": "z-ai/glm-5.2",
+      "provider": "Decart",
+      "returned_model": "z-ai/glm-5.2",
+      "score": 0.2333333333333333,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "retrieve_known_targets",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 462,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.0007651,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.000693,
+          "upstream_inference_cost": 0.0007651,
+          "upstream_inference_prompt_cost": 7.21e-05
+        },
+        "is_byok": false,
+        "prompt_tokens": 361,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 289,
+          "video_tokens": 0
+        },
+        "total_tokens": 823
+      },
+      "wall_seconds": 6.816913791932166
+    },
+    {
+      "display_name": "GLM 5.2",
+      "measured_cases": 20,
+      "model_id": "z-ai/glm-5.2",
+      "provider": "Decart",
+      "returned_model": "z-ai/glm-5.2",
+      "score": 0.5452422189705621,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "molecular_property_prediction",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 806,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.00145,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.001209,
+          "upstream_inference_cost": 0.00145,
+          "upstream_inference_prompt_cost": 0.000241
+        },
+        "is_byok": false,
+        "prompt_tokens": 1205,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 964,
+          "video_tokens": 0
+        },
+        "total_tokens": 2011
+      },
+      "wall_seconds": 9.657115624751896
+    },
+    {
+      "display_name": "GLM 5.2",
+      "measured_cases": 19,
+      "model_id": "z-ai/glm-5.2",
+      "provider": "Decart",
+      "returned_model": "z-ai/glm-5.2",
+      "score": 0.2631578947368421,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "virtual_screening",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 945,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.0031507,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0014175,
+          "upstream_inference_cost": 0.0031507,
+          "upstream_inference_prompt_cost": 0.0017332
+        },
+        "is_byok": false,
+        "prompt_tokens": 8667,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 6934,
+          "video_tokens": 0
+        },
+        "total_tokens": 9612
+      },
+      "wall_seconds": 6.726602457929403
+    },
+    {
+      "display_name": "GLM 5.2",
+      "measured_cases": 20,
+      "model_id": "z-ai/glm-5.2",
+      "provider": "Decart",
+      "returned_model": "z-ai/glm-5.2",
+      "score": 0.07,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "binding_mechanism",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 1230,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.0781843,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.001845,
+          "upstream_inference_cost": 0.0781843,
+          "upstream_inference_prompt_cost": 0.0763393
+        },
+        "is_byok": false,
+        "prompt_tokens": 381698,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 305359,
+          "video_tokens": 0
+        },
+        "total_tokens": 382928
+      },
+      "wall_seconds": 37.550475750118494
+    },
+    {
+      "display_name": "GLM 5.2",
+      "measured_cases": 20,
+      "model_id": "z-ai/glm-5.2",
+      "provider": "Decart",
+      "returned_model": "z-ai/glm-5.2",
+      "score": 0.9052043021518786,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "molecular_design",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 1351,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.0679886,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0020265,
+          "upstream_inference_cost": 0.0679886,
+          "upstream_inference_prompt_cost": 0.0659621
+        },
+        "is_byok": false,
+        "prompt_tokens": 329811,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 263849,
+          "video_tokens": 0
+        },
+        "total_tokens": 331162
+      },
+      "wall_seconds": 32.38892895774916
+    },
+    {
+      "display_name": "GLM 5.2",
+      "measured_cases": 20,
+      "model_id": "z-ai/glm-5.2",
+      "provider": "Decart",
+      "returned_model": "z-ai/glm-5.2",
+      "score": 0.475,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-glm-retro-rate-limit-recovery-r16",
+      "status": "scored",
+      "task": "retrosynthesis_planning",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 1471,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.0023935,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0022065,
+          "upstream_inference_cost": 0.0023935,
+          "upstream_inference_prompt_cost": 0.000187
+        },
+        "is_byok": false,
+        "prompt_tokens": 935,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 748,
+          "video_tokens": 0
+        },
+        "total_tokens": 2406
+      },
+      "wall_seconds": 11.762631500139832
+    },
+    {
+      "display_name": "MiniMax M3",
+      "measured_cases": 20,
+      "model_id": "minimax/minimax-m3",
+      "provider": "Morph",
+      "returned_model": "minimax/minimax-m3",
+      "score": 0.45,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "foundational_biomedical_knowledge",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 189,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.0017019,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0002268,
+          "upstream_inference_cost": 0.0017019,
+          "upstream_inference_prompt_cost": 0.0014751
+        },
+        "is_byok": false,
+        "prompt_tokens": 4917,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 128,
+          "video_tokens": 0
+        },
+        "total_tokens": 5106
+      },
+      "wall_seconds": 5.003850209061056
+    },
+    {
+      "display_name": "MiniMax M3",
+      "measured_cases": 20,
+      "model_id": "minimax/minimax-m3",
+      "provider": "Morph",
+      "returned_model": "minimax/minimax-m3",
+      "score": 0.17,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "retrieve_known_drugs",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 4465,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.0054969,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.005358,
+          "upstream_inference_cost": 0.0054969,
+          "upstream_inference_prompt_cost": 0.0001389
+        },
+        "is_byok": false,
+        "prompt_tokens": 463,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 128,
+          "video_tokens": 0
+        },
+        "total_tokens": 4928
+      },
+      "wall_seconds": 74.72311233310029
+    },
+    {
+      "display_name": "MiniMax M3",
+      "measured_cases": 20,
+      "model_id": "minimax/minimax-m3",
+      "provider": "Morph",
+      "returned_model": "minimax/minimax-m3",
+      "score": 0.2833333333333333,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "retrieve_known_targets",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 438,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.0006705,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0005256,
+          "upstream_inference_cost": 0.0006705,
+          "upstream_inference_prompt_cost": 0.0001449
+        },
+        "is_byok": false,
+        "prompt_tokens": 483,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 128,
+          "video_tokens": 0
+        },
+        "total_tokens": 921
+      },
+      "wall_seconds": 7.737151916138828
+    },
+    {
+      "display_name": "MiniMax M3",
+      "measured_cases": 20,
+      "model_id": "minimax/minimax-m3",
+      "provider": "Morph",
+      "returned_model": "minimax/minimax-m3",
+      "score": 0.7374043625275783,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "molecular_property_prediction",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 824,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.0013887,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0009888,
+          "upstream_inference_cost": 0.0013887,
+          "upstream_inference_prompt_cost": 0.0003999
+        },
+        "is_byok": false,
+        "prompt_tokens": 1333,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 128,
+          "video_tokens": 0
+        },
+        "total_tokens": 2157
+      },
+      "wall_seconds": 13.357688624877483
+    },
+    {
+      "display_name": "MiniMax M3",
+      "measured_cases": 19,
+      "model_id": "minimax/minimax-m3",
+      "provider": "Morph",
+      "returned_model": "minimax/minimax-m3",
+      "score": 0.15789473684210525,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+      "status": "scored",
+      "task": "virtual_screening",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 1171,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.0039354,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0014052,
+          "upstream_inference_cost": 0.0039354,
+          "upstream_inference_prompt_cost": 0.0025302
+        },
+        "is_byok": false,
+        "prompt_tokens": 8434,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 128,
+          "video_tokens": 0
+        },
+        "total_tokens": 9605
+      },
+      "wall_seconds": 19.893491541035473
+    },
+    {
+      "display_name": "MiniMax M3",
+      "measured_cases": 20,
+      "model_id": "minimax/minimax-m3",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.4,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-minimax-parasail-final-r17",
+      "status": "scored",
+      "task": "binding_mechanism",
+      "transport": "openrouter",
+      "usage": null,
+      "wall_seconds": 153.70934983436018
+    },
+    {
+      "display_name": "MiniMax M3",
+      "measured_cases": 20,
+      "model_id": "minimax/minimax-m3",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.9396391030772634,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-minimax-parasail-final-r17",
+      "status": "scored",
+      "task": "molecular_design",
+      "transport": "openrouter",
+      "usage": null,
+      "wall_seconds": 242.2830672916025
+    },
+    {
+      "display_name": "MiniMax M3",
+      "measured_cases": 20,
+      "model_id": "minimax/minimax-m3",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.1,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-minimax-parasail-final-r17",
+      "status": "scored",
+      "task": "retrosynthesis_planning",
+      "transport": "openrouter",
+      "usage": null,
+      "wall_seconds": 232.45899150008336
+    },
+    {
+      "display_name": "MiMo V2.5",
+      "measured_cases": 20,
+      "model_id": "xiaomi/mimo-v2.5",
+      "provider": "Parasail",
+      "returned_model": "xiaomi/mimo-v2.5",
+      "score": 0.05,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-qwen-mimo-compatibility-r05",
+      "status": "scored",
+      "task": "foundational_biomedical_knowledge",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 203,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.00031102,
+        "cost_details": {
+          "upstream_inference_completions_cost": 5.684e-05,
+          "upstream_inference_cost": 0.00031102,
+          "upstream_inference_prompt_cost": 0.00025418
+        },
+        "is_byok": false,
+        "prompt_tokens": 5080,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 5078,
+          "video_tokens": 0
+        },
+        "total_tokens": 5283
+      },
+      "wall_seconds": 3.0174132087267935
+    },
+    {
+      "display_name": "MiMo V2.5",
+      "measured_cases": 20,
+      "model_id": "xiaomi/mimo-v2.5",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.2425,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-mimo-drug-retrieval-recovery-r08",
+      "status": "scored",
+      "task": "retrieve_known_drugs",
+      "transport": "openrouter",
+      "usage": null,
+      "wall_seconds": 56.50404308317229
+    },
+    {
+      "display_name": "MiMo V2.5",
+      "measured_cases": 20,
+      "model_id": "xiaomi/mimo-v2.5",
+      "provider": "DeepInfra",
+      "returned_model": "xiaomi/mimo-v2.5",
+      "score": 0.33999999999999997,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-qwen-mimo-compatibility-r05",
+      "status": "scored",
+      "task": "retrieve_known_targets",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 641,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.00141632,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.001282,
+          "upstream_inference_cost": 0.00141632,
+          "upstream_inference_prompt_cost": 0.00013432
+        },
+        "is_byok": false,
+        "prompt_tokens": 387,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 64,
+          "video_tokens": 0
+        },
+        "total_tokens": 1028
+      },
+      "wall_seconds": 9.471682417206466
+    },
+    {
+      "display_name": "MiMo V2.5",
+      "measured_cases": 20,
+      "model_id": "xiaomi/mimo-v2.5",
+      "provider": "DeepInfra",
+      "returned_model": "xiaomi/mimo-v2.5",
+      "score": 0.5497977963827698,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-qwen-mimo-compatibility-r05",
+      "status": "scored",
+      "task": "molecular_property_prediction",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 1281,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.00304192,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.002562,
+          "upstream_inference_cost": 0.00304192,
+          "upstream_inference_prompt_cost": 0.00047992
+        },
+        "is_byok": false,
+        "prompt_tokens": 1251,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 64,
+          "video_tokens": 0
+        },
+        "total_tokens": 2532
+      },
+      "wall_seconds": 16.284596541896462
+    },
+    {
+      "display_name": "MiMo V2.5",
+      "measured_cases": 19,
+      "model_id": "xiaomi/mimo-v2.5",
+      "provider": "Parasail",
+      "returned_model": "xiaomi/mimo-v2.5",
+      "score": 0.10526315789473684,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-qwen-mimo-compatibility-r05",
+      "status": "scored",
+      "task": "virtual_screening",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 918,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.0014836,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.00025704,
+          "upstream_inference_cost": 0.0014836,
+          "upstream_inference_prompt_cost": 0.00122656
+        },
+        "is_byok": false,
+        "prompt_tokens": 8774,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 20,
+          "video_tokens": 0
+        },
+        "total_tokens": 9692
+      },
+      "wall_seconds": 11.391672000288963
+    },
+    {
+      "display_name": "MiMo V2.5",
+      "measured_cases": 20,
+      "model_id": "xiaomi/mimo-v2.5",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.17,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-large-input-recovery-r07",
+      "status": "scored",
+      "task": "binding_mechanism",
+      "transport": "openrouter",
+      "usage": null,
+      "wall_seconds": 44.05085883429274
+    },
+    {
+      "display_name": "MiMo V2.5",
+      "measured_cases": 20,
+      "model_id": "xiaomi/mimo-v2.5",
+      "provider": null,
+      "returned_model": null,
+      "score": 0.7269590829830926,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-large-input-recovery-r07",
+      "status": "scored",
+      "task": "molecular_design",
+      "transport": "openrouter",
+      "usage": null,
+      "wall_seconds": 104.4555141669698
+    },
+    {
+      "display_name": "MiMo V2.5",
+      "measured_cases": 20,
+      "model_id": "xiaomi/mimo-v2.5",
+      "provider": "Parasail",
+      "returned_model": "xiaomi/mimo-v2.5",
+      "score": 0.425,
+      "source_run": "runtime/evaluation/revision-20260805/clean-ten-model-panel-qwen-mimo-compatibility-r05",
+      "status": "scored",
+      "task": "retrosynthesis_planning",
+      "transport": "openrouter",
+      "usage": {
+        "completion_tokens": 2060,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.00070527,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0005768,
+          "upstream_inference_cost": 0.00070527,
+          "upstream_inference_prompt_cost": 0.00012847
+        },
+        "is_byok": false,
+        "prompt_tokens": 962,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 69,
+          "video_tokens": 0
+        },
+        "total_tokens": 3022
+      },
+      "wall_seconds": 25.22369416570291
+    }
+  ],
+  "claim_boundary": "Budget-controlled clean exposed-case comparison. Scores do not include FROGENT initialization, tool use, retrieval or persistent memory.",
+  "models": [
+    {
+      "display_name": "GPT-5.4",
+      "macro_mean": 0.34398586549267396,
+      "model_id": "gpt-5.4",
+      "reasoning_effort": "low",
+      "scored_tasks": 8,
+      "transport": "codex"
+    },
+    {
+      "display_name": "GPT-5.5",
+      "macro_mean": 0.4494034416383026,
+      "model_id": "gpt-5.5",
+      "reasoning_effort": "low",
+      "scored_tasks": 8,
+      "transport": "codex"
+    },
+    {
+      "display_name": "GPT-5.6 Sol",
+      "macro_mean": 0.44531174877728336,
+      "model_id": "gpt-5.6-sol",
+      "reasoning_effort": "low",
+      "scored_tasks": 8,
+      "transport": "codex"
+    },
+    {
+      "display_name": "DeepSeek V4 Flash",
+      "macro_mean": 0.32941622199974946,
+      "model_id": "deepseek/deepseek-v4-flash-0731",
+      "reasoning_effort": "low",
+      "scored_tasks": 8,
+      "transport": "openrouter"
+    },
+    {
+      "display_name": "DeepSeek V4 Pro",
+      "macro_mean": 0.3419065360238083,
+      "model_id": "deepseek/deepseek-v4-pro",
+      "reasoning_effort": "low",
+      "scored_tasks": 8,
+      "transport": "openrouter"
+    },
+    {
+      "display_name": "Kimi K2.5",
+      "macro_mean": 0.3516472749065972,
+      "model_id": "moonshotai/kimi-k2.5",
+      "reasoning_effort": "low",
+      "scored_tasks": 8,
+      "transport": "openrouter"
+    },
+    {
+      "display_name": "Qwen3.7 Plus",
+      "macro_mean": 0.32435941935614526,
+      "model_id": "qwen/qwen3.7-plus",
+      "reasoning_effort": "low",
+      "scored_tasks": 8,
+      "transport": "openrouter"
+    },
+    {
+      "display_name": "GLM 5.2",
+      "macro_mean": 0.33024221864907705,
+      "model_id": "z-ai/glm-5.2",
+      "reasoning_effort": "low",
+      "scored_tasks": 8,
+      "transport": "openrouter"
+    },
+    {
+      "display_name": "MiniMax M3",
+      "macro_mean": 0.40478394197253503,
+      "model_id": "minimax/minimax-m3",
+      "reasoning_effort": "low",
+      "scored_tasks": 8,
+      "transport": "openrouter"
+    },
+    {
+      "display_name": "MiMo V2.5",
+      "macro_mean": 0.3261900046575749,
+      "model_id": "xiaomi/mimo-v2.5",
+      "reasoning_effort": "low",
+      "scored_tasks": 8,
+      "transport": "openrouter"
+    }
+  ],
+  "openrouter_observed_usage_including_failed_calls": {
+    "completion_tokens": 169043,
+    "cost_usd": 2.76478741,
+    "prompt_tokens": 5260271,
+    "reasoning_tokens": 51437,
+    "response_files_with_usage": 94
+  },
+  "rdkit_version": "2026.03.3",
+  "run_roots": [
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-budget-controlled-r03",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-qwen-mimo-compatibility-r05",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-kimi-compatibility-r06",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-large-input-recovery-r07",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-mimo-drug-retrieval-recovery-r08",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-gpt55-large-input-recovery-r09",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-pro-retro-recovery-r10",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-minimax-large-input-recovery-r11",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-minimax-rate-limit-recovery-r12",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-minimax-provider-pinned-recovery-r13",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-minimax-together-recovery-r14",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-gpt56-binding-recovery-r15",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-glm-retro-rate-limit-recovery-r16",
+    "runtime/evaluation/revision-20260805/clean-ten-model-panel-minimax-parasail-final-r17"
+  ],
+  "schema_version": "frogent-clean-ten-model-score-v1",
+  "status": "complete"
+}

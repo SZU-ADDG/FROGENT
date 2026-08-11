@@ -1,0 +1,504 @@
+{
+  "display_name": "MiMo V2.5",
+  "model_id": "xiaomi/mimo-v2.5",
+  "prompt_sha256": "849c872012883ed48bcf0dfc314a97a7c8ce129383085402b4196553999c5ae6",
+  "response": {
+    "results": [
+      {
+        "case_index": 1,
+        "drugbank_ids": [
+          "DB00317",
+          "DB00530",
+          "DB01259",
+          "DB09078",
+          "DB11903"
+        ],
+        "smiles": [
+          "C=CC(=O)Nc1cc(Nc2nccc(-c3cn(C)c4ccccc34)n2)c(OC)cc1N(C)CCN(C)C",
+          "COc1cc2ncnc(Nc3ccc(F)c(Cl)c3)c2cc1OCCCN1CCOCC1",
+          "COc1cc2c(Nc3ccc(Br)cc3F)ncnc2cc1OCCCN1CCOCC1",
+          "COc1cc2c(Nc3ccc(Br)cc3F)ncnc2cc1OCCCN1CCOCC1",
+          "COc1cc2c(Nc3ccc(Br)cc3F)ncnc2cc1OCCCN1CCOCC1"
+        ]
+      },
+      {
+        "case_index": 2,
+        "drugbank_ids": [
+          "DB08881",
+          "DB09077",
+          "DB11807",
+          "DB15120",
+          "DB15121"
+        ],
+        "smiles": [
+          "CCCS(=O)(=O)NC(=O)Nc1ccc(-c2cnc3ccccc3n2)cc1",
+          "CCCS(=O)(=O)NC(=O)Nc1ccc(-c2cnc3ccccc3n2)cc1",
+          "CCCS(=O)(=O)NC(=O)Nc1ccc(-c2cnc3ccccc3n2)cc1",
+          "CCCS(=O)(=O)NC(=O)Nc1ccc(-c2cnc3ccccc3n2)cc1",
+          "CCCS(=O)(=O)NC(=O)Nc1ccc(-c2cnc3ccccc3n2)cc1"
+        ]
+      },
+      {
+        "case_index": 3,
+        "drugbank_ids": [
+          "DB08865",
+          "DB09079",
+          "DB11373",
+          "DB11903",
+          "DB15122"
+        ],
+        "smiles": [
+          "CC(=O)Nc1ccc(Nc2nccc(-c3cn(C)c4ccccc34)n2)cc1",
+          "CC(=O)Nc1ccc(Nc2nccc(-c3cn(C)c4ccccc34)n2)cc1",
+          "CC(=O)Nc1ccc(Nc2nccc(-c3cn(C)c4ccccc34)n2)cc1",
+          "CC(=O)Nc1ccc(Nc2nccc(-c3cn(C)c4ccccc34)n2)cc1",
+          "CC(=O)Nc1ccc(Nc2nccc(-c3cn(C)c4ccccc34)n2)cc1"
+        ]
+      },
+      {
+        "case_index": 4,
+        "drugbank_ids": [
+          "DB00618",
+          "DB09077",
+          "DB11807",
+          "DB15120",
+          "DB15121"
+        ],
+        "smiles": [
+          "CC(=O)Nc1ccc(Nc2nccc(-c3cn(C)c4ccccc34)n2)cc1",
+          "CC(=O)Nc1ccc(Nc2nccc(-c3cn(C)c4ccccc34)n2)cc1",
+          "CC(=O)Nc1ccc(Nc2nccc(-c3cn(C)c4ccccc34)n2)cc1",
+          "CC(=O)Nc1ccc(Nc2nccc(-c3cn(C)c4ccccc34)n2)cc1",
+          "CC(=O)Nc1ccc(Nc2nccc(-c3cn(C)c4ccccc34)n2)cc1"
+        ]
+      },
+      {
+        "case_index": 5,
+        "drugbank_ids": [
+          "DB09077",
+          "DB11807",
+          "DB15120",
+          "DB15121",
+          "DB15122"
+        ],
+        "smiles": [
+          "CC(=O)Nc1ccc(Nc2nccc(-c3cn(C)c4ccccc34)n2)cc1",
+          "CC(=O)Nc1ccc(Nc2nccc(-c3cn(C)c4ccccc34)n2)cc1",
+          "CC(=O)Nc1ccc(Nc2nccc(-c3cn(C)c4ccccc34)n2)cc1",
+          "CC(=O)Nc1ccc(Nc2nccc(-c3cn(C)c4ccccc34)n2)cc1",
+          "CC(=O)Nc1ccc(Nc2nccc(-c3cn(C)c4ccccc34)n2)cc1"
+        ]
+      },
+      {
+        "case_index": 6,
+        "drugbank_ids": [
+          "DB00794",
+          "DB00655",
+          "DB00367",
+          "DB00601",
+          "DB00602"
+        ],
+        "smiles": [
+          "CC12CCC3C(CCC4CC(=O)CCC34C)C1CCC2O",
+          "CC12CCC3C(CCC4CC(=O)CCC34C)C1CCC2O",
+          "CC12CCC3C(CCC4CC(=O)CCC34C)C1CCC2O",
+          "CC12CCC3C(CCC4CC(=O)CCC34C)C1CCC2O",
+          "CC12CCC3C(CCC4CC(=O)CCC34C)C1CCC2O"
+        ]
+      },
+      {
+        "case_index": 7,
+        "drugbank_ids": [
+          "DB00433",
+          "DB00434",
+          "DB00435",
+          "DB00436",
+          "DB00437"
+        ],
+        "smiles": [
+          "CC1=CC2=C(NC3=CC=CC=C3C2=O)C=C1",
+          "CC1=CC2=C(NC3=CC=CC=C3C2=O)C=C1",
+          "CC1=CC2=C(NC3=CC=CC=C3C2=O)C=C1",
+          "CC1=CC2=C(NC3=CC=CC=C3C2=O)C=C1",
+          "CC1=CC2=C(NC3=CC=CC=C3C2=O)C=C1"
+        ]
+      },
+      {
+        "case_index": 8,
+        "drugbank_ids": [
+          "DB00533",
+          "DB00534",
+          "DB00535",
+          "DB00536",
+          "DB00537"
+        ],
+        "smiles": [
+          "CC(C)C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "CC(C)C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "CC(C)C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "CC(C)C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "CC(C)C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 9,
+        "drugbank_ids": [
+          "DB01137",
+          "DB01138",
+          "DB01139",
+          "DB01140",
+          "DB01141"
+        ],
+        "smiles": [
+          "CC(C)C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "CC(C)C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "CC(C)C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "CC(C)C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+          "CC(C)C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2"
+        ]
+      },
+      {
+        "case_index": 10,
+        "drugbank_ids": [
+          "DB01573",
+          "DB01574",
+          "DB01575",
+          "DB01576",
+          "DB01577"
+        ],
+        "smiles": [
+          "CC1=CC2=C(NC3=CC=CC=C3C2=O)C=C1",
+          "CC1=CC2=C(NC3=CC=CC=C3C2=O)C=C1",
+          "CC1=CC2=C(NC3=CC=CC=C3C2=O)C=C1",
+          "CC1=CC2=C(NC3=CC=CC=C3C2=O)C=C1",
+          "CC1=CC2=C(NC3=CC=CC=C3C2=O)C=C1"
+        ]
+      },
+      {
+        "case_index": 11,
+        "drugbank_ids": [
+          "DB12414",
+          "DB11697",
+          "DB11903",
+          "DB11883",
+          "DB11884"
+        ],
+        "smiles": [
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O"
+        ]
+      },
+      {
+        "case_index": 12,
+        "drugbank_ids": [
+          "DB12414",
+          "DB11697",
+          "DB11903",
+          "DB11883",
+          "DB11884"
+        ],
+        "smiles": [
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O"
+        ]
+      },
+      {
+        "case_index": 13,
+        "drugbank_ids": [
+          "DB05221",
+          "DB11641",
+          "DB11642",
+          "DB11643",
+          "DB11644"
+        ],
+        "smiles": [
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O"
+        ]
+      },
+      {
+        "case_index": 14,
+        "drugbank_ids": [
+          "DB05221",
+          "DB11641",
+          "DB11642",
+          "DB11643",
+          "DB11644"
+        ],
+        "smiles": [
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O"
+        ]
+      },
+      {
+        "case_index": 15,
+        "drugbank_ids": [
+          "DB05221",
+          "DB11641",
+          "DB11642",
+          "DB11643",
+          "DB11644"
+        ],
+        "smiles": [
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O",
+          "CC1=CC2=C(C=C1)NC(=O)C3=C2C=CC(=C3)O"
+        ]
+      },
+      {
+        "case_index": 16,
+        "drugbank_ids": [
+          "DB12010",
+          "DB15130",
+          "DB15131",
+          "DB15132",
+          "DB15133"
+        ],
+        "smiles": [
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)Cl)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)F)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)Br)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)I)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)CF3)C"
+        ]
+      },
+      {
+        "case_index": 17,
+        "drugbank_ids": [
+          "DB12010",
+          "DB15130",
+          "DB15131",
+          "DB15132",
+          "DB15133"
+        ],
+        "smiles": [
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)Cl)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)F)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)Br)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)I)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)CF3)C"
+        ]
+      },
+      {
+        "case_index": 18,
+        "drugbank_ids": [
+          "DB11991",
+          "DB12010",
+          "DB15130",
+          "DB15131",
+          "DB15132"
+        ],
+        "smiles": [
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)Cl)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)F)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)Br)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)I)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)CF3)C"
+        ]
+      },
+      {
+        "case_index": 19,
+        "drugbank_ids": [
+          "DB11991",
+          "DB12010",
+          "DB15130",
+          "DB15131",
+          "DB15132"
+        ],
+        "smiles": [
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)Cl)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)F)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)Br)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)I)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)CF3)C"
+        ]
+      },
+      {
+        "case_index": 20,
+        "drugbank_ids": [
+          "DB15127",
+          "DB15128",
+          "DB15129",
+          "DB15130",
+          "DB15131"
+        ],
+        "smiles": [
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)Cl)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)F)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)Br)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)I)C",
+          "CC1=CC(=C(C=C1)NC(=O)C2=CC=C(C=C2)NC(=O)NC3=CC=C(C=C3)CF3)C"
+        ]
+      }
+    ]
+  },
+  "schema_sha256": "a98a48013a07fbe08307d02b07d1c6b9e5d1a869eaacc2217d77b1fe522c0bc0",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "retrieve_known_drugs",
+  "transport": "openrouter",
+  "transport_metadata": {
+    "batch_size": 5,
+    "batches": [
+      {
+        "case_indices": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "finish_reason": "stop",
+        "provider": "Parasail",
+        "response_id": "gen-1785904679-fCmU3HJZmEicL4unUsur",
+        "returned_model": "xiaomi/mimo-v2.5",
+        "usage": {
+          "completion_tokens": 1186,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0
+          },
+          "cost": 0.00034498,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0.00033208,
+            "upstream_inference_cost": 0.00034498,
+            "upstream_inference_prompt_cost": 1.29e-05
+          },
+          "is_byok": false,
+          "prompt_tokens": 168,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 118,
+            "video_tokens": 0
+          },
+          "total_tokens": 1354
+        }
+      },
+      {
+        "case_indices": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "finish_reason": "stop",
+        "provider": "Parasail",
+        "response_id": "gen-1785904690-9cLJ4mXlp8JCKH9gkEGN",
+        "returned_model": "xiaomi/mimo-v2.5",
+        "usage": {
+          "completion_tokens": 1056,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0
+          },
+          "cost": 0.00031328,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0.00029568,
+            "upstream_inference_cost": 0.00031328,
+            "upstream_inference_prompt_cost": 1.76e-05
+          },
+          "is_byok": false,
+          "prompt_tokens": 172,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 72,
+            "video_tokens": 0
+          },
+          "total_tokens": 1228
+        }
+      },
+      {
+        "case_indices": [
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "finish_reason": "stop",
+        "provider": "Parasail",
+        "response_id": "gen-1785904701-SBLKR1H2CJoXYGgD0Chf",
+        "returned_model": "xiaomi/mimo-v2.5",
+        "usage": {
+          "completion_tokens": 1160,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0
+          },
+          "cost": 0.00034287,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0.0003248,
+            "upstream_inference_cost": 0.00034287,
+            "upstream_inference_prompt_cost": 1.807e-05
+          },
+          "is_byok": false,
+          "prompt_tokens": 176,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 73,
+            "video_tokens": 0
+          },
+          "total_tokens": 1336
+        }
+      },
+      {
+        "case_indices": [
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "finish_reason": "stop",
+        "provider": "Parasail",
+        "response_id": "gen-1785904720-lJDiuwS7Sw0h5pjPNUwf",
+        "returned_model": "xiaomi/mimo-v2.5",
+        "usage": {
+          "completion_tokens": 1475,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0
+          },
+          "cost": 0.00043107,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0.000413,
+            "upstream_inference_cost": 0.00043107,
+            "upstream_inference_prompt_cost": 1.807e-05
+          },
+          "is_byok": false,
+          "prompt_tokens": 176,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 73,
+            "video_tokens": 0
+          },
+          "total_tokens": 1651
+        }
+      }
+    ]
+  },
+  "wall_seconds": 56.50404308317229
+}

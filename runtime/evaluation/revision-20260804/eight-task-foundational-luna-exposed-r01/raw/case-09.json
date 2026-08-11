@@ -1,0 +1,10 @@
+{
+  "answer_type": "multipleChoice",
+  "case_index": 9,
+  "response": {
+    "confidence": "high",
+    "final_answer": "G",
+    "rationale": "A genotype-based polygenic score cannot exceed the 50% broad-sense heritability ceiling. Reaching 50% requires all heritable variance to be captured additively; H² = 0.5 does not require non-additive effects, and epigenetic effects do not necessarily reduce h² below 0.5."
+  },
+  "status": "succeeded"
+}

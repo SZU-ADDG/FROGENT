@@ -1,0 +1,204 @@
+{
+  "display_name": "MiniMax M3",
+  "model_id": "minimax/minimax-m3",
+  "prompt_sha256": "d646294e2a0aa921a21062ce6ed48b1fe1dfbeb253f4c7e39bdd937f852ffe55",
+  "response": {
+    "results": [
+      {
+        "case_index": 1,
+        "targets": [
+          "DRD2",
+          "COMT",
+          "HLA-DRB1"
+        ]
+      },
+      {
+        "case_index": 2,
+        "targets": [
+          "EIF2AK4",
+          "IFIT1",
+          "OAS1"
+        ]
+      },
+      {
+        "case_index": 3,
+        "targets": [
+          "TLR2",
+          "TLR4",
+          "HLA-DRB1"
+        ]
+      },
+      {
+        "case_index": 4,
+        "targets": [
+          "SOD1",
+          "C9orf72",
+          "TARDBP"
+        ]
+      },
+      {
+        "case_index": 5,
+        "targets": [
+          "TCF7L2",
+          "KCNJ11",
+          "PPARG"
+        ]
+      },
+      {
+        "case_index": 6,
+        "targets": [
+          "PAH",
+          "GCH1",
+          "PTS"
+        ]
+      },
+      {
+        "case_index": 7,
+        "targets": [
+          "HFE",
+          "SLC11A1",
+          "TLR4"
+        ]
+      },
+      {
+        "case_index": 8,
+        "targets": [
+          "PPP3CA",
+          "CTLA4",
+          "HLA-DRB1"
+        ]
+      },
+      {
+        "case_index": 9,
+        "targets": [
+          "KMT2D",
+          "KDM6A",
+          "KANSL1"
+        ]
+      },
+      {
+        "case_index": 10,
+        "targets": [
+          "CSF2RA",
+          "CSF2RB",
+          "MARS1"
+        ]
+      },
+      {
+        "case_index": 11,
+        "targets": [
+          "FOXP2",
+          "CNTNAP2",
+          "FOXP1"
+        ]
+      },
+      {
+        "case_index": 12,
+        "targets": [
+          "FOXP2",
+          "CNTNAP2",
+          "ATP2C2"
+        ]
+      },
+      {
+        "case_index": 13,
+        "targets": [
+          "OCRL",
+          "INPP5B",
+          "ARL13B"
+        ]
+      },
+      {
+        "case_index": 14,
+        "targets": [
+          "ENG",
+          "ACVRL1",
+          "SMAD4"
+        ]
+      },
+      {
+        "case_index": 15,
+        "targets": [
+          "GNAS",
+          "PRKAR1A",
+          "PDE4D"
+        ]
+      },
+      {
+        "case_index": 16,
+        "targets": [
+          "CFTR",
+          "SLC26A9",
+          "MUC4"
+        ]
+      },
+      {
+        "case_index": 17,
+        "targets": [
+          "HBB",
+          "BCL11A",
+          "HFE"
+        ]
+      },
+      {
+        "case_index": 18,
+        "targets": [
+          "CTNS",
+          "CTNS-LOC56262",
+          "TRPV1"
+        ]
+      },
+      {
+        "case_index": 19,
+        "targets": [
+          "UMOD",
+          "HNF1B",
+          "PKD1"
+        ]
+      },
+      {
+        "case_index": 20,
+        "targets": [
+          "INS",
+          "LEP",
+          "MC4R"
+        ]
+      }
+    ]
+  },
+  "schema_sha256": "f30f23b25119c02a63b1e436bf00021b1c76243e258fcdc2330e9afd380c9677",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "retrieve_known_targets",
+  "transport": "openrouter",
+  "transport_metadata": {
+    "finish_reason": "stop",
+    "provider": "Morph",
+    "response_id": "gen-1785905016-DpGYmTVeBtCXtXwSho7n",
+    "returned_model": "minimax/minimax-m3",
+    "usage": {
+      "completion_tokens": 438,
+      "completion_tokens_details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "reasoning_tokens": 0
+      },
+      "cost": 0.0006705,
+      "cost_details": {
+        "upstream_inference_completions_cost": 0.0005256,
+        "upstream_inference_cost": 0.0006705,
+        "upstream_inference_prompt_cost": 0.0001449
+      },
+      "is_byok": false,
+      "prompt_tokens": 483,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 0,
+        "cached_tokens": 128,
+        "video_tokens": 0
+      },
+      "total_tokens": 921
+    }
+  },
+  "wall_seconds": 7.737151916138828
+}

@@ -1,0 +1,22 @@
+{
+  "protocol_id": "forge-gauge-matched-budget-prospective-retry-r05",
+  "amends": [
+    "forge-gauge-matched-budget-prospective-r02",
+    "forge-gauge-matched-budget-prospective-retry-r04"
+  ],
+  "frozen_at": "2026-08-02T21:26:16+08:00",
+  "reason": "One additional Pocket2Mol job reached nonzero terminal state after retry-r04 completed its two-job snapshot.",
+  "failed_job_freeze_rule": "Include all and only the r02 nonzero terminal tag absent from the complete retry-r03 and retry-r04 manifests at the 2026-08-02T21:26:16+08:00 snapshot.",
+  "invariants": {
+    "protein_and_ligand_inputs": "unchanged",
+    "method": "pocket2mol",
+    "seeds": "unchanged",
+    "attempt_counts": "unchanged",
+    "batch_size": 8,
+    "threshold": -1,
+    "threshold_ratio": 0.8,
+    "gpu_policy": "physical GPU 6 must have no compute process before launch; retries run sequentially",
+    "successful_source_or_retry_jobs": "never rerun"
+  },
+  "scientific_effect": "The amendment changes execution memory only. Pocket, seed, total attempt budget, generator, evaluator and analysis remain unchanged."
+}

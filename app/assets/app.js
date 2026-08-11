@@ -145,11 +145,203 @@ function messageNode(message) {
     return item;
 }
 
+function structureAtoms(molecule) {
+    const data = typeof molecule.data === "string" ? molecule.data : "";
+    const format = String(molecule.format || "").toLowerCase();
+    const atoms = [];
+    if (format === "pdb") {
+        for (const line of data.split(/\r?\n/)) {
+            if (!line.startsWith("ATOM  ") && !line.startsWith("HETATM")) continue;
+            const x = Number(line.slice(30, 38));
+            const y = Number(line.slice(38, 46));
+            const z = Number(line.slice(46, 54));
+            const atomName = line.slice(12, 16).trim().replace(/^\d+/, "");
+            const element = line.slice(76, 78).trim() || atomName.slice(0, 1);
+            if ([x, y, z].every(Number.isFinite)) atoms.push({x, y, z, element});
+        }
+    } else if (format === "sdf" || format === "mol") {
+        const lines = data.split(/\r?\n/);
+        const count = Number.parseInt((lines[3] || "").slice(0, 3), 10);
+        for (const line of lines.slice(4, 4 + (Number.isFinite(count) ? count : 0))) {
+            const x = Number(line.slice(0, 10));
+            const y = Number(line.slice(10, 20));
+            const z = Number(line.slice(20, 30));
+            const element = line.slice(31, 34).trim();
+            if ([x, y, z].every(Number.isFinite)) atoms.push({x, y, z, element});
+        }
+    } else if (format === "mol2") {
+        const lines = data.split(/\r?\n/);
+        let inAtoms = false;
+        for (const line of lines) {
+            if (line.startsWith("@<TRIPOS>ATOM")) { inAtoms = true; continue; }
+            if (inAtoms && line.startsWith("@<TRIPOS>")) break;
+            if (!inAtoms || !line.trim()) continue;
+            const fields = line.trim().split(/\s+/);
+            const [x, y, z] = fields.slice(2, 5).map(Number);
+            const element = (fields[5] || fields[1] || "C").split(".")[0];
+            if ([x, y, z].every(Number.isFinite)) atoms.push({x, y, z, element});
+        }
+    }
+    return atoms.slice(0, 5000);
+}
+
+function atomColor(element) {
+    return ({C: "#59636d", N: "#315fd5", O: "#d74b43", S: "#d5a928",
+        P: "#dd7b2d", F: "#58a56b", CL: "#58a56b", BR: "#8d5134",
+        I: "#7156a5", H: "#d9dfe5"})[String(element || "C").toUpperCase()] || "#8a98a6";
+}
+
+function structureBonds(atoms) {
+    const radii = {H: 0.31, C: 0.76, N: 0.71, O: 0.66, F: 0.57, P: 1.07,
+        S: 1.05, CL: 1.02, BR: 1.20, I: 1.39};
+    const cellSize = 2.4;
+    const cells = new Map();
+    const bonds = [];
+    const key = (x, y, z) => `${x},${y},${z}`;
+    atoms.forEach((atom, index) => {
+        const cell = [atom.x, atom.y, atom.z].map((value) => Math.floor(value / cellSize));
+        for (let dx = -1; dx <= 1; dx += 1) for (let dy = -1; dy <= 1; dy += 1) {
+            for (let dz = -1; dz <= 1; dz += 1) {
+                for (const other of cells.get(key(cell[0] + dx, cell[1] + dy, cell[2] + dz)) || []) {
+                    const candidate = atoms[other];
+                    const distance = Math.hypot(atom.x - candidate.x, atom.y - candidate.y, atom.z - candidate.z);
+                    const left = radii[String(atom.element || "C").toUpperCase()] || 0.77;
+                    const right = radii[String(candidate.element || "C").toUpperCase()] || 0.77;
+                    if (distance > 0.25 && distance <= Math.min(2.35, (left + right) * 1.28)) {
+                        bonds.push([other, index]);
+                    }
+                }
+            }
+        }
+        const cellKey = key(...cell);
+        if (!cells.has(cellKey)) cells.set(cellKey, []);
+        cells.get(cellKey).push(index);
+    });
+    return bonds.slice(0, 20000);
+}
+
+function structureViewer(molecule) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "structure-viewer";
+    const atoms = structureAtoms(molecule);
+    if (!atoms.length) {
+        const note = document.createElement("p");
+        note.textContent = "Preview unavailable for this structure format; download remains available.";
+        wrapper.append(note);
+        return wrapper;
+    }
+    const canvas = document.createElement("canvas");
+    canvas.width = 720;
+    canvas.height = 360;
+    canvas.setAttribute("aria-label", `Interactive 3D preview of ${molecule.filename || "structure"}`);
+    const hint = document.createElement("span");
+    const bonds = structureBonds(atoms);
+    hint.textContent = `${atoms.length} atoms · ${bonds.length} inferred bonds · drag to rotate`;
+    let rotationX = -0.35;
+    let rotationY = 0.55;
+    let dragging = false;
+    let previousX = 0;
+    let previousY = 0;
+    const center = atoms.reduce((sum, atom) => ({
+        x: sum.x + atom.x / atoms.length,
+        y: sum.y + atom.y / atoms.length,
+        z: sum.z + atom.z / atoms.length,
+    }), {x: 0, y: 0, z: 0});
+    const radius = Math.max(1, ...atoms.map((atom) => Math.hypot(
+        atom.x - center.x, atom.y - center.y, atom.z - center.z
+    )));
+    const draw = () => {
+        const context = canvas.getContext("2d");
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = "#f7faf8";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        const cosX = Math.cos(rotationX), sinX = Math.sin(rotationX);
+        const cosY = Math.cos(rotationY), sinY = Math.sin(rotationY);
+        const projected = atoms.map((atom, index) => {
+            const x0 = atom.x - center.x, y0 = atom.y - center.y, z0 = atom.z - center.z;
+            const x1 = x0 * cosY + z0 * sinY;
+            const z1 = -x0 * sinY + z0 * cosY;
+            const y1 = y0 * cosX - z1 * sinX;
+            const z2 = y0 * sinX + z1 * cosX;
+            const scale = 142 / radius;
+            return {...atom, index, px: canvas.width / 2 + x1 * scale,
+                py: canvas.height / 2 + y1 * scale, depth: z2};
+        });
+        context.strokeStyle = "rgba(94, 110, 102, 0.48)";
+        context.lineWidth = 2;
+        for (const [left, right] of bonds) {
+            context.beginPath();
+            context.moveTo(projected[left].px, projected[left].py);
+            context.lineTo(projected[right].px, projected[right].py);
+            context.stroke();
+        }
+        for (const atom of [...projected].sort((left, right) => left.depth - right.depth)) {
+            const size = Math.max(4, 7 + (atom.depth / radius) * 1.5);
+            context.beginPath();
+            context.arc(atom.px, atom.py, size, 0, Math.PI * 2);
+            context.fillStyle = atomColor(atom.element);
+            context.fill();
+        }
+    };
+    canvas.addEventListener("pointerdown", (event) => {
+        dragging = true; previousX = event.clientX; previousY = event.clientY;
+        canvas.setPointerCapture(event.pointerId);
+    });
+    canvas.addEventListener("pointermove", (event) => {
+        if (!dragging) return;
+        rotationY += (event.clientX - previousX) * 0.012;
+        rotationX += (event.clientY - previousY) * 0.012;
+        previousX = event.clientX; previousY = event.clientY; draw();
+    });
+    canvas.addEventListener("pointerup", () => { dragging = false; });
+    canvas.addEventListener("pointercancel", () => { dragging = false; });
+    draw();
+    wrapper.append(canvas, hint);
+    return wrapper;
+}
+
 function renderMessages() {
     el.messages.replaceChildren();
-    const messages = state.chats[state.activeChatId]?.messages || [];
+    const chat = state.chats[state.activeChatId] || {};
+    const messages = chat.messages || [];
     if (!messages.length) el.messages.append(welcome());
     for (const message of messages) el.messages.append(messageNode(message));
+    const molecules = Array.isArray(chat.molecules) ? chat.molecules : [];
+    if (molecules.length) {
+        const panel = document.createElement("section");
+        panel.className = "molecule-downloads";
+        const heading = document.createElement("h3");
+        heading.textContent = "Molecular structures";
+        panel.append(heading);
+        for (const molecule of molecules) {
+            const card = document.createElement("article");
+            card.className = "molecule-card";
+            card.append(structureViewer(molecule));
+            const link = document.createElement("a");
+            link.className = "molecule-download";
+            link.href = molecule.download_url;
+            link.download = molecule.filename || "structure";
+            link.textContent = `Download ${molecule.filename || "structure"}`;
+            card.append(link);
+            panel.append(card);
+        }
+        el.messages.append(panel);
+    }
+    if (state.activeChatId && messages.length) {
+        const exports = document.createElement("section");
+        exports.className = "report-exports";
+        const label = document.createElement("strong");
+        label.textContent = "Download report";
+        exports.append(label);
+        for (const [format, name] of [["md", "Markdown"], ["pdf", "PDF"], ["docx", "Word"]]) {
+            const link = document.createElement("a");
+            link.href = `/api/chats/${encodeURIComponent(state.activeChatId)}/report.${format}`;
+            link.textContent = name;
+            link.download = `frogent-report.${format}`;
+            exports.append(link);
+        }
+        el.messages.append(exports);
+    }
     el.messages.scrollTop = el.messages.scrollHeight;
 }
 

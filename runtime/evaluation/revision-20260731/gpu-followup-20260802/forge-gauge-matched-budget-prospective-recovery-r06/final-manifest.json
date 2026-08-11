@@ -1,0 +1,3003 @@
+{
+  "status": "complete",
+  "created_at": "2026-08-03T16:34:15+08:00",
+  "protocol_id": "forge-gauge-matched-budget-prospective-r02",
+  "expected_jobs": 120,
+  "exit_zero_jobs": 120,
+  "pockets": 5,
+  "prospective_seeds": [
+    83,
+    97,
+    109
+  ],
+  "paired_cells_per_condition": 15,
+  "condition_summary": {
+    "fixed_best": {
+      "cells": 15,
+      "attempted_samples": 22500,
+      "valid_molecules": 21514,
+      "valid_rate": 0.9561777777777778,
+      "unique_valid_rate": 0.9547555555555556,
+      "top50_score_mean": 0.6607890072142913,
+      "top50_qed_mean": 0.6917614388775593,
+      "top50_favorable_sa_mean": 0.58852
+    },
+    "single_pass": {
+      "cells": 15,
+      "attempted_samples": 22500,
+      "valid_molecules": 9982,
+      "valid_rate": 0.44364444444444445,
+      "unique_valid_rate": 0.44022222222222224,
+      "top50_score_mean": 0.6204795059348617,
+      "top50_qed_mean": 0.6439078656212309,
+      "top50_favorable_sa_mean": 0.5658133333333333
+    },
+    "iterative": {
+      "cells": 15,
+      "attempted_samples": 22500,
+      "valid_molecules": 15837,
+      "valid_rate": 0.7038666666666666,
+      "unique_valid_rate": 0.7016444444444444,
+      "top50_score_mean": 0.6863857106588959,
+      "top50_qed_mean": 0.7158310152269942,
+      "top50_favorable_sa_mean": 0.61768
+    }
+  },
+  "gauge_selected_model_counts": {
+    "targetdiff": 15
+  },
+  "paired_comparisons": [
+    {
+      "contrast": "single_pass - fixed_best",
+      "metric": "valid_rate",
+      "paired_cells": 15,
+      "mean_difference": -0.5125333333333333,
+      "median_difference": -0.5446666666666666,
+      "positive_cells": 0,
+      "negative_cells": 15,
+      "zero_cells": 0,
+      "wilcoxon_two_sided_p": 6.103515625e-05,
+      "pocket_cluster_bootstrap_95_ci": [
+        -0.5496888888888889,
+        -0.45617777777777774
+      ]
+    },
+    {
+      "contrast": "single_pass - fixed_best",
+      "metric": "unique_valid_rate",
+      "paired_cells": 15,
+      "mean_difference": -0.5145333333333333,
+      "median_difference": -0.5466666666666666,
+      "positive_cells": 0,
+      "negative_cells": 15,
+      "zero_cells": 0,
+      "wilcoxon_two_sided_p": 0.0006533107814151376,
+      "pocket_cluster_bootstrap_95_ci": [
+        -0.5518222222222222,
+        -0.4590666666666667
+      ]
+    },
+    {
+      "contrast": "single_pass - fixed_best",
+      "metric": "top50_score_mean",
+      "paired_cells": 15,
+      "mean_difference": -0.04030950127942975,
+      "median_difference": -0.03836139320110299,
+      "positive_cells": 0,
+      "negative_cells": 15,
+      "zero_cells": 0,
+      "wilcoxon_two_sided_p": 6.103515625e-05,
+      "pocket_cluster_bootstrap_95_ci": [
+        -0.04559152566347961,
+        -0.03620842602527248
+      ]
+    },
+    {
+      "contrast": "single_pass - fixed_best",
+      "metric": "top50_qed_mean",
+      "paired_cells": 15,
+      "mean_difference": -0.04785357325632821,
+      "median_difference": -0.04997435987019472,
+      "positive_cells": 0,
+      "negative_cells": 15,
+      "zero_cells": 0,
+      "wilcoxon_two_sided_p": 6.103515625e-05,
+      "pocket_cluster_bootstrap_95_ci": [
+        -0.05861325545579836,
+        -0.03887990333775853
+      ]
+    },
+    {
+      "contrast": "single_pass - fixed_best",
+      "metric": "top50_favorable_sa_mean",
+      "paired_cells": 15,
+      "mean_difference": -0.022706666666666646,
+      "median_difference": -0.02300000000000002,
+      "positive_cells": 0,
+      "negative_cells": 15,
+      "zero_cells": 0,
+      "wilcoxon_two_sided_p": 6.103515625e-05,
+      "pocket_cluster_bootstrap_95_ci": [
+        -0.03129333333333332,
+        -0.014653333333333312
+      ]
+    },
+    {
+      "contrast": "iterative - fixed_best",
+      "metric": "valid_rate",
+      "paired_cells": 15,
+      "mean_difference": -0.2523111111111111,
+      "median_difference": -0.268,
+      "positive_cells": 0,
+      "negative_cells": 15,
+      "zero_cells": 0,
+      "wilcoxon_two_sided_p": 6.103515625e-05,
+      "pocket_cluster_bootstrap_95_ci": [
+        -0.27355555555555555,
+        -0.2250222222222222
+      ]
+    },
+    {
+      "contrast": "iterative - fixed_best",
+      "metric": "unique_valid_rate",
+      "paired_cells": 15,
+      "mean_difference": -0.2531111111111111,
+      "median_difference": -0.27,
+      "positive_cells": 0,
+      "negative_cells": 15,
+      "zero_cells": 0,
+      "wilcoxon_two_sided_p": 6.103515625e-05,
+      "pocket_cluster_bootstrap_95_ci": [
+        -0.2744,
+        -0.22573333333333334
+      ]
+    },
+    {
+      "contrast": "iterative - fixed_best",
+      "metric": "top50_score_mean",
+      "paired_cells": 15,
+      "mean_difference": 0.02559670344460442,
+      "median_difference": -0.003698576096035522,
+      "positive_cells": 6,
+      "negative_cells": 9,
+      "zero_cells": 0,
+      "wilcoxon_two_sided_p": 0.97796630859375,
+      "pocket_cluster_bootstrap_95_ci": [
+        -0.01457488388342926,
+        0.06817948901922397
+      ]
+    },
+    {
+      "contrast": "iterative - fixed_best",
+      "metric": "top50_qed_mean",
+      "paired_cells": 15,
+      "mean_difference": 0.02406957634943497,
+      "median_difference": -0.012740822994336432,
+      "positive_cells": 5,
+      "negative_cells": 10,
+      "zero_cells": 0,
+      "wilcoxon_two_sided_p": 0.890380859375,
+      "pocket_cluster_bootstrap_95_ci": [
+        -0.020021262690613113,
+        0.06816041538948306
+      ]
+    },
+    {
+      "contrast": "iterative - fixed_best",
+      "metric": "top50_favorable_sa_mean",
+      "paired_cells": 15,
+      "mean_difference": 0.029160000000000023,
+      "median_difference": 0.0032000000000000917,
+      "positive_cells": 9,
+      "negative_cells": 6,
+      "zero_cells": 0,
+      "wilcoxon_two_sided_p": 0.48870849609375,
+      "pocket_cluster_bootstrap_95_ci": [
+        -0.0022399999999999903,
+        0.07544000000000003
+      ]
+    },
+    {
+      "contrast": "iterative - single_pass",
+      "metric": "valid_rate",
+      "paired_cells": 15,
+      "mean_difference": 0.26022222222222224,
+      "median_difference": 0.2726666666666667,
+      "positive_cells": 15,
+      "negative_cells": 0,
+      "zero_cells": 0,
+      "wilcoxon_two_sided_p": 6.103515625e-05,
+      "pocket_cluster_bootstrap_95_ci": [
+        0.23115555555555556,
+        0.27613333333333334
+      ]
+    },
+    {
+      "contrast": "iterative - single_pass",
+      "metric": "unique_valid_rate",
+      "paired_cells": 15,
+      "mean_difference": 0.2614222222222222,
+      "median_difference": 0.2733333333333333,
+      "positive_cells": 15,
+      "negative_cells": 0,
+      "zero_cells": 0,
+      "wilcoxon_two_sided_p": 0.0006533107814151376,
+      "pocket_cluster_bootstrap_95_ci": [
+        0.23328888888888885,
+        0.2775555555555556
+      ]
+    },
+    {
+      "contrast": "iterative - single_pass",
+      "metric": "top50_score_mean",
+      "paired_cells": 15,
+      "mean_difference": 0.06590620472403416,
+      "median_difference": 0.0417788293495609,
+      "positive_cells": 13,
+      "negative_cells": 2,
+      "zero_cells": 0,
+      "wilcoxon_two_sided_p": 0.00201416015625,
+      "pocket_cluster_bootstrap_95_ci": [
+        0.029059061030633913,
+        0.10554511808768927
+      ]
+    },
+    {
+      "contrast": "iterative - single_pass",
+      "metric": "top50_qed_mean",
+      "paired_cells": 15,
+      "mean_difference": 0.07192314960576317,
+      "median_difference": 0.04794118478508713,
+      "positive_cells": 13,
+      "negative_cells": 2,
+      "zero_cells": 0,
+      "wilcoxon_two_sided_p": 0.00262451171875,
+      "pocket_cluster_bootstrap_95_ci": [
+        0.034638658615191414,
+        0.10920764059633495
+      ]
+    },
+    {
+      "contrast": "iterative - single_pass",
+      "metric": "top50_favorable_sa_mean",
+      "paired_cells": 15,
+      "mean_difference": 0.051866666666666665,
+      "median_difference": 0.020999999999999908,
+      "positive_cells": 12,
+      "negative_cells": 3,
+      "zero_cells": 0,
+      "wilcoxon_two_sided_p": 0.00335693359375,
+      "pocket_cluster_bootstrap_95_ci": [
+        0.013479999999999973,
+        0.09978666666666672
+      ]
+    }
+  ],
+  "cells": [
+    {
+      "condition": "fixed_best",
+      "pocket": "1IEP",
+      "seed": 83,
+      "attempted_samples": 1500,
+      "valid_molecules": 1443,
+      "unique_valid_smiles": 1443,
+      "valid_rate": 0.962,
+      "unique_valid_rate": 0.962,
+      "top_k": 50,
+      "top50_score_mean": 0.7053039467774744,
+      "top50_qed_mean": 0.7454627811106777,
+      "top50_favorable_sa_mean": 0.6115999999999999,
+      "method_attempt_allocation": {
+        "targetdiff": 1500
+      },
+      "reconstruction_errors": {},
+      "job_tags": [
+        "fixed-best-targetdiff-1iep-s83-n1500-r02"
+      ]
+    },
+    {
+      "condition": "single_pass",
+      "pocket": "1IEP",
+      "seed": 83,
+      "attempted_samples": 1500,
+      "valid_molecules": 612,
+      "unique_valid_smiles": 608,
+      "valid_rate": 0.408,
+      "unique_valid_rate": 0.4053333333333333,
+      "top_k": 50,
+      "top50_score_mean": 0.6579511852801351,
+      "top50_qed_mean": 0.6877588361144786,
+      "top50_favorable_sa_mean": 0.5884,
+      "method_attempt_allocation": {
+        "diffsbdd": 500,
+        "targetdiff": 500,
+        "pocket2mol": 500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 4
+      },
+      "job_tags": [
+        "single-pass-single-targetdiff-1iep-s83-n500-r02",
+        "single-pass-single-pocket2mol-1iep-s83-n500-r02",
+        "single-pass-single-diffsbdd-1iep-s83-n500-r02"
+      ]
+    },
+    {
+      "condition": "iterative",
+      "pocket": "1IEP",
+      "seed": 83,
+      "attempted_samples": 1500,
+      "valid_molecules": 1024,
+      "unique_valid_smiles": 1021,
+      "valid_rate": 0.6826666666666666,
+      "unique_valid_rate": 0.6806666666666666,
+      "top_k": 50,
+      "top50_score_mean": 0.6773926516457639,
+      "top50_qed_mean": 0.7061895023510913,
+      "top50_favorable_sa_mean": 0.6102000000000001,
+      "method_attempt_allocation": {
+        "diffsbdd": 250,
+        "targetdiff": 1000,
+        "pocket2mol": 250
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 3
+      },
+      "job_tags": [
+        "iterative-round1-targetdiff-1iep-s83-n250-r02",
+        "iterative-round1-pocket2mol-1iep-s83-n250-r02",
+        "iterative-round1-diffsbdd-1iep-s83-n250-r02",
+        "iterative-round2-targetdiff-1iep-s10083-n750-r02"
+      ]
+    },
+    {
+      "condition": "fixed_best",
+      "pocket": "1IEP",
+      "seed": 97,
+      "attempted_samples": 1500,
+      "valid_molecules": 1439,
+      "unique_valid_smiles": 1435,
+      "valid_rate": 0.9593333333333334,
+      "unique_valid_rate": 0.9566666666666667,
+      "top_k": 50,
+      "top50_score_mean": 0.6817281616908066,
+      "top50_qed_mean": 0.7144402309868667,
+      "top50_favorable_sa_mean": 0.6053999999999999,
+      "method_attempt_allocation": {
+        "targetdiff": 1500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 4
+      },
+      "job_tags": [
+        "fixed-best-targetdiff-1iep-s97-n1500-r02"
+      ]
+    },
+    {
+      "condition": "single_pass",
+      "pocket": "1IEP",
+      "seed": 97,
+      "attempted_samples": 1500,
+      "valid_molecules": 588,
+      "unique_valid_smiles": 582,
+      "valid_rate": 0.392,
+      "unique_valid_rate": 0.388,
+      "top_k": 50,
+      "top50_score_mean": 0.6373018191555972,
+      "top50_qed_mean": 0.6552597416508533,
+      "top50_favorable_sa_mean": 0.5954,
+      "method_attempt_allocation": {
+        "diffsbdd": 500,
+        "targetdiff": 500,
+        "pocket2mol": 500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 6
+      },
+      "job_tags": [
+        "single-pass-single-targetdiff-1iep-s97-n500-r02",
+        "single-pass-single-pocket2mol-1iep-s97-n500-r02",
+        "single-pass-single-diffsbdd-1iep-s97-n500-r02"
+      ]
+    },
+    {
+      "condition": "iterative",
+      "pocket": "1IEP",
+      "seed": 97,
+      "attempted_samples": 1500,
+      "valid_molecules": 1027,
+      "unique_valid_smiles": 1019,
+      "valid_rate": 0.6846666666666666,
+      "unique_valid_rate": 0.6793333333333333,
+      "top_k": 50,
+      "top50_score_mean": 0.6698659744182066,
+      "top50_qed_mean": 0.695779963454581,
+      "top50_favorable_sa_mean": 0.6093999999999999,
+      "method_attempt_allocation": {
+        "diffsbdd": 250,
+        "targetdiff": 1000,
+        "pocket2mol": 250
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 8
+      },
+      "job_tags": [
+        "iterative-round1-targetdiff-1iep-s97-n250-r02",
+        "iterative-round1-pocket2mol-1iep-s97-n250-r02",
+        "iterative-round1-diffsbdd-1iep-s97-n250-r02",
+        "iterative-round2-targetdiff-1iep-s10097-n750-r02"
+      ]
+    },
+    {
+      "condition": "fixed_best",
+      "pocket": "1IEP",
+      "seed": 109,
+      "attempted_samples": 1500,
+      "valid_molecules": 1422,
+      "unique_valid_smiles": 1420,
+      "valid_rate": 0.948,
+      "unique_valid_rate": 0.9466666666666667,
+      "top_k": 50,
+      "top50_score_mean": 0.5599740005680238,
+      "top50_qed_mean": 0.5758200008114627,
+      "top50_favorable_sa_mean": 0.523,
+      "method_attempt_allocation": {
+        "targetdiff": 1500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 2
+      },
+      "job_tags": [
+        "fixed-best-targetdiff-1iep-s109-n1500-r02"
+      ]
+    },
+    {
+      "condition": "single_pass",
+      "pocket": "1IEP",
+      "seed": 109,
+      "attempted_samples": 1500,
+      "valid_molecules": 605,
+      "unique_valid_smiles": 600,
+      "valid_rate": 0.4033333333333333,
+      "unique_valid_rate": 0.4,
+      "top_k": 50,
+      "top50_score_mean": 0.5234976357365912,
+      "top50_qed_mean": 0.5248251939094161,
+      "top50_favorable_sa_mean": 0.5204,
+      "method_attempt_allocation": {
+        "diffsbdd": 500,
+        "targetdiff": 500,
+        "pocket2mol": 500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 5
+      },
+      "job_tags": [
+        "single-pass-single-targetdiff-1iep-s109-n500-r02",
+        "single-pass-single-pocket2mol-1iep-s109-n500-r02",
+        "single-pass-single-diffsbdd-1iep-s109-n500-r02"
+      ]
+    },
+    {
+      "condition": "iterative",
+      "pocket": "1IEP",
+      "seed": 109,
+      "attempted_samples": 1500,
+      "valid_molecules": 997,
+      "unique_valid_smiles": 993,
+      "valid_rate": 0.6646666666666666,
+      "unique_valid_rate": 0.662,
+      "top_k": 50,
+      "top50_score_mean": 0.5322578004651582,
+      "top50_qed_mean": 0.5385397149502262,
+      "top50_favorable_sa_mean": 0.5176,
+      "method_attempt_allocation": {
+        "diffsbdd": 250,
+        "targetdiff": 1000,
+        "pocket2mol": 250
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 4
+      },
+      "job_tags": [
+        "iterative-round1-targetdiff-1iep-s109-n250-r02",
+        "iterative-round1-pocket2mol-1iep-s109-n250-r02",
+        "iterative-round1-diffsbdd-1iep-s109-n250-r02",
+        "iterative-round2-targetdiff-1iep-s10109-n750-r02"
+      ]
+    },
+    {
+      "condition": "fixed_best",
+      "pocket": "2HYY",
+      "seed": 83,
+      "attempted_samples": 1500,
+      "valid_molecules": 1434,
+      "unique_valid_smiles": 1432,
+      "valid_rate": 0.956,
+      "unique_valid_rate": 0.9546666666666667,
+      "top_k": 50,
+      "top50_score_mean": 0.7177200207532825,
+      "top50_qed_mean": 0.7548857439332606,
+      "top50_favorable_sa_mean": 0.631,
+      "method_attempt_allocation": {
+        "targetdiff": 1500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 2
+      },
+      "job_tags": [
+        "fixed-best-targetdiff-2hyy-s83-n1500-r02"
+      ]
+    },
+    {
+      "condition": "single_pass",
+      "pocket": "2HYY",
+      "seed": 83,
+      "attempted_samples": 1500,
+      "valid_molecules": 587,
+      "unique_valid_smiles": 583,
+      "valid_rate": 0.3913333333333333,
+      "unique_valid_rate": 0.38866666666666666,
+      "top_k": 50,
+      "top50_score_mean": 0.6806642403946984,
+      "top50_qed_mean": 0.7142917719924262,
+      "top50_favorable_sa_mean": 0.6022,
+      "method_attempt_allocation": {
+        "diffsbdd": 500,
+        "targetdiff": 500,
+        "pocket2mol": 500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 4
+      },
+      "job_tags": [
+        "single-pass-single-targetdiff-2hyy-s83-n500-r02",
+        "single-pass-single-pocket2mol-2hyy-s83-n500-r02",
+        "single-pass-single-diffsbdd-2hyy-s83-n500-r02"
+      ]
+    },
+    {
+      "condition": "iterative",
+      "pocket": "2HYY",
+      "seed": 83,
+      "attempted_samples": 1500,
+      "valid_molecules": 996,
+      "unique_valid_smiles": 995,
+      "valid_rate": 0.664,
+      "unique_valid_rate": 0.6633333333333333,
+      "top_k": 50,
+      "top50_score_mean": 0.6863462231723026,
+      "top50_qed_mean": 0.7209517473890039,
+      "top50_favorable_sa_mean": 0.6056,
+      "method_attempt_allocation": {
+        "diffsbdd": 250,
+        "targetdiff": 1000,
+        "pocket2mol": 250
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 1
+      },
+      "job_tags": [
+        "iterative-round1-targetdiff-2hyy-s83-n250-r02",
+        "iterative-round1-pocket2mol-2hyy-s83-n250-r02",
+        "iterative-round1-diffsbdd-2hyy-s83-n250-r02",
+        "iterative-round2-targetdiff-2hyy-s10083-n750-r02"
+      ]
+    },
+    {
+      "condition": "fixed_best",
+      "pocket": "2HYY",
+      "seed": 97,
+      "attempted_samples": 1500,
+      "valid_molecules": 1397,
+      "unique_valid_smiles": 1392,
+      "valid_rate": 0.9313333333333333,
+      "unique_valid_rate": 0.928,
+      "top_k": 50,
+      "top50_score_mean": 0.675840591393719,
+      "top50_qed_mean": 0.7059437019910271,
+      "top50_favorable_sa_mean": 0.6056,
+      "method_attempt_allocation": {
+        "targetdiff": 1500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 5
+      },
+      "job_tags": [
+        "fixed-best-targetdiff-2hyy-s97-n1500-r02"
+      ]
+    },
+    {
+      "condition": "single_pass",
+      "pocket": "2HYY",
+      "seed": 97,
+      "attempted_samples": 1500,
+      "valid_molecules": 593,
+      "unique_valid_smiles": 587,
+      "valid_rate": 0.3953333333333333,
+      "unique_valid_rate": 0.3913333333333333,
+      "top_k": 50,
+      "top50_score_mean": 0.6236973504130721,
+      "top50_qed_mean": 0.6358247863043887,
+      "top50_favorable_sa_mean": 0.5954,
+      "method_attempt_allocation": {
+        "diffsbdd": 500,
+        "targetdiff": 500,
+        "pocket2mol": 500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 6
+      },
+      "job_tags": [
+        "single-pass-single-targetdiff-2hyy-s97-n500-r02",
+        "single-pass-single-pocket2mol-2hyy-s97-n500-r02",
+        "single-pass-single-diffsbdd-2hyy-s97-n500-r02"
+      ]
+    },
+    {
+      "condition": "iterative",
+      "pocket": "2HYY",
+      "seed": 97,
+      "attempted_samples": 1500,
+      "valid_molecules": 1014,
+      "unique_valid_smiles": 1011,
+      "valid_rate": 0.676,
+      "unique_valid_rate": 0.674,
+      "top_k": 50,
+      "top50_score_mean": 0.672784230145732,
+      "top50_qed_mean": 0.7011489002081887,
+      "top50_favorable_sa_mean": 0.6065999999999999,
+      "method_attempt_allocation": {
+        "diffsbdd": 250,
+        "targetdiff": 1000,
+        "pocket2mol": 250
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 3
+      },
+      "job_tags": [
+        "iterative-round1-targetdiff-2hyy-s97-n250-r02",
+        "iterative-round1-pocket2mol-2hyy-s97-n250-r02",
+        "iterative-round1-diffsbdd-2hyy-s97-n250-r02",
+        "iterative-round2-targetdiff-2hyy-s10097-n750-r02"
+      ]
+    },
+    {
+      "condition": "fixed_best",
+      "pocket": "2HYY",
+      "seed": 109,
+      "attempted_samples": 1500,
+      "valid_molecules": 1372,
+      "unique_valid_smiles": 1367,
+      "valid_rate": 0.9146666666666666,
+      "unique_valid_rate": 0.9113333333333333,
+      "top_k": 50,
+      "top50_score_mean": 0.54454382120764,
+      "top50_qed_mean": 0.5513768874394858,
+      "top50_favorable_sa_mean": 0.5286,
+      "method_attempt_allocation": {
+        "targetdiff": 1500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 5
+      },
+      "job_tags": [
+        "fixed-best-targetdiff-2hyy-s109-n1500-r02"
+      ]
+    },
+    {
+      "condition": "single_pass",
+      "pocket": "2HYY",
+      "seed": 109,
+      "attempted_samples": 1500,
+      "valid_molecules": 597,
+      "unique_valid_smiles": 593,
+      "valid_rate": 0.398,
+      "unique_valid_rate": 0.3953333333333333,
+      "top_k": 50,
+      "top50_score_mean": 0.48424054206712325,
+      "top50_qed_mean": 0.465486488667319,
+      "top50_favorable_sa_mean": 0.528,
+      "method_attempt_allocation": {
+        "diffsbdd": 500,
+        "targetdiff": 500,
+        "pocket2mol": 500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 4
+      },
+      "job_tags": [
+        "single-pass-single-targetdiff-2hyy-s109-n500-r02",
+        "single-pass-single-pocket2mol-2hyy-s109-n500-r02",
+        "single-pass-single-diffsbdd-2hyy-s109-n500-r02"
+      ]
+    },
+    {
+      "condition": "iterative",
+      "pocket": "2HYY",
+      "seed": 109,
+      "attempted_samples": 1500,
+      "valid_molecules": 1008,
+      "unique_valid_smiles": 1003,
+      "valid_rate": 0.672,
+      "unique_valid_rate": 0.6686666666666666,
+      "top_k": 50,
+      "top50_score_mean": 0.5408452451116045,
+      "top50_qed_mean": 0.5386360644451493,
+      "top50_favorable_sa_mean": 0.546,
+      "method_attempt_allocation": {
+        "diffsbdd": 250,
+        "targetdiff": 1000,
+        "pocket2mol": 250
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 5
+      },
+      "job_tags": [
+        "iterative-round1-targetdiff-2hyy-s109-n250-r02",
+        "iterative-round1-pocket2mol-2hyy-s109-n250-r02",
+        "iterative-round1-diffsbdd-2hyy-s109-n250-r02",
+        "iterative-round2-targetdiff-2hyy-s10109-n750-r02"
+      ]
+    },
+    {
+      "condition": "fixed_best",
+      "pocket": "3CS9",
+      "seed": 83,
+      "attempted_samples": 1500,
+      "valid_molecules": 1420,
+      "unique_valid_smiles": 1418,
+      "valid_rate": 0.9466666666666667,
+      "unique_valid_rate": 0.9453333333333334,
+      "top_k": 50,
+      "top50_score_mean": 0.6931624302105187,
+      "top50_qed_mean": 0.7240034717293125,
+      "top50_favorable_sa_mean": 0.6212,
+      "method_attempt_allocation": {
+        "targetdiff": 1500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 2
+      },
+      "job_tags": [
+        "fixed-best-targetdiff-3cs9-s83-n1500-r02"
+      ]
+    },
+    {
+      "condition": "single_pass",
+      "pocket": "3CS9",
+      "seed": 83,
+      "attempted_samples": 1500,
+      "valid_molecules": 597,
+      "unique_valid_smiles": 595,
+      "valid_rate": 0.398,
+      "unique_valid_rate": 0.39666666666666667,
+      "top_k": 50,
+      "top50_score_mean": 0.6670139525205202,
+      "top50_qed_mean": 0.7031913607436003,
+      "top50_favorable_sa_mean": 0.5826,
+      "method_attempt_allocation": {
+        "diffsbdd": 500,
+        "targetdiff": 500,
+        "pocket2mol": 500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 2
+      },
+      "job_tags": [
+        "single-pass-single-targetdiff-3cs9-s83-n500-r02",
+        "single-pass-single-pocket2mol-3cs9-s83-n500-r02",
+        "single-pass-single-diffsbdd-3cs9-s83-n500-r02"
+      ]
+    },
+    {
+      "condition": "iterative",
+      "pocket": "3CS9",
+      "seed": 83,
+      "attempted_samples": 1500,
+      "valid_molecules": 1018,
+      "unique_valid_smiles": 1013,
+      "valid_rate": 0.6786666666666666,
+      "unique_valid_rate": 0.6753333333333333,
+      "top_k": 50,
+      "top50_score_mean": 0.675481040988181,
+      "top50_qed_mean": 0.7056014871259729,
+      "top50_favorable_sa_mean": 0.6052,
+      "method_attempt_allocation": {
+        "diffsbdd": 250,
+        "targetdiff": 1000,
+        "pocket2mol": 250
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 5
+      },
+      "job_tags": [
+        "iterative-round1-targetdiff-3cs9-s83-n250-r02",
+        "iterative-round1-pocket2mol-3cs9-s83-n250-r02",
+        "iterative-round1-diffsbdd-3cs9-s83-n250-r02",
+        "iterative-round2-targetdiff-3cs9-s10083-n750-r02"
+      ]
+    },
+    {
+      "condition": "fixed_best",
+      "pocket": "3CS9",
+      "seed": 97,
+      "attempted_samples": 1500,
+      "valid_molecules": 1394,
+      "unique_valid_smiles": 1392,
+      "valid_rate": 0.9293333333333333,
+      "unique_valid_rate": 0.928,
+      "top_k": 50,
+      "top50_score_mean": 0.667275729227456,
+      "top50_qed_mean": 0.6920796131820801,
+      "top50_favorable_sa_mean": 0.6093999999999999,
+      "method_attempt_allocation": {
+        "targetdiff": 1500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 2
+      },
+      "job_tags": [
+        "fixed-best-targetdiff-3cs9-s97-n1500-r02"
+      ]
+    },
+    {
+      "condition": "single_pass",
+      "pocket": "3CS9",
+      "seed": 97,
+      "attempted_samples": 1500,
+      "valid_molecules": 613,
+      "unique_valid_smiles": 609,
+      "valid_rate": 0.4086666666666667,
+      "unique_valid_rate": 0.406,
+      "top_k": 50,
+      "top50_score_mean": 0.6347303834855285,
+      "top50_qed_mean": 0.6559576906936121,
+      "top50_favorable_sa_mean": 0.5852,
+      "method_attempt_allocation": {
+        "diffsbdd": 500,
+        "targetdiff": 500,
+        "pocket2mol": 500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 4
+      },
+      "job_tags": [
+        "single-pass-single-targetdiff-3cs9-s97-n500-r02",
+        "single-pass-single-pocket2mol-3cs9-s97-n500-r02",
+        "single-pass-single-diffsbdd-3cs9-s97-n500-r02"
+      ]
+    },
+    {
+      "condition": "iterative",
+      "pocket": "3CS9",
+      "seed": 97,
+      "attempted_samples": 1500,
+      "valid_molecules": 1019,
+      "unique_valid_smiles": 1012,
+      "valid_rate": 0.6793333333333333,
+      "unique_valid_rate": 0.6746666666666666,
+      "top_k": 50,
+      "top50_score_mean": 0.6765092128350894,
+      "top50_qed_mean": 0.7038988754786992,
+      "top50_favorable_sa_mean": 0.6126,
+      "method_attempt_allocation": {
+        "diffsbdd": 250,
+        "targetdiff": 1000,
+        "pocket2mol": 250
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 7
+      },
+      "job_tags": [
+        "iterative-round1-targetdiff-3cs9-s97-n250-r02",
+        "iterative-round1-pocket2mol-3cs9-s97-n250-r02",
+        "iterative-round1-diffsbdd-3cs9-s97-n250-r02",
+        "iterative-round2-targetdiff-3cs9-s10097-n750-r02"
+      ]
+    },
+    {
+      "condition": "fixed_best",
+      "pocket": "3CS9",
+      "seed": 109,
+      "attempted_samples": 1500,
+      "valid_molecules": 1314,
+      "unique_valid_smiles": 1309,
+      "valid_rate": 0.876,
+      "unique_valid_rate": 0.8726666666666667,
+      "top_k": 50,
+      "top50_score_mean": 0.5524750207681158,
+      "top50_qed_mean": 0.5542214582401656,
+      "top50_favorable_sa_mean": 0.5484,
+      "method_attempt_allocation": {
+        "targetdiff": 1500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 5
+      },
+      "job_tags": [
+        "fixed-best-targetdiff-3cs9-s109-n1500-r02"
+      ]
+    },
+    {
+      "condition": "single_pass",
+      "pocket": "3CS9",
+      "seed": 109,
+      "attempted_samples": 1500,
+      "valid_molecules": 598,
+      "unique_valid_smiles": 593,
+      "valid_rate": 0.39866666666666667,
+      "unique_valid_rate": 0.3953333333333333,
+      "top_k": 50,
+      "top50_score_mean": 0.5022920322173835,
+      "top50_qed_mean": 0.48964576031054785,
+      "top50_favorable_sa_mean": 0.5318,
+      "method_attempt_allocation": {
+        "diffsbdd": 500,
+        "targetdiff": 500,
+        "pocket2mol": 500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 5
+      },
+      "job_tags": [
+        "single-pass-single-targetdiff-3cs9-s109-n500-r02",
+        "single-pass-single-pocket2mol-3cs9-s109-n500-r02",
+        "single-pass-single-diffsbdd-3cs9-s109-n500-r02"
+      ]
+    },
+    {
+      "condition": "iterative",
+      "pocket": "3CS9",
+      "seed": 109,
+      "attempted_samples": 1500,
+      "valid_molecules": 984,
+      "unique_valid_smiles": 982,
+      "valid_rate": 0.656,
+      "unique_valid_rate": 0.6546666666666666,
+      "top_k": 50,
+      "top50_score_mean": 0.5535365029957383,
+      "top50_qed_mean": 0.5538521471367691,
+      "top50_favorable_sa_mean": 0.5528,
+      "method_attempt_allocation": {
+        "diffsbdd": 250,
+        "targetdiff": 1000,
+        "pocket2mol": 250
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 2
+      },
+      "job_tags": [
+        "iterative-round1-targetdiff-3cs9-s109-n250-r02",
+        "iterative-round1-pocket2mol-3cs9-s109-n250-r02",
+        "iterative-round1-diffsbdd-3cs9-s109-n250-r02",
+        "iterative-round2-targetdiff-3cs9-s10109-n750-r02"
+      ]
+    },
+    {
+      "condition": "fixed_best",
+      "pocket": "4WA9",
+      "seed": 83,
+      "attempted_samples": 1500,
+      "valid_molecules": 1484,
+      "unique_valid_smiles": 1484,
+      "valid_rate": 0.9893333333333333,
+      "unique_valid_rate": 0.9893333333333333,
+      "top_k": 50,
+      "top50_score_mean": 0.6614572236603812,
+      "top50_qed_mean": 0.6993674623719732,
+      "top50_favorable_sa_mean": 0.573,
+      "method_attempt_allocation": {
+        "targetdiff": 1500
+      },
+      "reconstruction_errors": {},
+      "job_tags": [
+        "fixed-best-targetdiff-4wa9-s83-n1500-r02"
+      ]
+    },
+    {
+      "condition": "single_pass",
+      "pocket": "4WA9",
+      "seed": 83,
+      "attempted_samples": 1500,
+      "valid_molecules": 848,
+      "unique_valid_smiles": 840,
+      "valid_rate": 0.5653333333333334,
+      "unique_valid_rate": 0.56,
+      "top_k": 50,
+      "top50_score_mean": 0.624435171751245,
+      "top50_qed_mean": 0.6493931025017785,
+      "top50_favorable_sa_mean": 0.5661999999999999,
+      "method_attempt_allocation": {
+        "diffsbdd": 500,
+        "targetdiff": 500,
+        "pocket2mol": 500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 7
+      },
+      "job_tags": [
+        "single-pass-single-targetdiff-4wa9-s83-n500-r02",
+        "single-pass-single-pocket2mol-4wa9-s83-n500-r02",
+        "single-pass-single-diffsbdd-4wa9-s83-n500-r02"
+      ]
+    },
+    {
+      "condition": "iterative",
+      "pocket": "4WA9",
+      "seed": 83,
+      "attempted_samples": 1500,
+      "valid_molecules": 1188,
+      "unique_valid_smiles": 1185,
+      "valid_rate": 0.792,
+      "unique_valid_rate": 0.79,
+      "top_k": 50,
+      "top50_score_mean": 0.8613810702137641,
+      "top50_qed_mean": 0.8574301003053774,
+      "top50_favorable_sa_mean": 0.8706,
+      "method_attempt_allocation": {
+        "diffsbdd": 250,
+        "targetdiff": 1000,
+        "pocket2mol": 250
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 3
+      },
+      "job_tags": [
+        "iterative-round1-targetdiff-4wa9-s83-n250-r02",
+        "iterative-round1-pocket2mol-4wa9-s83-n250-r02",
+        "iterative-round1-diffsbdd-4wa9-s83-n250-r02",
+        "iterative-round2-targetdiff-4wa9-s10083-n750-r02"
+      ]
+    },
+    {
+      "condition": "fixed_best",
+      "pocket": "4WA9",
+      "seed": 97,
+      "attempted_samples": 1500,
+      "valid_molecules": 1462,
+      "unique_valid_smiles": 1460,
+      "valid_rate": 0.9746666666666667,
+      "unique_valid_rate": 0.9733333333333334,
+      "top_k": 50,
+      "top50_score_mean": 0.6222425942401352,
+      "top50_qed_mean": 0.6533751346287646,
+      "top50_favorable_sa_mean": 0.5496,
+      "method_attempt_allocation": {
+        "targetdiff": 1500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 2
+      },
+      "job_tags": [
+        "fixed-best-targetdiff-4wa9-s97-n1500-r02"
+      ]
+    },
+    {
+      "condition": "single_pass",
+      "pocket": "4WA9",
+      "seed": 97,
+      "attempted_samples": 1500,
+      "valid_molecules": 871,
+      "unique_valid_smiles": 863,
+      "valid_rate": 0.5806666666666667,
+      "unique_valid_rate": 0.5753333333333334,
+      "top_k": 50,
+      "top50_score_mean": 0.581058248077122,
+      "top50_qed_mean": 0.6006260686816028,
+      "top50_favorable_sa_mean": 0.5354,
+      "method_attempt_allocation": {
+        "diffsbdd": 500,
+        "targetdiff": 500,
+        "pocket2mol": 500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 7
+      },
+      "job_tags": [
+        "single-pass-single-targetdiff-4wa9-s97-n500-r02",
+        "single-pass-single-pocket2mol-4wa9-s97-n500-r02",
+        "single-pass-single-diffsbdd-4wa9-s97-n500-r02"
+      ]
+    },
+    {
+      "condition": "iterative",
+      "pocket": "4WA9",
+      "seed": 97,
+      "attempted_samples": 1500,
+      "valid_molecules": 1182,
+      "unique_valid_smiles": 1180,
+      "valid_rate": 0.788,
+      "unique_valid_rate": 0.7866666666666666,
+      "top_k": 50,
+      "top50_score_mean": 0.7628096121916969,
+      "top50_qed_mean": 0.814413731702424,
+      "top50_favorable_sa_mean": 0.6424,
+      "method_attempt_allocation": {
+        "diffsbdd": 250,
+        "targetdiff": 1000,
+        "pocket2mol": 250
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 2
+      },
+      "job_tags": [
+        "iterative-round1-targetdiff-4wa9-s97-n250-r02",
+        "iterative-round1-pocket2mol-4wa9-s97-n250-r02",
+        "iterative-round1-diffsbdd-4wa9-s97-n250-r02",
+        "iterative-round2-targetdiff-4wa9-s10097-n750-r02"
+      ]
+    },
+    {
+      "condition": "fixed_best",
+      "pocket": "4WA9",
+      "seed": 109,
+      "attempted_samples": 1500,
+      "valid_molecules": 1498,
+      "unique_valid_smiles": 1498,
+      "valid_rate": 0.9986666666666667,
+      "unique_valid_rate": 0.9986666666666667,
+      "top_k": 50,
+      "top50_score_mean": 0.8681206978420706,
+      "top50_qed_mean": 0.9112867112029579,
+      "top50_favorable_sa_mean": 0.7674,
+      "method_attempt_allocation": {
+        "targetdiff": 1500
+      },
+      "reconstruction_errors": {},
+      "job_tags": [
+        "fixed-best-targetdiff-4wa9-s109-n1500-r02"
+      ]
+    },
+    {
+      "condition": "single_pass",
+      "pocket": "4WA9",
+      "seed": 109,
+      "attempted_samples": 1500,
+      "valid_molecules": 910,
+      "unique_valid_smiles": 906,
+      "valid_rate": 0.6066666666666667,
+      "unique_valid_rate": 0.604,
+      "top_k": 50,
+      "top50_score_mean": 0.8392165812652501,
+      "top50_qed_mean": 0.8905665446646431,
+      "top50_favorable_sa_mean": 0.7193999999999999,
+      "method_attempt_allocation": {
+        "diffsbdd": 500,
+        "targetdiff": 500,
+        "pocket2mol": 500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 4
+      },
+      "job_tags": [
+        "single-pass-single-targetdiff-4wa9-s109-n500-r02",
+        "single-pass-single-pocket2mol-4wa9-s109-n500-r02",
+        "single-pass-single-diffsbdd-4wa9-s109-n500-r02"
+      ]
+    },
+    {
+      "condition": "iterative",
+      "pocket": "4WA9",
+      "seed": 109,
+      "attempted_samples": 1500,
+      "valid_molecules": 1174,
+      "unique_valid_smiles": 1172,
+      "valid_rate": 0.7826666666666666,
+      "unique_valid_rate": 0.7813333333333333,
+      "top_k": 50,
+      "top50_score_mean": 0.8242431459907305,
+      "top50_qed_mean": 0.8692616371296151,
+      "top50_favorable_sa_mean": 0.7192000000000001,
+      "method_attempt_allocation": {
+        "diffsbdd": 250,
+        "targetdiff": 1000,
+        "pocket2mol": 250
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 2
+      },
+      "job_tags": [
+        "iterative-round1-targetdiff-4wa9-s109-n250-r02",
+        "iterative-round1-pocket2mol-4wa9-s109-n250-r02",
+        "iterative-round1-diffsbdd-4wa9-s109-n250-r02",
+        "iterative-round2-targetdiff-4wa9-s10109-n750-r02"
+      ]
+    },
+    {
+      "condition": "fixed_best",
+      "pocket": "1M17",
+      "seed": 83,
+      "attempted_samples": 1500,
+      "valid_molecules": 1483,
+      "unique_valid_smiles": 1482,
+      "valid_rate": 0.9886666666666667,
+      "unique_valid_rate": 0.988,
+      "top_k": 50,
+      "top50_score_mean": 0.6712233617708621,
+      "top50_qed_mean": 0.7191476596726603,
+      "top50_favorable_sa_mean": 0.5594,
+      "method_attempt_allocation": {
+        "targetdiff": 1500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 1
+      },
+      "job_tags": [
+        "fixed-best-targetdiff-1m17-s83-n1500-r02"
+      ]
+    },
+    {
+      "condition": "single_pass",
+      "pocket": "1M17",
+      "seed": 83,
+      "attempted_samples": 1500,
+      "valid_molecules": 659,
+      "unique_valid_smiles": 655,
+      "valid_rate": 0.43933333333333335,
+      "unique_valid_rate": 0.43666666666666665,
+      "top_k": 50,
+      "top50_score_mean": 0.6378548521258315,
+      "top50_qed_mean": 0.6858783601797593,
+      "top50_favorable_sa_mean": 0.5257999999999999,
+      "method_attempt_allocation": {
+        "diffsbdd": 500,
+        "targetdiff": 500,
+        "pocket2mol": 500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 4
+      },
+      "job_tags": [
+        "single-pass-single-targetdiff-1m17-s83-n500-r02",
+        "single-pass-single-pocket2mol-1m17-s83-n500-r02",
+        "single-pass-single-diffsbdd-1m17-s83-n500-r02"
+      ]
+    },
+    {
+      "condition": "iterative",
+      "pocket": "1M17",
+      "seed": 83,
+      "attempted_samples": 1500,
+      "valid_molecules": 1065,
+      "unique_valid_smiles": 1065,
+      "valid_rate": 0.71,
+      "unique_valid_rate": 0.71,
+      "top_k": 50,
+      "top50_score_mean": 0.6207361771216491,
+      "top50_qed_mean": 0.6705088244594988,
+      "top50_favorable_sa_mean": 0.5046,
+      "method_attempt_allocation": {
+        "diffsbdd": 250,
+        "targetdiff": 1000,
+        "pocket2mol": 250
+      },
+      "reconstruction_errors": {},
+      "job_tags": [
+        "iterative-round1-targetdiff-1m17-s83-n250-r02",
+        "iterative-round1-pocket2mol-1m17-s83-n250-r02",
+        "iterative-round1-diffsbdd-1m17-s83-n250-r02",
+        "iterative-round2-targetdiff-1m17-s10083-n750-r02"
+      ]
+    },
+    {
+      "condition": "fixed_best",
+      "pocket": "1M17",
+      "seed": 97,
+      "attempted_samples": 1500,
+      "valid_molecules": 1479,
+      "unique_valid_smiles": 1478,
+      "valid_rate": 0.986,
+      "unique_valid_rate": 0.9853333333333333,
+      "top_k": 50,
+      "top50_score_mean": 0.6270113938508325,
+      "top50_qed_mean": 0.6653305626440464,
+      "top50_favorable_sa_mean": 0.5376,
+      "method_attempt_allocation": {
+        "targetdiff": 1500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 1
+      },
+      "job_tags": [
+        "fixed-best-targetdiff-1m17-s97-n1500-r02"
+      ]
+    },
+    {
+      "condition": "single_pass",
+      "pocket": "1M17",
+      "seed": 97,
+      "attempted_samples": 1500,
+      "valid_molecules": 661,
+      "unique_valid_smiles": 655,
+      "valid_rate": 0.44066666666666665,
+      "unique_valid_rate": 0.43666666666666665,
+      "top_k": 50,
+      "top50_score_mean": 0.5878438734808772,
+      "top50_qed_mean": 0.6351769621155389,
+      "top50_favorable_sa_mean": 0.47740000000000005,
+      "method_attempt_allocation": {
+        "diffsbdd": 500,
+        "targetdiff": 500,
+        "pocket2mol": 500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 6
+      },
+      "job_tags": [
+        "single-pass-single-targetdiff-1m17-s97-n500-r02",
+        "single-pass-single-pocket2mol-1m17-s97-n500-r02",
+        "single-pass-single-diffsbdd-1m17-s97-n500-r02"
+      ]
+    },
+    {
+      "condition": "iterative",
+      "pocket": "1M17",
+      "seed": 97,
+      "attempted_samples": 1500,
+      "valid_molecules": 1075,
+      "unique_valid_smiles": 1072,
+      "valid_rate": 0.7166666666666667,
+      "unique_valid_rate": 0.7146666666666667,
+      "top_k": 50,
+      "top50_score_mean": 0.7092055852161817,
+      "top50_qed_mean": 0.7628651217374025,
+      "top50_favorable_sa_mean": 0.584,
+      "method_attempt_allocation": {
+        "diffsbdd": 250,
+        "targetdiff": 1000,
+        "pocket2mol": 250
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 3
+      },
+      "job_tags": [
+        "iterative-round1-targetdiff-1m17-s97-n250-r02",
+        "iterative-round1-pocket2mol-1m17-s97-n250-r02",
+        "iterative-round1-diffsbdd-1m17-s97-n250-r02",
+        "iterative-round2-targetdiff-1m17-s10097-n750-r02"
+      ]
+    },
+    {
+      "condition": "fixed_best",
+      "pocket": "1M17",
+      "seed": 109,
+      "attempted_samples": 1500,
+      "valid_molecules": 1473,
+      "unique_valid_smiles": 1472,
+      "valid_rate": 0.982,
+      "unique_valid_rate": 0.9813333333333333,
+      "top_k": 50,
+      "top50_score_mean": 0.6637561142530529,
+      "top50_qed_mean": 0.7096801632186469,
+      "top50_favorable_sa_mean": 0.5566,
+      "method_attempt_allocation": {
+        "targetdiff": 1500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 1
+      },
+      "job_tags": [
+        "fixed-best-targetdiff-1m17-s109-n1500-r02"
+      ]
+    },
+    {
+      "condition": "single_pass",
+      "pocket": "1M17",
+      "seed": 109,
+      "attempted_samples": 1500,
+      "valid_molecules": 643,
+      "unique_valid_smiles": 636,
+      "valid_rate": 0.42866666666666664,
+      "unique_valid_rate": 0.424,
+      "top_k": 50,
+      "top50_score_mean": 0.6253947210519499,
+      "top50_qed_mean": 0.6647353157884999,
+      "top50_favorable_sa_mean": 0.5336,
+      "method_attempt_allocation": {
+        "diffsbdd": 500,
+        "targetdiff": 500,
+        "pocket2mol": 500
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 7
+      },
+      "job_tags": [
+        "single-pass-single-targetdiff-1m17-s109-n500-r02",
+        "single-pass-single-pocket2mol-1m17-s109-n500-r02",
+        "single-pass-single-diffsbdd-1m17-s109-n500-r02"
+      ]
+    },
+    {
+      "condition": "iterative",
+      "pocket": "1M17",
+      "seed": 109,
+      "attempted_samples": 1500,
+      "valid_molecules": 1066,
+      "unique_valid_smiles": 1064,
+      "valid_rate": 0.7106666666666667,
+      "unique_valid_rate": 0.7093333333333334,
+      "top_k": 50,
+      "top50_score_mean": 0.832391187371639,
+      "top50_qed_mean": 0.8983874105309129,
+      "top50_favorable_sa_mean": 0.6784,
+      "method_attempt_allocation": {
+        "diffsbdd": 250,
+        "targetdiff": 1000,
+        "pocket2mol": 250
+      },
+      "reconstruction_errors": {
+        "AtomValenceException": 2
+      },
+      "job_tags": [
+        "iterative-round1-targetdiff-1m17-s109-n250-r02",
+        "iterative-round1-pocket2mol-1m17-s109-n250-r02",
+        "iterative-round1-diffsbdd-1m17-s109-n250-r02",
+        "iterative-round2-targetdiff-1m17-s10109-n750-r02"
+      ]
+    }
+  ],
+  "jobs": [
+    {
+      "tag": "fixed-best-targetdiff-1iep-s83-n1500-r02",
+      "condition": "fixed_best",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "1IEP",
+      "seed": 83,
+      "num_samples": 1500,
+      "exit_code": 0,
+      "gpu": 1,
+      "started_at": "2026-08-02T09:52:45+08:00",
+      "finished_at": "2026-08-02T19:42:31+08:00"
+    },
+    {
+      "tag": "fixed-best-targetdiff-1iep-s97-n1500-r02",
+      "condition": "fixed_best",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "1IEP",
+      "seed": 97,
+      "num_samples": 1500,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-02T09:52:45+08:00",
+      "finished_at": "2026-08-02T19:39:29+08:00"
+    },
+    {
+      "tag": "fixed-best-targetdiff-1iep-s109-n1500-r02",
+      "condition": "fixed_best",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "1IEP",
+      "seed": 109,
+      "num_samples": 1500,
+      "exit_code": 0,
+      "gpu": 4,
+      "started_at": "2026-08-02T09:52:45+08:00",
+      "finished_at": "2026-08-02T19:43:01+08:00"
+    },
+    {
+      "tag": "fixed-best-targetdiff-2hyy-s83-n1500-r02",
+      "condition": "fixed_best",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "2HYY",
+      "seed": 83,
+      "num_samples": 1500,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-02T09:52:45+08:00",
+      "finished_at": "2026-08-02T19:22:31+08:00"
+    },
+    {
+      "tag": "fixed-best-targetdiff-2hyy-s97-n1500-r02",
+      "condition": "fixed_best",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "2HYY",
+      "seed": 97,
+      "num_samples": 1500,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T09:52:45+08:00",
+      "finished_at": "2026-08-02T18:19:59+08:00"
+    },
+    {
+      "tag": "fixed-best-targetdiff-2hyy-s109-n1500-r02",
+      "condition": "fixed_best",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "2HYY",
+      "seed": 109,
+      "num_samples": 1500,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-02T09:52:45+08:00",
+      "finished_at": "2026-08-02T19:29:14+08:00"
+    },
+    {
+      "tag": "fixed-best-targetdiff-3cs9-s83-n1500-r02",
+      "condition": "fixed_best",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "3CS9",
+      "seed": 83,
+      "num_samples": 1500,
+      "exit_code": 0,
+      "gpu": 1,
+      "started_at": "2026-08-02T09:52:45+08:00",
+      "finished_at": "2026-08-02T19:54:57+08:00"
+    },
+    {
+      "tag": "fixed-best-targetdiff-3cs9-s97-n1500-r02",
+      "condition": "fixed_best",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "3CS9",
+      "seed": 97,
+      "num_samples": 1500,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-02T09:52:45+08:00",
+      "finished_at": "2026-08-02T19:59:29+08:00"
+    },
+    {
+      "tag": "fixed-best-targetdiff-3cs9-s109-n1500-r02",
+      "condition": "fixed_best",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "3CS9",
+      "seed": 109,
+      "num_samples": 1500,
+      "exit_code": 0,
+      "gpu": 4,
+      "started_at": "2026-08-02T09:52:45+08:00",
+      "finished_at": "2026-08-02T20:00:10+08:00"
+    },
+    {
+      "tag": "fixed-best-targetdiff-4wa9-s83-n1500-r02",
+      "condition": "fixed_best",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "4WA9",
+      "seed": 83,
+      "num_samples": 1500,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-02T09:52:45+08:00",
+      "finished_at": "2026-08-02T16:59:39+08:00"
+    },
+    {
+      "tag": "fixed-best-targetdiff-4wa9-s97-n1500-r02",
+      "condition": "fixed_best",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "4WA9",
+      "seed": 97,
+      "num_samples": 1500,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T09:52:45+08:00",
+      "finished_at": "2026-08-02T16:59:39+08:00"
+    },
+    {
+      "tag": "fixed-best-targetdiff-4wa9-s109-n1500-r02",
+      "condition": "fixed_best",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "4WA9",
+      "seed": 109,
+      "num_samples": 1500,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-02T09:52:45+08:00",
+      "finished_at": "2026-08-02T16:50:44+08:00"
+    },
+    {
+      "tag": "fixed-best-targetdiff-1m17-s83-n1500-r02",
+      "condition": "fixed_best",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "1M17",
+      "seed": 83,
+      "num_samples": 1500,
+      "exit_code": 0,
+      "gpu": 1,
+      "started_at": "2026-08-02T19:42:31+08:00",
+      "finished_at": "2026-08-03T03:16:18+08:00"
+    },
+    {
+      "tag": "fixed-best-targetdiff-1m17-s97-n1500-r02",
+      "condition": "fixed_best",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "1M17",
+      "seed": 97,
+      "num_samples": 1500,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-02T19:39:29+08:00",
+      "finished_at": "2026-08-02T23:45:23+08:00"
+    },
+    {
+      "tag": "fixed-best-targetdiff-1m17-s109-n1500-r02",
+      "condition": "fixed_best",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "1M17",
+      "seed": 109,
+      "num_samples": 1500,
+      "exit_code": 0,
+      "gpu": 4,
+      "started_at": "2026-08-02T19:43:01+08:00",
+      "finished_at": "2026-08-03T03:10:15+08:00"
+    },
+    {
+      "tag": "single-pass-single-targetdiff-1iep-s83-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "1IEP",
+      "seed": 83,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-02T19:22:31+08:00",
+      "finished_at": "2026-08-02T22:36:38+08:00"
+    },
+    {
+      "tag": "single-pass-single-pocket2mol-1iep-s83-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "pocket2mol",
+      "pocket": "1IEP",
+      "seed": 83,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T18:19:59+08:00",
+      "finished_at": "2026-08-02T18:23:51+08:00"
+    },
+    {
+      "tag": "single-pass-single-diffsbdd-1iep-s83-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "diffsbdd",
+      "pocket": "1IEP",
+      "seed": 83,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-02T19:29:14+08:00",
+      "finished_at": "2026-08-02T22:46:13+08:00"
+    },
+    {
+      "tag": "single-pass-single-targetdiff-1iep-s97-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "1IEP",
+      "seed": 97,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 1,
+      "started_at": "2026-08-02T19:54:57+08:00",
+      "finished_at": "2026-08-02T23:05:43+08:00"
+    },
+    {
+      "tag": "single-pass-single-pocket2mol-1iep-s97-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "pocket2mol",
+      "pocket": "1IEP",
+      "seed": 97,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T20:31:47+08:00",
+      "finished_at": "2026-08-02T20:35:39+08:00"
+    },
+    {
+      "tag": "single-pass-single-diffsbdd-1iep-s97-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "diffsbdd",
+      "pocket": "1IEP",
+      "seed": 97,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 4,
+      "started_at": "2026-08-02T20:00:10+08:00",
+      "finished_at": "2026-08-02T23:11:56+08:00"
+    },
+    {
+      "tag": "single-pass-single-targetdiff-1iep-s109-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "1IEP",
+      "seed": 109,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-02T16:59:39+08:00",
+      "finished_at": "2026-08-02T20:15:17+08:00"
+    },
+    {
+      "tag": "single-pass-single-pocket2mol-1iep-s109-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "pocket2mol",
+      "pocket": "1IEP",
+      "seed": 109,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T19:33:01+08:00",
+      "finished_at": "2026-08-02T19:36:43+08:00"
+    },
+    {
+      "tag": "single-pass-single-diffsbdd-1iep-s109-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "diffsbdd",
+      "pocket": "1IEP",
+      "seed": 109,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-02T16:50:45+08:00",
+      "finished_at": "2026-08-02T20:11:45+08:00"
+    },
+    {
+      "tag": "single-pass-single-targetdiff-2hyy-s83-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "2HYY",
+      "seed": 83,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 1,
+      "started_at": "2026-08-03T03:16:18+08:00",
+      "finished_at": "2026-08-03T06:25:13+08:00"
+    },
+    {
+      "tag": "single-pass-single-pocket2mol-2hyy-s83-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "pocket2mol",
+      "pocket": "2HYY",
+      "seed": 83,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T00:41:43+08:00",
+      "finished_at": "2026-08-03T00:45:45+08:00"
+    },
+    {
+      "tag": "single-pass-single-diffsbdd-2hyy-s83-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "diffsbdd",
+      "pocket": "2HYY",
+      "seed": 83,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 4,
+      "started_at": "2026-08-03T03:10:15+08:00",
+      "finished_at": "2026-08-03T06:15:38+08:00"
+    },
+    {
+      "tag": "single-pass-single-targetdiff-2hyy-s97-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "2HYY",
+      "seed": 97,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-02T22:36:38+08:00",
+      "finished_at": "2026-08-03T01:46:23+08:00"
+    },
+    {
+      "tag": "single-pass-single-pocket2mol-2hyy-s97-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "pocket2mol",
+      "pocket": "2HYY",
+      "seed": 97,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T19:36:43+08:00",
+      "finished_at": "2026-08-02T19:40:45+08:00"
+    },
+    {
+      "tag": "single-pass-single-diffsbdd-2hyy-s97-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "diffsbdd",
+      "pocket": "2HYY",
+      "seed": 97,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-02T22:46:13+08:00",
+      "finished_at": "2026-08-03T01:56:08+08:00"
+    },
+    {
+      "tag": "single-pass-single-targetdiff-2hyy-s109-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "2HYY",
+      "seed": 109,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 1,
+      "started_at": "2026-08-02T23:05:43+08:00",
+      "finished_at": "2026-08-03T02:16:59+08:00"
+    },
+    {
+      "tag": "single-pass-single-pocket2mol-2hyy-s109-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "pocket2mol",
+      "pocket": "2HYY",
+      "seed": 109,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T20:35:39+08:00",
+      "finished_at": "2026-08-02T20:39:41+08:00"
+    },
+    {
+      "tag": "single-pass-single-diffsbdd-2hyy-s109-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "diffsbdd",
+      "pocket": "2HYY",
+      "seed": 109,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 4,
+      "started_at": "2026-08-02T23:11:56+08:00",
+      "finished_at": "2026-08-03T02:25:43+08:00"
+    },
+    {
+      "tag": "single-pass-single-targetdiff-3cs9-s83-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "3CS9",
+      "seed": 83,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-02T20:15:17+08:00",
+      "finished_at": "2026-08-02T23:35:27+08:00"
+    },
+    {
+      "tag": "single-pass-single-pocket2mol-3cs9-s83-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "pocket2mol",
+      "pocket": "3CS9",
+      "seed": 83,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T19:40:45+08:00",
+      "finished_at": "2026-08-02T19:44:06+08:00"
+    },
+    {
+      "tag": "single-pass-single-diffsbdd-3cs9-s83-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "diffsbdd",
+      "pocket": "3CS9",
+      "seed": 83,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-02T20:11:45+08:00",
+      "finished_at": "2026-08-02T23:34:27+08:00"
+    },
+    {
+      "tag": "single-pass-single-targetdiff-3cs9-s97-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "3CS9",
+      "seed": 97,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-03T05:42:47+08:00",
+      "finished_at": "2026-08-03T09:02:07+08:00"
+    },
+    {
+      "tag": "single-pass-single-pocket2mol-3cs9-s97-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "pocket2mol",
+      "pocket": "3CS9",
+      "seed": 97,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-02T23:46:03+08:00",
+      "finished_at": "2026-08-02T23:49:55+08:00"
+    },
+    {
+      "tag": "single-pass-single-diffsbdd-3cs9-s97-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "diffsbdd",
+      "pocket": "3CS9",
+      "seed": 97,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-03T05:42:47+08:00",
+      "finished_at": "2026-08-03T09:03:17+08:00"
+    },
+    {
+      "tag": "single-pass-single-targetdiff-3cs9-s109-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "3CS9",
+      "seed": 109,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-03T01:46:23+08:00",
+      "finished_at": "2026-08-03T05:04:52+08:00"
+    },
+    {
+      "tag": "single-pass-single-pocket2mol-3cs9-s109-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "pocket2mol",
+      "pocket": "3CS9",
+      "seed": 109,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T18:26:43+08:00",
+      "finished_at": "2026-08-02T18:30:35+08:00"
+    },
+    {
+      "tag": "single-pass-single-diffsbdd-3cs9-s109-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "diffsbdd",
+      "pocket": "3CS9",
+      "seed": 109,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-03T01:56:08+08:00",
+      "finished_at": "2026-08-03T05:16:48+08:00"
+    },
+    {
+      "tag": "single-pass-single-targetdiff-4wa9-s83-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "4WA9",
+      "seed": 83,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 1,
+      "started_at": "2026-08-03T02:16:59+08:00",
+      "finished_at": "2026-08-03T04:41:50+08:00"
+    },
+    {
+      "tag": "single-pass-single-pocket2mol-4wa9-s83-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "pocket2mol",
+      "pocket": "4WA9",
+      "seed": 83,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-02T20:13:06+08:00",
+      "finished_at": "2026-08-02T20:25:42+08:00"
+    },
+    {
+      "tag": "single-pass-single-diffsbdd-4wa9-s83-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "diffsbdd",
+      "pocket": "4WA9",
+      "seed": 83,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 4,
+      "started_at": "2026-08-03T02:25:43+08:00",
+      "finished_at": "2026-08-03T04:49:55+08:00"
+    },
+    {
+      "tag": "single-pass-single-targetdiff-4wa9-s97-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "4WA9",
+      "seed": 97,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-02T23:35:27+08:00",
+      "finished_at": "2026-08-03T01:58:19+08:00"
+    },
+    {
+      "tag": "single-pass-single-pocket2mol-4wa9-s97-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "pocket2mol",
+      "pocket": "4WA9",
+      "seed": 97,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T17:16:58+08:00",
+      "finished_at": "2026-08-02T17:30:55+08:00"
+    },
+    {
+      "tag": "single-pass-single-diffsbdd-4wa9-s97-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "diffsbdd",
+      "pocket": "4WA9",
+      "seed": 97,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-02T23:34:27+08:00",
+      "finished_at": "2026-08-03T02:00:30+08:00"
+    },
+    {
+      "tag": "single-pass-single-targetdiff-4wa9-s109-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "4WA9",
+      "seed": 109,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T22:28:48+08:00",
+      "finished_at": "2026-08-03T00:45:17+08:00"
+    },
+    {
+      "tag": "single-pass-single-pocket2mol-4wa9-s109-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "pocket2mol",
+      "pocket": "4WA9",
+      "seed": 109,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-02T23:49:55+08:00",
+      "finished_at": "2026-08-02T23:52:26+08:00"
+    },
+    {
+      "tag": "single-pass-single-diffsbdd-4wa9-s109-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "diffsbdd",
+      "pocket": "4WA9",
+      "seed": 109,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T22:28:48+08:00",
+      "finished_at": "2026-08-03T00:47:59+08:00"
+    },
+    {
+      "tag": "single-pass-single-targetdiff-1m17-s83-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "1M17",
+      "seed": 83,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-03T05:04:52+08:00",
+      "finished_at": "2026-08-03T07:35:58+08:00"
+    },
+    {
+      "tag": "single-pass-single-pocket2mol-1m17-s83-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "pocket2mol",
+      "pocket": "1M17",
+      "seed": 83,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T18:30:35+08:00",
+      "finished_at": "2026-08-02T18:33:06+08:00"
+    },
+    {
+      "tag": "single-pass-single-diffsbdd-1m17-s83-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "diffsbdd",
+      "pocket": "1M17",
+      "seed": 83,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-03T05:16:48+08:00",
+      "finished_at": "2026-08-03T07:50:25+08:00"
+    },
+    {
+      "tag": "single-pass-single-targetdiff-1m17-s97-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "1M17",
+      "seed": 97,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 1,
+      "started_at": "2026-08-03T04:41:50+08:00",
+      "finished_at": "2026-08-03T07:13:57+08:00"
+    },
+    {
+      "tag": "single-pass-single-pocket2mol-1m17-s97-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "pocket2mol",
+      "pocket": "1M17",
+      "seed": 97,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-02T20:25:42+08:00",
+      "finished_at": "2026-08-02T20:35:37+08:00"
+    },
+    {
+      "tag": "single-pass-single-diffsbdd-1m17-s97-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "diffsbdd",
+      "pocket": "1M17",
+      "seed": 97,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 4,
+      "started_at": "2026-08-03T04:49:55+08:00",
+      "finished_at": "2026-08-03T07:24:32+08:00"
+    },
+    {
+      "tag": "single-pass-single-targetdiff-1m17-s109-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "targetdiff",
+      "pocket": "1M17",
+      "seed": 109,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-03T01:58:19+08:00",
+      "finished_at": "2026-08-03T04:31:35+08:00"
+    },
+    {
+      "tag": "single-pass-single-pocket2mol-1m17-s109-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "pocket2mol",
+      "pocket": "1M17",
+      "seed": 109,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T17:30:55+08:00",
+      "finished_at": "2026-08-02T17:42:31+08:00"
+    },
+    {
+      "tag": "single-pass-single-diffsbdd-1m17-s109-n500-r02",
+      "condition": "single_pass",
+      "stage": "single",
+      "method": "diffsbdd",
+      "pocket": "1M17",
+      "seed": 109,
+      "num_samples": 500,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-03T02:00:30+08:00",
+      "finished_at": "2026-08-03T04:35:58+08:00"
+    },
+    {
+      "tag": "iterative-round1-targetdiff-1iep-s83-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "targetdiff",
+      "pocket": "1IEP",
+      "seed": 83,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 1,
+      "started_at": "2026-08-03T06:25:13+08:00",
+      "finished_at": "2026-08-03T08:01:51+08:00"
+    },
+    {
+      "tag": "iterative-round1-pocket2mol-1iep-s83-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "pocket2mol",
+      "pocket": "1IEP",
+      "seed": 83,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-02T23:52:26+08:00",
+      "finished_at": "2026-08-02T23:54:27+08:00"
+    },
+    {
+      "tag": "iterative-round1-diffsbdd-1iep-s83-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "diffsbdd",
+      "pocket": "1IEP",
+      "seed": 83,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 4,
+      "started_at": "2026-08-03T06:15:38+08:00",
+      "finished_at": "2026-08-03T07:50:56+08:00"
+    },
+    {
+      "tag": "iterative-round1-targetdiff-1iep-s97-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "targetdiff",
+      "pocket": "1IEP",
+      "seed": 97,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-03T07:35:58+08:00",
+      "finished_at": "2026-08-03T08:27:54+08:00"
+    },
+    {
+      "tag": "iterative-round1-pocket2mol-1iep-s97-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "pocket2mol",
+      "pocket": "1IEP",
+      "seed": 97,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T18:33:06+08:00",
+      "finished_at": "2026-08-02T18:35:07+08:00"
+    },
+    {
+      "tag": "iterative-round1-diffsbdd-1iep-s97-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "diffsbdd",
+      "pocket": "1IEP",
+      "seed": 97,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-03T07:50:25+08:00",
+      "finished_at": "2026-08-03T08:37:59+08:00"
+    },
+    {
+      "tag": "iterative-round1-targetdiff-1iep-s109-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "targetdiff",
+      "pocket": "1IEP",
+      "seed": 109,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 1,
+      "started_at": "2026-08-03T07:13:57+08:00",
+      "finished_at": "2026-08-03T08:27:04+08:00"
+    },
+    {
+      "tag": "iterative-round1-pocket2mol-1iep-s109-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "pocket2mol",
+      "pocket": "1IEP",
+      "seed": 109,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T21:29:04+08:00",
+      "finished_at": "2026-08-02T21:31:05+08:00"
+    },
+    {
+      "tag": "iterative-round1-diffsbdd-1iep-s109-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "diffsbdd",
+      "pocket": "1IEP",
+      "seed": 109,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 4,
+      "started_at": "2026-08-03T07:24:32+08:00",
+      "finished_at": "2026-08-03T08:26:23+08:00"
+    },
+    {
+      "tag": "iterative-round1-targetdiff-2hyy-s83-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "targetdiff",
+      "pocket": "2HYY",
+      "seed": 83,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-03T04:31:35+08:00",
+      "finished_at": "2026-08-03T06:06:33+08:00"
+    },
+    {
+      "tag": "iterative-round1-pocket2mol-2hyy-s83-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "pocket2mol",
+      "pocket": "2HYY",
+      "seed": 83,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T19:44:06+08:00",
+      "finished_at": "2026-08-02T19:46:07+08:00"
+    },
+    {
+      "tag": "iterative-round1-diffsbdd-2hyy-s83-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "diffsbdd",
+      "pocket": "2HYY",
+      "seed": 83,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-03T04:35:58+08:00",
+      "finished_at": "2026-08-03T06:11:26+08:00"
+    },
+    {
+      "tag": "iterative-round1-targetdiff-2hyy-s97-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "targetdiff",
+      "pocket": "2HYY",
+      "seed": 97,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-03T00:45:17+08:00",
+      "finished_at": "2026-08-03T02:21:36+08:00"
+    },
+    {
+      "tag": "iterative-round1-pocket2mol-2hyy-s97-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "pocket2mol",
+      "pocket": "2HYY",
+      "seed": 97,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T00:45:45+08:00",
+      "finished_at": "2026-08-03T00:47:56+08:00"
+    },
+    {
+      "tag": "iterative-round1-diffsbdd-2hyy-s97-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "diffsbdd",
+      "pocket": "2HYY",
+      "seed": 97,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-03T00:47:59+08:00",
+      "finished_at": "2026-08-03T02:25:28+08:00"
+    },
+    {
+      "tag": "iterative-round1-targetdiff-2hyy-s109-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "targetdiff",
+      "pocket": "2HYY",
+      "seed": 109,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T06:41:22+08:00",
+      "finished_at": "2026-08-03T08:18:49+08:00"
+    },
+    {
+      "tag": "iterative-round1-pocket2mol-2hyy-s109-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "pocket2mol",
+      "pocket": "2HYY",
+      "seed": 109,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T19:46:07+08:00",
+      "finished_at": "2026-08-02T19:48:18+08:00"
+    },
+    {
+      "tag": "iterative-round1-diffsbdd-2hyy-s109-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "diffsbdd",
+      "pocket": "2HYY",
+      "seed": 109,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T06:41:22+08:00",
+      "finished_at": "2026-08-03T08:21:11+08:00"
+    },
+    {
+      "tag": "iterative-round1-targetdiff-3cs9-s83-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "targetdiff",
+      "pocket": "3CS9",
+      "seed": 83,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T08:18:49+08:00",
+      "finished_at": "2026-08-03T09:57:58+08:00"
+    },
+    {
+      "tag": "iterative-round1-pocket2mol-3cs9-s83-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "pocket2mol",
+      "pocket": "3CS9",
+      "seed": 83,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-02T20:42:01+08:00",
+      "finished_at": "2026-08-02T20:49:44+08:00"
+    },
+    {
+      "tag": "iterative-round1-diffsbdd-3cs9-s83-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "diffsbdd",
+      "pocket": "3CS9",
+      "seed": 83,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T08:21:11+08:00",
+      "finished_at": "2026-08-03T10:00:09+08:00"
+    },
+    {
+      "tag": "iterative-round1-targetdiff-3cs9-s97-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "targetdiff",
+      "pocket": "3CS9",
+      "seed": 97,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-03T06:06:33+08:00",
+      "finished_at": "2026-08-03T07:45:03+08:00"
+    },
+    {
+      "tag": "iterative-round1-pocket2mol-3cs9-s97-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "pocket2mol",
+      "pocket": "3CS9",
+      "seed": 97,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T17:44:52+08:00",
+      "finished_at": "2026-08-02T17:54:06+08:00"
+    },
+    {
+      "tag": "iterative-round1-diffsbdd-3cs9-s97-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "diffsbdd",
+      "pocket": "3CS9",
+      "seed": 97,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-03T06:11:26+08:00",
+      "finished_at": "2026-08-03T07:49:45+08:00"
+    },
+    {
+      "tag": "iterative-round1-targetdiff-3cs9-s109-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "targetdiff",
+      "pocket": "3CS9",
+      "seed": 109,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-03T02:21:36+08:00",
+      "finished_at": "2026-08-03T04:01:47+08:00"
+    },
+    {
+      "tag": "iterative-round1-pocket2mol-3cs9-s109-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "pocket2mol",
+      "pocket": "3CS9",
+      "seed": 109,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-02T23:56:18+08:00",
+      "finished_at": "2026-08-02T23:58:19+08:00"
+    },
+    {
+      "tag": "iterative-round1-diffsbdd-3cs9-s109-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "diffsbdd",
+      "pocket": "3CS9",
+      "seed": 109,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-03T02:25:28+08:00",
+      "finished_at": "2026-08-03T04:08:30+08:00"
+    },
+    {
+      "tag": "iterative-round1-targetdiff-4wa9-s83-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "targetdiff",
+      "pocket": "4WA9",
+      "seed": 83,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-03T08:27:54+08:00",
+      "finished_at": "2026-08-03T09:01:40+08:00"
+    },
+    {
+      "tag": "iterative-round1-pocket2mol-4wa9-s83-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "pocket2mol",
+      "pocket": "4WA9",
+      "seed": 83,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T18:35:57+08:00",
+      "finished_at": "2026-08-02T18:37:18+08:00"
+    },
+    {
+      "tag": "iterative-round1-diffsbdd-4wa9-s83-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "diffsbdd",
+      "pocket": "4WA9",
+      "seed": 83,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-03T08:37:59+08:00",
+      "finished_at": "2026-08-03T09:12:06+08:00"
+    },
+    {
+      "tag": "iterative-round1-targetdiff-4wa9-s97-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "targetdiff",
+      "pocket": "4WA9",
+      "seed": 97,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T05:23:17+08:00",
+      "finished_at": "2026-08-03T06:33:52+08:00"
+    },
+    {
+      "tag": "iterative-round1-pocket2mol-4wa9-s97-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "pocket2mol",
+      "pocket": "4WA9",
+      "seed": 97,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-02T20:49:44+08:00",
+      "finished_at": "2026-08-02T20:55:58+08:00"
+    },
+    {
+      "tag": "iterative-round1-diffsbdd-4wa9-s97-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "diffsbdd",
+      "pocket": "4WA9",
+      "seed": 97,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T05:27:09+08:00",
+      "finished_at": "2026-08-03T06:36:33+08:00"
+    },
+    {
+      "tag": "iterative-round1-targetdiff-4wa9-s109-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "targetdiff",
+      "pocket": "4WA9",
+      "seed": 109,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T04:14:03+08:00",
+      "finished_at": "2026-08-03T05:23:17+08:00"
+    },
+    {
+      "tag": "iterative-round1-pocket2mol-4wa9-s109-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "pocket2mol",
+      "pocket": "4WA9",
+      "seed": 109,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T17:54:06+08:00",
+      "finished_at": "2026-08-02T18:01:20+08:00"
+    },
+    {
+      "tag": "iterative-round1-diffsbdd-4wa9-s109-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "diffsbdd",
+      "pocket": "4WA9",
+      "seed": 109,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T04:18:15+08:00",
+      "finished_at": "2026-08-03T05:27:09+08:00"
+    },
+    {
+      "tag": "iterative-round1-targetdiff-1m17-s83-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "targetdiff",
+      "pocket": "1M17",
+      "seed": 83,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-03T04:01:47+08:00",
+      "finished_at": "2026-08-03T05:16:03+08:00"
+    },
+    {
+      "tag": "iterative-round1-pocket2mol-1m17-s83-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "pocket2mol",
+      "pocket": "1M17",
+      "seed": 83,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-02T23:58:19+08:00",
+      "finished_at": "2026-08-02T23:59:40+08:00"
+    },
+    {
+      "tag": "iterative-round1-diffsbdd-1m17-s83-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "diffsbdd",
+      "pocket": "1M17",
+      "seed": 83,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-03T04:08:30+08:00",
+      "finished_at": "2026-08-03T05:21:06+08:00"
+    },
+    {
+      "tag": "iterative-round1-targetdiff-1m17-s97-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "targetdiff",
+      "pocket": "1M17",
+      "seed": 97,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T01:42:48+08:00",
+      "finished_at": "2026-08-03T02:58:35+08:00"
+    },
+    {
+      "tag": "iterative-round1-pocket2mol-1m17-s97-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "pocket2mol",
+      "pocket": "1M17",
+      "seed": 97,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-02T18:37:18+08:00",
+      "finished_at": "2026-08-02T18:38:39+08:00"
+    },
+    {
+      "tag": "iterative-round1-diffsbdd-1m17-s97-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "diffsbdd",
+      "pocket": "1M17",
+      "seed": 97,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T01:42:48+08:00",
+      "finished_at": "2026-08-03T03:00:36+08:00"
+    },
+    {
+      "tag": "iterative-round1-targetdiff-1m17-s109-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "targetdiff",
+      "pocket": "1M17",
+      "seed": 109,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T02:58:35+08:00",
+      "finished_at": "2026-08-03T04:14:03+08:00"
+    },
+    {
+      "tag": "iterative-round1-pocket2mol-1m17-s109-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "pocket2mol",
+      "pocket": "1M17",
+      "seed": 109,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-02T20:55:58+08:00",
+      "finished_at": "2026-08-02T21:01:10+08:00"
+    },
+    {
+      "tag": "iterative-round1-diffsbdd-1m17-s109-n250-r02",
+      "condition": "iterative",
+      "stage": "round1",
+      "method": "diffsbdd",
+      "pocket": "1M17",
+      "seed": 109,
+      "num_samples": 250,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T03:00:36+08:00",
+      "finished_at": "2026-08-03T04:18:15+08:00"
+    },
+    {
+      "tag": "iterative-round2-targetdiff-1iep-s10083-n750-r02",
+      "condition": "iterative",
+      "stage": "round2",
+      "method": "targetdiff",
+      "pocket": "1IEP",
+      "seed": 10083,
+      "num_samples": 750,
+      "exit_code": 0,
+      "gpu": 1,
+      "started_at": "2026-08-03T10:01:08+08:00",
+      "finished_at": "2026-08-03T14:59:36+08:00"
+    },
+    {
+      "tag": "iterative-round2-targetdiff-1iep-s10097-n750-r02",
+      "condition": "iterative",
+      "stage": "round2",
+      "method": "targetdiff",
+      "pocket": "1IEP",
+      "seed": 10097,
+      "num_samples": 750,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T10:01:08+08:00",
+      "finished_at": "2026-08-03T14:57:45+08:00"
+    },
+    {
+      "tag": "iterative-round2-targetdiff-1iep-s10109-n750-r02",
+      "condition": "iterative",
+      "stage": "round2",
+      "method": "targetdiff",
+      "pocket": "1IEP",
+      "seed": 10109,
+      "num_samples": 750,
+      "exit_code": 0,
+      "gpu": 4,
+      "started_at": "2026-08-03T10:01:08+08:00",
+      "finished_at": "2026-08-03T14:56:24+08:00"
+    },
+    {
+      "tag": "iterative-round2-targetdiff-1m17-s10083-n750-r02",
+      "condition": "iterative",
+      "stage": "round2",
+      "method": "targetdiff",
+      "pocket": "1M17",
+      "seed": 10083,
+      "num_samples": 750,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-03T10:01:08+08:00",
+      "finished_at": "2026-08-03T13:50:02+08:00"
+    },
+    {
+      "tag": "iterative-round2-targetdiff-1m17-s10097-n750-r02",
+      "condition": "iterative",
+      "stage": "round2",
+      "method": "targetdiff",
+      "pocket": "1M17",
+      "seed": 10097,
+      "num_samples": 750,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-03T10:01:08+08:00",
+      "finished_at": "2026-08-03T13:46:00+08:00"
+    },
+    {
+      "tag": "iterative-round2-targetdiff-1m17-s10109-n750-r02",
+      "condition": "iterative",
+      "stage": "round2",
+      "method": "targetdiff",
+      "pocket": "1M17",
+      "seed": 10109,
+      "num_samples": 750,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-03T10:01:08+08:00",
+      "finished_at": "2026-08-03T13:43:59+08:00"
+    },
+    {
+      "tag": "iterative-round2-targetdiff-2hyy-s10083-n750-r02",
+      "condition": "iterative",
+      "stage": "round2",
+      "method": "targetdiff",
+      "pocket": "2HYY",
+      "seed": 10083,
+      "num_samples": 750,
+      "exit_code": 0,
+      "gpu": 1,
+      "started_at": "2026-08-03T10:01:08+08:00",
+      "finished_at": "2026-08-03T14:58:35+08:00"
+    },
+    {
+      "tag": "iterative-round2-targetdiff-2hyy-s10097-n750-r02",
+      "condition": "iterative",
+      "stage": "round2",
+      "method": "targetdiff",
+      "pocket": "2HYY",
+      "seed": 10097,
+      "num_samples": 750,
+      "exit_code": 0,
+      "gpu": 3,
+      "started_at": "2026-08-03T10:01:08+08:00",
+      "finished_at": "2026-08-03T14:58:25+08:00"
+    },
+    {
+      "tag": "iterative-round2-targetdiff-2hyy-s10109-n750-r02",
+      "condition": "iterative",
+      "stage": "round2",
+      "method": "targetdiff",
+      "pocket": "2HYY",
+      "seed": 10109,
+      "num_samples": 750,
+      "exit_code": 0,
+      "gpu": 4,
+      "started_at": "2026-08-03T10:01:08+08:00",
+      "finished_at": "2026-08-03T14:55:54+08:00"
+    },
+    {
+      "tag": "iterative-round2-targetdiff-3cs9-s10083-n750-r02",
+      "condition": "iterative",
+      "stage": "round2",
+      "method": "targetdiff",
+      "pocket": "3CS9",
+      "seed": 10083,
+      "num_samples": 750,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-03T10:01:08+08:00",
+      "finished_at": "2026-08-03T14:24:19+08:00"
+    },
+    {
+      "tag": "iterative-round2-targetdiff-3cs9-s10097-n750-r02",
+      "condition": "iterative",
+      "stage": "round2",
+      "method": "targetdiff",
+      "pocket": "3CS9",
+      "seed": 10097,
+      "num_samples": 750,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-03T10:01:08+08:00",
+      "finished_at": "2026-08-03T14:20:37+08:00"
+    },
+    {
+      "tag": "iterative-round2-targetdiff-3cs9-s10109-n750-r02",
+      "condition": "iterative",
+      "stage": "round2",
+      "method": "targetdiff",
+      "pocket": "3CS9",
+      "seed": 10109,
+      "num_samples": 750,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-03T10:01:08+08:00",
+      "finished_at": "2026-08-03T14:24:09+08:00"
+    },
+    {
+      "tag": "iterative-round2-targetdiff-4wa9-s10083-n750-r02",
+      "condition": "iterative",
+      "stage": "round2",
+      "method": "targetdiff",
+      "pocket": "4WA9",
+      "seed": 10083,
+      "num_samples": 750,
+      "exit_code": 0,
+      "gpu": 5,
+      "started_at": "2026-08-03T14:50:08+08:00",
+      "finished_at": "2026-08-03T16:29:38+08:00"
+    },
+    {
+      "tag": "iterative-round2-targetdiff-4wa9-s10097-n750-r02",
+      "condition": "iterative",
+      "stage": "round2",
+      "method": "targetdiff",
+      "pocket": "4WA9",
+      "seed": 10097,
+      "num_samples": 750,
+      "exit_code": 0,
+      "gpu": 6,
+      "started_at": "2026-08-03T14:50:08+08:00",
+      "finished_at": "2026-08-03T16:32:19+08:00"
+    },
+    {
+      "tag": "iterative-round2-targetdiff-4wa9-s10109-n750-r02",
+      "condition": "iterative",
+      "stage": "round2",
+      "method": "targetdiff",
+      "pocket": "4WA9",
+      "seed": 10109,
+      "num_samples": 750,
+      "exit_code": 0,
+      "gpu": 7,
+      "started_at": "2026-08-03T14:50:08+08:00",
+      "finished_at": "2026-08-03T16:33:30+08:00"
+    }
+  ],
+  "claim_boundary": "Matched-budget deterministic model routing and one feedback-driven allocation step only; no experimental affinity or unconstrained refinement claim."
+}

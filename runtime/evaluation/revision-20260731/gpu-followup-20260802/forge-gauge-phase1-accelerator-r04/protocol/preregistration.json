@@ -1,0 +1,37 @@
+{
+  "schema_version": "frogent-forge-gauge-phase1-accelerator-preregistration-v1",
+  "created_at": "2026-08-03T06:41:00+08:00",
+  "protocol_id": "forge-gauge-phase1-accelerator-r04",
+  "source_protocol_id": "forge-gauge-matched-budget-prospective-r02",
+  "source_run": "/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-matched-budget-prospective-r02",
+  "purpose": "Use newly idle authorized GPU 3 after accelerator-r02 completion to execute the six remaining unclaimed phase-1 jobs ahead of their original shards.",
+  "scientific_change": "none",
+  "frozen_fields": [
+    "condition",
+    "stage",
+    "method",
+    "pocket",
+    "seed",
+    "num_samples",
+    "job tag",
+    "generator checkpoint",
+    "evaluator",
+    "result and state roots"
+  ],
+  "scheduling": {
+    "gpu": 3,
+    "concurrent_workers": 2,
+    "worker_models": [
+      "targetdiff",
+      "diffsbdd"
+    ],
+    "jobs_per_worker": 3,
+    "selection_rule": "Select the three paired TargetDiff/DiffSBDD logical cells that had no source state at the 06:39 checkpoint and are absent from accelerators r01, r02 and r03.",
+    "duplicate_guard": "Abort before launch if GPU 3 has a compute process or any selected source state directory exists; the source queue also skips a tag carrying a live PID or terminal exit code."
+  },
+  "claim_limits": [
+    "This run changes wall-clock scheduling only and contributes no independent scientific condition.",
+    "All outputs remain part of the source r02 phase-1 matrix and are counted once by logical job tag.",
+    "Any nonzero exit remains preserved and receives coverage only through a fresh exact-retry run."
+  ]
+}

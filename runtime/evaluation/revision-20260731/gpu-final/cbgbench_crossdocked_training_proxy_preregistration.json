@@ -1,0 +1,37 @@
+{
+  "schema_version": "frogent-cbgbench-crossdocked-training-proxy-preregistration-v1",
+  "frozen_at": "2026-08-02T03:03:00+08:00",
+  "question": "How similar are the 9,767 parsed CBGBench primary generated molecules to the declared CrossDocked2020 training corpus used by the three benchmarked model families?",
+  "generated_input": "/work/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-followup-20260801/cbgbench-novelty-pocket-r01/output/molecule-metrics.csv",
+  "comparison_source": {
+    "repository": "THU-ATOM/crossdocked",
+    "repository_type": "Hugging Face dataset",
+    "revision": "87ca3754de542e0a2ec71d4589e0a9dff58eb130",
+    "files": [
+      "pl/crossdocked_v1.1_rmsd1.0_pocket10_processed_fullatom.lmdb",
+      "pl/crossdocked_name2id.pt",
+      "split_by_name_10m.pt"
+    ],
+    "declared_entry_count": 166500,
+    "relationship_to_models": "CBGBench training configs for TargetDiff, Pocket2Mol and DiffSBDD declare crossdocked_v1.1_rmsd1.0_pocket10 with split_by_name_10m.pt. The checkpoint bundles do not expose an original training-data digest, so this versioned public collection is treated as a declared-training-corpus proxy."
+  },
+  "membership": "Only names in split_by_name_10m.pt['train'] that map through crossdocked_name2id.pt are admitted. Validation and test members are excluded.",
+  "safe_extraction": "Load the two Hugging Face pickle-bearing mapping files only with torch.load(weights_only=True). Extract the ligand SMILES string from each LMDB pickle by pickle opcode inspection without executing the payload. Abort on unexpected structure or missing fields.",
+  "r02_transfer_amendment": "The r01 local-to-server transfer was stopped after the supported rsync path projected about 25 minutes for the 3.76 GB LMDB. No analysis was launched and the partial r01 input is retained. The r02 root downloads the same immutable Hugging Face revision directly with the installed Hub/Xet client; source, membership, metrics and interpretation are unchanged.",
+  "r03_transfer_amendment": "The r02 direct server download failed during bounded Hugging Face metadata retries because doomx_3nd could not reach huggingface.co. No dataset input or analysis output was created there. The complete immutable source was already acquired inside the local project; r03 transfers those exact files with compression, validates all three byte sizes, and then launches the unchanged analysis automatically.",
+  "r04_completeness_amendment": "The r03 analysis found that 99,990 of 100,000 declared train names map through the public name2id file and then stopped under an over-strict implementation check. The frozen membership rule already admits only mapped names, matching the CBGBench dataloader expression that filters names absent from name2id. R04 therefore treats all 99,990 executable mapped records as complete coverage of the public processed training proxy, reports the 10 unresolved split names and 99.99% declared-name coverage, and still requires zero LMDB extraction failures and 9,767 generated rows. Metrics and interpretation remain unchanged.",
+  "fingerprint": {
+    "type": "Morgan",
+    "radius": 2,
+    "bits": 2048,
+    "similarity": "Tanimoto"
+  },
+  "metrics": [
+    "nearest training-proxy Tanimoto per parsed generated molecule",
+    "mean, median, p90 and maximum by model and pocket",
+    "fractions with nearest Tanimoto >= 0.5, >= 0.7 and >= 0.8",
+    "exact canonical identity and exact Bemis-Murcko scaffold overlap with the training proxy",
+    "mapping, pickle-structure and RDKit parse failures"
+  ],
+  "interpretation_boundary": "The result measures distance to this exact versioned public CrossDocked train split. It does not prove exact membership of the undisclosed checkpoint training files and does not cover other pretraining or fine-tuning corpora."
+}

@@ -1,0 +1,10 @@
+{
+  "answer_type": "multipleChoice",
+  "case_index": 19,
+  "response": {
+    "confidence": "high",
+    "final_answer": "G",
+    "rationale": "Broad-sense heritability of 0.5 bounds genotype-based prediction at 50% under the ideal assumptions, so A is necessary. An infinite additive GWAS converges to additive heritability, which may be below 0.5; nonadditive and epigenetic contributions are not guaranteed by the prompt. Thus only A is necessarily true, a combination not explicitly listed."
+  },
+  "status": "succeeded"
+}

@@ -1,0 +1,4 @@
+job_index	condition	stage	method	pocket	seed	num_samples	tag
+0	single_pass	single	pocket2mol	1IEP	109	500	single-pass-single-pocket2mol-1iep-s109-n500-r02
+1	single_pass	single	pocket2mol	3CS9	83	500	single-pass-single-pocket2mol-3cs9-s83-n500-r02
+2	iterative	round1	pocket2mol	2HYY	83	250	iterative-round1-pocket2mol-2hyy-s83-n250-r02

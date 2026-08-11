@@ -1,0 +1,10 @@
+{
+  "answer_type": "multipleChoice",
+  "case_index": 6,
+  "response": {
+    "confidence": "high",
+    "final_answer": "B",
+    "rationale": "题干描述的是人工饲料上的生长表现与种群建立，并未测量行为性“偏好”；因此 B 的表述超出了实验结果。原始研究：[Ecological Entomology](https://resjournals.onlinelibrary.wiley.com/doi/10.1111/een.13414)"
+  },
+  "status": "succeeded"
+}

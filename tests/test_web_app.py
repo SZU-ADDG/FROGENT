@@ -6,6 +6,7 @@ import sys
 import tempfile
 import types
 import unittest
+import zipfile
 from contextlib import redirect_stdout
 from datetime import datetime
 from pathlib import Path
@@ -173,6 +174,8 @@ class WebAppTests(unittest.TestCase):
             upload = runtime / "uploads" / "paper.txt"
             upload.parent.mkdir()
             upload.write_text("attachment", encoding="utf-8")
+            structure = runtime / "uploads" / "candidate.pdb"
+            structure.write_text("ATOM      1  C   LIG A   1       0.000   0.000   0.000\n", encoding="utf-8")
             config = WebLaunchConfig(ROOT, runtime, "test-secret",
                 "sqlite:///" + str(runtime / "app.sqlite3"), runtime / "memory.sqlite3")
             models, service = _models(), _Service()
@@ -190,7 +193,9 @@ class WebAppTests(unittest.TestCase):
                     "password": "pw"}).get_json()["success"])
                 response = client.post("/api/chat", json={"chat_id": "chat-1",
                     "message": "Assess LRRK2", "files": [{"filename": "paper.txt",
-                    "path": str(upload), "is_molecular": False, "format": "txt"}]}, buffered=True)
+                    "path": str(upload), "is_molecular": False, "format": "txt"},
+                    {"filename": "candidate.pdb", "path": str(structure),
+                    "is_molecular": True, "format": "pdb"}]}, buffered=True)
             self.assertEqual("", stdout.getvalue())
             body = response.get_data(as_text=True)
             self.assertIn('"content":"source-backed answer"', body)
@@ -201,6 +206,35 @@ class WebAppTests(unittest.TestCase):
                 json={"user_id": "user-alice", "chat_id": "chat-1"},
             ).get_json()["chat_session"]
             self.assertEqual(["paper.txt"], [item["filename"] for item in restored["files"]])
+            self.assertNotIn("path", restored["files"][0])
+            self.assertEqual(["candidate.pdb"], [item["filename"] for item in restored["molecules"]])
+            molecule = restored["molecules"][0]
+            self.assertNotIn("path", molecule)
+            self.assertEqual(f"/api/files/{molecule['id']}/download", molecule["download_url"])
+            downloaded = client.get(molecule["download_url"])
+            self.assertEqual(200, downloaded.status_code)
+            self.assertEqual(structure.read_bytes(), downloaded.data)
+            self.assertIn("candidate.pdb", downloaded.headers["Content-Disposition"])
+            downloaded.close()
+            markdown = client.get("/api/chats/chat-1/report.md")
+            self.assertEqual(200, markdown.status_code)
+            self.assertIn("source-backed answer", markdown.get_data(as_text=True))
+            self.assertIn("candidate.pdb", markdown.get_data(as_text=True))
+            markdown.close()
+            if importlib.util.find_spec("reportlab"):
+                pdf = client.get("/api/chats/chat-1/report.pdf")
+                self.assertEqual(200, pdf.status_code)
+                from pypdf import PdfReader
+                pdf_text = "\n".join(page.extract_text() or "" for page in PdfReader(io.BytesIO(pdf.data)).pages)
+                self.assertIn("source-backed answer", pdf_text)
+                pdf.close()
+            if os.environ.get("NODE_PATH") or (ROOT / "node_modules" / "docx").is_dir():
+                word = client.get("/api/chats/chat-1/report.docx")
+                self.assertEqual(200, word.status_code)
+                with zipfile.ZipFile(io.BytesIO(word.data)) as archive:
+                    document_xml = archive.read("word/document.xml").decode("utf-8")
+                self.assertIn("source-backed answer", document_xml)
+                word.close()
             file_id = restored["files"][0]["id"]
             self.assertEqual(
                 400,
@@ -209,10 +243,18 @@ class WebAppTests(unittest.TestCase):
                     json={"file_id": file_id, "is_visible": "yes"},
                 ).status_code,
             )
+            client.post("/api/logout")
+            client.post("/api/register", json={"username": "bob", "password": "pw",
+                "email": "b@example.test"})
+            client.post("/api/login", json={"username": "bob", "password": "pw"})
+            self.assertEqual(404, client.get(molecule["download_url"]).status_code)
+            self.assertEqual(404, client.get("/api/chats/chat-1/report.md").status_code)
             user_id, payload, history = service.calls[0]
             self.assertEqual((user_id, payload["chat_id"], payload["message"]),
                              ("user-alice", "chat-1", "Assess LRRK2"))
-            self.assertEqual(payload["files"], [{"path": str(upload)}])
+            self.assertEqual(payload["files"], [
+                {"path": str(upload)}, {"path": str(structure)}
+            ])
             self.assertEqual(history, ())
             saved = models.ChatHistory.records[0].message_data
             self.assertTrue(saved[0]["isUser"])
@@ -362,6 +404,12 @@ class WebAppTests(unittest.TestCase):
                 self.assertEqual(200, response.status_code)
                 response.close()
             self.assertNotIn("app_v", markup)
+            script_response = client.get("/assets/app.js")
+            script = script_response.get_data(as_text=True)
+            script_response.close()
+            self.assertIn("Interactive 3D preview", script)
+            self.assertIn("drag to rotate", script)
+            self.assertNotIn("molstar", script.lower())
 
     def test_manager_rejects_upload_escape_and_symlinks(self):
         with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:

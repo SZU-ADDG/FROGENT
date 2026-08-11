@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["final_answer", "rationale", "confidence"],
+  "properties": {
+    "final_answer": {"type": "string", "minLength": 1, "maxLength": 100},
+    "rationale": {"type": "string", "minLength": 1, "maxLength": 1200},
+    "confidence": {"type": "string", "enum": ["low", "medium", "high"]}
+  }
+}

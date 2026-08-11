@@ -1,0 +1,244 @@
+{
+  "display_name": "Qwen3.7 Plus",
+  "model_id": "qwen/qwen3.7-plus",
+  "prompt_sha256": "e37203d680a7d929a10d960731a2b38fd5fc14b94266e42c185961164b32956f",
+  "response": {
+    "results": [
+      {
+        "case_index": 1,
+        "smiles": [
+          "CC(C)Cc1ccc(cc1)C(C)C(=O)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2C",
+          "Clc1ccc(cc1)S(=O)(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 2,
+        "smiles": [
+          "CC(C)Nc1nc(nc(n1)C)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2",
+          "Clc1ccc(cc1)C(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 3,
+        "smiles": [
+          "CC(C)Cc1ccc(cc1)C(C)C(=O)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2C",
+          "Clc1ccc(cc1)S(=O)(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 4,
+        "smiles": [
+          "CC(C)Nc1nc(nc(n1)C)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2",
+          "Clc1ccc(cc1)C(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 5,
+        "smiles": [
+          "CC(C)Cc1ccc(cc1)C(C)C(=O)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2C",
+          "Clc1ccc(cc1)S(=O)(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 6,
+        "smiles": [
+          "CC(C)Nc1nc(nc(n1)C)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2",
+          "Clc1ccc(cc1)C(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 7,
+        "smiles": [
+          "CC(C)Cc1ccc(cc1)C(C)C(=O)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2C",
+          "Clc1ccc(cc1)S(=O)(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 8,
+        "smiles": [
+          "CC(C)Nc1nc(nc(n1)C)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2",
+          "Clc1ccc(cc1)C(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 9,
+        "smiles": [
+          "CC(C)Cc1ccc(cc1)C(C)C(=O)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2C",
+          "Clc1ccc(cc1)S(=O)(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 10,
+        "smiles": [
+          "CC(C)Nc1nc(nc(n1)C)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2",
+          "Clc1ccc(cc1)C(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 11,
+        "smiles": [
+          "CC(C)Cc1ccc(cc1)C(C)C(=O)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2C",
+          "Clc1ccc(cc1)S(=O)(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 12,
+        "smiles": [
+          "CC(C)Nc1nc(nc(n1)C)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2",
+          "Clc1ccc(cc1)C(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 13,
+        "smiles": [
+          "CC(C)Cc1ccc(cc1)C(C)C(=O)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2C",
+          "Clc1ccc(cc1)S(=O)(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 14,
+        "smiles": [
+          "CC(C)Nc1nc(nc(n1)C)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2",
+          "Clc1ccc(cc1)C(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 15,
+        "smiles": [
+          "CC(C)Cc1ccc(cc1)C(C)C(=O)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2C",
+          "Clc1ccc(cc1)S(=O)(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 16,
+        "smiles": [
+          "CC(C)Nc1nc(nc(n1)C)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2",
+          "Clc1ccc(cc1)C(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 17,
+        "smiles": [
+          "CC(C)Cc1ccc(cc1)C(C)C(=O)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2C",
+          "Clc1ccc(cc1)S(=O)(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 18,
+        "smiles": [
+          "CC(C)Nc1nc(nc(n1)C)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2",
+          "Clc1ccc(cc1)C(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 19,
+        "smiles": [
+          "CC(C)Cc1ccc(cc1)C(C)C(=O)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2C",
+          "Clc1ccc(cc1)S(=O)(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      },
+      {
+        "case_index": 20,
+        "smiles": [
+          "CC(C)Nc1nc(nc(n1)C)Nc2ccccc2",
+          "COc1ccc(cc1)C(=O)Nc2ncccc2",
+          "Clc1ccc(cc1)C(=O)Nc2ccccc2",
+          "CN1CCN(CC1)Cc2ccc(cc2)C(=O)O",
+          "Cc1cc(c(cc1C)C)C(=O)Nc2ccccc2"
+        ]
+      }
+    ]
+  },
+  "schema_sha256": "6ac247ba5d365087ce68afb59a490a146b6b29445ac6acab6332780181fb7219",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "molecular_design",
+  "transport": "openrouter",
+  "transport_metadata": {
+    "finish_reason": "stop",
+    "provider": "Alibaba",
+    "response_id": "gen-1785904406-dhLkrUozDY3S3h5iuVlE",
+    "returned_model": "qwen/qwen3.7-plus",
+    "usage": {
+      "completion_tokens": 2482,
+      "completion_tokens_details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "reasoning_tokens": 0
+      },
+      "cost": 0.41013696,
+      "cost_details": {
+        "upstream_inference_completions_cost": 0.00953088,
+        "upstream_inference_cost": 0.41013696,
+        "upstream_inference_prompt_cost": 0.40060608
+      },
+      "is_byok": false,
+      "prompt_tokens": 417298,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 0,
+        "cached_tokens": 0,
+        "video_tokens": 0
+      },
+      "total_tokens": 419780
+    }
+  },
+  "wall_seconds": 61.685477499850094
+}

@@ -54,21 +54,28 @@ def max_control_flow_nesting(node: ast.AST, depth: int = 0) -> int:
 class ArchitectureTests(unittest.TestCase):
     def test_connector_manifests_match_catalog(self) -> None:
         servers = load_connector_inventory(PROJECT_ROOT / ".mcp.json")
-        self.assertEqual(10, len(servers))
+        self.assertEqual(12, len(servers))
         self.assertEqual(CURRENT_SERVER_NAMES, {server.name for server in servers})
         trio = next(server for server in servers if server.name == "trio-workspace")
         self.assertEqual("stdio", trio.transport)
         self.assertEqual("python3", trio.command)
         self.assertEqual(("./mcp/trioworkspace_mcp.py",), trio.args)
+        chemistry = next(server for server in servers if server.name == "chemistry")
+        self.assertEqual("stdio", chemistry.transport)
+        self.assertEqual("python3", chemistry.command)
+        self.assertEqual(("./scripts/launch_chemistry_mcp.py",), chemistry.args)
+        structured = next(server for server in servers if server.name == "structured-retrieval")
+        self.assertEqual("stdio", structured.transport)
+        self.assertEqual(("./mcp/structured_retrieval_mcp.py",), structured.args)
         self.assertEqual((), load_app_connectors(PROJECT_ROOT / ".app.json"))
 
     def test_capability_catalog_is_unique_and_complete(self) -> None:
         registry = build_registry()
-        self.assertEqual(19, len(registry))
+        self.assertEqual(25, len(registry))
         registry.require_servers(SERVER_NAMES)
         current = build_current_registry()
         tool_pairs = {(item.server, item.tool) for item in CURRENT_CAPABILITIES}
-        self.assertEqual(29, len(current))
+        self.assertEqual(35, len(current))
         self.assertEqual(len(CURRENT_CAPABILITIES), len(tool_pairs))
         current.require_servers(CURRENT_SERVER_NAMES)
 
@@ -101,7 +108,8 @@ class ArchitectureTests(unittest.TestCase):
         package_dir = PROJECT_ROOT / "agent"
         self.assertEqual(
             {"app", "core", "design", "docking", "evaluation", "llm", "molecular", "research"},
-            {path.name for path in package_dir.iterdir() if path.is_dir()},
+            {path.name for path in package_dir.iterdir()
+             if path.is_dir() and path.name != "__pycache__"},
         )
 
         for module_path in sorted(package_dir.rglob("*.py")):

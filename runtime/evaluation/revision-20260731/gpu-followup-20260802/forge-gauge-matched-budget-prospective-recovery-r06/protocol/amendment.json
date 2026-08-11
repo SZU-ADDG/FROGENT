@@ -1,0 +1,14 @@
+{
+  "protocol_id": "forge-gauge-matched-budget-prospective-recovery-r06",
+  "amends": [
+    "forge-gauge-matched-budget-prospective-r02",
+    "forge-gauge-matched-budget-prospective-retry-r03",
+    "forge-gauge-matched-budget-prospective-retry-r04",
+    "forge-gauge-matched-budget-prospective-recovery-r05"
+  ],
+  "frozen_at": "2026-08-02T20:25:38+08:00",
+  "reason": "R02 accumulated two failures after the retry-r03 snapshot. Recovery-r05 was stopped before merge, Gauge selection and phase-2 inference because it accepted one fixed retry root.",
+  "merge_rule": "After all 105 source phase-1 jobs are terminal, discover complete retry manifests under the isolated follow-up root and require an exit-zero state plus result directory for every failed source tag. Wait for missing coverage and write the complete tag-to-source mapping once before merge.",
+  "future_failure_rule": "Later r02 failures enter fresh exact retry roots. Recovery-r06 discovers their complete manifests without changing or restarting the controller.",
+  "phase_2": "Preserve the original Gauge policy, 15 round-2 allocations and matched attempt budgets. Pocket2Mol phase-2 execution uses batch size 8; other generators retain batch size 32."
+}

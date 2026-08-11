@@ -1,0 +1,10 @@
+{
+  "answer_type": "multipleChoice",
+  "case_index": 5,
+  "response": {
+    "confidence": "high",
+    "final_answer": "A",
+    "rationale": "Braveheart is abundant in both embryonic stem cells and differentiating heart cells. [Primary study](https://pmc.ncbi.nlm.nih.gov/articles/PMC3563769/)"
+  },
+  "status": "succeeded"
+}

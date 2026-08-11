@@ -112,6 +112,42 @@ CAPABILITIES = (
         "Compare selected ADMET properties for two molecules.",
     ),
     _capability(
+        "molecule.describe",
+        "chemistry",
+        "describe_molecules",
+        "Calculate deterministic physicochemical and drug-likeness descriptors.",
+    ),
+    _capability(
+        "molecule.similarity",
+        "chemistry",
+        "rank_molecular_similarity",
+        "Rank candidate structures by Morgan-fingerprint Tanimoto similarity.",
+    ),
+    _capability(
+        "screening.target-active-similarity",
+        "chemistry",
+        "rank_target_active_similarity",
+        "Rank candidates against curated potent ChEMBL actives for a human protein target.",
+    ),
+    _capability(
+        "screening.pdb-ligand-similarity",
+        "chemistry",
+        "rank_pdb_ligand_similarity",
+        "Rank candidates against structured non-polymer ligands in an RCSB PDB entry.",
+    ),
+    _capability(
+        "target.rank-by-disease",
+        "structured-retrieval",
+        "rank_disease_targets",
+        "Rank disease-associated targets using structured Open Targets evidence.",
+    ),
+    _capability(
+        "drug.list-crossrefs-by-target",
+        "structured-retrieval",
+        "list_target_drugbank_links",
+        "List DrugBank identifiers annotated on a reviewed human UniProtKB target.",
+    ),
+    _capability(
         "peptide.docking-score",
         "mdockpep",
         "Peptide_protein_docking_vina_score",

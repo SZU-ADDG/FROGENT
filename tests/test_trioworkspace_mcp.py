@@ -59,6 +59,11 @@ class FakeClient:
 class TrioMcpTests(unittest.TestCase):
     def test_mcp_modules_are_flat_small_and_stdlib_only(self) -> None:
         local_modules = {
+            "agent",
+            "mcp",
+            "chemistry_mcp",
+            "chemistry_schemas",
+            "chemistry_tools",
             "trioworkspace_client",
             "trioworkspace_contracts",
             "trioworkspace_mcp",

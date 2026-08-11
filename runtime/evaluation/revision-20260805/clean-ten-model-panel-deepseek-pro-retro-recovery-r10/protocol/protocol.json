@@ -1,0 +1,38 @@
+{
+  "schema_version": "frogent-clean-ten-model-panel-compatibility-v1",
+  "frozen_at": "2026-08-05T14:49:00+08:00",
+  "status": "preregistered_before_retry_outputs",
+  "amends": "runtime/evaluation/revision-20260805/clean-ten-model-panel-deepseek-compatibility-r04",
+  "reason": "DeepSeek V4 Pro returned a 29-token truncated JSON fragment for the 20-case retrosynthesis cell.",
+  "scope": "Only the failed DeepSeek V4 Pro retrosynthesis_planning cell is eligible. All successful cells remain authoritative and must not be repeated.",
+  "models": [
+    {
+      "display_name": "DeepSeek V4 Pro",
+      "transport": "openrouter",
+      "model_id": "deepseek/deepseek-v4-pro",
+      "reasoning": {
+        "enabled": false
+      },
+      "batch_size": 5,
+      "max_tokens": 4000
+    }
+  ],
+  "tasks": [
+    "retrosynthesis_planning"
+  ],
+  "case_count_per_task": 20,
+  "request_grain": "four stateless five-case requests for the truncated model-task cell",
+  "gold_visibility": "withheld_during_inference",
+  "tools": "disabled",
+  "web": "disabled",
+  "memory": "none",
+  "retries": 0,
+  "openrouter": {
+    "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+    "credential_env": "OPENROUTER_API_KEY",
+    "allow_fallbacks": false,
+    "data_collection": "deny",
+    "structured_outputs": true
+  },
+  "claim_boundary": "request-grain compatibility recovery only; prompts, cases, schemas, gold data and scoring are unchanged"
+}

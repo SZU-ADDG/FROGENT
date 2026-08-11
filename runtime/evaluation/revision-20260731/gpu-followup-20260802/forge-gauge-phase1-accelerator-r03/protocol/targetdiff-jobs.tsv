@@ -1,0 +1,5 @@
+job_index	condition	stage	method	pocket	seed	num_samples	tag
+0	single_pass	single	targetdiff	3CS9	97	500	single-pass-single-targetdiff-3cs9-s97-n500-r02
+1	iterative	round1	targetdiff	1IEP	83	250	iterative-round1-targetdiff-1iep-s83-n250-r02
+2	iterative	round1	targetdiff	1IEP	97	250	iterative-round1-targetdiff-1iep-s97-n250-r02
+3	iterative	round1	targetdiff	1IEP	109	250	iterative-round1-targetdiff-1iep-s109-n250-r02

@@ -1,0 +1,180 @@
+{
+  "display_name": "GPT-5.6 Sol",
+  "model_id": "gpt-5.6-sol",
+  "prompt_sha256": "d646294e2a0aa921a21062ce6ed48b1fe1dfbeb253f4c7e39bdd937f852ffe55",
+  "response": {
+    "results": [
+      {
+        "case_index": 1,
+        "targets": [
+          "DRD2",
+          "C4A",
+          "GRIN2A"
+        ]
+      },
+      {
+        "case_index": 2,
+        "targets": [
+          "MXRA8",
+          "FURIN",
+          "OAS1"
+        ]
+      },
+      {
+        "case_index": 3,
+        "targets": [
+          "TLR2",
+          "TLR1",
+          "MYD88"
+        ]
+      },
+      {
+        "case_index": 4,
+        "targets": [
+          "C9ORF72",
+          "SOD1",
+          "TARDBP"
+        ]
+      },
+      {
+        "case_index": 5,
+        "targets": [
+          "TCF7L2",
+          "PPARG",
+          "KCNJ11"
+        ]
+      },
+      {
+        "case_index": 6,
+        "targets": [
+          "PAH",
+          "DNAJC12",
+          "PTS"
+        ]
+      },
+      {
+        "case_index": 7,
+        "targets": [
+          "SLC11A1",
+          "TNF",
+          "IL10"
+        ]
+      },
+      {
+        "case_index": 8,
+        "targets": [
+          "TLR2",
+          "TLR4",
+          "IFNG"
+        ]
+      },
+      {
+        "case_index": 9,
+        "targets": [
+          "KMT2D",
+          "KDM6A",
+          "RAP1A"
+        ]
+      },
+      {
+        "case_index": 10,
+        "targets": [
+          "CSF2RA",
+          "CSF2RB",
+          "MARS1"
+        ]
+      },
+      {
+        "case_index": 11,
+        "targets": [
+          "FOXP2",
+          "CNTNAP2",
+          "SETBP1"
+        ]
+      },
+      {
+        "case_index": 12,
+        "targets": [
+          "FOXP2",
+          "CNTNAP2",
+          "ATP2C2"
+        ]
+      },
+      {
+        "case_index": 13,
+        "targets": [
+          "OCRL",
+          "INPP5K",
+          "CLCN5"
+        ]
+      },
+      {
+        "case_index": 14,
+        "targets": [
+          "ENG",
+          "ACVRL1",
+          "SMAD4"
+        ]
+      },
+      {
+        "case_index": 15,
+        "targets": [
+          "GNAS",
+          "PRKAR1A",
+          "PDE4D"
+        ]
+      },
+      {
+        "case_index": 16,
+        "targets": [
+          "CFTR",
+          "SCNN1B",
+          "SCNN1G"
+        ]
+      },
+      {
+        "case_index": 17,
+        "targets": [
+          "HBB",
+          "BCL11A",
+          "HBS1L"
+        ]
+      },
+      {
+        "case_index": 18,
+        "targets": [
+          "CTNS",
+          "OCRL",
+          "ATP6V1B1"
+        ]
+      },
+      {
+        "case_index": 19,
+        "targets": [
+          "PKD1",
+          "PKD2",
+          "UMOD"
+        ]
+      },
+      {
+        "case_index": 20,
+        "targets": [
+          "MEN1",
+          "RET",
+          "GNAS"
+        ]
+      }
+    ]
+  },
+  "schema_sha256": "f30f23b25119c02a63b1e436bf00021b1c76243e258fcdc2330e9afd380c9677",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "retrieve_known_targets",
+  "transport": "codex",
+  "transport_metadata": {
+    "event_lines": 11,
+    "prohibited_tool_events": 0,
+    "returncode": 0
+  },
+  "wall_seconds": 133.30399291589856
+}

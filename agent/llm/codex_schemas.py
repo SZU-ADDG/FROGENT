@@ -108,7 +108,8 @@ def design_strategy_schema() -> dict[str, object]:
         "calibration_requests": _array(_object({
             "request_id": STRING,
             "capability_id": {"type": "string", "enum": [
-                "molecular.identity", "literature.research", "admet.predict", "admet.compare",
+                "molecular.identity", "molecule.describe", "molecule.similarity",
+                "literature.research", "admet.predict", "admet.compare",
                 "docking.score", "sar.analyze", "retrosynthesis.flash",
                 "retrosynthesis.explorer", "peptide.docking-score", "experimental.assay"]},
             "purpose": STRING,

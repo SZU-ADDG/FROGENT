@@ -1,0 +1,11 @@
+{
+  "display_name": "MiniMax M3",
+  "error": "RuntimeError: OpenRouter HTTP 404: {\"error\":{\"message\":\"No endpoints found for minimax/minimax-m3.\",\"code\":404},\"user_id\":\"user_3GAQBir0hgQWZSZ33ZN0hlMnIPB\"}",
+  "model_id": "minimax/minimax-m3",
+  "prompt_sha256": "bc0f7e4759411866c826f61030cbcfb73f6621b93cdd8cb7ebe3db42bf2de62d",
+  "schema_sha256": "98c592b4db994ae2b23d3b8e5c833ce4d4a3f23d4b3e0500a2b7d35c2d781502",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "failed",
+  "task": "retrosynthesis_planning",
+  "transport": "openrouter"
+}

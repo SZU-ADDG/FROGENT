@@ -1,0 +1,11 @@
+{
+  "display_name": "DeepSeek V4 Pro",
+  "error": "ValueError: OpenRouter response content is not a string",
+  "model_id": "deepseek/deepseek-v4-pro",
+  "prompt_sha256": "5278f5f9a4ab1b6e949e650300c991b62f24b36caa9221cbeff476b5094214ef",
+  "schema_sha256": "d1740ea72266abe861272674035e386264e014c44e845557415c1d9595b0e757",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "failed",
+  "task": "foundational_biomedical_knowledge",
+  "transport": "openrouter"
+}

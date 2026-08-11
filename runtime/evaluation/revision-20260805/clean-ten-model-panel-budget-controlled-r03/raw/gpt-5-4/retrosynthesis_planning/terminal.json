@@ -1,0 +1,100 @@
+{
+  "display_name": "GPT-5.4",
+  "model_id": "gpt-5.4",
+  "prompt_sha256": "bc0f7e4759411866c826f61030cbcfb73f6621b93cdd8cb7ebe3db42bf2de62d",
+  "response": {
+    "results": [
+      {
+        "case_index": 1,
+        "route": "Nc1cccnc1.c1noc(Cc2ccc(OCCCC)cc2)c1-c1ccccc1 -> CCCCOc1ccc(Cc2cc(-c3cccnc3N)on2)cc1"
+      },
+      {
+        "case_index": 2,
+        "route": "NC(=N)c1cccs1.N1(CCNCCS2c3ccccc3N(CCN3CCCC3)C2)CCCC1 -> N=C(Nc1ccc2c(c1)SCCN2CCN1CCCC1)c1cccs1"
+      },
+      {
+        "case_index": 3,
+        "route": "CCOc1cc(CN2CCC(Nc3nc4c(I)cccc4o3)CC2)cc(OCC)c1F <- Nc1nc2c(I)cccc2o1.FC1=CC(OCC)=CC(CN2CCCNC C2)=C1OCC | CCOc1cc(CN2CCCNC C2)cc(OCC)c1F.Nc1nc2c(I)cccc2o1 -> CCOc1cc(CN2CCC(Nc3nc4c(I)cccc4o3)CC2)cc(OCC)c1F"
+      },
+      {
+        "case_index": 4,
+        "route": "C[C@@H]1CCCN1CCc1cc2cc(-c3cccc(C(C)(C)O)c3)ccc2o1 <- OC(C)(C)c1cccc(-c2ccc3oc(CCN4C[C@H](C)CC4)cc3c2)c1"
+      },
+      {
+        "case_index": 5,
+        "route": "COC(=O)C1(NC(=O)c2ccc(C(F)(F)F)c(OC(C)=O)c2)Cc2ccccc2C1 <- COC(=O)C1(N)Cc2ccccc2C1.O=C(Cl)c1ccc(C(F)(F)F)c(OC(C)=O)c1 | COC(=O)C1(N)Cc2ccccc2C1.O=C(Cl)c1ccc(C(F)(F)F)c(OC(C)=O)c1 -> COC(=O)C1(NC(=O)c2ccc(C(F)(F)F)c(OC(C)=O)c2)Cc2ccccc2C1"
+      },
+      {
+        "case_index": 6,
+        "route": "COC(=O)Cc1ccc(OCC(O)c2c(C)noc2C)cc1 <- COC(=O)Cc1ccc(OCC=O)cc1.Cc1noc(C)c1C | COC(=O)Cc1ccc(OCC=O)cc1.Cc1noc(C)c1C -> COC(=O)Cc1ccc(OCC(O)c2c(C)noc2C)cc1"
+      },
+      {
+        "case_index": 7,
+        "route": "CCOc1cccnc1CSCCN=C(NC)NC#N <- CCOc1cccnc1CSCCN.CNC(=N)NC#N | CCOc1cccnc1CSCCN.CNC(=N)NC#N -> CCOc1cccnc1CSCCN=C(NC)NC#N"
+      },
+      {
+        "case_index": 8,
+        "route": "O=C1OCCN1CCOc1cncc(-c2cnc3c(c2)CCCN3)c1 <- O=C1OCCN1CCO.c1nc(C2=NCCCc3nccnc32)cn1 | O=C1OCCN1CCO.Brc1cncc(-c2cnc3c(c2)CCCN3)c1 -> O=C1OCCN1CCOc1cncc(-c2cnc3c(c2)CCCN3)c1"
+      },
+      {
+        "case_index": 9,
+        "route": "COC(=O)n1c(=O)c2c(n1C)NC1=C(C(=O)CC1)C2c1ccc(F)c(Br)c1 <- Cn1c(=O)n(C)c2cc([C@]3(c4ccc(F)c(Br)c4)NC(=O)CC3)c(=O)[nH]2.COCl | Cn1c(=O)[nH]c2c(NC1=C(C(=O)CC1)c3ccc(F)c(Br)c3)cc(=O)n2C.COC(=O)Cl -> COC(=O)n1c(=O)c2c(n1C)NC1=C(C(=O)CC1)C2c1ccc(F)c(Br)c1"
+      },
+      {
+        "case_index": 10,
+        "route": "CCCCNc1ccc(-c2nc(C(=O)Nc3nccs3)c(-c3ccc(OC)cc3)[nH]2)cc1 <- CCCCNc1ccc(-c2nc(C(=O)Cl)c(-c3ccc(OC)cc3)[nH]2)cc1.Nc1nccs1 | CCCCNc1ccc(-c2nc(C(=O)Cl)c(-c3ccc(OC)cc3)[nH]2)cc1.Nc1nccs1 -> CCCCCNc1ccc(-c2nc(C(=O)Nc3nccs3)c(-c3ccc(OC)cc3)[nH]2)cc1"
+      },
+      {
+        "case_index": 11,
+        "route": "COC(=O)[C@H](CCCCN)NC(=O)Nc1cc(OC)cc(C(C)(C)C)c1O <- COC(=O)[C@H](CCCCN)N.O=C=Nc1cc(OC)cc(C(C)(C)C)c1O | COC(=O)[C@H](CCCCN)N.O=C=Nc1cc(OC)cc(C(C)(C)C)c1O -> COC(=O)[C@H](CCCCN)NC(=O)Nc1cc(OC)cc(C(C)(C)C)c1O"
+      },
+      {
+        "case_index": 12,
+        "route": "CC1(C)CCC(CN2CCN(c3ccc(C(=O)NS(=O)(=O)c4ccc(NCC5CN(C(CF)CF)C5)c([N+](=O)[O-])c4)c(Oc4cnc5[nH]ccc5c4)c3)CC2)=C(c2ccc(Cl)cc2)C1 <- CC1(C)CCC(CN2CCN(c3ccc(C(=O)Cl)c(Oc4cnc5[nH]ccc5c4)c3)CC2)=C(c2ccc(Cl)cc2)C1.NS(=O)(=O)c1ccc(NCC2CN(C(CF)CF)C2)c([N+](=O)[O-])c1 | CC1(C)CCC(CN2CCN(c3ccc(C(=O)Cl)c(Oc4cnc5[nH]ccc5c4)c3)CC2)=C(c2ccc(Cl)cc2)C1.NS(=O)(=O)c1ccc(NCC2CN(C(CF)CF)C2)c([N+](=O)[O-])c1 -> CC1(C)CCC(CN2CCN(c3ccc(C(=O)NS(=O)(=O)c4ccc(NCC5CN(C(CF)CF)C5)c([N+](=O)[O-])c4)c(Oc4cnc5[nH]ccc5c4)c3)CC2)=C(c2ccc(Cl)cc2)C1"
+      },
+      {
+        "case_index": 13,
+        "route": "COC(=O)CNC(=O)[C@@H](NC(=O)CNC(=O)[C@@H]1CCCN1C(=O)[C@@H](NC(=O)OCc1ccccc1)C(C)C)C(C)C <- COC(=O)CNC(=O)[C@@H](N)C(C)C.O=C(NCC(=O)N1CCC[C@H]1C(=O)N[C@@H](C(C)C)C(=O)OCc1ccccc1)Cl | COC(=O)CNC(=O)[C@@H](N)C(C)C.O=C(NCC(=O)N1CCC[C@H]1C(=O)N[C@@H](C(C)C)C(=O)OCc1ccccc1)Cl -> COC(=O)CNC(=O)[C@@H](NC(=O)CNC(=O)[C@@H]1CCCN1C(=O)[C@@H](NC(=O)OCc1ccccc1)C(C)C)C(C)C"
+      },
+      {
+        "case_index": 14,
+        "route": "Oc1ccc(OCc2ccccc2)c(Br)c1 <- Oc1ccc(Br)cc1.O=CC1=CC=CC=C1 | Oc1ccc(Br)cc1.C1=CC=C(CO)C=C1 -> Oc1ccc(OCc2ccccc2)c(Br)c1"
+      },
+      {
+        "case_index": 15,
+        "route": "COC(=O)C(C)(C)CN1CCN(C2=Nc3ccc(Cl)cc3Cn3cc(C)cc32)CC1 <- COC(=O)C(C)(C)CN1CCNCC1.Clc1ccc2nc(N3CCN(CC(C)(C)C(=O)OC)CC3)c3cc(C)ncc3c2c1 | COC(=O)C(C)(C)CN1CCNCC1.Clc1ccc2nc(Cl)c3cc(C)ncc3c2c1 -> COC(=O)C(C)(C)CN1CCN(C2=Nc3ccc(Cl)cc3Cn3cc(C)cc32)CC1"
+      },
+      {
+        "case_index": 16,
+        "route": "CC(C)Sc1ncccc1F <- CC(C)SH.Brc1ncccc1F | CC(C)SH.Brc1ncccc1F -> CC(C)Sc1ncccc1F"
+      },
+      {
+        "case_index": 17,
+        "route": "O=C1NC(=O)/C(=C/c2cnn3c(NC4CC4)cc(NC4CCCC4)nc23)N1 <- O=C1NC(=O)CC(=O)N1.c1(nn2c(NC3CC3)cc(NC3CCCC3)nc2c1)C=O | O=C1NC(=O)CC(=O)N1.O=Cc1cnn2c(NC3CC3)cc(NC3CCCC3)nc21 -> O=C1NC(=O)/C(=C/c2cnn3c(NC4CC4)cc(NC4CCCC4)nc23)N1"
+      },
+      {
+        "case_index": 18,
+        "route": "NCc1cccc([N+](=O)[O-])c1 <- O=[N+]([O-])c1cccc(C=O)c1.N | O=[N+]([O-])c1cccc(C=O)c1.N -> NCc1cccc([N+](=O)[O-])c1"
+      },
+      {
+        "case_index": 19,
+        "route": "Cc1ccc(C(C)(C)C)cc1N <- Cc1ccc(C(C)(C)C)cc1[N+](=O)[O-] | Cc1ccc(C(C)(C)C)cc1[N+](=O)[O-] -> Cc1ccc(C(C)(C)C)cc1N"
+      },
+      {
+        "case_index": 20,
+        "route": "O=C(O)c1ccc(CBr)c(F)c1 <- O=C(O)c1ccc(CO)c(F)c1.Br | O=C(O)c1ccc(CO)c(F)c1 -> O=C(O)c1ccc(CBr)c(F)c1"
+      }
+    ]
+  },
+  "schema_sha256": "98c592b4db994ae2b23d3b8e5c833ce4d4a3f23d4b3e0500a2b7d35c2d781502",
+  "schema_version": "frogent-clean-model-cell-v1",
+  "status": "succeeded",
+  "task": "retrosynthesis_planning",
+  "transport": "codex",
+  "transport_metadata": {
+    "event_lines": 11,
+    "prohibited_tool_events": 0,
+    "returncode": 0
+  },
+  "wall_seconds": 165.64440899994224
+}

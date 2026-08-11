@@ -1,5 +1,1054 @@
 # Learnings
 
+## [LRN-20260805-PAIRED-BASE-AND-FROGENT-PANEL] correction
+
+**Logged**: 2026-08-05T13:18:15+08:00
+**Priority**: critical
+**Status**: applied
+**Area**: evaluation
+
+### Summary
+The requested current-model comparison has two paired arms: direct model inference and the same
+model used as the FROGENT base model.
+
+### Details
+The completed clean panel covers only direct, no-tool model inference. It cannot answer how much
+FROGENT changes each model's performance. The paired FROGENT arm must reuse the same exposed
+cases, task metrics and scorer while enabling the frozen FROGENT initialization, retrieval,
+memory and tool workflow. The current model set also adds Kimi K3 and Qwen3.8 under the user's
+latest instruction, which supersedes their earlier exclusion or older Qwen version.
+
+### Suggested Action
+Freeze a paired protocol with explicit direct and FROGENT arms, exact model IDs, equal task
+inputs and an arm-specific execution boundary. Report raw model score, FROGENT score and paired
+delta per model and task. Preserve any unavailable provider route as a terminal failure without
+substituting another model.
+
+### Metadata
+- Source: user_feedback
+- Related Files: docs/manuscript/clean-ten-model-benchmark-protocol.md, scripts/run_clean_ten_model_panel.py
+- Tags: paired-evaluation, base-model, frogent, kimi-k3, qwen3.8
+- Pattern-Key: evaluation.compare_direct_model_and_same_model_inside_frogent
+- Recurrence-Count: 1
+- First-Seen: 2026-08-05
+- Last-Seen: 2026-08-05
+
+---
+
+## [LRN-20260811-006] separate inference-time specialization from parameter training
+
+**Type:** correction
+**Priority:** critical
+**Status:** active
+**Scope:** manuscript methods and model reporting
+
+### Observation
+
+FROGENT does not train or fine-tune its base language model. Agent roles, typed schemas, evidence
+gates, memory policy and tool access specialize behavior at inference time. Describing these
+runtime controls as training, or leaving their status unresolved after author confirmation,
+misstates the scientific method.
+
+### Rule
+
+State parameter-update facts explicitly. Use `pretrained base model without task-specific
+parameter training` for FROGENT and describe prompts, evidence, memory and tools as runtime
+specialization. Report benchmark isolation separately from the production memory architecture.
+
+### Related Files
+
+- `docs/manuscript/revision-source/main.tex`
+- `docs/manuscript/revision-source/sup.tex`
+- `docs/manuscript/clean-ten-model-benchmark-protocol.md`
+
+---
+
+## [LRN-20260811-007] write the abstract around the scientific advance
+
+**Type:** correction
+**Priority:** high
+**Status:** active
+**Scope:** academic writing
+
+### Observation
+
+A journal abstract should establish the problem, research object, advance, contribution, core
+result and significance. A list of significance tests, confidence intervals or benchmark numbers
+obscures the scientific argument and reads as an evaluation inventory.
+
+### Rule
+
+Use one conceptual result arc in the abstract and move detailed statistics to Results and SI.
+Keep only numbers that are necessary to understand the central scientific conclusion.
+
+### Related Files
+
+- `docs/manuscript/manuscript-brief.md`
+- `docs/manuscript/revision-source/main.tex`
+
+---
+
+## [LRN-20260811-005] exact structured lookup contracts should bind typed records directly
+
+**Type:** best_practice
+**Priority:** high
+**Status:** active
+**Scope:** structured biomedical retrieval
+
+### Observation
+
+Open Targets provider-order top-three targets scored 0.800 on the exposed known-target task,
+while Sol/max synthesis over the same structured records scored 0.750 after overriding one exact
+lookup result. Exact identifier-list tasks gain no scientific value from free-form model
+arbitration after canonical entity resolution and typed response validation.
+
+### Rule
+
+For exact structured lookup contracts, validate canonical entity alignment and bind the requested
+provider fields deterministically. Use the language model to plan queries, resolve material
+ambiguity and interpret evidence around the typed answer. Preserve provider failures explicitly
+and avoid case-specific substitutions.
+
+### Related Files
+
+- `agent/research/structured_target_evidence.py`
+- `scripts/run_structured_retrieval_binding.py`
+- `runtime/evaluation/revision-20260811/frogent-structured-binding-known-target-r02/`
+
+---
+## [LRN-20260807-020] pause Codex Direct without pausing FROGENT Codex execution
+
+**Type:** correction
+**Priority:** high
+**Status:** active
+**Scope:** network-enabled three-repeat comparison scheduling
+
+### Observation
+
+The user paused further Codex Direct execution after the first-seed GPT-5.4, GPT-5.5 and
+GPT-5.6 Sol results. This instruction applies to the Direct arm only. Existing successful Direct
+Codex cells remain immutable historical evidence; FROGENT may continue using its selected Codex
+base model, and Direct OpenRouter plus external-system adaptations remain in scope.
+
+### Rule
+
+Exclude `gpt-5.4`, `gpt-5.5`, and `gpt-5.6-sol` from every new Direct recovery command until the
+user resumes them. Never delete or overwrite their existing terminals. Keep Direct-arm scheduling
+separate from FROGENT base-model scheduling.
+
+### Related Files
+
+- `scripts/run_networked_three_seed_comparison.py`
+- `FROGENT_revision_plan.md`
+- `FROGENT_experiment_checklist.md`
+
+### Metadata
+
+- Source: user_feedback
+- Pattern-Key: evaluation.pause_transport_arm_without_cross_arm_scope_drift
+- Recurrence-Count: 1
+
+---
+## [LRN-20260807-019] schedule and report multi-request benchmark work at batch granularity
+
+**Type:** best_practice
+**Priority:** high
+**Status:** active
+**Scope:** network-enabled repeated model panels
+
+### Observation
+
+The networked runner reported progress only after a complete model-task cell, although each cell
+contains four requests for most tasks and twenty requests for molecular design. R02 completed 326
+provider responses in approximately 45 minutes while exposing only 37 terminal cells. Several
+OpenRouter cells consumed all requests and were then rejected by final response-shape validation.
+
+### Rule
+
+Expose request/batch progress alongside cell progress, validate and normalize each batch before
+launching the next batch, and run a one-batch compatibility canary for every provider/model output
+shape. Use a durable request-level queue so Direct, FROGENT and external-system jobs can advance
+concurrently. Preserve completed batches and successful cells across exact recovery runs.
+
+### Related Files
+
+- `scripts/run_clean_ten_model_panel.py`
+- `scripts/run_networked_three_seed_comparison.py`
+- `runtime/evaluation/revision-20260807/networked-three-seed-comparison-recovery-r02/`
+
+### Metadata
+
+- Source: experiment_diagnosis
+- Pattern-Key: evaluation.batch_granularity_progress_and_validation
+- Recurrence-Count: 1
+
+---
+## [LRN-20260807-018] preserve the full eight-task panel when adding task-aligned external systems
+
+**Type:** correction
+**Priority:** critical
+**Status:** active
+**Scope:** network-enabled three-repeat comparison and revised comparison figure
+
+### Observation
+
+The networked three-repeat protocol incorrectly reduced the whole comparison to the five-task
+union covered by CLADD, Prompt-to-Pill, and Robin. The author-supplied benchmark and the revised
+Direct/FROGENT comparison contain eight tasks. External workflow coverage determines which
+external cells are measured; it does not remove dimensions from the Direct/FROGENT panel.
+
+### Rule
+
+Keep all eight benchmark dimensions for every Direct model and FROGENT. Add CLADD,
+Prompt-to-Pill, and Robin only on their verified alignable tasks, and mark every other external
+cell as workflow-absent. The three additional dimensions are Foundational Biomedical Knowledge,
+Binding Mechanism, and Retrosynthesis Planning. With 12 Direct models, one FROGENT row, three
+seeds, and 18 aligned external cells, the complete networked matrix contains 330 cells.
+
+### Related Files
+
+- `scripts/run_networked_three_seed_comparison.py`
+- `runtime/evaluation/revision-20260807/networked-three-seed-comparison-r01/protocol/protocol.json`
+- `runtime/evaluation/revision-20260807/networked-three-seed-comparison-recovery-r02/protocol/protocol.json`
+- `scripts/plot_external_current_model_adaptations.py`
+
+### Metadata
+
+- Source: user_feedback
+- See Also: LRN-20260807-014, LRN-20260807-015, LRN-20260807-016
+- Pattern-Key: evaluation.preserve_global_dimensions_with_partial_comparators
+- Recurrence-Count: 1
+
+---
+
+## [LRN-20260806-002] retire submitted radar and original headline reconstruction
+
+**Logged**: 2026-08-06T00:00:00+08:00
+**Category**: correction
+**Status**: applied
+**Area**: rebuttal scope
+
+### Summary
+
+The author replaced the submitted radar and does not require reconstruction of its original
+eight-task headline values, HLE score or scorer.
+
+### Applied Change
+
+Use the frozen 12-model direct and same-model + FROGENT panels as the replacement figure source.
+Remove original outputs, failure rows, scorer, HLE records and old QED/SA figure inputs from active
+author requests and readiness gates. Preserve them only as historical audit boundaries.
+
+### Metadata
+- Source: user_feedback
+- Related Files: FROGENT_revision_plan.md, FROGENT_experiment_checklist.md, docs/manuscript/author-input-request.md, docs/manuscript/unresolved-issues-closure-matrix.md
+- Pattern-Key: rebuttal.retire_submitted_radar_reconstruction
+- Recurrence-Count: 1
+- First-Seen: 2026-08-06
+- Last-Seen: 2026-08-06
+
+---
+
+## [LRN-20260806-001] preserve reviewer-requested external reproduction as active work
+
+**Logged**: 2026-08-06T00:00:00+08:00
+**Category**: correction
+**Status**: superseded
+**Area**: rebuttal evaluation
+
+### Summary
+
+Reviewer 1 explicitly asks, when possible, to benchmark Prompt-to-Pill, CLADD and Robin or their
+baselines against the eight reported tasks. A repository and capability audit establishes
+comparability limits, but it does not by itself constitute an execution reproduction.
+
+### Applied Change
+
+Superseded by `LRN-20260806-003`: install the public implementations and adapt their workflows to
+current available models. Do not present the resulting runs as reproduction of deprecated paper
+models or original paper scores.
+
+### Metadata
+- Source: user_feedback
+- Related Files: docs/manuscript/reviewer1-comments-3-4-rebuttal-blocks.md, runtime/evaluation/revision-20260730/nongpu-final/recent-baselines/REPORT.md, FROGENT_revision_plan.md
+- Pattern-Key: rebuttal.external_system_reproduction_attempt
+- Recurrence-Count: 1
+- First-Seen: 2026-08-06
+- Last-Seen: 2026-08-06
+
+---
+
+## [LRN-20260806-003] freeze adapted baselines, direct MDockPeP2 use, and reference-route scoring
+
+**Logged**: 2026-08-06T00:00:00+08:00
+**Category**: correction
+**Status**: applied
+**Area**: rebuttal evaluation
+
+### Summary
+
+Prompt-to-Pill, CLADD and Robin should be installed and implemented with currently available
+models on alignable tasks; their deprecated paper configurations and paper scores are not a
+reproduction target. The clean-environment install is a final acceptance step after all features
+and experiments. MDockPeP2 should use the existing licensed installation and code directly, with
+the third-party source kept read-only and outputs isolated. DirectMultiStep uses the existing
+human-judged reference routes as gold and requires no new human double-blind adjudication.
+
+### Applied Change
+
+Replace external reproduction with transparent current-model adaptation, move clean installation
+to final acceptance, schedule direct MDockPeP2 execution from the existing installation, and
+close retrosynthesis evaluation with deterministic exact/reference coverage metrics.
+
+### Metadata
+- Source: user_feedback
+- Related Files: FROGENT_revision_plan.md, FROGENT_experiment_checklist.md, docs/manuscript/author-input-request.md, docs/manuscript/revision-evidence-ledger.md
+- Pattern-Key: rebuttal.freeze_adapted_baselines_and_existing_gold
+- Recurrence-Count: 1
+- First-Seen: 2026-08-06
+- Last-Seen: 2026-08-06
+
+---
+
+## [LRN-20260806-004] use Opus 4.6 for legacy Sonnet external-agent adaptation
+
+**Logged**: 2026-08-06T00:00:00+08:00
+**Category**: correction
+**Status**: applied
+**Area**: external baseline adaptation
+
+### Summary
+
+When an audited external agent originally depends on a retired Claude Sonnet 3.x model, route its
+adapted implementation to Claude Opus 4.6. This scoped substitution belongs to the external-agent
+implementation study and does not alter the frozen 12-model radar panel.
+
+### Applied Change
+
+Record the original and substituted model in the run protocol. Inject the provider credential only
+through an environment variable and never persist or print its value.
+
+### Metadata
+- Source: user_feedback
+- Related Files: FROGENT_revision_plan.md, FROGENT_experiment_checklist.md
+- Pattern-Key: rebuttal.external_agent_claude_model_substitution
+- Recurrence-Count: 1
+- First-Seen: 2026-08-06
+- Last-Seen: 2026-08-06
+
+---
+
+## [LRN-20260805-011] distinguish native agentic priors from explicit ReAct-loop ablations
+
+**Logged**: 2026-08-05T00:00:00+08:00
+**Category**: correction
+**Status**: applied
+**Area**: evaluation
+
+### Summary
+
+Current base models can exhibit planning, iterative reasoning and tool-use behavior in a direct
+arm. Removing a ReAct label or prompt therefore does not create a clean ReAct-off condition.
+
+### Applied Change
+
+Interpret the current direct-versus-FROGENT panel as a system-level comparison. A future ReAct
+ablation must hold the exact model, evidence, tools and budgets fixed while disabling only the
+explicit observation-conditioned FROGENT loop, for example by substituting a frozen one-pass
+procedure. Do not claim that such an ablation removes reasoning learned during model training.
+
+### Metadata
+- Source: user_feedback
+- Related Files: docs/manuscript/revision-source/figures/fig2-radar.pdf, docs/manuscript/paired-model-frogent-benchmark-protocol.md, runtime/evaluation/revision-20260730/nongpu-final/real-agent-ablation/PREREGISTRATION.md
+- Pattern-Key: evaluation.react_native_prior_boundary
+- Recurrence-Count: 1
+- First-Seen: 2026-08-05
+- Last-Seen: 2026-08-05
+
+---
+
+## [LRN-20260805-MODEL-FIGURE-REPLACEMENT] correction
+
+**Logged**: 2026-08-05T12:24:00+08:00
+**Priority**: critical
+**Status**: applied
+**Area**: evaluation
+
+### Summary
+When an old multi-model figure lacks reproducible execution records, preserve the useful visual
+comparison role by running a fresh, clean, same-protocol panel on current models and rebuilding
+the figure from those results.
+
+### Details
+The revision removed the submitted radar figure together with unsupported aggregate claims. The
+user clarified that the figure itself remains valuable and can be replaced. The required response
+is a new ten-model comparison with isolated model sessions, frozen prompts and scorers, raw
+sample-level outputs, and an editable plot source. Figure removal should remain a temporary state
+until the replacement evidence is ready.
+
+### Suggested Action
+Freeze a ten-model protocol before inference. Use clean Codex executions for requested GPT models,
+OpenRouter for non-OpenAI models, and record provider model IDs, reasoning settings, prompt hashes,
+case exposure, failures, latency, usage and exact scorer outputs. Draw the replacement only from
+completed comparable cells and show missing provider cells explicitly.
+
+### Metadata
+- Source: user_feedback
+- Related Files: docs/manuscript/revision-source/main.tex, docs/manuscript/revision-evidence-ledger.md
+- Tags: model-comparison, figure, clean-room, reproducibility
+- Pattern-Key: evaluation.replace_unreproducible_figure_with_clean_current_model_panel
+- Recurrence-Count: 1
+- First-Seen: 2026-08-05
+- Last-Seen: 2026-08-05
+
+---
+
+## [LRN-20260805-CLEAN-PANEL-MODEL-EXCLUSIONS] correction
+
+**Logged**: 2026-08-05T12:35:00+08:00
+**Priority**: high
+**Status**: applied
+**Area**: evaluation
+
+### Summary
+The clean ten-model revision panel excludes Claude, Kimi K3, Grok and Gemini; the user accepts
+cost-controlled Kimi K2.5.
+
+### Details
+The user retained GPT-5.4, GPT-5.5, GPT-5.6 Sol, DeepSeek V4 Flash and DeepSeek V4 Pro, explicitly
+removed Claude, Kimi K3, Grok and Gemini, and subsequently allowed Kimi K2.5 while asking to avoid
+expensive alternatives. The remaining slots should provide current cross-family coverage through
+OpenRouter with controlled inference cost.
+
+### Suggested Action
+Use Kimi K2.5, Qwen3.7 Plus, GLM 5.2, MiniMax M3 and Xiaomi MiMo V2.5 for the five remaining
+slots. Freeze exact dated or versioned model IDs and catalog pricing before inference.
+
+### Metadata
+- Source: user_feedback
+- Related Files: docs/manuscript/model-comparison-protocol.md
+- Tags: model-selection, exclusions, openrouter
+- Pattern-Key: evaluation.clean_panel_user_selected_model_families
+- Recurrence-Count: 1
+- First-Seen: 2026-08-05
+- Last-Seen: 2026-08-05
+
+---
+
+## [LRN-20260805-TERMINAL-COUNT-FROM-FILES] best_practice
+
+**Logged**: 2026-08-05T14:42:00+08:00
+**Priority**: medium
+**Status**: applied
+**Area**: evaluation monitoring
+
+### Summary
+Count benchmark terminal states from the actual terminal records before reporting a total.
+
+### Details
+The first r03 status update listed five successful models but described the count as six. The
+model names were correct and the prose total was not. Concurrent model completions make manual
+counting especially error-prone.
+
+### Suggested Action
+Generate every reported succeeded/failed/missing count from terminal files or the deterministic
+scorer summary. When names and totals disagree, treat the machine-derived count as authoritative
+and correct the user-facing update immediately.
+
+### Metadata
+- Source: assistant_error
+- Related Files: scripts/score_clean_ten_model_panel.py
+- Tags: monitoring, counting, terminal-state
+- Pattern-Key: evaluation.report_terminal_counts_from_machine_records
+- Recurrence-Count: 1
+- First-Seen: 2026-08-05
+- Last-Seen: 2026-08-05
+
+---
+
+## [LRN-20260802-002] make dual-process scheduling model-memory-aware
+
+**Logged**: 2026-08-02T17:17:00+08:00
+**Priority**: high
+**Status**: applied_to_recovery_plan
+**Area**: gpu-scheduling
+
+### Summary
+Two workers per GPU is a throughput target that requires a memory-compatibility
+rule. Pocket2Mol can grow beyond 17 GiB during autoregressive sampling, so it
+must receive an exclusive GPU whenever the co-located job would leave less than
+its observed allocation headroom.
+
+### Application
+
+- Use historical and live peak memory by model when assigning pairs.
+- Keep compatible TargetDiff and DiffSBDD pairs co-located when telemetry
+  confirms adequate headroom.
+- Run Pocket2Mol alone or only beside a proven low-memory process.
+- Use batch size 8 for 24 GiB recovery runs when a batch-32 Pocket2Mol
+  trajectory exceeds the card even under exclusive execution.
+- Shard queues by model memory class so a Pocket2Mol-only worker cannot share a
+  GPU with a long TargetDiff lane.
+- Preserve completed jobs and recover an OOM through an exact fresh retry root.
+
+---
+
+## [LRN-20260802-TRIOMOL2-PAPER-SCOPE] correction
+
+**Logged**: 2026-08-02T09:30:00+08:00
+**Priority**: critical
+**Status**: resolved
+**Area**: gpu-rebuttal
+
+### Summary
+TrioMol2 does not appear in the paper and must not remain on the FROGENT major-revision experiment path.
+
+### Details
+The revision workflow had treated a 15-task TrioMol2 panel as evidence for independent generation and Forge–Gauge single-pass/iterative analysis. The user clarified that TrioMol2 is absent from the manuscript, so its terminal state cannot gate the revision or consume further analysis effort. Three completed tasks remain useful only as historical operational records.
+
+### Suggested Action
+Exclude TrioMol2 from manuscript claims, completion criteria, scheduled monitoring and new experiments. Preserve existing results without interpreting them. Use only verified control-plane APIs for task operations; when cancellation is unavailable, leave remaining external task state untouched and continue the revision without waiting for it.
+
+### Metadata
+- Source: user_feedback
+- Related Files: FROGENT_revision_plan.md, FROGENT_experiment_checklist.md, docs/manuscript/revision-evidence-ledger.md
+- Tags: triomol2, manuscript-scope, experiment-prioritization, control-plane
+- Pattern-Key: rebuttal.exclude_nonmanuscript_provider_from_completion_path
+- Recurrence-Count: 1
+- First-Seen: 2026-08-02
+- Last-Seen: 2026-08-02
+
+---
+
+## [LRN-20260802-001] resolve worker inputs before changing directories
+
+**Logged**: 2026-08-02T09:50:00+08:00
+**Priority**: high
+**Status**: applied
+**Area**: experiment-launch
+
+### Summary
+Long-running workers must convert queue, protocol and state inputs to validated
+absolute paths before changing into a model workspace.
+
+### Application
+
+- Resolve the job TSV at the launcher boundary and reject a missing file.
+- Let the worker validate the absolute TSV again before `cd`.
+- Accept a launch only after job-state directories and nonzero GPU utilization
+  confirm that model inference has started.
+- Keep remote controller progress append-only; when controller logic must be
+  corrected during a live run, stop the exact owned PID and create a new script,
+  PID record and log file without replacing the running jobs or prior evidence.
+
+---
+
+## [LRN-20260802-RANK-VS-ABSOLUTE-STABILITY] best_practice
+
+**Logged**: 2026-08-02T00:56:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Report model-rank stability separately from absolute metric stability across seeds.
+
+### Details
+The CBGBench six-seed extension retained the same model ordering for valid rate, QED and SA, while
+TargetDiff's absolute QED and valid rate decreased in the extension cohort with pocket-cluster
+confidence intervals excluding zero. A single statement that the result is stable would hide this
+important distinction.
+
+### Suggested Action
+For stochastic generation benchmarks, report top-model retention and rank correlation alongside
+cohort deltas, clustered uncertainty and the largest model-pocket shifts. Preserve the original
+cohort as primary when additional seeds are added after observing its results.
+
+### Metadata
+- Source: experiment_analysis
+- Related Files: scripts/analyze_cbgbench_six_seed_stability.py, docs/manuscript/revision-evidence-ledger.md
+- Tags: seeds, stability, ranking, absolute-performance, clustered-bootstrap
+- Pattern-Key: evaluation.separate_rank_stability_from_absolute_metric_stability
+- Recurrence-Count: 1
+- First-Seen: 2026-08-02
+- Last-Seen: 2026-08-02
+
+---
+
+## [LRN-20260802-EXECUTABLE-TRAIN-MEMBERSHIP] best_practice
+
+**Logged**: 2026-08-02T03:28:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Define a processed training proxy by the executable loader intersection and report source gaps.
+
+### Details
+The public CrossDocked split declares 100,000 train names, while the paired
+`name2id` mapping resolves 99,990. CBGBench applies the same intersection in its
+dataloader. Evaluating those 99,990 executable records gives a reproducible
+processed-corpus proxy and preserves the 10 unresolved names as an explicit
+source gap. Nearest-neighbor and scaffold metrics answer different questions:
+zero identity and rare high ECFP4 similarity can coexist with model-specific
+scaffold reuse.
+
+### Suggested Action
+Freeze the split, mapping, processed dataset revision and loader semantics
+together. Report mapping coverage, extraction failures, exact identity,
+fingerprint thresholds and scaffold overlap separately. Keep checkpoint-exact
+training membership outside the claim when the checkpoint bundle lacks a data
+digest.
+
+### Metadata
+- Source: experiment_analysis
+- Related Files: scripts/analyze_cbgbench_crossdocked_training_proxy.py, docs/manuscript/revision-evidence-ledger.md
+- Tags: crossdocked, training-proxy, loader-membership, novelty, scaffold
+- Pattern-Key: evaluation.define_training_proxy_by_executable_loader_membership
+- Recurrence-Count: 1
+- First-Seen: 2026-08-02
+- Last-Seen: 2026-08-02
+
+---
+
+## [LRN-20260801-NOVELTY-BOUNDARY] best_practice
+
+**Logged**: 2026-08-01T23:59:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Separate local reference-ligand diversity from training-set and known-active novelty.
+
+### Details
+The completed CBGBench primary analysis can measure exact identity, Bemis-Murcko scaffold,
+ECFP4 distance to the supplied same-pocket reference ligand and geometric pocket compatibility.
+Those signals do not establish distance from the generator training set or a versioned known-active
+collection. Keeping the latter fields as `not_measured` preserves a strong, precise local-diversity
+claim without creating an unsupported global novelty claim.
+
+### Suggested Action
+Report the reference collection next to every novelty metric. Require a versioned training or
+known-active collection with an as-of date before using training-set novelty, active-neighbor or
+global scaffold-novelty language.
+
+### Metadata
+- Source: experiment_analysis
+- Related Files: scripts/analyze_cbgbench_novelty_pocket.py, docs/manuscript/revision-evidence-ledger.md
+- Tags: novelty, scaffold, ecfp4, reference-set, claim-boundary
+- Pattern-Key: evaluation.separate_local_reference_diversity_from_training_novelty
+- Recurrence-Count: 1
+- First-Seen: 2026-08-01
+- Last-Seen: 2026-08-01
+
+---
+
+## [LRN-20260802-KNOWN-ACTIVE-SCOPE] best_practice
+
+**Logged**: 2026-08-02T02:05:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Bind every active-neighbor novelty result to a database release, target mapping and activity filter.
+
+### Details
+ChEMBL 37 provides a reproducible target-matched comparator when the target IDs, assay type,
+endpoint, units, relation, standard flag and potency threshold are frozen together. Low ECFP4
+similarity to that collection narrows the novelty gap substantially while leaving generator
+training-set distance and other databases or assay types outside the measured scope.
+
+### Suggested Action
+Report the ChEMBL release and collection sizes next to nearest-neighbor metrics. Preserve raw
+activity rows, the deduplicated canonical collection and the exact query filters. Keep training-set
+novelty as `not_measured` until the actual model training collections are available.
+
+### Metadata
+- Source: experiment_analysis
+- Related Files: scripts/analyze_cbgbench_known_active_neighbors.py, docs/manuscript/revision-evidence-ledger.md
+- Tags: chembl, novelty, nearest-neighbor, target-mapping, claim-boundary
+- Pattern-Key: evaluation.bind_known_active_novelty_to_versioned_collection
+- Recurrence-Count: 1
+- First-Seen: 2026-08-02
+- Last-Seen: 2026-08-02
+
+---
+
+## [LRN-20260801-DUAL-GPU-PROCESSES] correction
+
+**Logged**: 2026-08-01T19:41:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Each CBGBench experiment GPU can run two generation processes concurrently under the validated
+batch-32 protocol.
+
+### Details
+The user clarified that the six experiment cards support two concurrent processes and asked to
+use the available memory. A conflict-free helper partition assigned 3CS9 and 1M17 to six new
+workers while the original workers retained 2HYY and 4WA9. On GPU 1/3/4/5/6/7, memory use rose
+from about 3.9 GiB to 7.9 GiB per card and utilization reached 100%, with no helper stderr or OOM.
+The existing finalizer automatically counted all 12 shard workers.
+
+### Suggested Action
+For CBGBench continuation, use two workers per experiment GPU with exclusive logical-job
+reservations, unchanged batch size and shared finalizer visibility. Preserve GPU 0 and GPU 2 for
+their existing services and keep every scheduling change in a dated amendment.
+
+### Metadata
+- Source: user_feedback
+- Related Files: FROGENT_revision_plan.md, FROGENT_experiment_checklist.md
+- Tags: gpu, concurrency, scheduling, memory, cbgbench, finalizer
+- Pattern-Key: evaluation.cbgbench_two_processes_per_experiment_gpu
+- Recurrence-Count: 1
+- First-Seen: 2026-08-01
+- Last-Seen: 2026-08-01
+
+---
+
+## [LRN-20260801-SERVER-STREAMING-ARTIFACTS] best_practice
+
+**Logged**: 2026-08-01T17:46:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Keep server-bound experiment polling on the server and isolate artifact failures at the
+individual download boundary.
+
+### Details
+TrioMol2 produced search trajectories larger than the bounded one-shot SSH relay. A poller that
+downloads every artifact before saving status allowed one large artifact to stale the entire
+15-task panel. Server-side streaming through the signed loopback API recovered all artifacts
+while preserving explicit size limits, checksums and task-level status.
+
+### Suggested Action
+For server-only providers, run polling, artifact transfer and terminal validation on the server.
+Stream large artifacts into a fresh isolated run, verify declared size and SHA-256 before atomic
+admission, and record each failed artifact while continuing the remaining task snapshot.
+
+### Metadata
+- Source: experiment_recovery
+- Related Files: scripts/poll_triomol2_server.py
+- Tags: server-only, polling, artifacts, streaming, checksum, failure-isolation
+- Pattern-Key: evaluation.server_streaming_with_per_artifact_failure_isolation
+- Recurrence-Count: 1
+- First-Seen: 2026-08-01
+- Last-Seen: 2026-08-01
+
+---
+
+## [LRN-20260801-RESUME-ISOLATION] best_practice
+
+**Logged**: 2026-08-01T16:40:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Resume a partially completed GPU matrix by carrying verified terminal jobs and rerunning the
+remaining logical jobs in a new immutable run root.
+
+### Details
+The paused CBGBench extension contained 15 exit-zero Pocket2Mol jobs, four interrupted
+TargetDiff/DiffSBDD directories and 26 unstarted jobs. The safe resume keeps the paused root
+unchanged, carries the 15 verified jobs, reruns all 30 remaining logical jobs in a dated resume
+root, and finalizes only after validating 45 unique logical jobs. This avoids stale PID records,
+partial-output reuse and in-place state mutation.
+
+### Suggested Action
+For every resumed matrix, classify logical jobs as verified-terminal, interrupted or unstarted.
+Carry only exit-zero terminal jobs, use a new run root for every remaining logical job, and bind
+the final manifest to unique logical identities across the source and resume roots.
+
+### Metadata
+- Source: user_instruction
+- Related Files: runtime/evaluation/revision-20260731/gpu-final/cbgbench_seed_extension_resume_preregistration.json
+- Tags: gpu, resume, immutable-run, manifest, recovery
+- Pattern-Key: evaluation.resume_with_carried_terminal_and_new_root
+- Recurrence-Count: 1
+- First-Seen: 2026-08-01
+- Last-Seen: 2026-08-01
+
+---
+
+## [LRN-20260731-4ZGM-REFERENCE] correction
+
+**Logged**: 2026-07-31T16:02:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: structural-evaluation
+
+### Summary
+4ZGM chain B is a Semaglutide backbone reference and cannot serve as a native glucagon pose.
+
+### Details
+The earlier ESMFold report labeled a receptor-aligned comparison between predicted glucagon and
+4ZGM chain B as a native-pose RMSD. The deposited chain B is the Semaglutide peptide backbone,
+with coordinates for parent-sequence positions 4-31. The `28.619 Å` value is therefore a
+cross-ligand pose distance. The AF3 analysis uses 4ZGM only for sequence-mapped Semaglutide,
+yielding an `8.133 Å` receptor-aligned CA RMSD and explicit contact recall/precision.
+
+### Suggested Action
+Bind every peptide coordinate reference to its exact deposited entity and sequence mapping.
+Use native-pose language only for the matching ligand; preserve cross-ligand distances under an
+explicit exploratory label.
+
+### Metadata
+- Source: analysis_correction
+- Related Files: runtime/evaluation/revision-20260731/gpu-final/af3-glp1r/analysis.json
+- Tags: 4zgm, semaglutide, glucagon, rmsd, reference-mapping
+- Pattern-Key: structural_eval.bind_reference_to_exact_ligand
+- Recurrence-Count: 1
+- First-Seen: 2026-07-31
+- Last-Seen: 2026-07-31
+
+---
+
+## [LRN-20260731-GPU-CONTINUITY] best_practice
+
+**Logged**: 2026-07-31T15:50:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Continuous GPU authorization still requires preserving active third-party services and assigning
+only verified idle cards to isolated rebuttal experiments.
+
+### Details
+The user authorized all eight RTX 4090 cards for ongoing rebuttal experiments. Live inventory
+showed GPU 0 hosting TrioMol2 and existing services, GPU 2 fully occupied by a third-party
+production service, and GPUs 1/3/4/5/6/7 idle. A post-outcome CBGBench independent-seed
+replication was therefore assigned to the six idle cards with a new run root, fixed protocol,
+separate preregistration amendment, per-job telemetry and an automatic terminal finalizer.
+
+### Suggested Action
+Before every follow-up matrix, re-check process ownership and free memory. Preserve occupied
+production workloads, use a new exact run root, label post-outcome extensions explicitly, and
+attach an automatic terminal manifest generator.
+
+### Metadata
+- Source: user_instruction
+- Related Files: runtime/evaluation/revision-20260731/gpu-final/cbgbench_seed_extension_preregistration.json
+- Tags: gpu, scheduling, isolation, replication, rebuttal
+- Pattern-Key: evaluation.continuous_gpu_use_preserve_existing_services
+- Recurrence-Count: 1
+- First-Seen: 2026-07-31
+- Last-Seen: 2026-07-31
+
+---
+
+## [LRN-20260730-DVS] best_practice
+
+**Logged**: 2026-07-30T21:37:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+Resource-matched direct-tool parity and experimental discrimination answer separate questions in
+virtual-screening evaluation.
+
+### Details
+The preregistered DAVIS–ABL1 CPU panel produced exact direct-Vina/FROGENT parity for all ten
+pose-score vectors and zero execution failures. The same scores selected imatinib while DAVIS
+ranked dasatinib first, with Spearman rho 0.115 and p=0.751 across the ten high-affinity
+positives. Exact tool parity therefore validates orchestration and lineage preservation, while
+the weak assay correlation bounds Vina score to an uncalibrated pose/tool signal in this setting.
+A top-positive-only panel also cannot estimate inactive enrichment.
+
+### Suggested Action
+Report tool parity, experimental rank discrimination, and enrichment as separate outcomes.
+Require a calibrated discriminator or a panel containing predefined inactive controls before
+using docking score to drive affinity optimization.
+
+### Metadata
+- Source: real_task_eval
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/davis-screening/
+- Tags: davis, vina, affinity-ranking, direct-tool-parity, calibration
+- Pattern-Key: evaluation.separate_tool_parity_from_discrimination
+- Recurrence-Count: 1
+- First-Seen: 2026-07-30
+- Last-Seen: 2026-07-30
+
+---
+
+## [LRN-20260730-LUT] knowledge_gap
+
+**Logged**: 2026-07-30T21:20:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: eval
+
+### Summary
+The cited Wang et al. Luteolin paper contains direct disease-context PPAR-gamma
+evidence that must be read before setting the cardiac-case claim boundary.
+
+### Details
+The manuscript sentence alone supported a conservative initial assumption that
+the public evidence established candidate status without a direct
+Luteolin-PPAR-gamma mechanism. Europe PMC PMID 36998980 reports the stronger
+preclinical result: direct interaction, reduced PPAR-gamma degradation, and
+loss of the protective effect after PPAR-gamma inhibition or knockdown. The
+study remains preclinical and does not establish human clinical efficacy.
+
+### Suggested Action
+For known-candidate provenance studies, retrieve and read the paper's cited
+anchor source before freezing mechanism-level expected answers. Preserve any
+pre-source preregistration mismatch through a dated protocol amendment.
+
+### Metadata
+- Source: source_verification
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/luteolin-comparison/
+- Tags: luteolin, provenance, preregistration, ppargamma, claim-boundary
+- Pattern-Key: eval.read_cited_anchor_before_mechanism_boundary
+- Recurrence-Count: 1
+- First-Seen: 2026-07-30
+- Last-Seen: 2026-07-30
+
+### Resolution
+- **Resolved**: 2026-07-30T21:20:00+08:00
+- **Commit/PR**: N/A
+- **Notes**: The original preregistration is preserved and the corrected
+  source-grounded expectation is documented in a protocol amendment.
+
+---
+
+## [LRN-20260730-PLP] best_practice
+
+**Logged**: 2026-07-30T21:50:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: evaluation
+
+### Summary
+PLIP interaction benchmarks must bind the hydrogen-addition policy and map fields by interaction
+type before typed-parser accuracy is interpreted.
+
+### Details
+The B6 CPU panel found byte-equivalent direct and adapter-invoked PLIP XML across 12 complexes,
+while typed parsing accepted 8 cases. The default `--nohydro` path covered four of five benchmark
+interaction classes; PLIP standard hydrogen addition covered all five. Metal-complex and water-
+bridge XML records use interaction-specific fields that the current generic typed schema does not
+fully map, so those cases correctly fail closed.
+
+### Suggested Action
+Record the exact hydrogen policy in every PLIP protocol. Extend typed parsing with explicit
+metal-complex and water-bridge field mappings, then rerun the same direct-tool ceiling before
+using five-class accuracy as an Agent-level metric.
+
+### Metadata
+- Source: real_task_eval
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/plip-parser-baseline/
+- Tags: plip, hydrogen-policy, typed-parser, interaction-schema, evaluation
+- Pattern-Key: docking.plip_bind_hydrogen_and_interaction_schema
+- Recurrence-Count: 1
+- First-Seen: 2026-07-30
+- Last-Seen: 2026-07-30
+
+---
+
+## [LRN-20260730-LV1] best_practice
+
+**Logged**: 2026-07-30T20:41:00+08:00
+**Priority**: medium
+**Status**: validated
+**Area**: backend
+
+### Summary
+Europe PMC phrase queries need a separate exact-identifier recovery wave when an evaluation names
+a specific primary paper.
+
+### Details
+In the eight-task live evidence panel, quoted paper-title queries produced stable five-record sets
+but often ranked recent secondary or citing records ahead of the named primary study. Exact
+`EXT_ID:<PMID>` queries recovered the predefined anchors for all applicable tasks except a
+temporal-version case where the expected historical version was absent from the current provider
+representation. Discovery retrieval and anchor resolution answer distinct questions and should be
+measured separately.
+
+### Suggested Action
+For named-study tasks, keep topical queries for coverage and add exact PMID/DOI resolution before
+screening. Record version-aware provenance or an archived snapshot when a claim depends on a
+preliminary-versus-final distinction.
+
+### Metadata
+- Source: experiment
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/live-evidence/
+- Tags: europe-pmc, retrieval, source-grounding, temporal-provenance
+- Pattern-Key: retrieval.discovery_plus_exact_anchor_resolution
+- Recurrence-Count: 1
+- First-Seen: 2026-07-30
+- Last-Seen: 2026-07-30
+
+---
+
+## [LRN-20260730-002] best_practice
+
+**Logged**: 2026-07-30T20:42:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: tests
+
+### Summary
+Synthetic-accessibility comparisons must bind the exact scorer and direction before declaring
+one molecule favorable.
+
+### Details
+The project-contained RDKit Contrib `SA_Score/sascorer.py` returns values from 1 (easier synthesis)
+to 10 (harder synthesis), so lower values are favorable. The current manuscript benchmark text
+describes a higher SA score as favorable. Some molecular-generation pipelines transform raw SA
+into a higher-is-better reward, which makes the label alone insufficient to infer direction.
+
+### Suggested Action
+Record the scorer implementation, version, raw range, any normalization or sign transform, and
+the favorable direction in every benchmark manifest before recomputing or comparing SA results.
+
+### Metadata
+- Source: experiment
+- Related Files: runtime/evaluation/revision-20260730/nongpu-final/molecular-properties/REPORT.md
+- Tags: molecular-generation, synthetic-accessibility, scorer-semantics, benchmark
+- Pattern-Key: evaluation.bind_metric_implementation_and_direction
+- Recurrence-Count: 1
+- First-Seen: 2026-07-30
+- Last-Seen: 2026-07-30
+
+---
+
+## [LRN-20260730-001] correction
+
+**Logged**: 2026-07-30T00:00:00+08:00
+**Priority**: high
+**Status**: validated
+**Area**: docs
+
+### Summary
+FROGENT 大修的内部执行窗口为两周，计划应围绕并行完成全部要求组织。
+
+### Details
+用户明确确认全部审稿修订、实验、文稿、界面和回复工作可以在两周内完成。后续计划不应沿用编辑部十二周窗口或以工作量为理由缩减目标。执行设计需要先用 48 小时完成事实核查，再让统计、公平性与消融、生成与构象、evidence reliability、界面、代码、正文和 rebuttal 多条工作流并行推进，并保留最终整合与独立复核。
+
+### Suggested Action
+所有 FROGENT 大修计划统一使用 14 天内部冲刺，设定每日交付物和依赖门槛；完整覆盖全部 atomic reviewer comments。
+
+### Metadata
+- Source: user_feedback
+- Related Files: FROGENT_revision_plan.md, FROGENT_experiment_checklist.md
+- Tags: rebuttal, revision, two-week-sprint, parallel-execution
+- Pattern-Key: revision.complete_all_within_two_weeks
+- Recurrence-Count: 1
+- First-Seen: 2026-07-30
+- Last-Seen: 2026-07-30
+
+---
+
 ## [LRN-20260723-001] best_practice
 
 **Logged**: 2026-07-23T00:00:00+08:00
@@ -1552,3 +2601,670 @@ Classify design work as qualitative, quantitative, or hybrid. Lead qualitative a
 - Promoted: AGENTS.md
 
 ---
+## [LRN-20260731-001] inspect_declared_production_paths_before_classifying_models_as_missing
+
+**Logged**: 2026-07-31T02:52:00+08:00
+**Priority**: high
+**Area**: gpu-rebuttal
+
+### Learning
+
+For FROGENT rebuttal work, model and checkpoint availability must be checked in the declared
+production deployments before concluding that a manuscript model is absent. The authoritative
+read-only locations are `doomx_3nd:/work/pqh/projects/agent/` for MCP services and
+`doomx_3nd:/work/pqh/projects/Frogent1/` for the FROGENT front end and back end.
+
+### Trigger
+
+The initial GPU inventory searched the copied project and `/work/doomx` caches, then described the
+five named generation checkpoints as absent. The user corrected the scope and pointed to the
+production directories where the deployed weights live.
+
+### Application
+
+- Inventory both production paths read-only before assigning `deferred` or `not_measured`.
+- Trace each live MCP endpoint to its exact model config and checkpoint lineage.
+- Run experiments through the live endpoints or copied, isolated assets; keep the production
+  source directories and Git worktrees unchanged.
+
+---
+
+## [LRN-20260731-002] correction
+
+**Logged**: 2026-07-31T07:30:00+08:00
+**Priority**: critical
+**Status**: resolved
+**Area**: gpu-rebuttal
+
+### Summary
+The FROGENT major-revision peptide-docking methods are MDockPeP2 and ADCP.
+
+### Details
+The user corrected an experiment-role explanation that treated TrioPep as the
+primary prospective peptide-docking method. The formal docking evidence must
+be organized around MDockPeP2 and ADCP. TrioPep results, if retained, require a
+separate explicitly scoped role and cannot silently substitute for either
+named docking method.
+
+### Suggested Action
+Audit the declared production roots for ADCP and MDockPeP2 entrypoints, assets,
+versions, inputs and historical outputs. Update the revision plan, checklist,
+provider inventory and S3-E preregistration before interpreting TrioPep
+results. Run the executable MDockPeP2 and ADCP experiments under matched,
+auditable conditions when their verified dependencies permit.
+
+### Metadata
+- Source: user_feedback
+- Related Files: FROGENT_revision_plan.md, FROGENT_experiment_checklist.md, docs/manuscript/revision-evidence-ledger.md
+- Tags: peptide-docking, MDockPeP2, ADCP, TrioPep, correction
+- Pattern-Key: rebuttal.peptide_docking_methods
+- Recurrence-Count: 1
+- First-Seen: 2026-07-31
+- Last-Seen: 2026-07-31
+
+### Resolution
+The revision plan, checklist, evidence ledger, provider inventory and new ADCP
+preregistration now define MDockPeP2 and ADCP as the formal docking methods.
+TrioPep, AlphaFold 3 and ESMFold are explicitly scoped as supplementary
+provider or sequence-to-complex evidence.
+
+---
+
+## [LRN-20260802-003] derive queue ownership from the scheduler invariant
+
+**Logged**: 2026-08-02T19:34:00+08:00
+**Priority**: high
+**Area**: gpu-rebuttal
+
+### Learning
+
+For sharded experiment queues, derive ownership from the executable scheduler
+rule and the frozen job index. Labels such as method or current worker contents
+do not define a complete lane when rows are assigned by modulo sharding.
+
+### Application
+
+- Compute worker membership as `job_index % worker_count` when diagnosing a
+  shard or waiting for a frozen subset.
+- Freeze retries from explicit terminal state at a timestamped snapshot, or
+  wait for the entire source phase to become terminal.
+- Require complete exit-zero replacement coverage before merging recovery
+  sources or starting downstream selection.
+
+---
+
+## [LRN-20260802-004] separate exact retries from dynamic recovery coverage
+
+**Logged**: 2026-08-02T20:32:00+08:00
+**Priority**: high
+**Area**: gpu-rebuttal
+
+### Learning
+
+Long source phases can accumulate failures after an earlier retry snapshot has
+already completed. Exact retry roots should remain immutable and narrow, while
+the downstream recovery gate discovers complete retry manifests and validates
+full logical-job coverage at the merge boundary.
+
+### Application
+
+- Keep each retry root tied to one timestamped set of failed logical tags.
+- Let the recovery controller wait for all source terminals and all required
+  exit-zero replacements without modifying earlier retry roots.
+- Freeze one tag-to-source map only after every logical job has a validated
+  result, then begin selection and downstream computation.
+- Parameterize the exact-retry executor by its fresh run root so later frozen
+  snapshots reuse one validated memory-safe implementation without touching
+  any earlier run.
+
+---
+## [LRN-20260802-005] require stable molecule IDs across properties and coordinates
+
+**Logged**: 2026-08-02T22:08:00+08:00
+**Category**: best_practice
+**Area**: molecular generation evaluation
+
+### Learning
+
+Property summaries and coordinate files need a shared stable molecule ID. Matching by row order,
+filename convention or aggregate counts is insufficient once a generator sorts, deduplicates or
+serializes through separate paths. A coordinate follow-up must validate a molecule-level
+bijection before selecting top candidates from a property table.
+
+### Applied Change
+
+The Forge-Gauge geometry follow-up now selects from properties recomputed directly from persisted
+SDFs and explicitly separates that analysis from the source property-CSV top-50 summaries.
+
+---
+## [LRN-20260802-006] advance frozen later tags onto a newly idle GPU
+
+**Logged**: 2026-08-02T22:29:00+08:00
+**Category**: best_practice
+**Area**: gpu scheduling
+
+### Learning
+
+An idle GPU can accelerate an append-only sharded experiment without adding a scientific arm.
+Choose unstarted logical tags several positions behind a live shard's current job, validate every
+scientific field against the master queue, and launch them under the same state/result roots. The
+original worker then skips each claimed or terminal tag through the existing PID/exit-code guard.
+
+### Applied Change
+
+The Forge-Gauge scheduling accelerator assigned four later TargetDiff jobs and four later DiffSBDD
+jobs to two memory-compatible workers on GPU 6. The run records this as scheduling-only and waits
+for all eight source tags before writing its final manifest.
+
+The same pattern was reused for phase 2 after six jobs completed: three frozen 4WA9 jobs with no
+source state were validated against the master queue and advanced onto idle GPUs 5/6/7. This
+removed the final scheduling tail while retaining the original state and result roots.
+
+### Metadata
+- Source: user_feedback
+- Pattern-Key: gpu.advance_frozen_unstarted_jobs
+- Recurrence-Count: 2
+- First-Seen: 2026-08-02
+- Last-Seen: 2026-08-03
+
+---
+
+## [LRN-20260804-008] pin one model per benchmark role
+
+**Logged**: 2026-08-04T10:20:00+08:00
+**Category**: user_preference
+**Status**: superseded
+**Area**: agent model policy
+
+### Learning
+
+Use `deepseek-v4-flash` for FROGENT Agent runs. Use `gpt-5.6-terra` for Codex-side orchestration,
+implementation, and independent acceptance when a Codex model is needed. Freeze the selected
+model in each benchmark protocol and do not mix outputs from the two models within one comparison
+arm.
+
+### Applied Change
+
+The active runtime model boundary and the DeepSeek provider canary are being updated to make this
+selection explicit and reproducible.
+
+### Metadata
+- Source: user_feedback
+- Pattern-Key: runtime.pin_agent_and_acceptance_models
+- Recurrence-Count: 1
+- First-Seen: 2026-08-04
+- Last-Seen: 2026-08-04
+- See Also: LRN-20260804-009
+
+---
+
+## [LRN-20260804-009] FROGENT Agent may use DeepSeek Flash or Luna max
+
+**Logged**: 2026-08-04T10:41:16+08:00
+**Category**: correction
+**Status**: applied
+**Area**: agent model policy
+
+### Summary
+
+The accepted FROGENT Agent configurations are `deepseek-v4-flash` or `gpt-5.6-luna` with
+`model_reasoning_effort=max`. Terra is removed from the active model policy.
+
+### Details
+
+Freeze exactly one of the two configurations for each run or benchmark arm. Record the model and
+reasoning effort in its protocol and manifest. Do not pool DeepSeek and Luna outputs within an arm.
+
+### Suggested Action
+
+Make Luna/max the explicit Codex-compatible alternative, verify it with a live structured canary,
+and update runtime defaults, tests, documentation, revision plan and checklist.
+
+### Metadata
+- Source: user_feedback
+- Related Files: agent/llm/codex_client.py, agent/app/research_factory.py, docs/MODEL_POLICY.md
+- Pattern-Key: runtime.pin_agent_model_alternatives
+- Recurrence-Count: 1
+- First-Seen: 2026-08-04
+- Last-Seen: 2026-08-04
+- See Also: LRN-20260804-008
+
+---
+
+## [LRN-20260803-007] retain molecule-level parse failures without discarding analyzable cells
+
+**Logged**: 2026-08-03T16:52:00+08:00
+**Priority**: high
+**Status**: resolved
+**Area**: evaluation
+
+### Summary
+Coordinate analyses should report unreadable generated molecules and continue when every frozen
+cell still satisfies its selection quota.
+
+### Details
+The Forge-Gauge geometry r02 analysis encountered four unreadable SDF files in its first surfaced
+job and stopped before producing any output. A parse-handling-only r03 amendment retained counts
+for all 157 unreadable files across 47,333 source SDFs, excluded only those files, and still
+completed the unchanged top-50 quota for all 45 cells.
+
+### Suggested Action
+For generated-molecule panels, use candidate-level failure accounting plus explicit per-cell
+minimum quotas. Reserve run-level failure for missing cells, broken source gates, or insufficient
+valid coordinate-bearing candidates.
+
+### Metadata
+- Source: error
+- Related Files: runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-top-candidate-geometry-r02, runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-top-candidate-geometry-r03
+- Pattern-Key: evaluation.candidate_parse_failure_quorum
+- Recurrence-Count: 1
+- First-Seen: 2026-08-03
+- Last-Seen: 2026-08-03
+
+---
+
+## [LRN-20260804-010] exclude TrioPep from the active revision scope
+
+**Logged**: 2026-08-04T14:45:00+08:00
+**Category**: correction
+**Status**: applied
+**Area**: rebuttal scope
+
+### Summary
+
+TrioPep is outside the active FROGENT revision scope. It must not consume new submissions,
+polling, fetching, analysis, manuscript evidence work, or completion waiting.
+
+### Applied Change
+
+Remove TrioPep from the recurring automation and current revision documents. Stop only the exact
+FROGENT-owned polling process after verifying its command line. Preserve the four historical
+control-plane tasks and their remote state without modifying task files, databases, workers, or
+third-party services.
+
+### Metadata
+- Source: user_feedback
+- Related Files: FROGENT_revision_plan.md, FROGENT_experiment_checklist.md, docs/manuscript/peptide-workflow-rebuttal-blocks.md, docs/manuscript/revision-evidence-ledger.md
+- Pattern-Key: rebuttal.exclude_triopep_active_scope
+- Recurrence-Count: 1
+- First-Seen: 2026-08-04
+- Last-Seen: 2026-08-04
+
+---
+## [LRN-20260807-011] separate fixed one-pass harness evidence from feedback allocation evidence
+
+**Logged**: 2026-08-07T04:22:00+08:00
+**Priority**: high
+**Status**: applied
+**Area**: evaluation
+
+### Summary
+The current-model radar FROGENT arm already performs one evidence-conditioned model call per
+batch. It is a fixed one-pass harness comparison and must not be relabeled as an adaptive loop.
+
+### Applied Change
+Keep clean direct-model versus FROGENT fixed one-pass results in the radar analysis. Use the
+separately preregistered Forge-Gauge matched-budget panel for claims about one feedback allocation,
+uniform single-pass allocation, iterative routing, and the known fixed-best boundary.
+
+### Metadata
+- Source: user_feedback
+- Related Files: scripts/run_paired_frogent_model_panel.py, FROGENT_revision_plan.md, FROGENT_experiment_checklist.md
+- Pattern-Key: evaluation.separate_fixed_harness_from_feedback_allocation
+- Recurrence-Count: 1
+
+---
+## [LRN-20260807-012] preserve the submitted abstract and introduction narrative
+
+**Logged**: 2026-08-07T02:32:00+08:00
+**Priority**: critical
+**Status**: applied
+**Area**: manuscript editing
+
+### Summary
+For this subsidiary-journal revision, the abstract should present the problem, system, scope, and
+high-level contribution without stacking numerical results. The submitted Introduction narrative
+must remain intact unless a specific reviewer request requires a local amendment.
+
+### Applied Change
+Restore the submitted abstract and final Introduction paragraph as the structural base. Limit
+edits to local claim narrowing, removal of unsupported priority or superiority language, and the
+minimum literature positioning required by review. Keep detailed statistics and external-system
+comparisons in Results, Discussion, SI, and the response letter.
+
+### Metadata
+- Source: user_feedback
+- Related Files: docs/manuscript/revision-source/main.tex
+- Pattern-Key: manuscript.preserve_abstract_introduction_narrative
+- Recurrence-Count: 1
+
+---
+## [LRN-20260807-013] present the selected FROGENT system and individual direct models
+
+**Logged**: 2026-08-07T15:30:00+08:00
+**Priority**: critical
+**Status**: applied
+**Area**: manuscript figures
+
+### Summary
+Cross-system figures should show one selected FROGENT configuration and every direct LLM separately.
+The figure labels the system simply as `FROGENT`; its base model is disclosed in the manuscript text.
+
+### Applied Change
+Replace Direct/FROGENT model means with 12 individual direct-model rows and the highest-scoring
+evaluated FROGENT configuration. Remove fairness-oriented and global-ranking disclaimers from the
+figure narrative while retaining measured task coverage through grey cells.
+
+### Metadata
+- Source: user_feedback
+- Related Files: scripts/plot_external_current_model_adaptations.py, docs/manuscript/revision-source/main.tex
+- Pattern-Key: manuscript.figure_selected_system_vs_individual_direct_models
+- Recurrence-Count: 1
+
+---
+## [LRN-20260807-014] distinguish absent workflow tasks from failed measurements
+
+**Logged**: 2026-08-07T16:05:00+08:00
+**Priority**: high
+**Status**: applied
+**Area**: manuscript figures
+
+### Summary
+An empty cross-system comparison cell must state whether the public workflow lacks the task,
+the task was not run, or execution failed. These states cannot share the label `not measured`.
+
+### Applied Change
+Verified Prompt-to-Pill's public input and tool contracts. Its DrugGen path generates candidate
+SMILES from a supplied UniProt target, its name resolver maps supplied names and SMILES, and it
+has no target-to-DrugBank retrieval or disease-to-target discovery agent. The figure now uses
+hatched cells for tasks absent from a workflow and a bar-matrix design without a continuous
+gradient.
+
+### Metadata
+- Source: user_feedback
+- Related Files: scripts/plot_external_current_model_adaptations.py, docs/manuscript/revision-source/main.tex
+- Pattern-Key: evaluation.distinguish_absent_unrun_failed_cells
+- Recurrence-Count: 1
+
+---
+## [LRN-20260807-015] explain comparator task boundaries and place FROGENT last
+
+**Type:** correction
+**Priority:** high
+**Status:** active
+**Scope:** manuscript comparison figure and main-text interpretation
+
+### Observation
+
+The external-system comparison must explain in the main manuscript why CLADD, Prompt-to-Pill,
+and Robin have unmeasured task cells. The figure should list the three external systems before
+FROGENT and place the FROGENT result in the bottom row.
+
+### Rule
+
+Tie every hatched comparison cell to the verified public workflow input/output contract. Order
+the system rows as CLADD, Prompt-to-Pill, Robin, then FROGENT, while keeping the 12 direct LLMs
+as individual rows above them.
+
+### Related Files
+
+- `scripts/plot_external_current_model_adaptations.py`
+- `docs/manuscript/revision-source/main.tex`
+
+---
+
+## [LRN-20260807-016] distinguish case aggregation from independent run replication
+
+**Type:** knowledge_gap
+**Priority:** high
+**Status:** active
+**Scope:** current-model comparison and manuscript uncertainty reporting
+
+### Observation
+
+The current comparison scores aggregate one valid inference per exposed case: 20 cases per task,
+with 19 valid virtual-screening cases. Transport retries and exact recovery replace failed calls
+and do not constitute independent experimental repetitions. The current figure therefore has no
+three-run or five-run estimate of model-output variability.
+
+### Rule
+
+Describe the current values as case-aggregated single-run point estimates. To quantify stochastic
+run-to-run variation, preregister independent repetitions for every displayed arm, preserve the
+same cases and scorers, use distinct declared seeds where supported, and report the repetition
+mean with standard deviation or a confidence interval. Never count transport retries as repeats.
+
+### Related Files
+
+- `scripts/run_clean_ten_model_panel.py`
+- `scripts/run_paired_frogent_model_panel.py`
+- `scripts/run_external_current_model_adaptations.py`
+
+---
+
+## [LRN-20260811-003] target-active similarity can confound kinase screening
+
+**Type:** best_practice
+**Priority:** high
+**Status:** active
+**Scope:** target-conditioned virtual screening
+
+### Observation
+
+Uniform ChEMBL known-active similarity reduced the exposed screening score from 16/19 to 14/19.
+Many candidates are exact known actives for several kinases, so shared scaffolds and
+polypharmacology make maximum Tanimoto an ambiguous target discriminator.
+
+### Rule
+
+Use target-active similarity as supporting context. When a supplied PDB identifier contains a
+resolved co-crystal ligand, prioritize structure-matched ligand evidence. Preserve targets with
+no informative PDB ligand as explicit fallbacks and avoid treating similarity as affinity.
+
+### Related Files
+
+- `agent/molecular/chembl_evidence.py`
+- `runtime/evaluation/revision-20260811/frogent-sol-max-chembl-screening-r01/`
+
+---
+
+## [LRN-20260811-004] co-crystal ligand similarity is not a docking surrogate
+
+**Type:** best_practice
+**Priority:** high
+**Status:** active
+**Scope:** structure-aware virtual screening
+
+### Observation
+
+Adding RCSB PDB non-polymer ligand matching changed screening from 16/19 to 15/19. It repaired
+AAK1 and MELK cases but introduced errors for EPHA7, DDR1 and AXL. The deposited ligand can be a
+useful scaffold reference while remaining distinct from the highest-affinity candidate in a
+shared candidate pool.
+
+### Rule
+
+Use co-crystal ligand similarity as structural context. Candidate ranking that claims pocket
+preference requires pose generation, pocket-conditioned scoring or another target-specific
+interaction signal. Do not substitute ligand similarity for docking or affinity.
+
+### Related Files
+
+- `agent/molecular/pdb_ligand_evidence.py`
+- `runtime/evaluation/revision-20260811/frogent-sol-max-pdb-ligand-screening-r01/`
+
+---
+
+## [LRN-20260811-001] admit external tools only after observed execution
+
+**Type:** best_practice
+**Priority:** high
+**Status:** active
+**Scope:** external-agent tool integration
+
+### Observation
+
+The CLADD and Prompt-to-Pill adaptations successfully executed deterministic RDKit descriptors,
+Lipinski/Veber rules and Morgan-Tanimoto similarity. Other inspected components were unavailable,
+contained placeholder credentials, or duplicated existing FROGENT capabilities.
+
+### Rule
+
+Promote an external tool into FROGENT only after a real execution succeeds and its result changes
+a scientific decision or claim boundary. Reuse existing FROGENT capabilities instead of adding
+duplicate wrappers. Keep unavailable or credential-dependent components deferred and preserve
+their exact failure evidence.
+
+### Related Files
+
+- `agent/molecular/physchem.py`
+- `mcp/chemistry_mcp.py`
+- `runtime/evaluation/revision-20260811/chemistry-mcp-canary-r02/`
+
+---
+
+## [LRN-20260811-002] reuse completed external baselines when testing a new FROGENT tool
+
+**Type:** correction
+**Priority:** critical
+**Status:** active
+**Scope:** external-system comparison scheduling
+
+### Observation
+
+The request to rerun an experiment after adding new FROGENT MCP tools applied only to the new
+FROGENT arm. CLADD, Prompt-to-Pill and Robin already had completed accepted results and did not
+need another model run.
+
+### Rule
+
+When a new FROGENT capability is evaluated against an already completed external baseline, freeze
+and reuse the accepted external cells. Launch only the changed FROGENT condition unless the author
+explicitly requests a new external model boundary. Preserve any mistakenly started output as an
+aborted audit run and exclude it from comparison.
+
+### Related Files
+
+- `runtime/evaluation/revision-20260810/external-sol-resource-enabled-recovery-r05/`
+- `runtime/evaluation/revision-20260811/external-sol-max-resource-enabled-r01/`
+- `runtime/evaluation/revision-20260811/frogent-sol-max-chemistry-mcp-r01/`
+
+---
+
+## [LRN-20260810-023] heatmap annotations must remain legible at final raster scale
+
+**Type:** user_correction
+**Priority:** high
+**Status:** active
+**Scope:** manuscript figures with per-cell numeric annotations
+
+### Observation
+
+A diverging heatmap can encode effect direction correctly while its overlaid numbers remain hard
+to read, especially when one fixed text color is used across pale and saturated cells. Large source
+dimensions alone do not solve contrast loss at manuscript display scale.
+
+### Rule
+
+Use dynamic annotation colors based on rendered-cell luminance, add a restrained contrasting halo,
+keep numeric labels at least 8 pt in the final layout, and inspect the exported PNG rather than only
+the plotting code. Preserve the signed numeric values alongside color so the figure remains usable
+without relying on hue discrimination.
+
+### Related Files
+
+- `scripts/analyze_paired_model_effect.py`
+- `docs/manuscript/revision-source/figures/paired-model-frogent-effect.png`
+
+### Figure-label convention
+
+In the base-model comparison figure, label the system arm simply as `FROGENT`. Keep base-model
+details in the methods or main-text description rather than expanding the legend to `Same model +
+FROGENT`.
+- `docs/manuscript/revision-source/main.tex`
+
+---
+
+## [LRN-20260809-021] provider credit errors require an immediate global circuit breaker
+
+**Type:** user_correction
+**Priority:** critical
+**Status:** active
+**Scope:** paid-provider experiment schedulers
+
+### Observation
+
+The Chinese-model panel continued scheduling and retrying after OpenRouter first returned HTTP
+402. This created thousands of redundant failed attempts after the account could no longer fund
+requests.
+
+### Rule
+
+Treat the first HTTP 402 or equivalent provider-credit error as a global, non-retryable stop
+condition. Set a process-wide circuit breaker immediately, issue no new requests, do not retry the
+failed request, preserve completed batches, and leave queued work unstarted for a later exact
+recovery run. Report the credit blocker to the user once with the stopped scope.
+
+### Related Files
+
+- `scripts/run_networked_chinese_model_panel.py`
+
+---
+
+## [LRN-20260810-022] external-system adaptations must follow the latest resource contract
+
+**Type:** knowledge_gap
+**Priority:** critical
+**Status:** active
+**Scope:** CLADD, Prompt-to-Pill and Robin reviewer comparisons
+
+### Observation
+
+The completed 6/6 current-model adaptation panel explicitly prohibited files, tools and web
+search during inference. The author's later benchmark contract permits CLADD, Prompt-to-Pill and
+Robin to use their own frozen repository files, available native tools and public network access,
+while continuing to prohibit FROGENT initialization, FROGENT tools, private user resources and
+gold answers. The completed no-resource panel therefore cannot be presented as the final execution
+of the later contract.
+
+### Rule
+
+Keep the 6/6 panel as a versioned no-resource workflow adaptation. Run a separately preregistered
+resource-enabled panel for the aligned tasks, record which native components actually executed,
+and distinguish unavailable tools from tools that were never exposed. Do not describe source-code
+excerpts or workflow-stage prompting as native-tool execution.
+
+### Related Files
+
+- `scripts/run_external_current_model_adaptations.py`
+- `scripts/run_networked_three_seed_comparison.py`
+- `docs/manuscript/revision-source/sup.tex`
+
+---
+
+## [LRN-20260807-017] separate tool capability, tool exposure, and live tool execution
+
+**Type:** knowledge_gap
+**Priority:** critical
+**Status:** active
+**Scope:** direct-model and FROGENT comparison interpretation
+
+### Observation
+
+Several evaluated base models support tool-calling when a host exposes tools. In the direct arm,
+Codex web search and tool events were disabled and OpenRouter requests contained no tool schema.
+The external-adaptation prompts also prohibited tools. In the paired FROGENT arm, the model
+received a frozen cache of real tool evidence; it did not autonomously select and execute live
+tools during these benchmark calls.
+
+### Rule
+
+Describe the figure as direct no-tool inference versus a FROGENT evidence-grounded workflow.
+Do not characterize this particular panel as a comparison of autonomous live tool use. Evaluate
+live tool selection, execution, observation handling, and recovery in a separate end-to-end run.
+
+### Related Files
+
+- `scripts/run_clean_ten_model_panel.py`
+- `scripts/run_paired_frogent_model_panel.py`
+- `scripts/run_external_current_model_adaptations.py`

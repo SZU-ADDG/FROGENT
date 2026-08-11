@@ -1,0 +1,18 @@
+{
+  "protocol_id": "forge-gauge-matched-budget-prospective-retry-r01",
+  "amends": "forge-gauge-matched-budget-prospective-r02",
+  "frozen_at": "2026-08-02T18:24:00+08:00",
+  "reason": "Three Pocket2Mol jobs on worker 10 failed with CUDA OOM while sharing physical GPU 6 with a long TargetDiff job.",
+  "scope": "Retry only the three exact failed logical jobs after the other Pocket2Mol lane releases GPU 6.",
+  "invariants": {
+    "protein_and_ligand_inputs": "unchanged",
+    "method": "pocket2mol",
+    "seeds": "unchanged",
+    "attempt_counts": "unchanged",
+    "batch_size": 32,
+    "threshold": -1,
+    "threshold_ratio": 0.8,
+    "gpu_policy": "physical GPU 6 must have no compute process before the retry controller starts the first job",
+    "successful_r02_jobs": "never rerun"
+  }
+}

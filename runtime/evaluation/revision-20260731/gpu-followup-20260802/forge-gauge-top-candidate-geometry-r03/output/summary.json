@@ -1,0 +1,1477 @@
+{
+  "cell_summary": [
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 1.025276361848362,
+      "mean_favorable_sa": 0.6115999999999999,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7454627811106777,
+      "mean_selection_score": 0.7053039467774744,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1IEP",
+      "pocket_compatible_rate": 1.0,
+      "seed": 83,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 1.0041126930285567,
+      "mean_favorable_sa": 0.6118,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7104499932347972,
+      "mean_selection_score": 0.680854995264358,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1IEP",
+      "pocket_compatible_rate": 1.0,
+      "seed": 97,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 0.8927103232291179,
+      "mean_favorable_sa": 0.521,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.5744580092845335,
+      "mean_selection_score": 0.5584206064991735,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1IEP",
+      "pocket_compatible_rate": 1.0,
+      "seed": 109,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 2.1333223789025375,
+      "mean_favorable_sa": 0.5572,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.719857631356499,
+      "mean_selection_score": 0.6710603419495493,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1M17",
+      "pocket_compatible_rate": 1.0,
+      "seed": 83,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 2.1139471432869588,
+      "mean_favorable_sa": 0.5388000000000001,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6652894249910705,
+      "mean_selection_score": 0.6273425974937493,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1M17",
+      "pocket_compatible_rate": 1.0,
+      "seed": 97,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 2.14870809542474,
+      "mean_favorable_sa": 0.561,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7087044936955377,
+      "mean_selection_score": 0.6643931455868762,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1M17",
+      "pocket_compatible_rate": 1.0,
+      "seed": 109,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 1.9883291230176436,
+      "mean_favorable_sa": 0.6204,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7557347682928389,
+      "mean_selection_score": 0.7151343378049871,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "2HYY",
+      "pocket_compatible_rate": 1.0,
+      "seed": 83,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 1.8393892126953773,
+      "mean_favorable_sa": 0.5898,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7059237981055106,
+      "mean_selection_score": 0.6710866586738575,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "2HYY",
+      "pocket_compatible_rate": 1.0,
+      "seed": 97,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 1.2872397403863272,
+      "mean_favorable_sa": 0.5212,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.5468176605439691,
+      "mean_selection_score": 0.5391323623807783,
+      "mean_severe_clash_pairs": 0.02,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "2HYY",
+      "pocket_compatible_rate": 1.0,
+      "seed": 109,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 0.98
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 1.6420777707329048,
+      "mean_favorable_sa": 0.6196,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7206416221166934,
+      "mean_selection_score": 0.6903291354816854,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "3CS9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 83,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 1.730511775810534,
+      "mean_favorable_sa": 0.6102000000000001,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6912329121586633,
+      "mean_selection_score": 0.6669230385110643,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "3CS9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 97,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 1.1333863892114393,
+      "mean_favorable_sa": 0.508,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.5564528909657565,
+      "mean_selection_score": 0.5419170236760295,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "3CS9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 109,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 0.924907719282642,
+      "mean_favorable_sa": 0.5704,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.700267132068861,
+      "mean_selection_score": 0.6613069924482027,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "4WA9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 83,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 2.0878579017433543,
+      "mean_favorable_sa": 0.5418,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6542486812275446,
+      "mean_selection_score": 0.6205140768592812,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "4WA9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 97,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 1.0636949017922455,
+      "mean_favorable_sa": 0.7672,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.9113795806561751,
+      "mean_selection_score": 0.8681257064593225,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "4WA9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 109,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 0.9663116464828729,
+      "mean_favorable_sa": 0.6012,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.706560716023045,
+      "mean_selection_score": 0.6749525012161315,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1IEP",
+      "pocket_compatible_rate": 1.0,
+      "seed": 83,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 1.0512568565261218,
+      "mean_favorable_sa": 0.5988,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6936564765345608,
+      "mean_selection_score": 0.6651995335741926,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1IEP",
+      "pocket_compatible_rate": 1.0,
+      "seed": 97,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 0.9978983546584922,
+      "mean_favorable_sa": 0.5126,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.5404895151530585,
+      "mean_selection_score": 0.532122660607141,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1IEP",
+      "pocket_compatible_rate": 1.0,
+      "seed": 109,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 2.146862672222538,
+      "mean_favorable_sa": 0.5074000000000001,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6706559132261002,
+      "mean_selection_score": 0.6216791392582701,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1M17",
+      "pocket_compatible_rate": 1.0,
+      "seed": 83,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 2.2999551179256206,
+      "mean_favorable_sa": 0.5842,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.762922768791314,
+      "mean_selection_score": 0.7093059381539198,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1M17",
+      "pocket_compatible_rate": 1.0,
+      "seed": 97,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 2.682192606900512,
+      "mean_favorable_sa": 0.6784,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.8983874105309129,
+      "mean_selection_score": 0.832391187371639,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1M17",
+      "pocket_compatible_rate": 1.0,
+      "seed": 109,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 1.6601500259294872,
+      "mean_favorable_sa": 0.599,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7229446506036428,
+      "mean_selection_score": 0.6857612554225498,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "2HYY",
+      "pocket_compatible_rate": 1.0,
+      "seed": 83,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 1.814651193784523,
+      "mean_favorable_sa": 0.606,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7019507305611596,
+      "mean_selection_score": 0.6731655113928116,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "2HYY",
+      "pocket_compatible_rate": 1.0,
+      "seed": 97,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 1.3003066005286885,
+      "mean_favorable_sa": 0.5468,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.5390857830033176,
+      "mean_selection_score": 0.5414000481023222,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "2HYY",
+      "pocket_compatible_rate": 1.0,
+      "seed": 109,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 1.5105180218667682,
+      "mean_favorable_sa": 0.595,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7037804836929576,
+      "mean_selection_score": 0.6711463385850703,
+      "mean_severe_clash_pairs": 0.02,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "3CS9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 83,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 0.98
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 1.7552566599077721,
+      "mean_favorable_sa": 0.6046,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6997747103051206,
+      "mean_selection_score": 0.6712222972135844,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "3CS9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 97,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 1.1125877025698445,
+      "mean_favorable_sa": 0.5032,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.5516457521968784,
+      "mean_selection_score": 0.5371120265378149,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "3CS9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 109,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 0.8214975263044443,
+      "mean_favorable_sa": 0.868,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.8588790278623594,
+      "mean_selection_score": 0.8616153195036516,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "4WA9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 83,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 0.5718448033290673,
+      "mean_favorable_sa": 0.6384,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.8152878279745157,
+      "mean_selection_score": 0.762221479582161,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "4WA9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 97,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 1.066017623000868,
+      "mean_favorable_sa": 0.716,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.8697933637314873,
+      "mean_selection_score": 0.8236553546120411,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "4WA9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 109,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 0.955067213273156,
+      "mean_favorable_sa": 0.586,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6894167253702088,
+      "mean_selection_score": 0.6583917077591461,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1IEP",
+      "pocket_compatible_rate": 1.0,
+      "seed": 83,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 0.8494937298753413,
+      "mean_favorable_sa": 0.5858,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6611022490176458,
+      "mean_selection_score": 0.6385115743123521,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1IEP",
+      "pocket_compatible_rate": 1.0,
+      "seed": 97,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 0.8918904890693079,
+      "mean_favorable_sa": 0.5142,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.5270842624317662,
+      "mean_selection_score": 0.5232189837022364,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1IEP",
+      "pocket_compatible_rate": 1.0,
+      "seed": 109,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 2.2146611092312813,
+      "mean_favorable_sa": 0.5206000000000001,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6856911025717831,
+      "mean_selection_score": 0.6361637718002481,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1M17",
+      "pocket_compatible_rate": 1.0,
+      "seed": 83,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 2.1182034303205985,
+      "mean_favorable_sa": 0.4868,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.633790255268445,
+      "mean_selection_score": 0.5896931786879115,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "1M17",
+      "pocket_compatible_rate": 1.0,
+      "seed": 97,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 2.221678887482685,
+      "mean_favorable_sa": 0.5338,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6649827398708443,
+      "mean_selection_score": 0.6256279179095909,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "diffsbdd": 1,
+        "targetdiff": 49
+      },
+      "pocket": "1M17",
+      "pocket_compatible_rate": 1.0,
+      "seed": 109,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 1.9426070480171618,
+      "mean_favorable_sa": 0.6022,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7140914824535589,
+      "mean_selection_score": 0.6805240377174913,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "2HYY",
+      "pocket_compatible_rate": 1.0,
+      "seed": 83,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 1.7127542399905087,
+      "mean_favorable_sa": 0.5954,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6341673281405142,
+      "mean_selection_score": 0.62253712969836,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "2HYY",
+      "pocket_compatible_rate": 1.0,
+      "seed": 97,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 1.1718088555362376,
+      "mean_favorable_sa": 0.5274,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.46657878193679175,
+      "mean_selection_score": 0.4848251473557542,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "2HYY",
+      "pocket_compatible_rate": 1.0,
+      "seed": 109,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 1.6319479990734738,
+      "mean_favorable_sa": 0.58,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7002583132252056,
+      "mean_selection_score": 0.6641808192576438,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "diffsbdd": 1,
+        "targetdiff": 49
+      },
+      "pocket": "3CS9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 83,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 1.6946849821854946,
+      "mean_favorable_sa": 0.5848,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6578508204445696,
+      "mean_selection_score": 0.6359355743111986,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "3CS9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 97,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 1.082413692231928,
+      "mean_favorable_sa": 0.5032,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.4835779876467369,
+      "mean_selection_score": 0.4894645913527158,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 50
+      },
+      "pocket": "3CS9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 109,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 0.90530978379353,
+      "mean_favorable_sa": 0.5622,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6501305195479428,
+      "mean_selection_score": 0.62375136368356,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "pocket2mol": 1,
+        "targetdiff": 49
+      },
+      "pocket": "4WA9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 83,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 2.0042873688095155,
+      "mean_favorable_sa": 0.5294,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6026954606151148,
+      "mean_selection_score": 0.5807068224305802,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "pocket2mol": 3,
+        "targetdiff": 47
+      },
+      "pocket": "4WA9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 97,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 1.0480539846044843,
+      "mean_favorable_sa": 0.7156,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.8926189829587301,
+      "mean_selection_score": 0.8395132880711109,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "diffsbdd": 1,
+        "targetdiff": 49
+      },
+      "pocket": "4WA9",
+      "pocket_compatible_rate": 1.0,
+      "seed": 109,
+      "selected_molecules": 50,
+      "severe_clash_free_rate": 1.0
+    }
+  ],
+  "cells": 45,
+  "claim_limits": [
+    "The analysis is conditional on the frozen QED and favorable-SA top-50 selection rule recomputed from persisted coordinate files.",
+    "These coordinate-bearing top-50 sets are separate from the source finalizer's unlinked property-CSV top-50 sets and cannot be used as exact molecule-level validation of those sets.",
+    "Pocket compatibility and receptor clashes are geometric computational signals and do not establish binding affinity.",
+    "Generating-model strata describe selected candidate composition and geometry; they do not isolate causal model effects.",
+    "Docking and PLIP are outside this run and require a separate frozen protocol.",
+    "Unreadable generated SDF files are excluded from coordinate analysis and reported explicitly; every cell must still supply the frozen top-50 quota."
+  ],
+  "condition_model_summary": [
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 1.5343647686928494,
+      "mean_favorable_sa": 0.5833333333333334,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6911280919872752,
+      "mean_selection_score": 0.6587896643910927,
+      "mean_severe_clash_pairs": 0.0013333333333333333,
+      "model": "targetdiff",
+      "model_counts": {
+        "targetdiff": 750
+      },
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 750,
+      "severe_clash_free_rate": 0.9986666666666667
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 1.4504871607958414,
+      "mean_favorable_sa": 0.6106400000000001,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7157210086793621,
+      "mean_selection_score": 0.6841967060755534,
+      "mean_severe_clash_pairs": 0.0013333333333333333,
+      "model": "targetdiff",
+      "model_counts": {
+        "targetdiff": 750
+      },
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 750,
+      "severe_clash_free_rate": 0.9986666666666667
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 1.6414911599174022,
+      "mean_favorable_sa": 0.5566666666666666,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7852715619875051,
+      "mean_selection_score": 0.7166900933912536,
+      "mean_severe_clash_pairs": 0.0,
+      "model": "diffsbdd",
+      "model_counts": {
+        "diffsbdd": 3
+      },
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 3,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 2.2144703922029607,
+      "mean_favorable_sa": 0.5825,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6161579620172736,
+      "mean_selection_score": 0.6060605734120915,
+      "mean_severe_clash_pairs": 0.0,
+      "model": "pocket2mol",
+      "model_counts": {
+        "pocket2mol": 4
+      },
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 4,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 1.4918718514484135,
+      "mean_favorable_sa": 0.5617362045760431,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6438511494494769,
+      "mean_selection_score": 0.6192166659874466,
+      "mean_severe_clash_pairs": 0.0,
+      "model": "targetdiff",
+      "model_counts": {
+        "targetdiff": 743
+      },
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 743,
+      "severe_clash_free_rate": 1.0
+    }
+  ],
+  "condition_pocket_summary": [
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 0.9740331260353455,
+      "mean_favorable_sa": 0.5814666666666667,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6767902612100027,
+      "mean_selection_score": 0.648193182847002,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 150
+      },
+      "pocket": "1IEP",
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 150,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 2.1319925392047456,
+      "mean_favorable_sa": 0.5523333333333333,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6979505166810357,
+      "mean_selection_score": 0.654265361676725,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 150
+      },
+      "pocket": "1M17",
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 150,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 1.7049860253664495,
+      "mean_favorable_sa": 0.5771333333333333,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6694920756474395,
+      "mean_selection_score": 0.6417844529532076,
+      "mean_severe_clash_pairs": 0.006666666666666667,
+      "model_counts": {
+        "targetdiff": 150
+      },
+      "pocket": "2HYY",
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 150,
+      "severe_clash_free_rate": 0.9933333333333333
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 1.5019919785849594,
+      "mean_favorable_sa": 0.5792666666666667,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6561091417470377,
+      "mean_selection_score": 0.6330563992229264,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 150
+      },
+      "pocket": "3CS9",
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 150,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 1.3588201742727473,
+      "mean_favorable_sa": 0.6264666666666666,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7552984646508603,
+      "mean_selection_score": 0.7166489252556021,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 150
+      },
+      "pocket": "4WA9",
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 150,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 1.0051556192224955,
+      "mean_favorable_sa": 0.5708666666666666,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6469022359035548,
+      "mean_selection_score": 0.6240915651324883,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 150
+      },
+      "pocket": "1IEP",
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 150,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 2.3763367990162236,
+      "mean_favorable_sa": 0.59,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7773220308494424,
+      "mean_selection_score": 0.7211254215946097,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 150
+      },
+      "pocket": "1M17",
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 150,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 1.5917026067475661,
+      "mean_favorable_sa": 0.5839333333333333,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6546603880560399,
+      "mean_selection_score": 0.633442271639228,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 150
+      },
+      "pocket": "2HYY",
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 150,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 1.459454128114795,
+      "mean_favorable_sa": 0.5676,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6517336487316522,
+      "mean_selection_score": 0.6264935541121566,
+      "mean_severe_clash_pairs": 0.006666666666666667,
+      "model_counts": {
+        "targetdiff": 150
+      },
+      "pocket": "3CS9",
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 150,
+      "severe_clash_free_rate": 0.9933333333333333
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 0.8197866508781265,
+      "mean_favorable_sa": 0.7408,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.8479867398561207,
+      "mean_selection_score": 0.8158307178992845,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 150
+      },
+      "pocket": "4WA9",
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 150,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 0.8988171440726017,
+      "mean_favorable_sa": 0.5619999999999999,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6258677456065403,
+      "mean_selection_score": 0.6067074219245782,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 150
+      },
+      "pocket": "1IEP",
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 150,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 2.1848478090115218,
+      "mean_favorable_sa": 0.5137333333333334,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6614880325703575,
+      "mean_selection_score": 0.6171616227992501,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "diffsbdd": 1,
+        "targetdiff": 149
+      },
+      "pocket": "1M17",
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 150,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 1.609056714514636,
+      "mean_favorable_sa": 0.575,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6049458641769551,
+      "mean_selection_score": 0.5959621049238685,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "targetdiff": 150
+      },
+      "pocket": "2HYY",
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 150,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 1.4696822244969656,
+      "mean_favorable_sa": 0.556,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.613895707105504,
+      "mean_selection_score": 0.5965269949738528,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "diffsbdd": 1,
+        "targetdiff": 149
+      },
+      "pocket": "3CS9",
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 150,
+      "severe_clash_free_rate": 1.0
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 1.3192170457358434,
+      "mean_favorable_sa": 0.6024,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7151483210405959,
+      "mean_selection_score": 0.6813238247284171,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "diffsbdd": 1,
+        "pocket2mol": 4,
+        "targetdiff": 145
+      },
+      "pocket": "4WA9",
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 150,
+      "severe_clash_free_rate": 1.0
+    }
+  ],
+  "condition_summary": [
+    {
+      "condition": "fixed_best",
+      "mean_centroid_distance_angstrom": 1.5343647686928494,
+      "mean_favorable_sa": 0.5833333333333334,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6911280919872752,
+      "mean_selection_score": 0.6587896643910927,
+      "mean_severe_clash_pairs": 0.0013333333333333333,
+      "model_counts": {
+        "targetdiff": 750
+      },
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 750,
+      "severe_clash_free_rate": 0.9986666666666667
+    },
+    {
+      "condition": "iterative",
+      "mean_centroid_distance_angstrom": 1.4504871607958414,
+      "mean_favorable_sa": 0.6106400000000001,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.7157210086793621,
+      "mean_selection_score": 0.6841967060755534,
+      "mean_severe_clash_pairs": 0.0013333333333333333,
+      "model_counts": {
+        "targetdiff": 750
+      },
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 750,
+      "severe_clash_free_rate": 0.9986666666666667
+    },
+    {
+      "condition": "single_pass",
+      "mean_centroid_distance_angstrom": 1.4963241875663138,
+      "mean_favorable_sa": 0.5618266666666667,
+      "mean_pocket_atom_fraction": 1.0,
+      "mean_qed": 0.6442691340999905,
+      "mean_selection_score": 0.6195363938699933,
+      "mean_severe_clash_pairs": 0.0,
+      "model_counts": {
+        "diffsbdd": 3,
+        "pocket2mol": 4,
+        "targetdiff": 743
+      },
+      "pocket_compatible_rate": 1.0,
+      "selected_molecules": 750,
+      "severe_clash_free_rate": 1.0
+    }
+  ],
+  "created_at": "2026-08-03T16:52:17+08:00",
+  "parse_failure_jobs": [
+    {
+      "parse_failures": 4,
+      "tag": "fixed-best-targetdiff-1iep-s97-n1500-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "fixed-best-targetdiff-1iep-s109-n1500-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "fixed-best-targetdiff-2hyy-s83-n1500-r02"
+    },
+    {
+      "parse_failures": 5,
+      "tag": "fixed-best-targetdiff-2hyy-s97-n1500-r02"
+    },
+    {
+      "parse_failures": 5,
+      "tag": "fixed-best-targetdiff-2hyy-s109-n1500-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "fixed-best-targetdiff-3cs9-s83-n1500-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "fixed-best-targetdiff-3cs9-s97-n1500-r02"
+    },
+    {
+      "parse_failures": 5,
+      "tag": "fixed-best-targetdiff-3cs9-s109-n1500-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "fixed-best-targetdiff-4wa9-s97-n1500-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "fixed-best-targetdiff-1m17-s83-n1500-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "fixed-best-targetdiff-1m17-s97-n1500-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "fixed-best-targetdiff-1m17-s109-n1500-r02"
+    },
+    {
+      "parse_failures": 3,
+      "tag": "single-pass-single-pocket2mol-1iep-s83-n500-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "single-pass-single-diffsbdd-1iep-s83-n500-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "single-pass-single-targetdiff-1iep-s97-n500-r02"
+    },
+    {
+      "parse_failures": 4,
+      "tag": "single-pass-single-pocket2mol-1iep-s97-n500-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "single-pass-single-pocket2mol-1iep-s109-n500-r02"
+    },
+    {
+      "parse_failures": 3,
+      "tag": "single-pass-single-diffsbdd-1iep-s109-n500-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "single-pass-single-targetdiff-2hyy-s83-n500-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "single-pass-single-pocket2mol-2hyy-s83-n500-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "single-pass-single-diffsbdd-2hyy-s83-n500-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "single-pass-single-targetdiff-2hyy-s97-n500-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "single-pass-single-pocket2mol-2hyy-s97-n500-r02"
+    },
+    {
+      "parse_failures": 3,
+      "tag": "single-pass-single-diffsbdd-2hyy-s97-n500-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "single-pass-single-pocket2mol-2hyy-s109-n500-r02"
+    },
+    {
+      "parse_failures": 3,
+      "tag": "single-pass-single-diffsbdd-2hyy-s109-n500-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "single-pass-single-targetdiff-3cs9-s83-n500-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "single-pass-single-diffsbdd-3cs9-s83-n500-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "single-pass-single-pocket2mol-3cs9-s97-n500-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "single-pass-single-diffsbdd-3cs9-s97-n500-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "single-pass-single-pocket2mol-3cs9-s109-n500-r02"
+    },
+    {
+      "parse_failures": 3,
+      "tag": "single-pass-single-diffsbdd-3cs9-s109-n500-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "single-pass-single-pocket2mol-4wa9-s83-n500-r02"
+    },
+    {
+      "parse_failures": 5,
+      "tag": "single-pass-single-diffsbdd-4wa9-s83-n500-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "single-pass-single-targetdiff-4wa9-s97-n500-r02"
+    },
+    {
+      "parse_failures": 6,
+      "tag": "single-pass-single-diffsbdd-4wa9-s97-n500-r02"
+    },
+    {
+      "parse_failures": 3,
+      "tag": "single-pass-single-pocket2mol-4wa9-s109-n500-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "single-pass-single-diffsbdd-4wa9-s109-n500-r02"
+    },
+    {
+      "parse_failures": 3,
+      "tag": "single-pass-single-pocket2mol-1m17-s83-n500-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "single-pass-single-diffsbdd-1m17-s83-n500-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "single-pass-single-targetdiff-1m17-s97-n500-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "single-pass-single-pocket2mol-1m17-s97-n500-r02"
+    },
+    {
+      "parse_failures": 4,
+      "tag": "single-pass-single-diffsbdd-1m17-s97-n500-r02"
+    },
+    {
+      "parse_failures": 4,
+      "tag": "single-pass-single-pocket2mol-1m17-s109-n500-r02"
+    },
+    {
+      "parse_failures": 3,
+      "tag": "single-pass-single-diffsbdd-1m17-s109-n500-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "iterative-round1-pocket2mol-1iep-s83-n250-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round1-diffsbdd-1iep-s83-n250-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "iterative-round1-targetdiff-1iep-s97-n250-r02"
+    },
+    {
+      "parse_failures": 5,
+      "tag": "iterative-round1-pocket2mol-1iep-s97-n250-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round1-diffsbdd-1iep-s97-n250-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round1-pocket2mol-1iep-s109-n250-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "iterative-round1-diffsbdd-1iep-s109-n250-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round1-diffsbdd-2hyy-s83-n250-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round1-pocket2mol-2hyy-s97-n250-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "iterative-round1-diffsbdd-2hyy-s97-n250-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round1-pocket2mol-2hyy-s109-n250-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round1-diffsbdd-2hyy-s109-n250-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round1-targetdiff-3cs9-s83-n250-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "iterative-round1-pocket2mol-3cs9-s83-n250-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round1-pocket2mol-3cs9-s97-n250-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round1-diffsbdd-3cs9-s97-n250-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round1-pocket2mol-3cs9-s109-n250-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round1-pocket2mol-4wa9-s83-n250-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round1-diffsbdd-4wa9-s83-n250-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "iterative-round1-diffsbdd-4wa9-s97-n250-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round1-diffsbdd-4wa9-s109-n250-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round1-pocket2mol-1m17-s97-n250-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "iterative-round1-diffsbdd-1m17-s97-n250-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "iterative-round1-diffsbdd-1m17-s109-n250-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round2-targetdiff-1iep-s10109-n750-r02"
+    },
+    {
+      "parse_failures": 3,
+      "tag": "iterative-round2-targetdiff-2hyy-s10109-n750-r02"
+    },
+    {
+      "parse_failures": 2,
+      "tag": "iterative-round2-targetdiff-3cs9-s10083-n750-r02"
+    },
+    {
+      "parse_failures": 5,
+      "tag": "iterative-round2-targetdiff-3cs9-s10097-n750-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round2-targetdiff-3cs9-s10109-n750-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round2-targetdiff-4wa9-s10083-n750-r02"
+    },
+    {
+      "parse_failures": 1,
+      "tag": "iterative-round2-targetdiff-4wa9-s10109-n750-r02"
+    }
+  ],
+  "protocol_id": "forge-gauge-top-candidate-geometry-r03",
+  "schema_version": "frogent-forge-gauge-top-candidate-geometry-summary-v2",
+  "selected_molecules": 2250,
+  "source_deduplicated_coordinate_candidates": 47174,
+  "source_generated_sdf_files": 47333,
+  "source_manifest": "/var/lib/docker/my_workspace/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-matched-budget-prospective-recovery-r06/final-manifest.json",
+  "source_parse_failures": 157,
+  "source_run": "/var/lib/docker/my_workspace/doomx/FROGENT/runtime/evaluation/revision-20260731/gpu-followup-20260802/forge-gauge-matched-budget-prospective-recovery-r06",
+  "source_unlinked_property_csv_rows": 47174,
+  "top_k_per_cell": 50
+}
